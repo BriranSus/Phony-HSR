@@ -7,7 +7,7 @@
   },
   "debug": {
     "logLevel": "info",
-    "overlay": true,
+    "overlay": false,
     "strictData": true,
     "exposeGlobal": true,
     "startState": "title"

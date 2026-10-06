@@ -62,7 +62,7 @@ type TabId = 'characters' | 'lightCones' | 'enemies' | 'rules';
 const SILHOUETTE = `<svg viewBox="0 0 150 180" aria-hidden="true"><defs><linearGradient id="sil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff" stop-opacity=".05"/></linearGradient></defs><circle cx="75" cy="46" r="24" fill="url(#sil)"/><path d="M75 74c-32 0-52 18-56 50l-6 56h124l-6-56c-4-32-24-50-56-50z" fill="url(#sil)"/></svg>`;
 
 function stars(n: number): HTMLElement {
-  const el = h('span', { class: 'rarity-stars', attrs: { 'aria-label': `${n} stars` } });
+  const el = h('span', { class: `rarity-stars rarity-stars--${n}`, attrs: { 'aria-label': `${n} stars` } });
   for (let i = 0; i < n; i++) el.append(h('span', { class: 'icon', trustedHtml: UI_ICONS.star }));
   return el;
 }
@@ -179,7 +179,7 @@ export class DataArchiveScreen {
     const table = h(
       'table',
       { class: 'rules-table' },
-      h('thead', {}, h('tr', {}, h('th', { text: 'Element' }), h('th', { text: 'Break DMG' }), h('th', { text: 'Break Effect' }), h('th', { text: 'Delay (BE 0%)' }), h('th', { text: 'Summary' }))),
+      h('thead', {}, h('tr', {}, h('th', { text: 'Element' }), h('th', { text: 'Break DMG' }), h('th', { text: 'Break Effect' }), h('th', { text: 'Delay (BE 0%)' }), h('th', { class: 'col-summary', text: 'Summary' }))),
       h(
         'tbody',
         {},
@@ -191,11 +191,11 @@ export class DataArchiveScreen {
             h('td', { class: 'num', text: b.multiplier }),
             h('td', { text: b.effect }),
             h('td', { class: 'num', text: b.delay }),
-            h('td', { text: b.summary }),
+            h('td', { class: 'col-summary', text: b.summary }),
           ),
         ),
       ),
     );
-    return h('div', {}, h('div', { class: 'rule-chips' }, ...this.vm.rules.map(([k, v]) => h('span', { class: 'rule-chip' }, k, h('b', { text: v })))), table);
+    return h('div', {}, h('div', { class: 'rule-chips' }, ...this.vm.rules.map(([k, v]) => h('span', { class: 'rule-chip' }, k, h('b', { text: v })))), h('div', { class: 'table-scroll' }, table));
   }
 }

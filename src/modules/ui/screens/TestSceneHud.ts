@@ -69,7 +69,12 @@ export class TestSceneHud {
       h(
         'div',
         { class: 'hud__back interactive' },
-        h('button', { class: 'pill-button', attrs: { type: 'button', 'data-id': 'back' }, on: { click: () => onBack() } }, h('span', { class: 'icon', trustedHtml: UI_ICONS.back }), 'Esc · Departure Board'),
+        h(
+          'button',
+          { class: 'pill-button', attrs: { type: 'button', 'data-id': 'back', 'aria-label': 'Back to the Departure Board (Esc)' }, on: { click: () => onBack() } },
+          h('span', { class: 'icon', trustedHtml: UI_ICONS.back }),
+          h('span', { class: 'pill-button__label', text: 'Esc · Departure Board' }),
+        ),
       ),
     );
   }

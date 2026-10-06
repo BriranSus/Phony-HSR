@@ -335,6 +335,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  gap: 0.4em 2em;
   font-size: 0.78em;
   letter-spacing: 0.08em;
   color: var(--c-text-dim);
@@ -350,11 +351,47 @@
   transition: opacity 280ms ease;
 }
 
+.title__logo,
+.title__footer {
+  transition:
+    opacity 280ms ease,
+    scale 420ms var(--ease-out),
+    right 420ms var(--ease-out);
+}
+
 .title.is-covered .title__start,
 .title.is-covered .title__side,
 .title.is-covered .title__toast {
   opacity: 0 !important;
   pointer-events: none;
+}
+
+/*
+ * While the Departure Board covers the title, the footer stays in the free area left of the panel
+ * (stacked), and the wordmark shrinks so it never runs under the panel. `scale` composes with the
+ * logo's rise-in transform animation.
+ */
+.title.is-covered .title__footer {
+  right: calc(var(--menu-width) + 3vw);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3em;
+}
+
+.title.is-covered .title__logo {
+  transform-origin: left top;
+}
+
+@media (max-width: 1440px) {
+  .title.is-covered .title__logo {
+    scale: 0.82;
+  }
+}
+
+@media (max-width: 1180px) {
+  .title.is-covered .title__logo {
+    scale: 0.66;
+  }
 }
 
 .menu {
@@ -397,10 +434,12 @@
   right: 0;
   top: 0;
   bottom: 0;
-  width: min(560px, 46vw);
-  padding: 9vh 5vw 6vh 3.2vw;
+  width: var(--menu-width);
+  /* Vertical rhythm scales with the viewport height so all six rows fit from 720p up. */
+  padding: clamp(20px, 7vh, 84px) 5vw clamp(14px, 3.4vh, 40px) 3.2vw;
   display: flex;
   flex-direction: column;
+  min-height: 0;
   animation: menu-in 650ms var(--ease-out) both;
 }
 
@@ -427,10 +466,11 @@
 }
 
 .menu__title {
-  margin: 0.35em 0 0.2em;
+  margin: 0.3em 0 0.15em;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 2.6em;
+  font-size: clamp(1.9em, 5.2vh, 2.6em);
+  line-height: 1.05;
   letter-spacing: 0.08em;
   color: var(--c-white);
 }
@@ -439,24 +479,34 @@
   color: var(--c-text-dim);
   font-size: 0.92em;
   letter-spacing: 0.04em;
-  margin-bottom: 2.6em;
+  margin-bottom: clamp(0.8em, 3.4vh, 2.6em);
 }
 
 .menu__list {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  /* Room for the focused row's left shift; the list scrolls if the viewport is very short. */
+  margin: 0 -10px 0 -8px;
+  padding: 2px 10px 2px 8px;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0.55em;
+  gap: clamp(4px, 1.1vh, 10px);
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }
 
 .menu-item {
   position: relative;
+  flex: none;
   display: grid;
   grid-template-columns: 3.2em 1fr auto;
   align-items: center;
-  padding: 1em 1.2em 1em 1em;
+  padding: clamp(0.45em, 1.5vh, 1em) 1.2em clamp(0.45em, 1.5vh, 1em) 1em;
+  clip-path: var(--chamfer-tr);
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
   border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
@@ -491,7 +541,8 @@
 .menu-item__title {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.45em;
+  font-size: clamp(1.15em, 2.9vh, 1.45em);
+  line-height: 1.15;
   letter-spacing: 0.06em;
   color: var(--c-white);
 }
@@ -554,8 +605,11 @@
 
 .menu__footer {
   margin-top: auto;
+  padding-top: clamp(10px, 2.2vh, 24px);
+  flex: none;
   display: flex;
-  gap: 1.6em;
+  flex-wrap: wrap;
+  gap: 0.6em 1.6em;
   font-size: 0.82em;
   color: var(--c-text-dim);
   align-items: center;
@@ -575,7 +629,8 @@
     #05070f;
   display: flex;
   flex-direction: column;
-  padding: 4.5vh 4.5vw 3vh;
+  padding: clamp(16px, 4.5vh, 48px) max(16px, 4.5vw) clamp(12px, 3vh, 32px);
+  overflow: hidden;
   animation: fade-in 380ms ease both;
 }
 
@@ -590,15 +645,25 @@
   margin: 0.3em 0 0;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 2.3em;
+  font-size: clamp(1.7em, 4.2vh, 2.3em);
+  line-height: 1.05;
   letter-spacing: 0.06em;
 }
 
 .archive__tabs {
   display: flex;
+  flex: none;
   gap: 0.4em;
-  margin: 1.6em 0 1.4em;
+  margin: clamp(0.8em, 2.6vh, 1.6em) 0 clamp(0.8em, 2.2vh, 1.4em);
   border-bottom: 1px solid var(--c-line);
+  /* On narrow screens the tab strip scrolls on its own instead of widening the page. */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.archive__tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .archive-tab {
@@ -610,6 +675,8 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 0.8em 1.3em;
+  flex: none;
+  white-space: nowrap;
   cursor: pointer;
   transition: color 160ms;
 }
@@ -635,7 +702,10 @@
 
 .archive__body {
   flex: 1;
-  overflow: auto;
+  min-height: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding-right: 0.6em;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
@@ -643,14 +713,15 @@
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
   gap: 1.1em;
 }
 
 .char-card {
   position: relative;
   min-height: 360px;
-  border-radius: 0.5em 0.5em 0.5em 1.6em;
+  --chamfer: 22px;
+  clip-path: var(--chamfer-tr);
   overflow: hidden;
   background: var(--c-panel-solid);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -669,12 +740,21 @@
   overflow: hidden;
 }
 
+/* Rarity backdrops: warm gold for 5-star, violet for 4-star. */
 .char-card--5 .char-card__art {
   border-bottom: 3px solid var(--c-5star-a);
+  background:
+    radial-gradient(circle at 50% 120%, var(--portrait) 0%, transparent 62%),
+    linear-gradient(180deg, rgba(201, 122, 30, 0.08) 0%, rgba(255, 198, 92, 0.32) 100%),
+    var(--c-navy-800);
 }
 
 .char-card--4 .char-card__art {
   border-bottom: 3px solid var(--c-4star-a);
+  background:
+    radial-gradient(circle at 50% 120%, var(--portrait) 0%, transparent 62%),
+    linear-gradient(180deg, rgba(106, 63, 209, 0.1) 0%, rgba(181, 140, 255, 0.34) 100%),
+    var(--c-navy-800);
 }
 
 .char-card__silhouette {
@@ -791,7 +871,8 @@
 .info-card {
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5em;
+  --chamfer: 16px;
+  clip-path: var(--chamfer-br);
   padding: 1em 1.1em;
   animation: rise-in 450ms var(--ease-out) both;
 }
@@ -819,6 +900,14 @@
 
 .lc-card {
   border-left: 3px solid var(--rarity);
+  background:
+    linear-gradient(100deg, color-mix(in srgb, var(--rarity) 16%, transparent), transparent 55%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+}
+
+.table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .weak-row {
@@ -901,7 +990,7 @@
   padding: 0.55em 0.95em;
   border: 1px solid rgba(244, 223, 176, 0.35);
   background: rgba(244, 223, 176, 0.06);
-  border-radius: 0.4em;
+  border-radius: 999px;
   font-size: 0.86em;
 }
 
@@ -912,6 +1001,9 @@
 
 .archive__footer {
   display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: 0.5em 2em;
   justify-content: space-between;
   align-items: center;
   margin-top: 1em;
@@ -943,13 +1035,19 @@
   margin-top: 0.2em;
 }
 
+/*
+ * Area-entry banner: sits in the sky band above the platform (clear of the crystals) on a soft
+ * horizontal scrim, and fades out after a few seconds.
+ */
 .hud__banner {
   position: absolute;
-  left: 50%;
-  top: 22vh;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  top: 13vh;
+  padding: 0.7em 0 0.8em;
   text-align: center;
   pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(3, 6, 16, 0.55) 30%, rgba(3, 6, 16, 0.55) 70%, transparent);
   animation: banner 3.6s var(--ease-out) 300ms both;
 }
 
@@ -973,7 +1071,7 @@
 .hud__banner-title {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 2.4em;
+  font-size: clamp(1.3em, 3vw, 2.1em);
   letter-spacing: 0.5em;
   padding-left: 0.5em;
   color: var(--c-white);
@@ -989,14 +1087,20 @@
 
 .hud__input {
   position: absolute;
-  left: 2.4vw;
+  left: max(16px, 2.4vw);
   bottom: 3.2vh;
   padding: 1em 1.1em;
   background: var(--c-panel);
   border: 1px solid var(--c-line);
-  border-radius: 0.5em;
+  --chamfer: 14px;
+  clip-path: var(--chamfer-tl-br);
   backdrop-filter: blur(8px);
-  min-width: 300px;
+  min-width: min(300px, calc(100vw - 32px));
+}
+
+/* Highlight and the action text change in the same frame (no fade lag on release). */
+.hud__input .keycap {
+  transition: none;
 }
 
 .hud__input-grid {
@@ -1070,9 +1174,13 @@
 /* ============================= DEBUG OVERLAY ============================ */
 .debug {
   position: absolute;
-  right: 2.4vw;
-  top: 10vh;
+  right: max(16px, 2.4vw);
+  top: calc(3vh + 64px);
   width: 300px;
+  max-height: calc(100vh - 3vh - 64px - 120px);
+  overflow: hidden;
+  --chamfer: 12px;
+  clip-path: var(--chamfer-br);
   padding: 0.9em 1em;
   font: 12px/1.5 ui-monospace, 'Cascadia Mono', Consolas, monospace;
   color: #cfe3ff;
@@ -1192,12 +1300,115 @@
   height: 100%;
 }
 
+/* ========================== NARROW / PORTRAIT ========================== */
 @media (max-width: 900px) {
+  :root {
+    --menu-width: 100vw;
+  }
   .menu__panel {
-    width: 100%;
-    padding: 6vh 6vw;
+    padding: clamp(20px, 5vh, 48px) 16px clamp(14px, 3vh, 28px) 22px;
+  }
+  .menu__scrim {
+    background: linear-gradient(180deg, rgba(4, 6, 14, 0.82), rgba(4, 6, 14, 0.94));
   }
   .title__side {
     display: none;
+  }
+  /* The full-width board replaces the wordmark and footer while it is open (visibility, because
+     the logo's rise-in fill animation owns its opacity). */
+  .title.is-covered .title__logo,
+  .title.is-covered .title__footer {
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 700px) {
+  .title__logo {
+    left: 16px;
+    right: 16px;
+    top: 9vh;
+    flex-direction: column;
+    gap: 0.8em;
+    text-align: center;
+  }
+  .title__emblem {
+    width: 76px;
+    height: 76px;
+  }
+  .title__name {
+    font-size: clamp(30px, 10.5vw, 44px);
+  }
+  .title__sub {
+    justify-content: center;
+    letter-spacing: 0.32em;
+    font-size: 11px;
+  }
+  .title__sub::before {
+    display: none;
+  }
+  .title__footer {
+    left: 16px;
+    right: 16px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .title__start {
+    font-size: 1.1em;
+    letter-spacing: 0.32em;
+    gap: 0.8em;
+  }
+  .title__start::before,
+  .title__start::after {
+    width: 36px;
+  }
+
+  .archive__header .pill-button {
+    flex: none;
+  }
+  .archive-tab {
+    padding: 0.7em 0.9em;
+    letter-spacing: 0.1em;
+  }
+  .archive__footer {
+    font-size: 0.76em;
+  }
+  /* The break table keeps its four key columns; the prose summary is on the element cards. */
+  .rules-table .col-summary {
+    display: none;
+  }
+  .rules-table th,
+  .rules-table td {
+    padding: 0.65em 0.5em;
+  }
+
+  .hud__area {
+    left: 16px;
+    top: 16px;
+    max-width: calc(100vw - 110px);
+  }
+  .hud__area-name {
+    font-size: 1.35em;
+  }
+  .hud__back {
+    right: 16px;
+    top: 16px;
+  }
+  .hud__back .pill-button__label {
+    display: none;
+  }
+  .hud__banner {
+    top: 18vh;
+  }
+  /* Keyboard hints are redundant with the input monitor on a phone-sized screen. */
+  .hud__hints {
+    display: none;
+  }
+  .debug {
+    left: 16px;
+    right: 16px;
+    width: auto;
+    top: 110px;
+    max-height: 45vh;
   }
 }

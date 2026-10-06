@@ -51,6 +51,135 @@ const HEIGHT = 900;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/** Extra layout passes: desktop 16:9 small, 4:3, and a phone in portrait. */
+const VIEWPORTS = [
+  { name: '1280x720', width: 1280, height: 720 },
+  { name: '1024x768', width: 1024, height: 768 },
+  { name: '390x844', width: 390, height: 844 },
+];
+
+const shot0 = (shots) => async (page, name) => {
+  const file = path.join(outDir, `${name}.png`);
+  await page.screenshot({ path: file });
+  shots.push(file);
+  console.log(`  captured ${name}.png`);
+};
+
+/**
+ * Layout checks that catch the classic responsive failures: horizontal page overflow, and elements
+ * of a screen that overlap each other (pairs of selectors whose boxes must not intersect).
+ */
+async function layoutProblems(page, label, pairs) {
+  return page.evaluate(
+    ({ label, pairs }) => {
+      const out = [];
+      const doc = document.documentElement;
+      if (doc.scrollWidth > window.innerWidth + 1) out.push(`${label}: page overflows horizontally (${doc.scrollWidth} > ${window.innerWidth})`);
+      for (const el of document.querySelectorAll('.screen')) {
+        if (el.scrollLeft > 0 || el.scrollWidth > el.clientWidth + 1) out.push(`${label}: screen "${el.dataset.screen}" is wider than the viewport (${el.scrollWidth} > ${el.clientWidth})`);
+      }
+      for (const el of document.querySelectorAll('.archive__body, .menu__panel, .menu__list')) {
+        if (el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).overflowX !== 'auto') out.push(`${label}: ${el.className} overflows sideways (${el.scrollWidth} > ${el.clientWidth})`);
+      }
+      const box = (sel) => {
+        const els = [...document.querySelectorAll(sel)].filter((e) => {
+          if (!e.checkVisibility({ opacityProperty: true, visibilityProperty: true })) return false;
+          // Treat near-transparent ancestors (covered screens fading out) as invisible too.
+          for (let n = e; n; n = n.parentElement) if (Number(getComputedStyle(n).opacity) < 0.05) return false;
+          return true;
+        });
+        return els.map((e) => e.getBoundingClientRect());
+      };
+      for (const [a, b] of pairs) {
+        for (const ra of box(a)) for (const rb of box(b)) {
+          const ix = Math.min(ra.right, rb.right) - Math.max(ra.left, rb.left);
+          const iy = Math.min(ra.bottom, rb.bottom) - Math.max(ra.top, rb.top);
+          if (ix > 1 && iy > 1) out.push(`${label}: "${a}" overlaps "${b}"`);
+        }
+      }
+      for (const sel of ['.menu-item', '.menu__footer', '.archive__tabs', '.hud__area', '.hud__hints', '.hud__back']) {
+        for (const r of box(sel)) if (r.bottom > window.innerHeight + 1 || r.right > window.innerWidth + 1) out.push(`${label}: ${sel} is cut off by the viewport`);
+      }
+      return out;
+    },
+    { label, pairs },
+  );
+}
+
+async function captureViewport(browser, url, vp, shot, errors) {
+  const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: 1 });
+  page.on('console', (msg) => {
+    if (msg.type() === 'error') errors.push(`[${vp.name}] console: ${msg.text()}`);
+  });
+  page.on('pageerror', (err) => errors.push(`[${vp.name}] pageerror: ${err.message}`));
+  const stackIs = (ids) => page.waitForFunction((expected) => window.__ASTRAL__?.stack().join('>') === expected, ids.join('>'), { timeout: 30000, polling: 100 });
+  const settled = () =>
+    page.waitForFunction(
+      () =>
+        !document.querySelector('.transition.is-active') &&
+        document.getAnimations().every((a) => {
+          const t = a.effect?.getComputedTiming();
+          return a.playState !== 'running' || !t || t.iterations === Infinity;
+        }),
+      null,
+      { timeout: 30000, polling: 100 },
+    );
+  const check = async (label, pairs) => errors.push(...(await layoutProblems(page, `[${vp.name}] ${label}`, pairs)));
+
+  await page.goto(`${url}?cfg.ui.minLoadingMs=0`);
+  await stackIs(['title']);
+  await settled();
+  await sleep(1500);
+  await page.keyboard.press('Enter');
+  await stackIs(['title', 'main-menu']);
+  await settled();
+  await sleep(300);
+  await check('main menu', [
+    ['.menu-item', '.menu__footer'],
+    ['.menu__panel', '.title__wordmark'],
+    ['.menu__panel', '.title__footer'],
+    ['.menu-item', '.title__footer'],
+    ['.title__footer > div:first-child', '.title__footer > div:last-child'],
+    ['.menu__panel', '.title__side'],
+  ]);
+  await shot(page, `vp-${vp.name}-main-menu`);
+
+  await page.click('[data-id="archive"]');
+  await stackIs(['title', 'main-menu', 'data-archive']);
+  await settled();
+  await sleep(300);
+  await check('archive characters', [['.archive__tabs', '.archive__body']]);
+  await shot(page, `vp-${vp.name}-archive`);
+  await page.click('[data-tab="rules"]');
+  await settled();
+  await sleep(300);
+  await check('archive rules', [['.archive__tabs', '.archive__body']]);
+  await shot(page, `vp-${vp.name}-archive-rules`);
+  await page.keyboard.press('Escape');
+  await stackIs(['title', 'main-menu']);
+
+  await page.click('[data-id="test-scene"]');
+  await stackIs(['test-scene']);
+  // Area-entry banner (visible for ~3 s after the scene opens).
+  await page.waitForFunction(() => Number(getComputedStyle(document.querySelector('.hud__banner')).opacity) > 0.95, null, { timeout: 15000, polling: 50 });
+  await check('test scene banner', [
+    ['.hud__banner', '.hud__area'],
+    ['.hud__banner', '.hud__back'],
+  ]);
+  await shot(page, `vp-${vp.name}-test-scene-banner`);
+  await settled();
+  await sleep(1800);
+  await check('test scene', [
+    ['.hud__area', '.debug'],
+    ['.hud__area', '.hud__input'],
+    ['.hud__banner', '.hud__input'],
+    ['.hud__back', '.hud__hints'],
+    ['.hud__hints', '.hud__input'],
+  ]);
+  await shot(page, `vp-${vp.name}-test-scene`);
+  await page.close();
+}
+
 async function startServer() {
   if (useDev) {
     const server = await createServer({ root, logLevel: 'warn', server: { port: 5199, strictPort: false } });
@@ -123,6 +252,12 @@ async function main() {
     await uiSettled();
     await sleep(300);
     await shot('04-archive-characters');
+    await page.click('[data-tab="lightCones"]');
+    await uiSettled();
+    await sleep(300);
+    const unresolved = await page.evaluate(() => [...document.querySelectorAll('.lc-card p')].map((p) => p.textContent).filter((t) => /[{}?]/.test(t ?? '')));
+    if (unresolved.length) errors.push(`archive: unresolved Light Cone placeholders: ${unresolved.join(' | ')}`);
+    await shot('04b-archive-light-cones');
     await page.click('[data-tab="enemies"]');
     await uiSettled();
     await sleep(300);
@@ -155,6 +290,10 @@ async function main() {
     await sleep(2200);
     await shot('08-test-scene');
 
+    // The debug overlay is off by default; F3 (action "toggleDebug") shows it.
+    await page.keyboard.press('F3');
+    await page.waitForSelector('.debug:not(.is-hidden)', { timeout: 5000 });
+
     // Exercise input: hold W + D + Shift, orbit by dragging, zoom with the wheel.
     await page.keyboard.down('KeyW');
     await page.keyboard.down('KeyD');
@@ -182,6 +321,9 @@ async function main() {
     await stackIs(['title', 'main-menu']);
     await transitionIdle();
     console.log('  returned to title > main-menu');
+    await page.close();
+
+    for (const vp of VIEWPORTS) await captureViewport(browser, server.url, vp, shot0(shots), errors);
   } finally {
     await browser.close();
     await server.close();

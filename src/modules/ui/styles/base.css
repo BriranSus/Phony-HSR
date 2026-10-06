@@ -23,15 +23,23 @@
   --c-line-strong: rgba(255, 255, 255, 0.32);
   --c-panel: rgba(9, 13, 28, 0.72);
   --c-panel-solid: #0c1224;
-  --c-5star-a: #f1c27a;
-  --c-5star-b: #b0703a;
-  --c-4star-a: #b79cf2;
-  --c-4star-b: #6747b0;
+  /* Rarity: gold for 5-star, purple for 4-star, blue for 3-star. */
+  --c-5star-a: #ffc65c;
+  --c-5star-b: #c97a1e;
+  --c-4star-a: #b58cff;
+  --c-4star-b: #6a3fd1;
   --c-3star-a: #8fb6e8;
   --c-3star-b: #3c5f99;
   --font-body: 'Barlow', 'Segoe UI', system-ui, sans-serif;
   --font-display: 'Barlow Condensed', 'Barlow', 'Segoe UI', system-ui, sans-serif;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Layout */
+  --menu-width: min(560px, 46vw);
+  /* Clipped (chamfered) corners, mixed with pills as in the reference UI. */
+  --chamfer: 12px;
+  --chamfer-tr: polygon(0 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% 100%, 0 100%);
+  --chamfer-br: polygon(0 0, 100% 0, 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, 0 100%);
+  --chamfer-tl-br: polygon(var(--chamfer) 0, 100% 0, 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, 0 100%, 0 var(--chamfer));
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ui-scale: 1;
 }
@@ -222,6 +230,20 @@ body {
   display: inline-flex;
   gap: 0.08em;
   color: var(--c-gold-bright);
+}
+
+.rarity-stars--5 {
+  color: var(--c-5star-a);
+  filter: drop-shadow(0 0 4px rgba(255, 198, 92, 0.55));
+}
+
+.rarity-stars--4 {
+  color: var(--c-4star-a);
+  filter: drop-shadow(0 0 4px rgba(181, 140, 255, 0.55));
+}
+
+.rarity-stars--3 {
+  color: var(--c-3star-a);
 }
 
 .rarity-stars .icon {
