@@ -1,0 +1,58 @@
+[
+  {
+    "id": "trace.basic",
+    "description": "Basic ATK levels 2..6",
+    "steps": [
+      [{ "item": "credit", "count": 5000 }, { "item": "trace.t1", "count": 3 }],
+      [{ "item": "credit", "count": 10000 }, { "item": "trace.t2", "count": 3 }, { "item": "mat.hollow-2", "count": 6 }],
+      [{ "item": "credit", "count": 20000 }, { "item": "trace.t2", "count": 5 }, { "item": "mat.hollow-2", "count": 9 }],
+      [{ "item": "credit", "count": 45000 }, { "item": "trace.t3", "count": 3 }, { "item": "mat.hollow-3", "count": 5 }],
+      [{ "item": "credit", "count": 160000 }, { "item": "trace.t3", "count": 8 }, { "item": "mat.hollow-3", "count": 9 }, { "item": "trace.weekly", "count": 1 }]
+    ]
+  },
+  {
+    "id": "trace.ability",
+    "description": "Skill / Ultimate / Talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "trace.t1", "count": 3 }],
+      [{ "item": "credit", "count": 5000 }, { "item": "trace.t2", "count": 3 }, { "item": "mat.hollow-2", "count": 3 }],
+      [{ "item": "credit", "count": 10000 }, { "item": "trace.t2", "count": 5 }, { "item": "mat.hollow-2", "count": 4 }],
+      [{ "item": "credit", "count": 20000 }, { "item": "trace.t2", "count": 7 }, { "item": "mat.hollow-2", "count": 6 }],
+      [{ "item": "credit", "count": 30000 }, { "item": "trace.t2", "count": 9 }, { "item": "mat.hollow-2", "count": 9 }],
+      [{ "item": "credit", "count": 45000 }, { "item": "trace.t3", "count": 3 }, { "item": "mat.hollow-3", "count": 3 }],
+      [{ "item": "credit", "count": 80000 }, { "item": "trace.t3", "count": 5 }, { "item": "mat.hollow-3", "count": 4 }, { "item": "trace.weekly", "count": 1 }],
+      [{ "item": "credit", "count": 160000 }, { "item": "trace.t3", "count": 7 }, { "item": "mat.hollow-3", "count": 6 }, { "item": "trace.weekly", "count": 1 }],
+      [{ "item": "credit", "count": 400000 }, { "item": "trace.t3", "count": 14 }, { "item": "mat.hollow-3", "count": 9 }, { "item": "trace.weekly", "count": 1 }, { "item": "trace.tracks", "count": 1 }]
+    ]
+  },
+  {
+    "id": "trace.major-a2",
+    "description": "Major Trace at Ascension 2",
+    "steps": [[{ "item": "credit", "count": 5000 }, { "item": "trace.t1", "count": 3 }]]
+  },
+  {
+    "id": "trace.major-a4",
+    "description": "Major Trace at Ascension 4",
+    "steps": [[{ "item": "credit", "count": 20000 }, { "item": "trace.t2", "count": 5 }, { "item": "trace.weekly", "count": 1 }]]
+  },
+  {
+    "id": "trace.major-a6",
+    "description": "Major Trace at Ascension 6",
+    "steps": [[{ "item": "credit", "count": 160000 }, { "item": "trace.t3", "count": 8 }, { "item": "trace.weekly", "count": 1 }]]
+  },
+  {
+    "id": "trace.stat-low",
+    "description": "Minor stat node (early)",
+    "steps": [[{ "item": "credit", "count": 5000 }, { "item": "trace.t1", "count": 3 }]]
+  },
+  {
+    "id": "trace.stat-mid",
+    "description": "Minor stat node (mid)",
+    "steps": [[{ "item": "credit", "count": 20000 }, { "item": "trace.t2", "count": 4 }]]
+  },
+  {
+    "id": "trace.stat-high",
+    "description": "Minor stat node (late)",
+    "steps": [[{ "item": "credit", "count": 128000 }, { "item": "trace.t3", "count": 6 }]]
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "id": "dlg.conductor-briefing",
+  "start": "l1",
+  "lines": [
+    { "id": "l1", "speaker": "npc.conductor", "text": "Ah, you're awake. The waystation ahead went silent three cycles ago.", "expression": "concerned", "next": "l2" },
+    {
+      "id": "l2",
+      "speaker": "npc.conductor",
+      "text": "The Express can't depart without its navigation beacon. Will you take a look?",
+      "choices": [
+        { "text": "Leave it to me.", "next": "l3" },
+        { "text": "What happened here?", "next": "l4", "setFlag": "asked-history" }
+      ]
+    },
+    { "id": "l3", "speaker": "npc.conductor", "text": "Splendid. Mind the outer platform. Something has been nesting there.", "next": null },
+    { "id": "l4", "speaker": "npc.conductor", "text": "A choir of hollow things. They sing until the lights go out. Please, be careful.", "next": "l3" }
+  ]
+}

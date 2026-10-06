@@ -1,0 +1,47 @@
+{
+  "app": {
+    "title": "ASTRAL RAIL",
+    "subtitle": "Beyond the Meridian Line",
+    "version": "0.1.0",
+    "buildLabel": "Phase 1 - Architecture Build"
+  },
+  "debug": {
+    "logLevel": "info",
+    "overlay": true,
+    "strictData": true,
+    "exposeGlobal": true,
+    "startState": "title"
+  },
+  "loop": {
+    "fixedHz": 60,
+    "maxStepsPerFrame": 8,
+    "maxFrameTime": 0.25
+  },
+  "graphics": {
+    "quality": "high",
+    "pixelRatioCap": 2,
+    "antialias": true,
+    "bloom": true,
+    "bloomStrength": 0.85,
+    "starCount": 6000,
+    "toneMappingExposure": 1.05
+  },
+  "ui": {
+    "language": "en",
+    "minLoadingMs": 1600,
+    "transitionMs": 650,
+    "uiScale": 1
+  },
+  "audio": {
+    "master": 0.8,
+    "music": 0.7,
+    "sfx": 0.8,
+    "voice": 0.8
+  },
+  "camera": {
+    "fov": 50,
+    "orbitSensitivity": 0.005,
+    "zoomSensitivity": 0.0015,
+    "invertY": false
+  }
+}

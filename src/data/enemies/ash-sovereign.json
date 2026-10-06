@@ -1,0 +1,69 @@
+{
+  "id": "enemy.ash-sovereign",
+  "name": "Ash Sovereign",
+  "rank": "boss",
+  "faction": "The Hollow Choir",
+  "baseStats": { "hp": 1400, "atk": 26, "spd": 110, "effectHitRate": 0.2, "effectRes": 0.3 },
+  "toughness": 160,
+  "weaknesses": ["Ice", "Quantum", "Wind"],
+  "resistances": { "Fire": 0.4 },
+  "debuffRes": { "freeze": 0.5, "imprisonment": 0.5, "entanglement": 0.5 },
+  "abilities": [
+    {
+      "id": "ash-sovereign.sweep",
+      "name": "Ashen Sweep",
+      "kind": "enemy",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 1,
+      "description": "Deals Fire DMG to all targets.",
+      "effects": [{ "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": 2.0, "element": "Fire" }],
+      "energyToTarget": 10,
+      "aiWeight": 2
+    },
+    {
+      "id": "ash-sovereign.brand",
+      "name": "Ember Brand",
+      "kind": "enemy",
+      "tags": ["singleTarget", "impair"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals heavy Fire DMG to one target with a 100% base chance to inflict Scorch.",
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 5.0, "element": "Fire" },
+        { "kind": "applyStatus", "target": "primary", "status": "status.scorch", "baseChance": 1.0, "duration": 2 }
+      ],
+      "energyToTarget": 20,
+      "aiWeight": 1
+    },
+    {
+      "id": "ash-sovereign.cataclysm",
+      "name": "Cinder Cataclysm",
+      "kind": "enemy",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 1,
+      "description": "Charges for 1 turn, then deals massive Fire DMG to all targets.",
+      "effects": [{ "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": 6.0, "element": "Fire" }],
+      "energyToTarget": 20,
+      "aiWeight": 1,
+      "cooldown": 3,
+      "chargeTurns": 1,
+      "presentation": { "camera": "cam.boss.cataclysm", "vfx": ["vfx.boss.cataclysm"] }
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [
+    { "id": "kindling", "hpThreshold": 1, "abilities": ["ash-sovereign.sweep", "ash-sovereign.brand"] },
+    {
+      "id": "conflagration",
+      "hpThreshold": 0.5,
+      "toughness": 200,
+      "weaknesses": ["Ice", "Physical", "Quantum"],
+      "abilities": ["ash-sovereign.sweep", "ash-sovereign.cataclysm"],
+      "summons": ["enemy.hollow-scout", "enemy.hollow-scout"]
+    }
+  ],
+  "lootTable": "loot.ash-sovereign",
+  "presentation": { "model": "proc.enemy.sovereign", "scale": 2.4, "bossBar": true, "music": "bgm.boss.ash" }
+}

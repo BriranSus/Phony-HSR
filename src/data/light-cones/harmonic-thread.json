@@ -1,0 +1,23 @@
+{
+  "id": "lc.harmonic-thread",
+  "name": "The Harmonic Thread",
+  "rarity": 4,
+  "path": "Harmony",
+  "baseStats": { "hp": 43.2, "atk": 19.2, "def": 18.0 },
+  "passive": {
+    "name": "Resonant Strings",
+    "description": "Increases the wearer's Energy Regeneration Rate by {0}%. When the wearer uses their Skill, the target's DMG increases by {1}% for 1 turn.",
+    "modifiers": [{ "stat": "energyRegen", "value": [0.08, 0.1, 0.12, 0.14, 0.16] }],
+    "params": { "skillTargetDmg": [0.12, 0.15, 0.18, 0.21, 0.24] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4800 }, { "item": "mat.hollow-1", "count": 4 }],
+    [{ "item": "credit", "count": 9600 }, { "item": "mat.hollow-1", "count": 8 }],
+    [{ "item": "credit", "count": 24000 }, { "item": "mat.hollow-2", "count": 5 }],
+    [{ "item": "credit", "count": 48000 }, { "item": "mat.hollow-2", "count": 7 }],
+    [{ "item": "credit", "count": 96000 }, { "item": "mat.hollow-3", "count": 5 }],
+    [{ "item": "credit", "count": 192000 }, { "item": "mat.hollow-3", "count": 7 }]
+  ],
+  "fodderExp": 2000,
+  "lore": "A single string, tuned to the hum between two stars."
+}

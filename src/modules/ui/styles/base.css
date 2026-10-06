@@ -1,0 +1,275 @@
+/* ==========================================================================
+   Astral Rail UI theme - anime sci-fi language: deep navy space, crisp white
+   type, champagne-gold accents, hairline rules and diamond markers.
+   All shapes are CSS/SVG; fonts are OFL (Barlow) bundled from npm.
+   ========================================================================== */
+:root {
+  --c-void: #03050c;
+  --c-navy-950: #060914;
+  --c-navy-900: #0a0f20;
+  --c-navy-800: #111a33;
+  --c-navy-700: #1b2647;
+  --c-ink: #10131c;
+  --c-white: #f6f4ef;
+  --c-paper: #ecebe6;
+  --c-text: #e9ebf2;
+  --c-text-dim: #9aa3b8;
+  --c-text-faint: #69738b;
+  --c-gold: #d9b475;
+  --c-gold-bright: #f4dfb0;
+  --c-gold-deep: #a47b3d;
+  --c-cyan: #8fd6ff;
+  --c-line: rgba(255, 255, 255, 0.14);
+  --c-line-strong: rgba(255, 255, 255, 0.32);
+  --c-panel: rgba(9, 13, 28, 0.72);
+  --c-panel-solid: #0c1224;
+  --c-5star-a: #f1c27a;
+  --c-5star-b: #b0703a;
+  --c-4star-a: #b79cf2;
+  --c-4star-b: #6747b0;
+  --c-3star-a: #8fb6e8;
+  --c-3star-b: #3c5f99;
+  --font-body: 'Barlow', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Barlow Condensed', 'Barlow', 'Segoe UI', system-ui, sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ui-scale: 1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--c-void);
+  color: var(--c-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+}
+
+.game-canvas {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  outline: none;
+}
+
+.ui-root {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  font-size: calc(16px * var(--ui-scale));
+}
+
+.ui-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.ui-layer > * {
+  pointer-events: auto;
+}
+
+.ui-layer--debug {
+  z-index: 50;
+}
+
+.ui-layer--transition {
+  z-index: 100;
+  pointer-events: none;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.screen--passthrough {
+  pointer-events: none;
+}
+
+.screen--passthrough .interactive {
+  pointer-events: auto;
+}
+
+/* ---------- shared atoms ---------- */
+.diamond {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  background: var(--c-gold);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.diamond--hollow {
+  background: transparent;
+  border: 1px solid var(--c-gold);
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.78em;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c-line-strong) 15%, var(--c-line-strong) 85%, transparent);
+}
+
+.keycap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.9em;
+  height: 1.7em;
+  padding: 0 0.45em;
+  border-radius: 0.35em;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--c-white);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.82em;
+  letter-spacing: 0.04em;
+  transition:
+    background 120ms,
+    color 120ms,
+    border-color 120ms,
+    transform 120ms;
+}
+
+.keycap.is-down {
+  background: var(--c-gold-bright);
+  color: var(--c-ink);
+  border-color: var(--c-gold-bright);
+  transform: translateY(1px);
+  box-shadow: 0 0 14px rgba(244, 223, 176, 0.55);
+}
+
+.icon {
+  display: inline-flex;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.pill-button {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  height: 2.6em;
+  padding: 0 1.6em;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(10, 14, 30, 0.45);
+  color: var(--c-white);
+  font: 600 0.95em var(--font-body);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition:
+    background 160ms,
+    color 160ms,
+    transform 160ms var(--ease-out);
+}
+
+.pill-button:hover,
+.pill-button:focus-visible {
+  background: var(--c-white);
+  color: var(--c-ink);
+  outline: none;
+}
+
+.pill-button--primary {
+  background: var(--c-white);
+  color: var(--c-ink);
+  border-color: var(--c-white);
+}
+
+.pill-button--primary:hover {
+  background: var(--c-gold-bright);
+  border-color: var(--c-gold-bright);
+}
+
+.rarity-stars {
+  display: inline-flex;
+  gap: 0.08em;
+  color: var(--c-gold-bright);
+}
+
+.rarity-stars .icon {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}

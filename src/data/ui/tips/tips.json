@@ -1,0 +1,9 @@
+[
+  { "id": "tip.skill-points", "title": "Skill Points", "text": "Skill Points are shared by the whole party. Basic ATK restores 1, Skills consume 1. You can hold up to 5." },
+  { "id": "tip.action-value", "title": "Action Value", "text": "Turn order is decided by Action Value: 10000 / SPD. Faster units act more often, and Action Advance lets an ally act sooner." },
+  { "id": "tip.weakness-break", "title": "Weakness Break", "text": "Attack with an element the enemy is weak to in order to deplete its Toughness. A broken enemy is delayed and suffers an element-specific effect." },
+  { "id": "tip.ultimate", "title": "Ultimates", "text": "When a character's Energy is full, their Ultimate can be used at any time, even during an enemy's turn." },
+  { "id": "tip.light-cones", "title": "Light Cones", "text": "A Light Cone's passive only activates when the wearer walks the same Path. Superimpose duplicates to strengthen it up to S5." },
+  { "id": "tip.relics", "title": "Relics", "text": "Equip four Cavern Relics and two Planar Ornaments. Matching sets grant 2-piece and 4-piece bonuses." },
+  { "id": "tip.technique", "title": "Techniques", "text": "Techniques consume Technique Points in the overworld and grant an advantage at the start of the next battle." }
+]

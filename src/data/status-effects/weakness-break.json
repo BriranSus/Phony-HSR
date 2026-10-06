@@ -1,0 +1,91 @@
+[
+  {
+    "id": "break.bleed",
+    "name": "Bleed",
+    "description": "Takes Physical DoT at the start of each turn equal to 16% of Max HP (7% for Elites and Bosses), capped by the attacker's level and the target's Max Toughness.",
+    "kind": "debuff",
+    "category": "dot",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
+    "dot": {
+      "element": "Physical",
+      "formula": "breakBleed",
+      "maxHpRatio": { "normal": 0.16, "elite": 0.07 },
+      "capLevelMultiplier": 2,
+      "useToughnessMultiplier": true
+    },
+    "presentation": { "icon": "status-bleed", "vfx": "vfx.break.bleed" }
+  },
+  {
+    "id": "break.burn",
+    "name": "Burn",
+    "description": "Takes Fire DoT at the start of each turn.",
+    "kind": "debuff",
+    "category": "dot",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
+    "dot": { "element": "Fire", "formula": "breakDot", "levelMultiplier": 1 },
+    "presentation": { "icon": "status-burn", "vfx": "vfx.break.burn" }
+  },
+  {
+    "id": "break.freeze",
+    "name": "Frozen",
+    "description": "Cannot take action. On the skipped turn, takes Ice Additional DMG, then the next action is delayed by 50%.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
+    "cc": { "type": "freeze", "skipsTurn": true, "delayOnExpire": 0.5 },
+    "dot": { "element": "Ice", "formula": "breakDot", "levelMultiplier": 1, "tickOn": "onExpire" },
+    "presentation": { "icon": "status-freeze", "vfx": "vfx.break.freeze" }
+  },
+  {
+    "id": "break.shock",
+    "name": "Shock",
+    "description": "Takes Lightning DoT at the start of each turn.",
+    "kind": "debuff",
+    "category": "dot",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
+    "dot": { "element": "Lightning", "formula": "breakDot", "levelMultiplier": 2 },
+    "presentation": { "icon": "status-shock", "vfx": "vfx.break.shock" }
+  },
+  {
+    "id": "break.wind-shear",
+    "name": "Wind Shear",
+    "description": "Takes Wind DoT per stack at the start of each turn. Applies 1 stack (3 on Elites and Bosses), up to 5.",
+    "kind": "debuff",
+    "category": "dot",
+    "dispellable": true,
+    "maxStacks": 5,
+    "initialStacks": { "normal": 1, "elite": 3 },
+    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
+    "dot": { "element": "Wind", "formula": "breakDot", "levelMultiplier": 1, "perStack": true },
+    "presentation": { "icon": "status-wind-shear", "vfx": "vfx.break.wind" }
+  },
+  {
+    "id": "break.entanglement",
+    "name": "Entanglement",
+    "description": "Action delayed by 20% x (1 + Break Effect). Each hit received adds a stack (max 5); at the start of its turn takes Quantum Additional DMG per stack.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "maxStacks": 5,
+    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
+    "cc": { "type": "entanglement", "skipsTurn": false },
+    "dot": { "element": "Quantum", "formula": "breakDot", "levelMultiplier": 0.6, "perStack": true, "useToughnessMultiplier": true },
+    "presentation": { "icon": "status-entanglement", "vfx": "vfx.break.quantum" }
+  },
+  {
+    "id": "break.imprisonment",
+    "name": "Imprisonment",
+    "description": "Action delayed by 30% x (1 + Break Effect) and SPD -10% for 1 turn.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
+    "cc": { "type": "imprisonment", "skipsTurn": false },
+    "modifiers": [{ "stat": "spdPct", "value": -0.1 }],
+    "presentation": { "icon": "status-imprisonment", "vfx": "vfx.break.imaginary" }
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "status.scorch",
+    "name": "Scorch",
+    "description": "Takes Fire DoT equal to 50% of the attacker's ATK at the start of each turn.",
+    "kind": "debuff",
+    "category": "dot",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
+    "dot": { "element": "Fire", "formula": "attackerScaled", "stat": "atk", "multiplier": 0.5 }
+  },
+  {
+    "id": "buff.kindled",
+    "name": "Kindled",
+    "description": "ATK increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkPct" } }]
+  },
+  {
+    "id": "buff.tailwind",
+    "name": "Tailwind",
+    "description": "ATK increased. Attacks trigger Seraphine's Talent.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 3, "tickOn": "casterTurnStart" },
+    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkPct" } }]
+  },
+  {
+    "id": "buff.crescendo",
+    "name": "Crescendo",
+    "description": "DMG dealt increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }]
+  },
+  {
+    "id": "buff.resonance",
+    "name": "Resonance",
+    "description": "The memosprite's CRIT DMG is increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "critDmg", "value": { "param": "critDmg" } }]
+  },
+  {
+    "id": "cc.taunt",
+    "name": "Taunted",
+    "description": "Can only target the unit that applied Taunt.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "cc": { "type": "taunt", "skipsTurn": false }
+  },
+  {
+    "id": "debuff.slow",
+    "name": "Slow",
+    "description": "SPD decreased by 10%.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "spdPct", "value": -0.1 }]
+  }
+]

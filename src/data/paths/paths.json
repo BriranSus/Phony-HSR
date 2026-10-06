@@ -1,0 +1,10 @@
+[
+  { "id": "destruction", "path": "Destruction", "name": "The Destruction", "role": "Frontline DPS", "description": "Sturdy damage dealers who trade HP for power and fight at the front.", "baseAggro": 125 },
+  { "id": "hunt", "path": "Hunt", "name": "The Hunt", "role": "Single-target DPS", "description": "Precise hunters that eliminate one high-value target at a time.", "baseAggro": 75 },
+  { "id": "erudition", "path": "Erudition", "name": "The Erudition", "role": "Multi-target DPS", "description": "Scholars of annihilation who strike every enemy at once.", "baseAggro": 75 },
+  { "id": "harmony", "path": "Harmony", "name": "The Harmony", "role": "Buffer", "description": "Supports who amplify allies with buffs, energy and action advance.", "baseAggro": 100 },
+  { "id": "nihility", "path": "Nihility", "name": "The Nihility", "role": "Debuffer", "description": "Weakens enemies with debuffs and damage over time.", "baseAggro": 100 },
+  { "id": "preservation", "path": "Preservation", "name": "The Preservation", "role": "Shielder / Tank", "description": "Protectors who shield allies and draw enemy attacks.", "baseAggro": 150 },
+  { "id": "abundance", "path": "Abundance", "name": "The Abundance", "role": "Healer", "description": "Healers who restore HP and cleanse debuffs.", "baseAggro": 100 },
+  { "id": "remembrance", "path": "Remembrance", "name": "The Remembrance", "role": "Summoner", "description": "Summon memosprites that act alongside the team.", "baseAggro": 100 }
+]

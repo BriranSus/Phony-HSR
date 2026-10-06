@@ -1,0 +1,29 @@
+{
+  "id": "default",
+  "actions": {
+    "moveForward": { "label": "Move Forward", "codes": ["KeyW", "ArrowUp"], "category": "movement" },
+    "moveBack": { "label": "Move Back", "codes": ["KeyS", "ArrowDown"], "category": "movement" },
+    "moveLeft": { "label": "Move Left", "codes": ["KeyA", "ArrowLeft"], "category": "movement" },
+    "moveRight": { "label": "Move Right", "codes": ["KeyD", "ArrowRight"], "category": "movement" },
+    "sprint": { "label": "Sprint", "codes": ["ShiftLeft", "ShiftRight"], "category": "movement" },
+    "interact": { "label": "Interact", "codes": ["KeyF"], "category": "movement" },
+    "cameraDrag": { "label": "Rotate Camera (hold)", "codes": ["Mouse0", "Mouse2"], "category": "camera" },
+    "cameraRotateLeft": { "label": "Rotate Camera Left", "codes": ["KeyQ"], "category": "camera" },
+    "cameraRotateRight": { "label": "Rotate Camera Right", "codes": ["KeyE"], "category": "camera" },
+    "cameraZoomIn": { "label": "Zoom In", "codes": ["Equal", "NumpadAdd"], "category": "camera" },
+    "cameraZoomOut": { "label": "Zoom Out", "codes": ["Minus", "NumpadSubtract"], "category": "camera" },
+    "confirm": { "label": "Confirm", "codes": ["Enter", "Space", "Pad0"], "category": "ui" },
+    "back": { "label": "Back", "codes": ["Escape", "Pad1"], "category": "ui" },
+    "menu": { "label": "Menu", "codes": ["Escape", "Pad9"], "category": "ui" },
+    "map": { "label": "Map", "codes": ["KeyM"], "category": "ui" },
+    "tabPrev": { "label": "Previous Tab", "codes": ["KeyQ", "Pad4"], "category": "ui" },
+    "tabNext": { "label": "Next Tab", "codes": ["KeyE", "Pad5"], "category": "ui" },
+    "basicAttack": { "label": "Basic ATK", "codes": ["KeyQ"], "category": "combat" },
+    "skill": { "label": "Skill", "codes": ["KeyE"], "category": "combat" },
+    "ultimate1": { "label": "Ultimate (Slot 1)", "codes": ["Digit1"], "category": "combat" },
+    "ultimate2": { "label": "Ultimate (Slot 2)", "codes": ["Digit2"], "category": "combat" },
+    "ultimate3": { "label": "Ultimate (Slot 3)", "codes": ["Digit3"], "category": "combat" },
+    "ultimate4": { "label": "Ultimate (Slot 4)", "codes": ["Digit4"], "category": "combat" },
+    "toggleDebug": { "label": "Toggle Debug Overlay", "codes": ["F3", "Backquote"], "category": "debug" }
+  }
+}

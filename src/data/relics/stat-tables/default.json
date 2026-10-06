@@ -1,0 +1,58 @@
+{
+  "id": "default",
+  "rarities": {
+    "5": {
+      "maxLevel": 15,
+      "substatInterval": 3,
+      "initialSubstats": { "min": 3, "max": 4, "maxChance": 0.2 },
+      "mainStats": {
+        "hp": { "base": 112.896, "step": 39.5136 },
+        "atk": { "base": 56.448, "step": 19.7568 },
+        "hpPct": { "base": 0.06912, "step": 0.024192 },
+        "atkPct": { "base": 0.06912, "step": 0.024192 },
+        "defPct": { "base": 0.0864, "step": 0.03024 },
+        "critRate": { "base": 0.05184, "step": 0.018144 },
+        "critDmg": { "base": 0.10368, "step": 0.036288 },
+        "outgoingHealing": { "base": 0.055296, "step": 0.019354 },
+        "effectHitRate": { "base": 0.06912, "step": 0.024192 },
+        "spd": { "base": 4.032, "step": 1.4 },
+        "physicalDmg": { "base": 0.062208, "step": 0.021773 },
+        "fireDmg": { "base": 0.062208, "step": 0.021773 },
+        "iceDmg": { "base": 0.062208, "step": 0.021773 },
+        "lightningDmg": { "base": 0.062208, "step": 0.021773 },
+        "windDmg": { "base": 0.062208, "step": 0.021773 },
+        "quantumDmg": { "base": 0.062208, "step": 0.021773 },
+        "imaginaryDmg": { "base": 0.062208, "step": 0.021773 },
+        "breakEffect": { "base": 0.10368, "step": 0.036288 },
+        "energyRegen": { "base": 0.031104, "step": 0.010886 }
+      },
+      "subStats": {
+        "hp": { "base": 33.87008, "step": 4.233751 },
+        "atk": { "base": 16.935, "step": 2.116877 },
+        "def": { "base": 16.935, "step": 2.116877 },
+        "hpPct": { "base": 0.03456, "step": 0.00432 },
+        "atkPct": { "base": 0.03456, "step": 0.00432 },
+        "defPct": { "base": 0.0432, "step": 0.0054 },
+        "spd": { "base": 2.0, "step": 0.3 },
+        "critRate": { "base": 0.02592, "step": 0.00324 },
+        "critDmg": { "base": 0.05184, "step": 0.00648 },
+        "effectHitRate": { "base": 0.03456, "step": 0.00432 },
+        "effectRes": { "base": 0.03456, "step": 0.00432 },
+        "breakEffect": { "base": 0.05184, "step": 0.00648 }
+      }
+    }
+  },
+  "mainStatPools": {
+    "head": { "hp": 1 },
+    "hands": { "atk": 1 },
+    "body": { "hpPct": 20, "atkPct": 20, "defPct": 20, "critRate": 10, "critDmg": 10, "outgoingHealing": 10, "effectHitRate": 10 },
+    "feet": { "hpPct": 30, "atkPct": 30, "defPct": 30, "spd": 10 },
+    "planarSphere": { "hpPct": 12, "atkPct": 13, "defPct": 12, "physicalDmg": 9, "fireDmg": 9, "iceDmg": 9, "lightningDmg": 9, "windDmg": 9, "quantumDmg": 9, "imaginaryDmg": 9 },
+    "linkRope": { "hpPct": 26, "atkPct": 27, "defPct": 24, "breakEffect": 16, "energyRegen": 7 }
+  },
+  "subStatPool": {
+    "hp": 10, "atk": 10, "def": 10, "hpPct": 10, "atkPct": 10, "defPct": 10,
+    "spd": 4, "critRate": 6, "critDmg": 6, "effectHitRate": 8, "effectRes": 8, "breakEffect": 8
+  },
+  "maxSubstats": 4
+}

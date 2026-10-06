@@ -1,0 +1,25 @@
+{
+  "id": "enemy.hollow-scout",
+  "name": "Hollow Scout",
+  "rank": "normal",
+  "faction": "The Hollow Choir",
+  "baseStats": { "hp": 34, "atk": 12, "spd": 83, "effectHitRate": 0, "effectRes": 0 },
+  "toughness": 20,
+  "weaknesses": ["Fire", "Ice", "Imaginary"],
+  "abilities": [
+    {
+      "id": "hollow-scout.claw",
+      "name": "Rending Claw",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals minor Physical DMG to a single target.",
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 2.5, "element": "Physical" }],
+      "energyToTarget": 10
+    }
+  ],
+  "ai": { "pattern": "sequence", "sequence": ["hollow-scout.claw"] },
+  "lootTable": "loot.hollow-common",
+  "presentation": { "model": "proc.enemy.scout", "scale": 1 }
+}

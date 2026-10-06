@@ -1,0 +1,19 @@
+[
+  {
+    "id": "loot.hollow-common",
+    "entries": [
+      { "item": "credit", "min": 300, "max": 600, "chance": 1 },
+      { "item": "exp.char-1", "min": 1, "max": 2, "chance": 0.6 },
+      { "item": "mat.hollow-1", "min": 1, "max": 2, "chance": 0.5 },
+      { "item": "mat.hollow-2", "min": 1, "max": 1, "chance": 0.15 }
+    ]
+  },
+  {
+    "id": "loot.ash-sovereign",
+    "entries": [
+      { "item": "credit", "min": 4000, "max": 5000, "chance": 1 },
+      { "item": "asc.ember-core", "min": 2, "max": 4, "chance": 1 },
+      { "item": "exp.char-2", "min": 2, "max": 3, "chance": 1 }
+    ]
+  }
+]

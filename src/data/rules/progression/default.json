@@ -1,0 +1,11 @@
+{
+  "id": "default",
+  "maxLevel": 80,
+  "levelCaps": [20, 30, 40, 50, 60, 70, 80],
+  "character": { "levelGrowth": 0.05, "ascensionStep": 0.4 },
+  "lightCone": { "levelGrowth": 0.15, "ascensionStep": 1.2 },
+  "enemy": { "hpPerLevel": 0.35, "atkPerLevel": 0.12 },
+  "majorTraceAscension": [2, 4, 6],
+  "eidolons": { "max": 6 },
+  "abilityMaxLevel": { "basic": 6, "skill": 10, "ultimate": 10, "talent": 10 }
+}

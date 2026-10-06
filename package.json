@@ -1,0 +1,39 @@
+{
+  "name": "astral-rail",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Astral Rail - an original fan project recreating the gameplay structure of a turn-based space-fantasy RPG. Phase 1: project architecture.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "validate:data": "vitest run tests/data",
+    "screenshots": "node scripts/screenshots.mjs"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "dependencies": {
+    "@fontsource/barlow": "^5.3.0",
+    "@fontsource/barlow-condensed": "^5.3.0",
+    "three": "^0.186.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.4",
+    "@types/three": "^0.186.0",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
+    "playwright": "^1.63.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.1",
+    "vite": "^8.3.2",
+    "vitest": "^4.1.11"
+  }
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "relic.ember-pilgrim",
+    "name": "Pilgrim of the Ember Road",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Pilgrim's Soot-Stained Visor",
+      "hands": "Pilgrim's Ashen Gauntlets",
+      "body": "Pilgrim's Cinder Mantle",
+      "feet": "Pilgrim's Wayworn Boots"
+    },
+    "bonuses": [
+      { "pieces": 2, "description": "Increases Fire DMG by 10%.", "modifiers": [{ "stat": "fireDmg", "value": 0.1 }] },
+      {
+        "pieces": 4,
+        "description": "Increases Skill DMG by 12%. After using the Ultimate, Fire DMG increases by 12% for 1 turn.",
+        "modifiers": [{ "stat": "skillDmg", "value": 0.12 }],
+        "triggers": [
+          {
+            "on": "afterAttack",
+            "conditions": [{ "type": "attackType", "params": { "is": "ultimate" } }],
+            "effects": [{ "kind": "applyStatus", "target": "self", "status": "buff.crescendo", "duration": 1, "params": { "allDmg": 0.12 } }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "relic.gale-courier",
+    "name": "Courier of the Swift Gale",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Courier's Wind Goggles",
+      "hands": "Courier's Feather Gloves",
+      "body": "Courier's Streamlined Coat",
+      "feet": "Courier's Skyrunner Boots"
+    },
+    "bonuses": [
+      { "pieces": 2, "description": "Increases SPD by 6%.", "modifiers": [{ "stat": "spdPct", "value": 0.06 }] },
+      { "pieces": 4, "description": "After the wearer uses their Ultimate on an ally, all allies' SPD increases by 12% for 1 turn.", "modifiers": [] }
+    ]
+  },
+  {
+    "id": "planar.orbital-anchor",
+    "name": "Orbital Anchor Station",
+    "kind": "planar",
+    "pieces": { "planarSphere": "Anchor Station's Core Lattice", "linkRope": "Anchor Station's Tether Cable" },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases ATK by 12%. When SPD is 120 or higher, ATK increases by an extra 12%.",
+        "modifiers": [
+          { "stat": "atkPct", "value": 0.12 },
+          { "stat": "atkPct", "value": 0.12, "conditions": [{ "type": "statAtLeast", "params": { "stat": "spd", "value": 120 } }] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "planar.drifting-lattice",
+    "name": "Drifting Lattice of Reverie",
+    "kind": "planar",
+    "pieces": { "planarSphere": "Reverie's Floating Prism", "linkRope": "Reverie's Silver Ribbon" },
+    "bonuses": [{ "pieces": 2, "description": "Increases Energy Regeneration Rate by 5% and Break Effect by 16%.", "modifiers": [{ "stat": "energyRegen", "value": 0.05 }, { "stat": "breakEffect", "value": 0.16 }] }]
+  }
+]

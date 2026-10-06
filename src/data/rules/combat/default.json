@@ -1,0 +1,62 @@
+{
+  "id": "default",
+  "actionValue": { "numerator": 10000, "firstCycle": 150, "cycle": 100 },
+  "skillPoints": { "max": 5, "start": 3, "basicGain": 1, "skillCost": 1 },
+  "energy": { "basic": 20, "skill": 30, "ultimate": 5, "kill": 10, "initialRatio": 0.5 },
+  "techniquePoints": { "max": 5, "regenPerDay": 0 },
+  "crit": { "baseRate": 0.05, "baseDmg": 0.5 },
+  "defense": { "enemyBase": 200, "enemyPerLevel": 10, "levelOffset": 20, "charBase": 200, "charPerLevel": 10 },
+  "resistance": { "defaultEnemyRes": 0.2, "weakEnemyRes": 0, "multiplierMin": 0.1, "multiplierMax": 2.0 },
+  "brokenMultiplier": { "unbroken": 0.9, "broken": 1.0 },
+  "toughness": { "basic": 10, "skill": 20, "ultimate": 30, "multiplierBase": 0.5, "multiplierDivisor": 40 },
+  "weaknessBreak": {
+    "baseDelay": 0.25,
+    "superBreakDivisor": 10,
+    "recoverOnNextTurn": true,
+    "elements": {
+      "Physical": {
+        "breakDmgMultiplier": 2.0,
+        "status": "break.bleed",
+        "summary": "Physical DMG + Bleed: DoT based on the target's Max HP for 2 turns."
+      },
+      "Fire": {
+        "breakDmgMultiplier": 2.0,
+        "status": "break.burn",
+        "summary": "Fire DMG + Burn: Fire DoT for 2 turns."
+      },
+      "Ice": {
+        "breakDmgMultiplier": 1.0,
+        "status": "break.freeze",
+        "summary": "Ice DMG + Freeze: cannot act for 1 turn, takes Ice DMG, then is delayed 50%."
+      },
+      "Lightning": {
+        "breakDmgMultiplier": 1.0,
+        "status": "break.shock",
+        "summary": "Lightning DMG + Shock: Lightning DoT for 2 turns."
+      },
+      "Wind": {
+        "breakDmgMultiplier": 1.5,
+        "status": "break.wind-shear",
+        "summary": "Wind DMG + Wind Shear: stacking Wind DoT (1 stack, 3 on Elites/Bosses) for 2 turns."
+      },
+      "Quantum": {
+        "breakDmgMultiplier": 0.5,
+        "status": "break.entanglement",
+        "extraDelay": 0.2,
+        "scalesWithBreakEffect": true,
+        "summary": "Quantum DMG + Entanglement: extra delay; deals stacking Quantum DMG on its next turn."
+      },
+      "Imaginary": {
+        "breakDmgMultiplier": 0.5,
+        "status": "break.imprisonment",
+        "extraDelay": 0.3,
+        "scalesWithBreakEffect": true,
+        "summary": "Imaginary DMG + Imprisonment: extra delay and -10% SPD for 1 turn."
+      }
+    }
+  },
+  "effectHit": { "minChance": 0, "maxChance": 1 },
+  "lightCone": { "equipRequiresMatchingPath": false, "passiveRequiresMatchingPath": true, "maxSuperimposition": 5 },
+  "party": { "maxActive": 4, "maxEnemiesPerWave": 5 },
+  "levelMultiplier": { "1": 54.0, "80": 3767.5533 }
+}

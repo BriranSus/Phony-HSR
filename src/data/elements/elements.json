@@ -1,0 +1,9 @@
+[
+  { "id": "physical", "element": "Physical", "name": "Physical", "color": "#c9ced6", "breakEffectName": "Bleed", "description": "Raw force. Breaking a Physical weakness inflicts Bleed." },
+  { "id": "fire", "element": "Fire", "name": "Fire", "color": "#f0583a", "breakEffectName": "Burn", "description": "Searing flame. Breaking a Fire weakness inflicts Burn." },
+  { "id": "ice", "element": "Ice", "name": "Ice", "color": "#6fc7f0", "breakEffectName": "Freeze", "description": "Biting cold. Breaking an Ice weakness inflicts Freeze." },
+  { "id": "lightning", "element": "Lightning", "name": "Lightning", "color": "#c06bf0", "breakEffectName": "Shock", "description": "Arcing current. Breaking a Lightning weakness inflicts Shock." },
+  { "id": "wind", "element": "Wind", "name": "Wind", "color": "#5fd8a8", "breakEffectName": "Wind Shear", "description": "Cutting gales. Breaking a Wind weakness inflicts Wind Shear." },
+  { "id": "quantum", "element": "Quantum", "name": "Quantum", "color": "#6f6cf0", "breakEffectName": "Entanglement", "description": "Collapsing probability. Breaking a Quantum weakness inflicts Entanglement." },
+  { "id": "imaginary", "element": "Imaginary", "name": "Imaginary", "color": "#f2d45c", "breakEffectName": "Imprisonment", "description": "Unreal radiance. Breaking an Imaginary weakness inflicts Imprisonment." }
+]

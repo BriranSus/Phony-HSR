@@ -1,0 +1,110 @@
+{
+  "id": "char.brann",
+  "name": "Brann Okoro",
+  "rarity": 4,
+  "element": "Physical",
+  "path": "Preservation",
+  "maxEnergy": 120,
+  "baseStats": { "hp": 158.4, "atk": 62.4, "def": 79.38, "spd": 95 },
+  "abilities": {
+    "basic": {
+      "id": "brann.basic",
+      "name": "Shield Bash",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "description": "Deals Physical DMG equal to {0}% of Brann's ATK to a single target enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "curve": "basic", "ref": 1.0 }, "toughness": 10 }]
+    },
+    "skill": {
+      "id": "brann.skill",
+      "name": "Bulwark Formation",
+      "kind": "skill",
+      "tags": ["defense"],
+      "targeting": "allyAll",
+      "maxLevel": 10,
+      "description": "Provides all allies a Shield that absorbs DMG equal to {0}% of Brann's DEF plus {1}, lasting 3 turns.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [{ "kind": "shield", "target": "allAllies", "stat": "def", "multiplier": { "curve": "heal", "ref": 0.24 }, "flat": { "curve": "standard", "ref": 320 }, "duration": 3 }]
+    },
+    "ultimate": {
+      "id": "brann.ultimate",
+      "name": "Unbreakable Oath",
+      "kind": "ultimate",
+      "tags": ["aoe", "impair"],
+      "targeting": "enemyAll",
+      "maxLevel": 10,
+      "description": "Deals Physical DMG equal to {0}% of ATK to all enemies and Taunts them for 1 turn.",
+      "energyGain": 5,
+      "effects": [
+        { "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": { "curve": "standard", "ref": 1.5 }, "toughness": 20 },
+        { "kind": "applyStatus", "target": "allEnemies", "status": "cc.taunt", "baseChance": 1.0, "duration": 1 }
+      ]
+    },
+    "talent": {
+      "id": "brann.talent",
+      "name": "Retaliate",
+      "kind": "talent",
+      "tags": ["singleTarget"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "description": "When a Shielded ally is attacked, Brann immediately Counters, dealing Physical DMG equal to {0}% of ATK to the attacker. Once per turn.",
+      "triggers": [
+        {
+          "on": "afterAllyAttacked",
+          "conditions": [{ "type": "targetHasShield" }],
+          "effects": [{ "kind": "damage", "target": "attacker", "stat": "atk", "multiplier": { "curve": "standard", "ref": 1.0 }, "toughness": 10, "attackType": "followUp" }],
+          "limitPerTurn": 1
+        }
+      ]
+    },
+    "technique": {
+      "id": "brann.technique",
+      "name": "Rampart",
+      "kind": "technique",
+      "tags": ["defense"],
+      "targeting": "none",
+      "maxLevel": 1,
+      "description": "At the start of the next battle, all allies gain the Skill's Shield for 2 turns.",
+      "techniquePointCost": 1,
+      "triggers": [{ "on": "battleStart", "effects": [{ "kind": "shield", "target": "allAllies", "stat": "def", "multiplier": 0.24, "flat": 320, "duration": 2 }] }]
+    },
+    "extra": []
+  },
+  "traces": [
+    { "id": "brann.t.basic", "kind": "ability", "name": "Shield Bash", "ability": "basic", "costTable": "trace.basic" },
+    { "id": "brann.t.skill", "kind": "ability", "name": "Bulwark Formation", "ability": "skill", "costTable": "trace.ability" },
+    { "id": "brann.t.ultimate", "kind": "ability", "name": "Unbreakable Oath", "ability": "ultimate", "costTable": "trace.ability" },
+    { "id": "brann.t.talent", "kind": "ability", "name": "Retaliate", "ability": "talent", "costTable": "trace.ability" },
+    { "id": "brann.t.a2", "kind": "major", "name": "Stalwart", "requirements": { "ascension": 2 }, "costTable": "trace.major-a2", "passive": { "description": "Shield effect increases by 10%.", "modifiers": [{ "stat": "shieldBonus", "value": 0.1 }] } },
+    { "id": "brann.t.a4", "kind": "major", "name": "Iron Pact", "parent": "brann.t.a2", "requirements": { "ascension": 4 }, "costTable": "trace.major-a4", "passive": { "description": "All allies take 8% less DMG while Brann is on the field.", "modifiers": [{ "stat": "dmgMitigation", "value": 0.08, "scope": "team" }] } },
+    { "id": "brann.t.a6", "kind": "major", "name": "Last Wall", "parent": "brann.t.a4", "requirements": { "ascension": 6 }, "costTable": "trace.major-a6", "passive": { "description": "Effect RES increases by 20%.", "modifiers": [{ "stat": "effectRes", "value": 0.2 }] } },
+    { "id": "brann.s1", "kind": "stat", "name": "DEF Boost", "stat": { "stat": "defPct", "value": 0.05 }, "requirements": { "level": 1 }, "costTable": "trace.stat-low" },
+    { "id": "brann.s2", "kind": "stat", "name": "HP Boost", "parent": "brann.s1", "stat": { "stat": "hpPct", "value": 0.04 }, "requirements": { "ascension": 2 }, "costTable": "trace.stat-low" },
+    { "id": "brann.s3", "kind": "stat", "name": "DEF Boost", "parent": "brann.s2", "stat": { "stat": "defPct", "value": 0.075 }, "requirements": { "ascension": 4 }, "costTable": "trace.stat-mid" },
+    { "id": "brann.s4", "kind": "stat", "name": "Effect RES Boost", "parent": "brann.s3", "stat": { "stat": "effectRes", "value": 0.06 }, "requirements": { "ascension": 6 }, "costTable": "trace.stat-high" }
+  ],
+  "eidolons": [
+    { "rank": 1, "name": "Anvil", "description": "Counter DMG increases by 30%.", "modifiers": [{ "stat": "followUpDmg", "value": 0.3 }] },
+    { "rank": 2, "name": "Watchfire", "description": "At the start of battle, all allies gain a Shield.", "script": "brann.e2" },
+    { "rank": 3, "name": "Keystone", "description": "Ultimate Lv. +2 (max 15). Basic ATK Lv. +1 (max 10).", "abilityLevelBonus": { "ultimate": 2, "basic": 1 } },
+    { "rank": 4, "name": "Rebound", "description": "Counter can trigger twice per turn.", "script": "brann.e4" },
+    { "rank": 5, "name": "Granite", "description": "Skill Lv. +2 (max 15). Talent Lv. +2 (max 15).", "abilityLevelBonus": { "skill": 2, "talent": 2 } },
+    { "rank": 6, "name": "Undying", "description": "Once per battle, when an ally would be knocked down, they survive with 1 HP.", "script": "brann.e6" }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 3200 }, { "item": "mat.hollow-1", "count": 4 }],
+    [{ "item": "credit", "count": 6400 }, { "item": "mat.hollow-1", "count": 8 }],
+    [{ "item": "credit", "count": 12800 }, { "item": "mat.hollow-2", "count": 5 }, { "item": "asc.stone-heart", "count": 2 }],
+    [{ "item": "credit", "count": 32000 }, { "item": "mat.hollow-2", "count": 8 }, { "item": "asc.stone-heart", "count": 5 }],
+    [{ "item": "credit", "count": 64000 }, { "item": "mat.hollow-3", "count": 5 }, { "item": "asc.stone-heart", "count": 15 }],
+    [{ "item": "credit", "count": 128000 }, { "item": "mat.hollow-3", "count": 8 }, { "item": "asc.stone-heart", "count": 28 }]
+  ],
+  "eidolonItem": "eidolon.brann",
+  "presentation": { "model": "proc.humanoid.shield", "portraitColor": "#c9ced6", "voice": {} },
+  "lore": { "title": "The Living Rampart", "faction": "Meridian Express", "bio": "A quiet engineer who rebuilt the Express's hull by hand and now guards it with his life." }
+}

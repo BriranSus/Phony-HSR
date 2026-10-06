@@ -1,0 +1,8 @@
+[
+  { "id": "credit", "name": "Credit", "category": "currency", "rarity": 3, "description": "Universal currency used for upgrades and shops.", "maxStack": 999999999, "hidden": true },
+  { "id": "aster-jade", "name": "Aster Jade", "category": "premiumCurrency", "rarity": 5, "description": "Premium crystallised starlight. Exchanged for Voyage Passes.", "maxStack": 999999999, "hidden": true },
+  { "id": "voyage-pass", "name": "Voyage Pass", "category": "warpPass", "rarity": 5, "description": "Used for Warps on the standard banner.", "maxStack": 9999 },
+  { "id": "voyage-pass-special", "name": "Special Voyage Pass", "category": "warpPass", "rarity": 5, "description": "Used for Warps on event banners.", "maxStack": 9999 },
+  { "id": "astral-shard", "name": "Astral Shard", "category": "currency", "rarity": 4, "description": "Obtained from duplicate Warp results. Spent in the Embers Exchange.", "maxStack": 999999 },
+  { "id": "stamina", "name": "Stamina Reserve", "category": "currency", "rarity": 4, "description": "Energy spent to claim rewards from resource domains.", "maxStack": 2400, "hidden": true }
+]
