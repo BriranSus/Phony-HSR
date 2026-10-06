@@ -52,7 +52,7 @@ Analysing its 39 sections gives these architectural requirements:
 | UI | DOM + CSS (no framework) | A tiny `h()` builder, layered `UiRoot`, CSS theme tokens, original SVG icon set. |
 | Fonts | `@fontsource/barlow`, `@fontsource/barlow-condensed` (OFL) | Bundled locally, so the game works offline. |
 | Unit tests | **Vitest 4** | Runs in Node. Covers core, formulas, schemas and all shipped data. |
-| E2E / screenshots | **Playwright 1.63** (Chromium, SwiftShader) | `npm run screenshots` drives the full boot flow and fails on console errors. |
+| E2E / screenshots | **Playwright 1.63** (Chromium, SwiftShader) | `npm run screenshots` drives the full boot flow, repeats menu / archive / test scene at 1280×720, 1024×768 and 390×844 with automated overlap, cut-off and overflow checks, and fails on console errors or layout problems. |
 | Lint | **ESLint 10** + `typescript-eslint` | Forbids `console.*` outside the logger and enforces type-only imports. |
 
 ## 4. Architecture overview
@@ -106,8 +106,8 @@ Each module folder exports a **public interface** (its system contract), a **DI 
 
 Key design decisions per area:
 
-- **Combat** is presentation-free. It consumes `UnitFactory` implementations registered by `characters` and `enemies` and emits `combat:*` events. UI, camera, VFX and audio react to those events, so a new character never touches the engine.
-- **Skills** interprets data-defined abilities (an ordered list of `effects`, plus `triggers` and `conditions`). The escape hatch for unique kits is `{ "kind": "script", "handler": "<id>" }`, resolved from a handler registry.
+- **Combat** is presentation-free. It consumes `UnitFactory` implementations registered by `characters` and `enemies` (built from a `UnitBuildSpec`: the player's `CharacterInstance` with its Light Cone and relics, an enemy id and level, or an owned memosprite/summon) and emits `combat:*` events. Its runtime model already distinguishes characters, memosprites, enemies and summons, and queues inserted actions (follow-ups, counters, extra turns) separately from player Ultimates. UI, camera, VFX and audio react to those events, so a new character never touches the engine.
+- **Skills** interprets data-defined abilities (an ordered list of `effects`, plus `triggers` from a fixed event vocabulary and `conditions` from a closed type list). The escape hatch for unique kits is `{ "kind": "script", "handler": "<id>" }`, resolved from a handler registry. Every description is a template filled from the same data (`models/templates.ts`), validated at load.
 - **Status** owns buffs, debuffs, DoTs, CC and shields. The seven Weakness Break effects are ordinary data-defined statuses.
 - **Economy** is the single ledger for currencies and stackable items (spec §20, "keep economy calculations centralized"). Inventory, shops, gacha and progression all spend and grant through it.
 - **Gacha** puts RNG behind `WarpAuthority`, so it can move server-side.
@@ -185,7 +185,7 @@ flowchart LR
   R -->|collection by longest dir prefix| Z[Zod schema parse + defaults]
   Z -->|ok| I[Indexed by id]
   Z -->|issues| E[DataIssue: file, path, message]
-  I --> V[Semantic validators: eidolon order, trace parents, boss phases...]
+  I --> V[Semantic validators: eidolon order, trace parents, boss phases, description placeholders, LC params...]
   I --> X[Cross-refs: statuses, items, cost tables, loot, summons, banner pools]
   V & X --> Rep[LoadReport → strict: throw / lenient: log]
   I --> Sys[Systems & UI read typed items: data.get(Collections.characters, id)]
@@ -195,7 +195,7 @@ To add content, drop a JSON file into the right folder. To add a new **kind** of
 
 ## 7. Conventions and spec §38 compliance
 
-- **No hardcoded tunables.** SP limits, energy values, AV numerator, cycle lengths, RES defaults, DEF constants, toughness multipliers, break multipliers and delays, level multipliers, growth curves, relic stat tables, gacha rates, key bindings, loading tips and engine settings all live in `src/data`.
+- **No hardcoded tunables.** SP limits, energy values, AV numerator, cycle lengths, RES defaults, DEF constants, toughness multipliers, break multipliers and delays, the full break level-multiplier table (with its cited source), growth curves, relic stat tables, gacha rates, key bindings, loading tips and engine settings all live in `src/data`.
 - **No duplicate implementations.** Each formula exists once in `models/formulas` and is reused by the Data Archive UI, the tests and (later) the combat engine. The starfield and nebula are shared by the title and test scenes.
 - **No temporary hacks.** Every Phase-1 stub implements the real public interface its phase will fill in. The debug orbit camera is clearly scoped to the sandbox and does not stand in for the Phase-3 camera system.
 - **Events** are named `domain:verb` (`state:changed`, `combat:weaknessBreak`).
@@ -218,4 +218,4 @@ To add content, drop a JSON file into the right folder. To add a new **kind** of
 
 - **Unit (Vitest, Node):** core services, pure formulas against known reference values, schema rejection cases, and the full shipped dataset (schema + references + mechanics invariants such as SP 3/5 and break multipliers).
 - **Module graph:** the real `ALL_MODULES` list must be acyclic, complete per spec §36, and bootable headlessly.
-- **E2E (Playwright):** boots the production build, walks Loading → Title → Menu → Archive → Test Scene → back, exercises input, fails on any console or page error, and saves screenshots.
+- **E2E (Playwright):** boots the production build, walks Loading → Title → Menu → Archive → Test Scene → back, exercises input (incl. the F3 debug overlay), then repeats the menu, archive and test scene at 1280×720, 1024×768 and 390×844. It fails on any console or page error, on unresolved description placeholders, and on layout problems (horizontal overflow, overlapping or cut-off UI), and saves screenshots.

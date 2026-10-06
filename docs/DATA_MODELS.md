@@ -13,13 +13,14 @@ Runtime-only shapes (combat state, player-owned instances, saves) are plain inte
 | Progression rules | `ProgressionRulesSchema` | `rules/progression/` | `default.json` |
 | Scaling curves | `ScalingCurvesSchema` (`models/scaling.ts`) | `rules/scaling/` | basic / standard / support / heal |
 | Abilities & effects | `AbilitySchema`, `EffectSchema`, `TriggerSchema` (`models/ability.ts`) | inside characters / enemies | |
-| Status effects | `StatusEffectSchema` (`models/status.ts`) | `status-effects/` | 7 break effects + 7 kit statuses |
+| Status effects | `StatusEffectSchema` (`models/status.ts`) | `status-effects/` | 7 break effects + 10 kit / equipment statuses |
 | Characters | `CharacterSchema` (`models/character.ts`) | `characters/` | 4 original characters |
 | Enemies, loot | `EnemySchema`, `LootTableSchema` (`models/enemy.ts`) | `enemies/`, `loot-tables/` | normal, elite, 2-phase boss |
 | Light Cones | `LightConeSchema` (`models/lightcone.ts`) | `light-cones/` | 5★ / 4★ / 3★ |
 | Relics | `RelicSetSchema`, `RelicStatTablesSchema` (`models/relic.ts`) | `relics/sets/`, `relics/stat-tables/` | 2 cavern + 2 planar sets, 5★ tables |
 | Items, cost tables | `ItemSchema`, `CostTableSchema` (`models/item.ts`) | `items/`, `cost-tables/` | currencies, EXP, trace mats |
-| Warp banners | `BannerSchema` (`models/gacha.ts`) | `banners/` | limited character banner |
+| Warp banners | `BannerSchema` (`models/gacha.ts`) | `banners/` | limited character banner + limited Light Cone banner |
+| Description templates | `models/templates.ts` | (all descriptions) | `{n}` / `{name}` placeholders, validated at load |
 | Quests, dialogue | `QuestSchema`, `DialogueSchema` (`models/quest.ts`) | `quests/`, `dialogues/` | prologue quest + branching dialogue |
 | Input bindings, tips | `InputBindingsSchema`, `LoadingTipSchema` | `input/`, `ui/tips/` | |
 | Engine config | `GameConfigSchema` (`core/config/GameConfig.ts`) | `config/` | `game.config.json` |
@@ -69,14 +70,21 @@ interface CombatRules {
   resistance: { defaultEnemyRes: 0.2; weakEnemyRes: 0; multiplierMin: 0.1; multiplierMax: 2.0 };
   brokenMultiplier: { unbroken: 0.9; broken: 1.0 };
   toughness: { basic: 10; skill: 20; ultimate: 30; multiplierBase: 0.5; multiplierDivisor: 40 };
-  weaknessBreak: { baseDelay: 0.25; superBreakDivisor: 10; recoverOnNextTurn: true;
+  weaknessBreak: { baseDelay: 0.25; superBreakDivisor: 10; recoverOnNextTurn: true; statusBaseChance: 1.5;
                    elements: Record<Element, { breakDmgMultiplier; status; extraDelay; scalesWithBreakEffect; summary }> };
   effectHit: { minChance: 0; maxChance: 1 };
   lightCone: { equipRequiresMatchingPath: false; passiveRequiresMatchingPath: true; maxSuperimposition: 5 };
   party: { maxActive: 4; maxEnemiesPerWave: 5 };
-  levelMultiplier: Record<level, number>;   // break-damage level multiplier anchors (Lv1 54, Lv80 3767.5533)
+  levelMultiplier: Record<level, number>;   // full per-level table, Lv1..95 (81-95 enemy-only); no interpolation
+  sources: { topic; url; retrieved }[];     // where reference numbers were verified
 }
 ```
+
+**Break level multiplier.** The table is the reference game's full per-level list, copied verbatim from the
+HSR community wiki ([Toughness > Level Multiplier](https://honkai-star-rail.fandom.com/wiki/Toughness), read 2026-10-06 through the
+MediaWiki API; all 95 rows compared programmatically). The schema requires every level from 1 to at least 80, strictly increasing,
+and `levelMultiplier()` throws for a level outside the table. Anchors: Lv1 54 · Lv20 139.7703 · Lv40 363.6658 · Lv50 774.9041 ·
+Lv60 1640.3068 · Lv70 2659.6406 · Lv80 3767.5533 · Lv95 7494.3713.
 
 ### 2.1 Action Value and turn order (`formulas/actionValue.ts`)
 
@@ -95,7 +103,8 @@ interface CombatRules {
 ### 2.2 Skill Points and Energy (`formulas/resources.ts`)
 
 - **Skill Points** are shared by the whole party. A battle starts at **3**, the cap is **5**, Basic ATK gives **+1**, a Skill costs **1**, and excess is lost. Kits can override costs and gains per ability (`spCost`, `spGain`).
-- **Energy** is per character with `maxEnergy` (120–160 in samples). Gains: Basic 20, Skill 30, Ultimate 5 (granted after the reset to 0), kill 10, hit taken = enemy ability `energyToTarget`. `gain × (1 + Energy Regeneration Rate)` applies unless `fixed`. The Ultimate is usable at full energy.
+- **Ultimate resource** is per character (`ultimateResource`): `{ kind: "energy", max }` for the usual Energy bar (120–160 in samples), or `{ kind: "points", name, max, cost, initial }` for kits whose Ultimate charges from a point counter instead of Energy (charged by `ultimatePoints` effects, unaffected by ERR). Energy gains: Basic 20, Skill 30, Ultimate 5 (granted after the reset to 0), kill 10, hit taken = enemy ability `energyToTarget`. `gain × (1 + Energy Regeneration Rate)` applies unless `fixed`. The Ultimate is usable when the resource reaches its cost.
+- **Break debuffs** have a **150%** base chance (`weaknessBreak.statusBaseChance`) before EHR / Effect RES / Debuff RES.
 - **Debuff chance:** `Base × (1 + Effect Hit Rate) × (1 − Effect RES) × (1 − Debuff RES)`. Fixed-chance effects ignore EHR and RES.
 
 ### 2.3 Damage formula: multiplier zones (`formulas/damage.ts`)
@@ -131,10 +140,10 @@ DMG = Base × CRIT × DMG Boost × Weaken × DEF × RES × Vulnerability × DMG 
 |---|---|---|---|
 | Physical | 2.0× | **Bleed** (`break.bleed`) | 2 turns. DoT = min(16% Max HP (7% Elite/Boss), 2 × LevelMult × MaxToughnessMult) × (1 + BE) |
 | Fire | 2.0× | **Burn** (`break.burn`) | 2 turns. DoT = 1 × LevelMult × (1 + BE) |
-| Ice | 1.0× | **Freeze** (`break.freeze`) | Skips 1 turn. Takes 1 × LevelMult Ice DMG on thaw, then action delayed 50% |
+| Ice | 1.0× | **Freeze** (`break.freeze`) | 1 turn. On thaw the frozen turn is skipped, the unit takes 1 × LevelMult Ice **Additional DMG**, and its next action is **Advanced Forward 50%** (`cc.advanceOnExpire`) |
 | Lightning | 1.0× | **Shock** (`break.shock`) | 2 turns. DoT = 2 × LevelMult × (1 + BE) |
 | Wind | 1.5× | **Wind Shear** (`break.wind-shear`) | 2 turns. 1 stack (3 on Elite/Boss), max 5. DoT = 1 × LevelMult × stacks |
-| Quantum | 0.5× | **Entanglement** (`break.entanglement`) | Extra delay 20% × (1 + BE). Stacks up to 5 per hit received. On its turn: 0.6 × stacks × LevelMult × MaxToughnessMult |
+| Quantum | 0.5× | **Entanglement** (`break.entanglement`) | Extra delay 20% × (1 + BE). Stacks up to 5 per hit received. On its turn: 0.6 × stacks × LevelMult × MaxToughnessMult as Additional DMG |
 | Imaginary | 0.5× | **Imprisonment** (`break.imprisonment`) | Extra delay 30% × (1 + BE), SPD −10% for 1 turn |
 
 The effects are ordinary status effects, so cleanses, resistances (`debuffRes`) and VFX hooks apply uniformly:
@@ -156,7 +165,7 @@ interface Ability {
   tags: ('singleTarget'|'blast'|'aoe'|'bounce'|'enhance'|'support'|'defense'|'restore'|'impair'|'summon')[];
   targeting: 'enemySingle'|'enemyBlast'|'enemyAll'|'enemyBounce'|'allySingle'|'allyAll'|'self'|'none';
   maxLevel: number;              // Basic 6, others 10 (Eidolons add +1/+2)
-  description: string;           // template "{0}%" filled from values at current level
+  description: string;           // template, see "Description templates" below
   spCost; spGain; energyGain; techniquePointCost;
   effects: Effect[];             // executed in order
   triggers: Trigger[];           // talents, passives: { on, conditions?, effects, limitPerTurn? }
@@ -167,18 +176,45 @@ interface Ability {
 type Effect =
   | { kind: 'damage'; target; stat: 'atk'|'hp'|'def'; multiplier: LevelScaled; element?; toughness; hitSplit?; bounces?; attackType? }
   | { kind: 'heal' | 'shield'; target; stat; multiplier; flat?; duration? }
-  | { kind: 'applyStatus'; target; status: Id; baseChance?; fixedChance?; duration?; stacks?; params? }
+  | { kind: 'applyStatus'; target; status: Id; baseChance?; fixedChance?; duration?; stacks?;
+      params?: Record<string, LevelScaled | { param: string }> }   // { param } = owner's params (Light Cone S1..S5)
   | { kind: 'dispel'; target; statusKind: 'buff'|'debuff'; count }
   | { kind: 'energy'; target; amount; fixed? }
+  | { kind: 'ultimatePoints'; target; amount }           // points-based Ultimates only
   | { kind: 'skillPoints'; amount }
   | { kind: 'actionAdvance'; target; fraction }         // negative = delay
   | { kind: 'summon'; unit: Id; unitType: 'memosprite'|'enemy' }
   | { kind: 'script'; handler: string; params? };        // character-specific mechanics
 
 type LevelScaled = number | { curve: 'basic'|'standard'|'support'|'heal'; ref: number } | { table: number[] };
-type TriggerEvent = 'battleStart'|'waveStart'|'turnStart'|'turnEnd'|'beforeAttack'|'afterAttack'|'afterBeingHit'
-  |'afterAllyAttacked'|'afterAllyUsesUltimate'|'onKill'|'onWeaknessBreak'|'onDebuffApplied'|'onEnemyDefeated'|'onHpChanged'|'onShieldBroken';
+type EffectTarget = 'primary'|'adjacent'|'allEnemies'|'randomEnemy'|'self'|'selectedAlly'|'allAllies'|'allAlliesExceptSelf'
+  |'attacker'|'memosprite'|'owner';                     // primary = the ability's selected target (enemy or ally)
+type TriggerEvent = 'battleStart'|'waveStart'|'onEnterBattleField'|'turnStart'|'turnEnd'|'beforeAttack'|'afterAttack'
+  |'afterUseBasic'|'afterUseSkill'|'afterUseUltimate'|'onFollowUp'|'afterBeingHit'|'afterAllyAttack'|'afterAllyHit'
+  |'afterAllyUsesUltimate'|'onMemospriteSummoned'|'onMemospriteLeave'|'onKill'|'onWeaknessBreak'|'onDebuffApplied'
+  |'onEnemyDefeated'|'onHpChanged'|'onShieldBroken';
+type ConditionType = 'attackType'|'attackerHasStatus'|'attackerIsOwnMemosprite'|'sourceIsMemosprite'|'memospriteOnField'
+  |'hasStatus'|'targetHasStatus'|'targetHasShield'|'abilityTargetsAlly'|'hpBelow'|'statAtLeast';   // closed list
 ```
+
+**Trigger semantics** (full list in `models/ability.ts`): `afterUseBasic/Skill/Ultimate` fire after the owner uses that ability
+whether or not it deals damage, so a buff-only Ultimate still triggers "after using the Ultimate" effects (Pilgrim 4pc, Ignatius E2).
+`afterAllyAttack` is "after another ally attacks" (Seraphine's Talent, Lyra's Talent), and `afterAllyHit` is "when an ally is attacked"
+(Brann's counter). `onFollowUp` fires for follow-ups and counters, `onEnterBattleField` when the owner enters the field (memosprites
+on summon), and `onMemospriteSummoned` / `onMemospriteLeave` around the owner's memosprite. Condition types are a closed enum, so a
+typo fails at load time.
+
+**Description templates** (`models/templates.ts`). Every description is a template whose numbers come from the executed data:
+
+| Source | `{n}` indexes | `{name}` |
+|---|---|---|
+| Ability | damage `multiplier`; heal/shield `multiplier`, `flat`; applyStatus `params` (key order), across effects then trigger effects; then `modifiers` | applyStatus param name |
+| Light Cone passive | `modifiers` values, then `params` in key order | `params` key |
+| Trace passive, Eidolon, relic set bonus | `modifiers` values, then trigger applyStatus params | applyStatus param name |
+
+`{0}%` formats a fraction as a percentage. The registry runs `templateProblems()` for every character (abilities, memosprite, Traces,
+Eidolons), Light Cone, relic set and enemy, so an unresolved placeholder fails the data load. Light Cones additionally must use
+every `params` entry from a trigger (`{ "param": "skillTargetDmg" }`) and may not reference unknown params.
 
 **Ability level scaling** follows the reference game's standard curves (`rules/scaling/default.json`). `ref` is the value at the reference level:
 
@@ -194,10 +230,12 @@ Attack types (`basic, skill, ultimate, followUp, dot, break, superBreak, additio
 
 ```ts
 interface Character {
-  id; name; rarity: 4 | 5; element: Element; path: Path; maxEnergy: number;
+  id; name; rarity: 4 | 5; element: Element; path: Path;
+  ultimateResource: { kind: 'energy'; max } | { kind: 'points'; name; max; cost; initial = 0 };
   baseStats: { hp; atk; def; spd; critRate = 0.05; critDmg = 0.5; aggro? };   // Lv1 values
   abilities: { basic; skill; ultimate; talent; technique; extra: Ability[] };
-  memosprite?: { id; name; hpFromOwner: { ratio; flat }; spd: { fixed } | { ownerRatio }; abilities: Ability[] }; // Remembrance
+  memosprite?: { id; name; hpFromOwner: { ratio; flat }; spd: { fixed } | { ownerRatio };
+                 onZeroHp: 'leaveField'; abilities: Ability[] };   // Remembrance: exactly one memospriteSkill + one memospriteTalent
   traces: TraceNode[];
   eidolons: [Eidolon × 6];          // ranks 1..6 in order (validated)
   ascensionCosts: [Cost × 6];       // phases 0→1 … 5→6
@@ -215,11 +253,20 @@ interface TraceNode {
   costTable: Id;                                                       // shared ladder, one step per level-up
 }
 
-interface Eidolon { rank: 1..6; name; description; abilityLevelBonus?: Partial<Record<'basic'|'skill'|'ultimate'|'talent', n>>;
+type LeveledAbilitySlot = 'basic'|'skill'|'ultimate'|'talent'|'memospriteSkill'|'memospriteTalent';
+interface Eidolon { rank: 1..6; name; description; abilityLevelBonus?: Partial<Record<LeveledAbilitySlot, n>>;
                     modifiers; triggers; script? }   // E3/E5: e.g. { skill: 2, basic: 1 } / { ultimate: 2, talent: 2 }
+// Remembrance pattern (Lyra): E3 { ultimate: 2, basic: 1, memospriteSkill: 1 }, E5 { skill: 2, talent: 2, memospriteTalent: 1 }
 ```
 
-**Stat growth** reproduces the reference promotion structure: `stat(Lv, A) = base × (1 + 0.4 × A) + base × 0.05 × (Lv − 1)`, with level caps 20/30/40/50/60/70/80 for ascension phases 0–6 (`rules/progression/default.json`). Check: a 5★ with base ATK 87.12 reaches **640** at Lv80 A6, which matches the reference data.
+**Stat growth** reproduces the reference promotion structure: `stat(Lv, A) = base × (1 + ascensionBonus[A] + levelGrowth × (Lv − 1))`, with level caps 20/30/40/50/60/70/80 for ascension phases 0–6 (`rules/progression/default.json`).
+
+| Curve | `levelGrowth` | `ascensionBonus` (phases 0..6) | Lv80 A6 / Lv1 | Check |
+|---|---|---|---|---|
+| Characters | 0.05 | 0, 0.4, 0.8, 1.2, 1.6, 2.0, 2.4 | 7.35× | 5★ ATK 87.12 → **640.33** |
+| Light Cones | 0.15 | 0, 1.2, 2.8, 4.4, 6.0, 7.6, 9.2 | **22.05×** | 5★ 48 / 26.4 / 21 → **1058.4 / 582.12 / 463.05**; 4★ 43.2 / 19.2 / 18 → 952.56 / 423.36 / 396.9; 3★ 38.4 / 14.4 / 12 → 846.72 / 317.52 / 264.6 |
+
+Natural ability max levels: Basic 6, Skill / Ultimate / Talent 10, Memosprite Skill / Talent 6 (`abilityMaxLevel`); Eidolon bonuses go above them.
 
 **Player-owned state (saved):**
 
@@ -232,7 +279,8 @@ Example (abridged from `characters/ignatius.json`):
 
 ```json
 {
-  "id": "char.ignatius", "name": "Ignatius Rhee", "rarity": 5, "element": "Fire", "path": "Destruction", "maxEnergy": 120,
+  "id": "char.ignatius", "name": "Ignatius Rhee", "rarity": 5, "element": "Fire", "path": "Destruction",
+  "ultimateResource": { "kind": "energy", "max": 120 },
   "baseStats": { "hp": 168.96, "atk": 84.48, "def": 59.535, "spd": 97 },
   "abilities": {
     "skill": {
@@ -254,7 +302,7 @@ Example (abridged from `characters/ignatius.json`):
 }
 ```
 
-Validation beyond the schema: eidolon order, unique trace ids, existing trace parents, slot/kind agreement, Remembrance characters must define a memosprite, and memosprite summons must reference it. Cross-references are also checked: every status, item and cost table used must exist.
+Validation beyond the schema: eidolon order, unique trace ids, existing trace parents, slot/kind agreement, Remembrance characters must define a memosprite, memosprite summons must reference it, memosprite level bonuses and trace nodes require a memosprite, `ultimatePoints` effects require a points resource, `{ param }` references are only allowed on Light Cones, and every description placeholder must resolve. Cross-references are also checked: every status, item and cost table used must exist.
 
 ## 5. Status effects (`models/status.ts`)
 
@@ -267,8 +315,9 @@ interface StatusEffect {
   modifiers: { stat; value: LevelScaled | { param: string }; scope; conditions? }[];  // {param} pulls the level-scaled value from the applying effect
   triggers: Trigger[];
   dot?: { element; formula: 'breakDot'|'breakBleed'|'attackerScaled'; levelMultiplier?; useToughnessMultiplier?; perStack?;
-          maxHpRatio?: { normal; elite }; capLevelMultiplier?; stat?; multiplier?; tickOn: 'ownerTurnStart'|'onExpire' };
-  cc?: { type: 'freeze'|'entanglement'|'imprisonment'|'stun'|'dominated'|'taunt'|'outrage'; skipsTurn; delayOnExpire? };
+          maxHpRatio?: { normal; elite }; capLevelMultiplier?; stat?; multiplier?; tickOn: 'ownerTurnStart'|'onExpire';
+          damageType: 'dot' | 'additional' };   // Freeze / Entanglement deal Additional DMG, not DoT
+  cc?: { type: 'freeze'|'entanglement'|'imprisonment'|'stun'|'dominated'|'taunt'|'outrage'; skipsTurn; delayOnExpire?; advanceOnExpire? };
 }
 ```
 
@@ -297,11 +346,14 @@ Validation: bosses must define phases, a weakness can't carry positive RES, and 
 interface LightCone {
   id; name; rarity: 3 | 4 | 5; path: Path;
   baseStats: { hp; atk; def };               // only HP/ATK/DEF; added to character base before % bonuses
-  passive: { name; description; modifiers: { stat; value: [S1, S2, S3, S4, S5]; conditions? }[]; triggers; params: Record<string, [S1..S5]> };
+  passive: { name; description; modifiers: { stat; value: [S1, S2, S3, S4, S5]; conditions? }[]; triggers;
+             params: Record<string, [S1..S5]> };   // every param must be used by a trigger via { "param": name }
   ascensionCosts: [Cost × 6]; fodderExp: number; lore;
 }
 interface LightConeInstance { uid; lightConeId; level; ascension; exp; superimposition: 1..5; locked; equippedBy }
 ```
+
+Lv1 base stats follow the reference tiers (5★ 48 / 26.4 / 21, 4★ 43.2 / 19.2 / 18, 3★ 38.4 / 14.4 / 12 in the samples). Example of a trigger-driven passive (`lc.harmonic-thread`): "When the wearer uses their Skill, the target's DMG increases by {skillTargetDmg}% for 1 turn" is `{ on: "afterUseSkill", effects: [{ kind: "applyStatus", target: "primary", status: "buff.resonant-strings", duration: 1, params: { allDmg: { param: "skillTargetDmg" } } }] }`.
 
 **Path rule:** as in the reference game, any character may *equip* any Light Cone and receive its base stats, but the passive only activates for the matching Path (`rules.lightCone.passiveRequiresMatchingPath = true`). Spec §8's stricter reading ("only the correct Path can use it") is one config switch away: `equipRequiresMatchingPath = true`.
 
@@ -327,6 +379,9 @@ interface LightConeInstance { uid; lightConeId; level; ascension; exp; superimpo
 ```ts
 interface RelicSet { id; name; kind: 'cavern'|'planar'; pieces: Partial<Record<RelicSlot, string>>;
                      bonuses: { pieces: 2 | 4; description; modifiers; triggers }[] }   // validated: cavern 4 slots + 2/4pc, planar 2 slots + 2pc
+// Conditional bonuses are triggers, e.g. Courier 4pc:
+// { on: 'afterUseUltimate', conditions: [{ type: 'abilityTargetsAlly' }],
+//   effects: [{ kind: 'applyStatus', target: 'allAllies', status: 'buff.gale-courier', duration: 1, params: { spdPct: 0.12 } }] }
 interface RelicInstance { uid; setId; slot; rarity: 2..5; level; exp; mainStat: StatId;
                           substats: { stat; rolls; tierSum }[]; locked; discard; equippedBy }
 ```
@@ -356,7 +411,7 @@ interface Banner {
 interface PityState { pullsSinceFiveStar; pullsSinceFourStar; fiveStarGuaranteed; fourStarGuaranteed }
 ```
 
-Light Cone banners use 0.8% base, hard pity 80 and 75/25 odds. These are data values, not code.
+Light Cone banners use 0.8% base (4★ 6.6%), hard pity 80, soft pity from pull 66, 75/25 odds and their own pity group (`banners/oath-of-embers-cone.json`). These are data values, not code.
 
 ## 11. Quests and dialogue (`models/quest.ts`)
 
@@ -365,14 +420,32 @@ Quest types: main, adventure, companion, daily, event, tutorial. A quest is a gr
 ## 12. Runtime combat state (`models/combat.ts`)
 
 ```ts
-interface Combatant { uid; side: 'ally'|'enemy'; defId; level; element; rank; baseStats: StatBlock;
-                      hp; energy; maxEnergy; toughness; maxToughness; broken; weaknesses; statuses: ActiveStatus[];
-                      shield; actionValue; alive }
+type CombatantKind = 'character' | 'memosprite' | 'enemy' | 'summon';
+interface Combatant { uid; kind: CombatantKind; side: 'ally'|'enemy'; defId; ownerUid: uid | null; level; element; rank;
+                      baseStats: StatBlock; abilityLevels: Record<slot, number>;
+                      hp; ultimate: { kind: 'energy'|'points'; current; max; cost } | null;
+                      toughness; maxToughness; broken; weaknesses; statuses: ActiveStatus[]; shield; actionValue;
+                      presence: 'active'|'downed'|'leftField'; onZeroHp: 'downed'|'leaveField' }
 interface ActiveStatus { statusId; sourceId; stacks; turnsLeft; params: Record<string, number> }
+interface InsertedAction { kind: 'followUp'|'counter'|'extraTurn'|'memospriteAction'; actorUid; abilityId | null;
+                           targetUid | null; sourceUid; seq }
 interface BattleState { id; wave; waveCount; cycle; avElapsed; units: Combatant[]; skillPoints: { current; max };
-                        ultimateQueue: uid[]; activeUid; outcome: 'ongoing'|'victory'|'defeat'|'fled' }
-type PlayerAction = { type: 'basic'|'skill'|'ultimate'; actor; target };
+                        ultimateQueue: { actorUid; targetUid }[]; insertedActions: InsertedAction[];
+                        activeUid; outcome: 'ongoing'|'victory'|'defeat'|'fled' }
+type PlayerAction =
+  | { type: 'basic' | 'skill' | 'ultimate'; actor; target }
+  | { type: 'enhancedBasic' | 'enhancedSkill'; actor; target; abilityId }   // kits that replace Basic/Skill
+  | { type: 'memospriteSkill'; actor; target; abilityId };                  // a memosprite's own turn
 ```
+
+- **Memosprites** are `kind: 'memosprite'` units with `ownerUid`. At 0 HP they `leftField` (off the timeline, owner unaffected,
+  can be re-summoned) instead of being `downed`; a downed owner takes its memosprite off the field
+  (`resolveZeroHp` in `formulas/units.ts`, unit-tested).
+- **Inserted actions** (follow-ups, counters, extra turns, "memosprite immediately acts") wait in `insertedActions`, ordered by
+  `seq`, and resolve before the next regular AV turn. Player Ultimates stay in their own `ultimateQueue`.
+- **Building units:** the combat module's `UnitFactory.create(spec, uid)` takes a `UnitBuildSpec`: a `CharacterBuildSpec`
+  (the `CharacterInstance` with Eidolon and Trace levels, plus the equipped `LightConeInstance` and `RelicInstance`s), an
+  `EnemyBuildSpec` (`enemyId`, `level`), or an owned-unit spec (memosprite/summon definition + owner combatant).
 
 ## 13. Save game (`models/save.ts`)
 

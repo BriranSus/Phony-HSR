@@ -56,18 +56,18 @@ Legend: ✅ done · 🟡 partially present (framework or stub) · ⬜ not starte
 - Streaming per area and object pooling for props.
 
 ### Phase 5: Combat engine
-- `BattleState` builder, **AV timeline** (`predictTurnOrder` already exists), turns, **party-shared Skill Points**, **energy and Ultimate insertion** (outside the turn order), **targeting** (single / blast / AoE / bounce / ally), the effect interpreter (`skills`), the status engine (`status`), **follow-ups and counters**, extra turns, wave handling, victory and defeat.
+- `BattleState` builder, **AV timeline** (`predictTurnOrder` already exists), turns, **party-shared Skill Points**, **Ultimate resources (Energy or points) and Ultimate insertion** (outside the turn order), the **inserted-action queue** (follow-ups, counters, extra turns, immediate memosprite actions), **targeting** (single / blast / AoE / bounce / ally), the effect interpreter (`skills`), the status engine (`status`), memosprite turns and leave-field rules (the runtime model already exists in `models/combat.ts`), wave handling, victory and defeat.
 - Uses `formulas/damage.ts` for every hit. Emits `combat:*` events. Headless battle simulator for tests.
 
 ### Phase 6: Character framework
-- Unit factory from `Character` + `CharacterInstance`: final stats (base + LC + relics + traces + eidolons), ability levels with E3/E5 bonuses, talents and triggers, memosprites (Remembrance), technique hooks, and voice/animation hooks.
+- Unit factory from a `CharacterBuildSpec` (`Character` + `CharacterInstance` + equipped Light Cone and relic instances): final stats (base + LC + relics + traces + eidolons), ability levels with E3/E5 bonuses (incl. Memosprite Skill/Talent), talents and triggers, memosprites (Remembrance), technique hooks, and voice/animation hooks.
 - Script-handler registry for unique kits.
 
 ### Phase 7: Enemy framework
 - Level scaling, AI (sequence / weighted / scripted), **multi-phase bosses** (HP thresholds, phase weaknesses/toughness, summons, charge-ups, enrage), loot rolls, boss UI and music hooks.
 
 ### Phase 8: Weakness system
-- Toughness bars, weakness icons, toughness reduction with Break Efficiency, **Weakness Break** (Break DMG, 25% delay plus element extras), **all seven break effects** (Bleed, Burn, Freeze, Shock, Wind Shear, Entanglement, Imprisonment), toughness recovery, Super Break, and the complete level-multiplier table.
+- Toughness bars, weakness icons, toughness reduction with Break Efficiency, **Weakness Break** (Break DMG, 25% delay plus element extras), **all seven break effects** (Bleed, Burn, Freeze, Shock, Wind Shear, Entanglement, Imprisonment), toughness recovery and Super Break. (The complete Lv1–95 level-multiplier table already ships with Phase 1 Revision 1.)
 
 ### Phase 9: Character progression
 - **Economy ledger** (single place for currencies and items). Character EXP and levels, **ascension** gates (20/30/…/80), the **Trace tree** (ability levels, Major Traces A2/A4/A6, minor stat nodes, level/ascension/material/credit requirements), and **Eidolons E1–E6**.
