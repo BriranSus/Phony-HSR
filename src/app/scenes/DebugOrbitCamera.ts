@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import type { InputManager } from '@core/input/InputManager';
 import type { GameConfig } from '@core/config/GameConfig';
 
+const MAX_PAN_RADIUS = 9;
+
 /**
  * Developer orbit camera for the Phase-1 sandbox. It exists to prove the action-mapped input path
  * end-to-end; the real camera system (exploration/combat/cinematic rigs) is Phase 3.
@@ -33,7 +35,7 @@ export class DebugOrbitCamera {
     const zoomKeys = i.axis('cameraZoomIn', 'cameraZoomOut');
     this.goalDistance *= Math.exp(i.wheelDelta * s.zoomSensitivity + zoomKeys * dt * 1.2);
     this.goalDistance = THREE.MathUtils.clamp(this.goalDistance, 5, 60);
-    this.goalPitch = THREE.MathUtils.clamp(this.goalPitch, -0.1, 1.35);
+    this.goalPitch = THREE.MathUtils.clamp(this.goalPitch, 0.08, 1.35);
 
     const forward = i.axis('moveBack', 'moveForward');
     const strafe = i.axis('moveLeft', 'moveRight');
@@ -43,8 +45,12 @@ export class DebugOrbitCamera {
       const fz = -Math.cos(this.goalYaw);
       this.goalTarget.x += (fx * forward - fz * strafe) * speed;
       this.goalTarget.z += (fz * forward + fx * strafe) * speed;
-      this.goalTarget.x = THREE.MathUtils.clamp(this.goalTarget.x, -20, 20);
-      this.goalTarget.z = THREE.MathUtils.clamp(this.goalTarget.z, -20, 20);
+      // Keep the focus point over the platform so the sandbox never loses its subject.
+      const r = Math.hypot(this.goalTarget.x, this.goalTarget.z);
+      if (r > MAX_PAN_RADIUS) {
+        this.goalTarget.x *= MAX_PAN_RADIUS / r;
+        this.goalTarget.z *= MAX_PAN_RADIUS / r;
+      }
     }
 
     // Critically damped smoothing, frame-rate independent.

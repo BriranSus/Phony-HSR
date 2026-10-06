@@ -3,6 +3,9 @@
  *
  *   npm run screenshots            (builds, serves dist/ with `vite preview`, drives Chromium)
  *   npm run screenshots -- --dev   (uses the dev server instead of a production build)
+ *   npm run screenshots -- --swiftshader   (force software WebGL)
+ *
+ * The hardware GPU is used through ANGLE when available; otherwise it falls back to SwiftShader.
  *
  * Walks the full Phase-1 boot flow: loading -> title -> main menu -> data archive -> test scene
  * (with simulated input) -> back to the menu. Fails on any console error or page error.
@@ -17,6 +20,32 @@ import path from 'node:path';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = path.join(root, 'docs', 'screenshots');
 const useDev = process.argv.includes('--dev');
+const forceSoftware = process.argv.includes('--swiftshader');
+const GPU_ARGS = {
+  hardware: ['--use-angle=' + (process.platform === 'win32' ? 'd3d11' : 'default'), '--enable-gpu', '--ignore-gpu-blocklist'],
+  software: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
+};
+
+/** Launch Chromium with hardware WebGL if it works, else SwiftShader. */
+async function launchBrowser() {
+  for (const mode of forceSoftware ? ['software'] : ['hardware', 'software']) {
+    const browser = await chromium.launch({ args: GPU_ARGS[mode] });
+    const page = await browser.newPage();
+    const renderer = await page.evaluate(() => {
+      const gl = document.createElement('canvas').getContext('webgl2') ?? document.createElement('canvas').getContext('webgl');
+      if (!gl) return null;
+      const ext = gl.getExtension('WEBGL_debug_renderer_info');
+      return String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+    });
+    await page.close();
+    if (renderer) {
+      console.log(`WebGL renderer (${mode}): ${renderer}`);
+      return browser;
+    }
+    await browser.close();
+  }
+  throw new Error('No WebGL backend available in headless Chromium');
+}
 const WIDTH = 1600;
 const HEIGHT = 900;
 
@@ -37,9 +66,7 @@ async function main() {
   await mkdir(outDir, { recursive: true });
   const server = await startServer();
   console.log(`serving ${server.url}`);
-  const browser = await chromium.launch({
-    args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--enable-webgl'],
-  });
+  const browser = await launchBrowser();
   const errors = [];
   const shots = [];
   try {
@@ -57,6 +84,17 @@ async function main() {
     };
     const stackIs = (ids) =>
       page.waitForFunction((expected) => window.__ASTRAL__?.stack().join('>') === expected, ids.join(">"), { timeout: 30000, polling: 100 });
+    /** Wait until every finite CSS/Web animation has finished (infinite pulses are ignored). */
+    const uiSettled = () =>
+      page.waitForFunction(
+        () =>
+          document.getAnimations().every((a) => {
+            const t = a.effect?.getComputedTiming();
+            return a.playState !== 'running' || !t || t.iterations === Infinity;
+          }),
+        null,
+        { timeout: 30000, polling: 100 },
+      );
     const transitionIdle = () => page.waitForFunction(() => !document.querySelector('.transition.is-active'), null, { timeout: 30000, polling: 100 });
 
     // Hold the loading screen longer than the default 1.6 s so it can be captured mid-progress
@@ -76,18 +114,22 @@ async function main() {
 
     await page.mouse.click(WIDTH / 2, HEIGHT * 0.8);
     await stackIs(['title', 'main-menu']);
-    await sleep(1100);
+    await uiSettled();
+    await sleep(300);
     await shot('03-main-menu');
 
     await page.click('[data-id="archive"]');
     await stackIs(['title', 'main-menu', 'data-archive']);
-    await sleep(1400);
+    await uiSettled();
+    await sleep(300);
     await shot('04-archive-characters');
     await page.click('[data-tab="enemies"]');
-    await sleep(1200);
+    await uiSettled();
+    await sleep(300);
     await shot('05-archive-enemies');
     await page.click('[data-tab="rules"]');
-    await sleep(1000);
+    await uiSettled();
+    await sleep(300);
     await shot('06-archive-rules');
     await page.keyboard.press('Escape');
     await stackIs(['title', 'main-menu']);
@@ -120,10 +162,10 @@ async function main() {
     await page.mouse.move(WIDTH / 2, HEIGHT / 2);
     await page.mouse.down();
     for (let i = 1; i <= 20; i++) {
-      await page.mouse.move(WIDTH / 2 + i * 12, HEIGHT / 2 - i * 3);
+      await page.mouse.move(WIDTH / 2 + i * 14, HEIGHT / 2 + i * 2);
       await sleep(16);
     }
-    await page.mouse.wheel(0, -400);
+    await page.mouse.wheel(0, -150);
     await sleep(300);
     const held = await page.evaluate(() => window.__ASTRAL__?.ctx.input.activeActions() ?? []);
     console.log(`  input actions held: ${held.join(', ')}`);

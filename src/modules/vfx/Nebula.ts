@@ -76,8 +76,8 @@ export class Nebula {
           float dust = smoothstep(0.55, 0.75, fbm(d * 9.0 + 4.0)) * band;
           col += uDust * dust * 0.12;
           // Soft glow hotspot (distant galactic core) to the upper right.
-          float core = pow(max(dot(d, normalize(vec3(0.6, 0.25, -0.75))), 0.0), 18.0);
-          col += vec3(0.95, 0.82, 0.62) * core * 0.55;
+          float core = pow(max(dot(d, normalize(vec3(0.6, 0.25, -0.75))), 0.0), 40.0);
+          col += vec3(0.95, 0.82, 0.62) * core * 0.3;
           gl_FragColor = vec4(col, 1.0);
         }`,
     });
