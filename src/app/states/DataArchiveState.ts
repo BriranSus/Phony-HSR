@@ -5,6 +5,7 @@ import { ELEMENTS } from '@models/common';
 import type { Element as GameElement } from '@models/common';
 import { baseActionValue, breakActionDelay, grownStat } from '@models/formulas';
 import { ELITE_OR_HIGHER } from '@models/enemy';
+import { fillTemplate, lightConeTemplateSlots } from '@models/templates';
 import { DataArchiveScreen, type ArchiveViewModel } from '@modules/ui';
 import type { AppContext } from '../AppContext';
 import { StateIds } from '../AppContext';
@@ -52,7 +53,9 @@ export function buildArchiveViewModel(data: DataRegistry): ArchiveViewModel {
           ['DEF (Lv. 80)', fmt(at80(s.def))],
           ['SPD', fmt(s.spd)],
           ['Base Action Value', fmt(baseActionValue(s.spd, combat), 1)],
-          ['Max Energy', fmt(c.maxEnergy)],
+          c.ultimateResource.kind === 'energy'
+            ? (['Max Energy', fmt(c.ultimateResource.max)] as const)
+            : ([c.ultimateResource.name, `${fmt(c.ultimateResource.cost)} pts`] as const),
         ] as const,
         kit: [
           ['Basic', c.abilities.basic.name],
@@ -69,11 +72,11 @@ export function buildArchiveViewModel(data: DataRegistry): ArchiveViewModel {
     .sort((a, b) => b.rarity - a.rarity)
     .map((lc) => {
       const at80 = (base: number): number => grownStat(base, prog.maxLevel, maxAsc, prog.lightCone);
-      const s1 = lc.passive.modifiers.map((m) => pct(m.value[0]));
-      const s5 = lc.passive.modifiers.map((m) => pct(m.value[4]));
-      const passive = lc.passive.description.replace(/\{(\d+)\}%?/g, (_m, i: string) => {
-        const k = Number(i);
-        return s1[k] !== undefined ? `${s1[k]} (S5 ${s5[k]})` : '?';
+      // Placeholders are validated at load time (validateLightCone), so every one resolves here.
+      const passive = fillTemplate(lc.passive.description, lightConeTemplateSlots(lc), (v, isPct) => {
+        if (v.kind !== 'superimposed') return '';
+        const show = (n: number): string => (isPct ? pct(n, Math.round(n * 1000) % 10 ? 1 : 0) : fmt(n, 2));
+        return `${show(v.value[0])} (S5 ${show(v.value[4])})`;
       });
       return {
         name: lc.name,

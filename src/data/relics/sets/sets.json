@@ -10,16 +10,15 @@
       "feet": "Pilgrim's Wayworn Boots"
     },
     "bonuses": [
-      { "pieces": 2, "description": "Increases Fire DMG by 10%.", "modifiers": [{ "stat": "fireDmg", "value": 0.1 }] },
+      { "pieces": 2, "description": "Increases Fire DMG by {0}%.", "modifiers": [{ "stat": "fireDmg", "value": 0.1 }] },
       {
         "pieces": 4,
-        "description": "Increases Skill DMG by 12%. After using the Ultimate, Fire DMG increases by 12% for 1 turn.",
+        "description": "Increases Skill DMG by {0}%. After using the Ultimate, Fire DMG increases by {fireDmg}% for 1 turn.",
         "modifiers": [{ "stat": "skillDmg", "value": 0.12 }],
         "triggers": [
           {
-            "on": "afterAttack",
-            "conditions": [{ "type": "attackType", "params": { "is": "ultimate" } }],
-            "effects": [{ "kind": "applyStatus", "target": "self", "status": "buff.crescendo", "duration": 1, "params": { "allDmg": 0.12 } }]
+            "on": "afterUseUltimate",
+            "effects": [{ "kind": "applyStatus", "target": "self", "status": "buff.ember-pilgrim", "duration": 1, "params": { "fireDmg": 0.12 } }]
           }
         ]
       }
@@ -36,8 +35,18 @@
       "feet": "Courier's Skyrunner Boots"
     },
     "bonuses": [
-      { "pieces": 2, "description": "Increases SPD by 6%.", "modifiers": [{ "stat": "spdPct", "value": 0.06 }] },
-      { "pieces": 4, "description": "After the wearer uses their Ultimate on an ally, all allies' SPD increases by 12% for 1 turn.", "modifiers": [] }
+      { "pieces": 2, "description": "Increases SPD by {0}%.", "modifiers": [{ "stat": "spdPct", "value": 0.06 }] },
+      {
+        "pieces": 4,
+        "description": "After the wearer uses their Ultimate on an ally, all allies' SPD increases by {spdPct}% for 1 turn.",
+        "triggers": [
+          {
+            "on": "afterUseUltimate",
+            "conditions": [{ "type": "abilityTargetsAlly" }],
+            "effects": [{ "kind": "applyStatus", "target": "allAllies", "status": "buff.gale-courier", "duration": 1, "params": { "spdPct": 0.12 } }]
+          }
+        ]
+      }
     ]
   },
   {

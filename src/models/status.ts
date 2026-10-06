@@ -35,6 +35,11 @@ export const DotSchema = z
     multiplier: z.number().positive().optional(),
     /** When the damage is dealt. Freeze deals its damage when the frozen turn is skipped. */
     tickOn: z.enum(['ownerTurnStart', 'onExpire']).default('ownerTurnStart'),
+    /**
+     * How the damage is classified: a true DoT (Burn, Shock, Bleed, Wind Shear; boosted by DoT DMG%,
+     * detonatable) or Additional DMG (Freeze on thaw, Entanglement on the target's turn).
+     */
+    damageType: z.enum(['dot', 'additional']).default('dot'),
   })
   .strict()
   .superRefine((d, ctx) => {
@@ -55,8 +60,10 @@ export const CrowdControlSchema = z
     type: CcTypeSchema,
     /** The affected unit cannot act; its turn is consumed. */
     skipsTurn: z.boolean(),
-    /** Action delay applied when the effect ends (Freeze: 50%). */
+    /** Action delay applied when the effect ends (fraction of base AV). */
     delayOnExpire: z.number().min(0).max(1).optional(),
+    /** Action advance applied when the effect ends. Freeze: the frozen turn is skipped, then the next action is Advanced Forward 50%. */
+    advanceOnExpire: z.number().min(0).max(1).optional(),
   })
   .strict();
 

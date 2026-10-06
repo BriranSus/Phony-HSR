@@ -3,19 +3,19 @@
   "name": "Memory of a Bulwark",
   "rarity": 3,
   "path": "Preservation",
-  "baseStats": { "hp": 33.6, "atk": 12.0, "def": 15.0 },
+  "baseStats": { "hp": 38.4, "atk": 14.4, "def": 12 },
   "passive": {
     "name": "Hold the Line",
     "description": "Increases the wearer's DEF by {0}%.",
     "modifiers": [{ "stat": "defPct", "value": [0.16, 0.2, 0.24, 0.28, 0.32] }]
   },
   "ascensionCosts": [
-    [{ "item": "credit", "count": 3600 }, { "item": "mat.hollow-1", "count": 3 }],
-    [{ "item": "credit", "count": 7200 }, { "item": "mat.hollow-1", "count": 6 }],
-    [{ "item": "credit", "count": 18000 }, { "item": "mat.hollow-2", "count": 4 }],
-    [{ "item": "credit", "count": 36000 }, { "item": "mat.hollow-2", "count": 6 }],
-    [{ "item": "credit", "count": 72000 }, { "item": "mat.hollow-3", "count": 4 }],
-    [{ "item": "credit", "count": 144000 }, { "item": "mat.hollow-3", "count": 6 }]
+    [{ "item": "credit", "count": 3000 }, { "item": "mat.hollow-1", "count": 3 }],
+    [{ "item": "credit", "count": 6000 }, { "item": "mat.hollow-1", "count": 6 }],
+    [{ "item": "credit", "count": 12000 }, { "item": "mat.hollow-2", "count": 4 }],
+    [{ "item": "credit", "count": 30000 }, { "item": "mat.hollow-2", "count": 6 }],
+    [{ "item": "credit", "count": 60000 }, { "item": "mat.hollow-3", "count": 4 }],
+    [{ "item": "credit", "count": 120000 }, { "item": "mat.hollow-3", "count": 6 }]
   ],
   "fodderExp": 1000,
   "lore": "A dented plate from a wall that never fell."

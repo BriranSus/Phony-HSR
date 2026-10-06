@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { IdSchema, TextSchema } from './common';
-import { StatModifierSchema, TriggerSchema } from './ability';
+import { paramRefsOf, StatModifierSchema, TriggerSchema } from './ability';
+import { relicSetTemplateProblems } from './templates';
 import { StatIdSchema } from './stats';
 
 /**
@@ -96,4 +97,13 @@ export interface RelicInstance {
   /** Marked for salvage ("discard"). */
   discard: boolean;
   equippedBy: string | null;
+}
+
+/** Semantic checks: description placeholders resolve; relic triggers cannot reference params (sets have none). */
+export function validateRelicSet(s: RelicSet): string[] {
+  const problems = relicSetTemplateProblems(s);
+  for (const b of s.bonuses) {
+    for (const p of paramRefsOf(b.triggers.flatMap((t) => t.effects))) problems.push(`${b.pieces}-piece bonus references param "${p}" but relic sets have no params`);
+  }
+  return problems;
 }

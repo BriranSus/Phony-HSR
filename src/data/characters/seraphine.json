@@ -4,7 +4,7 @@
   "rarity": 4,
   "element": "Wind",
   "path": "Harmony",
-  "maxEnergy": 130,
+  "ultimateResource": { "kind": "energy", "max": 130 },
   "baseStats": { "hp": 120.0, "atk": 69.6, "def": 51.0, "spd": 106 },
   "abilities": {
     "basic": {
@@ -57,7 +57,7 @@
       "description": "After an ally with Tailwind attacks, deals Additional Wind DMG equal to {0}% of their ATK to the primary target.",
       "triggers": [
         {
-          "on": "afterAllyAttacked",
+          "on": "afterAllyAttack",
           "conditions": [{ "type": "attackerHasStatus", "params": { "status": "buff.tailwind" } }],
           "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "curve": "standard", "ref": 0.6 }, "toughness": 0, "attackType": "additional" }],
           "limitPerTurn": 1

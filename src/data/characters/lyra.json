@@ -4,7 +4,7 @@
   "rarity": 5,
   "element": "Lightning",
   "path": "Remembrance",
-  "maxEnergy": 160,
+  "ultimateResource": { "kind": "energy", "max": 160 },
   "baseStats": { "hp": 147.84, "atk": 79.2, "def": 52.92, "spd": 102 },
   "abilities": {
     "basic": {
@@ -56,7 +56,7 @@
       "targeting": "none",
       "maxLevel": 10,
       "description": "Whenever Aria attacks, Lyra regenerates 5 Energy.",
-      "triggers": [{ "on": "afterAllyAttacked", "conditions": [{ "type": "attackerIsMemosprite" }], "effects": [{ "kind": "energy", "target": "self", "amount": 5 }] }]
+      "triggers": [{ "on": "afterAllyAttack", "conditions": [{ "type": "attackerIsOwnMemosprite" }], "effects": [{ "kind": "energy", "target": "self", "amount": 5 }] }]
     },
     "technique": {
       "id": "lyra.technique",
@@ -85,9 +85,20 @@
         "kind": "memospriteSkill",
         "tags": ["bounce"],
         "targeting": "enemyBounce",
-        "maxLevel": 10,
+        "maxLevel": 6,
         "description": "Deals Lightning DMG equal to {0}% of Lyra's ATK to a random enemy, bouncing 4 additional times.",
-        "effects": [{ "kind": "damage", "target": "randomEnemy", "stat": "atk", "multiplier": { "curve": "standard", "ref": 0.36 }, "toughness": 5, "bounces": 4, "attackType": "memosprite" }]
+        "effects": [{ "kind": "damage", "target": "randomEnemy", "stat": "atk", "multiplier": { "curve": "basic", "ref": 0.36 }, "toughness": 5, "bounces": 4, "attackType": "memosprite" }]
+      },
+      {
+        "id": "lyra.aria.talent",
+        "name": "Lingering Cadence",
+        "kind": "memospriteTalent",
+        "tags": ["enhance"],
+        "targeting": "none",
+        "maxLevel": 6,
+        "description": "While Aria is on the field, all allies' CRIT DMG increases by {0}%. When Aria enters the field, Lyra regenerates 10 Energy.",
+        "modifiers": [{ "stat": "critDmg", "value": { "curve": "basic", "ref": 0.12 }, "scope": "team" }],
+        "triggers": [{ "on": "onEnterBattleField", "effects": [{ "kind": "energy", "target": "owner", "amount": 10 }] }]
       }
     ]
   },
@@ -96,7 +107,8 @@
     { "id": "lyra.t.skill", "kind": "ability", "name": "Call of Aria", "ability": "skill", "costTable": "trace.ability" },
     { "id": "lyra.t.ultimate", "kind": "ability", "name": "Thunderous Recollection", "ability": "ultimate", "costTable": "trace.ability" },
     { "id": "lyra.t.talent", "kind": "ability", "name": "Harmonic Memory", "ability": "talent", "costTable": "trace.ability" },
-    { "id": "lyra.t.mskill", "kind": "ability", "name": "Echoing Chord", "ability": "memospriteSkill", "costTable": "trace.ability" },
+    { "id": "lyra.t.mskill", "kind": "ability", "name": "Echoing Chord", "ability": "memospriteSkill", "costTable": "trace.basic" },
+    { "id": "lyra.t.mtalent", "kind": "ability", "name": "Lingering Cadence", "ability": "memospriteTalent", "costTable": "trace.basic" },
     { "id": "lyra.t.a2", "kind": "major", "name": "Afterimage", "requirements": { "ascension": 2 }, "costTable": "trace.major-a2", "passive": { "description": "Memosprite DMG increases by 20%.", "modifiers": [{ "stat": "allDmg", "value": 0.2, "conditions": [{ "type": "sourceIsMemosprite" }] }] } },
     { "id": "lyra.t.a4", "kind": "major", "name": "Encore", "parent": "lyra.t.a2", "requirements": { "ascension": 4 }, "costTable": "trace.major-a4", "passive": { "description": "When the battle starts, regenerates 30 Energy.", "triggers": [{ "on": "battleStart", "effects": [{ "kind": "energy", "target": "self", "amount": 30, "fixed": true }] }] } },
     { "id": "lyra.t.a6", "kind": "major", "name": "Overtone", "parent": "lyra.t.a4", "requirements": { "ascension": 6 }, "costTable": "trace.major-a6", "passive": { "description": "CRIT Rate increases by 10%.", "modifiers": [{ "stat": "critRate", "value": 0.1 }] } },
@@ -108,9 +120,9 @@
   "eidolons": [
     { "rank": 1, "name": "Remembered Light", "description": "Aria's bounces increase by 2.", "script": "lyra.e1" },
     { "rank": 2, "name": "Duet", "description": "Lyra's SPD increases by 12% while Aria is on the field.", "modifiers": [{ "stat": "spdPct", "value": 0.12, "conditions": [{ "type": "memospriteOnField" }] }] },
-    { "rank": 3, "name": "Overture of Storms", "description": "Ultimate Lv. +2 (max 15). Basic ATK Lv. +1 (max 10).", "abilityLevelBonus": { "ultimate": 2, "basic": 1 } },
+    { "rank": 3, "name": "Overture of Storms", "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10. Memosprite Skill Lv. +1, up to a maximum of Lv. 10.", "abilityLevelBonus": { "ultimate": 2, "basic": 1, "memospriteSkill": 1 } },
     { "rank": 4, "name": "Sostenuto", "description": "Resonance lasts 1 extra turn.", "script": "lyra.e4" },
-    { "rank": 5, "name": "Lightning Canon", "description": "Skill Lv. +2 (max 15). Talent Lv. +2 (max 15).", "abilityLevelBonus": { "skill": 2, "talent": 2 } },
+    { "rank": 5, "name": "Lightning Canon", "description": "Skill Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15. Memosprite Talent Lv. +1, up to a maximum of Lv. 10.", "abilityLevelBonus": { "skill": 2, "talent": 2, "memospriteTalent": 1 } },
     { "rank": 6, "name": "Eternal Refrain", "description": "Aria's attacks ignore 20% of enemy DEF.", "script": "lyra.e6" }
   ],
   "ascensionCosts": [

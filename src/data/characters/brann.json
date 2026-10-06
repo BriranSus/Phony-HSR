@@ -4,7 +4,7 @@
   "rarity": 4,
   "element": "Physical",
   "path": "Preservation",
-  "maxEnergy": 120,
+  "ultimateResource": { "kind": "energy", "max": 120 },
   "baseStats": { "hp": 158.4, "atk": 62.4, "def": 79.38, "spd": 95 },
   "abilities": {
     "basic": {
@@ -55,7 +55,7 @@
       "description": "When a Shielded ally is attacked, Brann immediately Counters, dealing Physical DMG equal to {0}% of ATK to the attacker. Once per turn.",
       "triggers": [
         {
-          "on": "afterAllyAttacked",
+          "on": "afterAllyHit",
           "conditions": [{ "type": "targetHasShield" }],
           "effects": [{ "kind": "damage", "target": "attacker", "stat": "atk", "multiplier": { "curve": "standard", "ref": 1.0 }, "toughness": 10, "attackType": "followUp" }],
           "limitPerTurn": 1

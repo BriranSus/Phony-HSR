@@ -3,22 +3,26 @@
   "name": "An Oath Written in Embers",
   "rarity": 5,
   "path": "Destruction",
-  "baseStats": { "hp": 52.8, "atk": 26.4, "def": 19.8 },
+  "baseStats": { "hp": 48, "atk": 26.4, "def": 21 },
   "passive": {
     "name": "Unquenched",
     "description": "Increases the wearer's CRIT DMG by {0}%. When the wearer's HP is at or below 50%, Ultimate DMG increases by {1}%.",
     "modifiers": [
       { "stat": "critDmg", "value": [0.2, 0.25, 0.3, 0.35, 0.4] },
-      { "stat": "ultimateDmg", "value": [0.24, 0.3, 0.36, 0.42, 0.48], "conditions": [{ "type": "hpBelow", "params": { "ratio": 0.5 } }] }
+      {
+        "stat": "ultimateDmg",
+        "value": [0.24, 0.3, 0.36, 0.42, 0.48],
+        "conditions": [{ "type": "hpBelow", "params": { "ratio": 0.5 } }]
+      }
     ]
   },
   "ascensionCosts": [
-    [{ "item": "credit", "count": 6000 }, { "item": "mat.hollow-1", "count": 5 }],
-    [{ "item": "credit", "count": 12000 }, { "item": "mat.hollow-1", "count": 10 }],
-    [{ "item": "credit", "count": 30000 }, { "item": "mat.hollow-2", "count": 6 }],
-    [{ "item": "credit", "count": 60000 }, { "item": "mat.hollow-2", "count": 9 }],
-    [{ "item": "credit", "count": 120000 }, { "item": "mat.hollow-3", "count": 6 }],
-    [{ "item": "credit", "count": 240000 }, { "item": "mat.hollow-3", "count": 8 }]
+    [{ "item": "credit", "count": 5000 }, { "item": "mat.hollow-1", "count": 5 }],
+    [{ "item": "credit", "count": 10000 }, { "item": "mat.hollow-1", "count": 10 }],
+    [{ "item": "credit", "count": 20000 }, { "item": "mat.hollow-2", "count": 6 }],
+    [{ "item": "credit", "count": 50000 }, { "item": "mat.hollow-2", "count": 9 }],
+    [{ "item": "credit", "count": 100000 }, { "item": "mat.hollow-3", "count": 6 }],
+    [{ "item": "credit", "count": 200000 }, { "item": "mat.hollow-3", "count": 8 }]
   ],
   "fodderExp": 4500,
   "lore": "A vow scorched into a fragment of a dying star, still warm to the touch."

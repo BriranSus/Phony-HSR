@@ -3,8 +3,8 @@ import type { Ability, Effect, Trigger } from './ability';
 import type { Cost } from './common';
 import { CharacterSchema, validateCharacter } from './character';
 import { EnemySchema, LootTableSchema, validateEnemy } from './enemy';
-import { LightConeSchema } from './lightcone';
-import { RelicSetSchema, RelicStatTablesSchema } from './relic';
+import { LightConeSchema, validateLightCone } from './lightcone';
+import { RelicSetSchema, RelicStatTablesSchema, validateRelicSet } from './relic';
 import { CostTableSchema, ItemSchema } from './item';
 import { StatusEffectSchema } from './status';
 import { ScalingCurvesSchema } from './scaling';
@@ -122,6 +122,7 @@ export const Collections = {
     dir: 'light-cones',
     format: 'item',
     schema: LightConeSchema,
+    validate: validateLightCone,
     references: (lc) => [...costRefs(lc.ascensionCosts, 'ascensionCosts'), ...triggerRefs(lc.passive.triggers, 'passive.triggers')],
   }),
   relicSets: defineCollection({
@@ -129,6 +130,7 @@ export const Collections = {
     dir: 'relics/sets',
     format: 'list',
     schema: RelicSetSchema,
+    validate: validateRelicSet,
     references: (s) => s.bonuses.flatMap((b) => triggerRefs(b.triggers, `bonuses[${b.pieces}].triggers`)),
   }),
   relicStatTables: defineCollection({ name: 'relicStatTables', dir: 'relics/stat-tables', format: 'item', schema: RelicStatTablesSchema }),

@@ -4,7 +4,7 @@
   "rarity": 5,
   "element": "Fire",
   "path": "Destruction",
-  "maxEnergy": 120,
+  "ultimateResource": { "kind": "energy", "max": 120 },
   "baseStats": { "hp": 168.96, "atk": 84.48, "def": 59.535, "spd": 97 },
   "abilities": {
     "basic": {
@@ -118,8 +118,7 @@
         "description": "Basic ATK has a 50% base chance to inflict Scorch for 2 turns.",
         "triggers": [
           {
-            "on": "afterAttack",
-            "conditions": [{ "type": "attackType", "params": { "is": "basic" } }],
+            "on": "afterUseBasic",
             "effects": [{ "kind": "applyStatus", "target": "primary", "status": "status.scorch", "baseChance": 0.5, "duration": 2 }]
           }
         ]
@@ -141,7 +140,7 @@
       "rank": 2,
       "name": "Feed the Flame",
       "description": "After using the Ultimate, regenerates 10 Energy.",
-      "triggers": [{ "on": "afterAttack", "conditions": [{ "type": "attackType", "params": { "is": "ultimate" } }], "effects": [{ "kind": "energy", "target": "self", "amount": 10, "fixed": true }] }]
+      "triggers": [{ "on": "afterUseUltimate", "effects": [{ "kind": "energy", "target": "self", "amount": 10, "fixed": true }] }]
     },
     { "rank": 3, "name": "Kiln of Stars", "description": "Skill Lv. +2 (max 15). Basic ATK Lv. +1 (max 10).", "abilityLevelBonus": { "skill": 2, "basic": 1 } },
     { "rank": 4, "name": "Unbowed", "description": "CRIT Rate increases by 12% while HP is at or below 50%.", "modifiers": [{ "stat": "critRate", "value": 0.12, "conditions": [{ "type": "hpBelow", "params": { "ratio": 0.5 } }] }] },

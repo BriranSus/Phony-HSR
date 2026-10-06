@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ElementSchema, IdSchema, PathSchema, TextSchema } from './common';
+import { ElementSchema, IdSchema, PathSchema, SourceSchema, TextSchema } from './common';
 
 /**
  * Global combat rules. Every tunable constant of the battle system lives here (data), never in code.
@@ -90,6 +90,8 @@ export const CombatRulesSchema = z
         superBreakDivisor: z.number().positive(),
         /** Broken enemies recover toughness at the start of their next turn. */
         recoverOnNextTurn: z.boolean(),
+        /** Base chance of the break debuff (1.5 = 150%), before Effect Hit Rate / Effect RES / Debuff RES. */
+        statusBaseChance: z.number().positive(),
         elements: PerElement(
           z
             .object({
@@ -116,17 +118,53 @@ export const CombatRulesSchema = z
       })
       .strict(),
     party: z.object({ maxActive: z.number().int().positive(), maxEnemiesPerWave: z.number().int().positive() }).strict(),
-    /** Break-damage level multiplier anchors (attacker level -> multiplier). Phase 8 completes the table. */
+    /**
+     * Break / Super Break / break-DoT level multiplier, one entry per attacker level. Levels 1..80 are
+     * required (character levels); 81..95 are enemy-only. The table must be contiguous and increasing;
+     * nothing is interpolated.
+     */
     levelMultiplier: z.record(z.string().regex(/^\d+$/), z.number().positive()),
+    /** Where reference-game numbers in this file were verified. */
+    sources: z.array(SourceSchema).default([]),
   })
-  .strict();
+  .strict()
+  .superRefine((r, ctx) => {
+    const levels = Object.keys(r.levelMultiplier)
+      .map(Number)
+      .sort((a, b) => a - b);
+    const max = levels[levels.length - 1] ?? 0;
+    if (levels[0] !== 1 || max < 80 || levels.length !== max) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['levelMultiplier'],
+        message: `levelMultiplier must list every level from 1 to at least 80 (got ${levels.length} entries up to Lv${max})`,
+      });
+    }
+    for (let l = 2; l <= max; l++) {
+      const prev = r.levelMultiplier[String(l - 1)];
+      const cur = r.levelMultiplier[String(l)];
+      if (prev !== undefined && cur !== undefined && cur <= prev) {
+        ctx.addIssue({ code: 'custom', path: ['levelMultiplier', String(l)], message: `levelMultiplier must increase (Lv${l - 1} ${prev} >= Lv${l} ${cur})` });
+      }
+    }
+  });
 export type CombatRules = z.infer<typeof CombatRulesSchema>;
 
+/**
+ * Base-stat growth, matching the reference game's promotion data:
+ *   stat(level, asc) = base x (1 + ascensionBonus[asc] + levelGrowth x (level - 1))
+ * Characters: +0.05 x base per level and +0.4 x base per ascension phase.
+ * Light Cones: +0.15 x base per level; cumulative ascension bonus 0, 1.2, 2.8, 4.4, 6.0, 7.6, 9.2 (x base),
+ * i.e. every Light Cone reaches 22.05 x its Lv.1 stat at Lv.80 (48 HP -> 1058.4).
+ */
 const GrowthCurveSchema = z
   .object({
-    /** stat(level, asc) = base * (1 + ascensionStep * asc) + base * levelGrowth * (level - 1) */
     levelGrowth: z.number().min(0),
-    ascensionStep: z.number().min(0),
+    /** Cumulative bonus (in multiples of the Lv.1 base) for ascension phases 0..6. */
+    ascensionBonus: z
+      .array(z.number().min(0))
+      .length(7)
+      .refine((a) => a[0] === 0 && a.every((v, i) => i === 0 || v >= (a[i - 1] ?? 0)), 'ascensionBonus must start at 0 and never decrease'),
   })
   .strict();
 
@@ -142,7 +180,19 @@ export const ProgressionRulesSchema = z
     /** Ascension phase required to unlock Major Traces A2/A4/A6. */
     majorTraceAscension: z.array(z.number().int().min(0).max(6)).length(3),
     eidolons: z.object({ max: z.number().int().positive() }).strict(),
-    abilityMaxLevel: z.object({ basic: z.number().int(), skill: z.number().int(), ultimate: z.number().int(), talent: z.number().int() }).strict(),
+    /** Natural (trace) max level per ability slot; Eidolon bonuses go above it. */
+    abilityMaxLevel: z
+      .object({
+        basic: z.number().int().positive(),
+        skill: z.number().int().positive(),
+        ultimate: z.number().int().positive(),
+        talent: z.number().int().positive(),
+        memospriteSkill: z.number().int().positive(),
+        memospriteTalent: z.number().int().positive(),
+      })
+      .strict(),
+    /** Where reference-game numbers in this file were verified. */
+    sources: z.array(SourceSchema).default([]),
   })
   .strict()
   .refine((p) => p.levelCaps.every((c, i, a) => i === 0 || c > (a[i - 1] ?? 0)), 'levelCaps must increase')

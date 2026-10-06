@@ -4,6 +4,7 @@ import progressionJson from '@data/rules/progression/default.json';
 import bleedAndFriends from '@data/status-effects/weakness-break.json';
 import { CombatRulesSchema, ProgressionRulesSchema } from '@models/rules';
 import { StatusEffectSchema } from '@models/status';
+import type { Combatant } from '@models/combat';
 import {
   aggregateStat,
   applyToughnessHit,
@@ -35,6 +36,8 @@ import {
   shiftAction,
   spendSkillPoints,
   superBreakDamageBase,
+  resolveZeroHp,
+  isOnTimeline,
   toughnessReduction,
 } from '@models/formulas';
 
@@ -169,10 +172,33 @@ describe('Toughness & Weakness Break', () => {
     expect(maxToughnessMultiplier(160, rules)).toBe(4.5);
   });
 
-  it('level multiplier uses data anchors', () => {
-    expect(levelMultiplier(80, rules)).toBeCloseTo(3767.5533);
+  it('level multiplier is the full per-level table (no interpolation)', () => {
+    // Reference values (HSR wiki, Toughness > Level Multiplier). Linear interpolation between Lv1 and
+    // Lv80 would give ~1932 at Lv40 instead of 363.67.
     expect(levelMultiplier(1, rules)).toBe(54);
-    expect(levelMultiplier(90, rules)).toBeCloseTo(3767.5533);
+    expect(levelMultiplier(4, rules)).toBe(67.5264);
+    expect(levelMultiplier(20, rules)).toBe(139.7703);
+    expect(levelMultiplier(40, rules)).toBe(363.6658);
+    expect(levelMultiplier(50, rules)).toBe(774.9041);
+    expect(levelMultiplier(60, rules)).toBe(1640.3068);
+    expect(levelMultiplier(70, rules)).toBe(2659.6406);
+    expect(levelMultiplier(80, rules)).toBe(3767.5533);
+    expect(levelMultiplier(95, rules)).toBe(7494.3713);
+    expect(() => levelMultiplier(96, rules)).toThrow(RangeError);
+    expect(() => levelMultiplier(40.5, rules)).toThrow(RangeError);
+    for (let l = 2; l <= 95; l++) expect(levelMultiplier(l, rules)).toBeGreaterThan(levelMultiplier(l - 1, rules));
+  });
+
+  it('rejects incomplete or non-increasing level multiplier tables', () => {
+    const gap = structuredClone(rulesJson) as { levelMultiplier: Record<string, number> };
+    delete gap.levelMultiplier['40'];
+    expect(CombatRulesSchema.safeParse(gap).success).toBe(false);
+    const anchorsOnly = { ...structuredClone(rulesJson), levelMultiplier: { '1': 54, '80': 3767.5533 } };
+    expect(CombatRulesSchema.safeParse(anchorsOnly).success).toBe(false);
+    const flat = structuredClone(rulesJson) as { levelMultiplier: Record<string, number> };
+    flat.levelMultiplier['41'] = 363.6658;
+    expect(CombatRulesSchema.safeParse(flat).success).toBe(false);
+    expect(rules.sources.length).toBeGreaterThan(0);
   });
 
   it('element break DMG multipliers: Physical/Fire 2x, Wind 1.5x, Ice/Lightning 1x, Quantum/Imaginary 0.5x', () => {
@@ -211,7 +237,10 @@ describe('Toughness & Weakness Break', () => {
     expect(breakDotDamageBase(status('break.wind-shear').dot!, { ...ctx, stacks: 3 }, rules)).toBeCloseTo(3 * lv);
     expect(breakDotDamageBase(status('break.entanglement').dot!, { ...ctx, stacks: 5 }, rules)).toBeCloseTo(0.6 * 5 * lv * 2);
     expect(status('break.wind-shear').initialStacks).toEqual({ normal: 1, elite: 3 });
-    expect(status('break.freeze').cc).toMatchObject({ type: 'freeze', skipsTurn: true, delayOnExpire: 0.5 });
+    expect(status('break.freeze').cc).toMatchObject({ type: 'freeze', skipsTurn: true, advanceOnExpire: 0.5 });
+    expect(status('break.freeze').dot).toMatchObject({ damageType: 'additional', tickOn: 'onExpire' });
+    expect(status('break.burn').dot?.damageType).toBe('dot');
+    expect(rules.weaknessBreak.statusBaseChance).toBe(1.5);
   });
 
   it('Super Break scales with toughness reduced', () => {
@@ -252,6 +281,25 @@ describe('Stat growth', () => {
     expect(grownStat(87.12, 1, 0, progression.character)).toBeCloseTo(87.12);
   });
 
+  it('Light Cones of every rarity reach 22.05x their Lv1 stats at Lv80 A6 (26.4 -> 582.12)', () => {
+    const lc = (base: number, lv = 80, asc = 6): number => grownStat(base, lv, asc, progression.lightCone);
+    expect(lc(26.4)).toBeCloseTo(582.12, 6);
+    // 5-star 48 / 26.4 / 21
+    expect(lc(48)).toBeCloseTo(1058.4, 6);
+    expect(lc(21)).toBeCloseTo(463.05, 6);
+    // 4-star 43.2 / 19.2 / 18
+    expect(lc(43.2)).toBeCloseTo(952.56, 6);
+    expect(lc(19.2)).toBeCloseTo(423.36, 6);
+    expect(lc(18)).toBeCloseTo(396.9, 6);
+    // 3-star 38.4 / 14.4 / 12
+    expect(lc(38.4)).toBeCloseTo(846.72, 6);
+    expect(lc(14.4)).toBeCloseTo(317.52, 6);
+    expect(lc(12)).toBeCloseTo(264.6, 6);
+    expect(lc(48, 1, 0)).toBe(48);
+    expect(lc(48, 20, 0)).toBeCloseTo(184.8, 6);
+    expect(() => lc(48, 80, 7)).toThrow(RangeError);
+  });
+
   it('validates level / ascension combinations against level caps', () => {
     expect(isValidLevelForAscension(20, 0, progression)).toBe(true);
     expect(isValidLevelForAscension(21, 0, progression)).toBe(false);
@@ -262,5 +310,50 @@ describe('Stat growth', () => {
   it('aggregates base x (1 + %) + flat', () => {
     expect(aggregateStat('atk', 1000, { atkPct: 0.5, atk: 352.8 })).toBeCloseTo(1852.8);
     expect(aggregateStat('spd', 100, { spd: 25 })).toBe(125);
+  });
+});
+
+describe('Unit lifecycle (memosprites leave the field at 0 HP)', () => {
+  const unit = (uid: string, kind: Combatant['kind'], ownerUid: string | null = null): Combatant => ({
+    uid,
+    kind,
+    side: kind === 'enemy' ? 'enemy' : 'ally',
+    defId: uid,
+    ownerUid,
+    level: 80,
+    element: null,
+    rank: null,
+    baseStats: {},
+    abilityLevels: {},
+    hp: 100,
+    ultimate: null,
+    toughness: 0,
+    maxToughness: 0,
+    broken: false,
+    weaknesses: [],
+    statuses: [],
+    shield: 0,
+    actionValue: 50,
+    presence: 'active',
+    onZeroHp: kind === 'memosprite' ? 'leaveField' : 'downed',
+  });
+
+  it('a memosprite at 0 HP leaves the field; its owner stays', () => {
+    const units = [unit('lyra', 'character'), unit('aria', 'memosprite', 'lyra')];
+    const changed = resolveZeroHp(units, 'aria');
+    expect(changed.map((u) => [u.uid, u.presence])).toEqual([['aria', 'leftField']]);
+    expect(units[0]!.presence).toBe('active');
+    expect(isOnTimeline(units[1]!)).toBe(false);
+  });
+
+  it('a downed owner takes its memosprite off the field', () => {
+    const units = [unit('lyra', 'character'), unit('aria', 'memosprite', 'lyra'), unit('brann', 'character')];
+    const changed = resolveZeroHp(units, 'lyra');
+    expect(changed.map((u) => [u.uid, u.presence])).toEqual([
+      ['lyra', 'downed'],
+      ['aria', 'leftField'],
+    ]);
+    expect(units[2]!.presence).toBe('active');
+    expect(resolveZeroHp(units, 'lyra')).toEqual([]);
   });
 });

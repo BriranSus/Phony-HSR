@@ -1,6 +1,6 @@
 import { createToken } from '@core/di/ServiceRegistry';
 import { defineStubModule } from '@core/modules/GameModule';
-import type { CharacterInstance } from '@models/character';
+import type { CharacterInstance, LeveledAbilitySlot } from '@models/character';
 import type { StatBlock } from '@models/stats';
 
 /**
@@ -13,7 +13,8 @@ export interface CharacterSystem {
   get(characterId: string): CharacterInstance | undefined;
   /** Final panel stats (what the character screen shows). */
   finalStats(characterId: string): StatBlock;
-  abilityLevel(characterId: string, slot: 'basic' | 'skill' | 'ultimate' | 'talent'): number;
+  /** Effective level incl. E3/E5 bonuses; memosprite slots apply to Remembrance characters. */
+  abilityLevel(characterId: string, slot: LeveledAbilitySlot): number;
   party(): readonly string[];
   setParty(ids: readonly string[]): void;
 }

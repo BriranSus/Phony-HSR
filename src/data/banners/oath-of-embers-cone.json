@@ -1,0 +1,22 @@
+{
+  "id": "banner.oath-of-embers-cone",
+  "name": "Brilliant Fixation: Oath of Embers",
+  "type": "lightCone",
+  "cost": { "item": "voyage-pass-special", "count": 1 },
+  "pityGroup": "limited-light-cone",
+  "rates": { "fiveStar": 0.008, "fourStar": 0.066 },
+  "pity": { "fiveStarHard": 80, "fiveStarSoftStart": 66, "fiveStarSoftIncrement": 0.07, "fourStarHard": 10 },
+  "featured": {
+    "fiveStar": ["lc.ember-oath"],
+    "fourStar": ["lc.harmonic-thread"],
+    "fiveStarChance": 0.75,
+    "fourStarChance": 0.75,
+    "guaranteeAfterLoss": true
+  },
+  "pools": {
+    "fiveStar": ["lc.ember-oath"],
+    "fourStar": ["lc.harmonic-thread", "char.seraphine", "char.brann"],
+    "threeStar": ["lc.bulwark-memory"]
+  },
+  "tenPullDiscount": 0
+}

@@ -2,10 +2,22 @@
   "id": "default",
   "maxLevel": 80,
   "levelCaps": [20, 30, 40, 50, 60, 70, 80],
-  "character": { "levelGrowth": 0.05, "ascensionStep": 0.4 },
-  "lightCone": { "levelGrowth": 0.15, "ascensionStep": 1.2 },
+  "character": { "levelGrowth": 0.05, "ascensionBonus": [0, 0.4, 0.8, 1.2, 1.6, 2, 2.4] },
+  "lightCone": { "levelGrowth": 0.15, "ascensionBonus": [0, 1.2, 2.8, 4.4, 6, 7.6, 9.2] },
   "enemy": { "hpPerLevel": 0.35, "atkPerLevel": 0.12 },
   "majorTraceAscension": [2, 4, 6],
   "eidolons": { "max": 6 },
-  "abilityMaxLevel": { "basic": 6, "skill": 10, "ultimate": 10, "talent": 10 }
+  "abilityMaxLevel": { "basic": 6, "skill": 10, "ultimate": 10, "talent": 10, "memospriteSkill": 6, "memospriteTalent": 6 },
+  "sources": [
+    {
+      "topic": "Light Cone and character promotion growth (verified with In the Night 48/26.4/21 -> 1058.4/582.12/463.05 and Seele ATK 87.12 -> 640)",
+      "url": "https://honkai-star-rail.fandom.com/wiki/In_the_Night",
+      "retrieved": "2026-10-06"
+    },
+    {
+      "topic": "Character promotion growth (Seele: 87.12 ATK -> 204 at 20/A1 -> 640 at 80/A6)",
+      "url": "https://honkai-star-rail.fandom.com/wiki/Seele",
+      "retrieved": "2026-10-06"
+    }
+  ]
 }

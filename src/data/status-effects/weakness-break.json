@@ -30,13 +30,13 @@
   {
     "id": "break.freeze",
     "name": "Frozen",
-    "description": "Cannot take action. On the skipped turn, takes Ice Additional DMG, then the next action is delayed by 50%.",
+    "description": "Cannot take action. On thawing, the frozen turn is skipped and the unit takes Ice Additional DMG, then its next action is Advanced Forward by 50%.",
     "kind": "debuff",
     "category": "cc",
     "dispellable": true,
     "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
-    "cc": { "type": "freeze", "skipsTurn": true, "delayOnExpire": 0.5 },
-    "dot": { "element": "Ice", "formula": "breakDot", "levelMultiplier": 1, "tickOn": "onExpire" },
+    "cc": { "type": "freeze", "skipsTurn": true, "advanceOnExpire": 0.5 },
+    "dot": { "element": "Ice", "formula": "breakDot", "damageType": "additional", "levelMultiplier": 1, "tickOn": "onExpire" },
     "presentation": { "icon": "status-freeze", "vfx": "vfx.break.freeze" }
   },
   {
@@ -73,7 +73,7 @@
     "maxStacks": 5,
     "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
     "cc": { "type": "entanglement", "skipsTurn": false },
-    "dot": { "element": "Quantum", "formula": "breakDot", "levelMultiplier": 0.6, "perStack": true, "useToughnessMultiplier": true },
+    "dot": { "element": "Quantum", "formula": "breakDot", "damageType": "additional", "levelMultiplier": 0.6, "perStack": true, "useToughnessMultiplier": true },
     "presentation": { "icon": "status-entanglement", "vfx": "vfx.break.quantum" }
   },
   {

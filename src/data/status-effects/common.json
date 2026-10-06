@@ -50,6 +50,36 @@
     "modifiers": [{ "stat": "critDmg", "value": { "param": "critDmg" } }]
   },
   {
+    "id": "buff.ember-pilgrim",
+    "name": "Ember Road",
+    "description": "Fire DMG increased (Pilgrim of the Ember Road 4-piece).",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "fireDmg", "value": { "param": "fireDmg" } }]
+  },
+  {
+    "id": "buff.gale-courier",
+    "name": "Swift Gale",
+    "description": "SPD increased (Courier of the Swift Gale 4-piece).",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdPct" } }]
+  },
+  {
+    "id": "buff.resonant-strings",
+    "name": "Resonant Strings",
+    "description": "DMG dealt increased (The Harmonic Thread).",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }]
+  },
+  {
     "id": "cc.taunt",
     "name": "Taunted",
     "description": "Can only target the unit that applied Taunt.",

@@ -60,7 +60,11 @@ export const TARGETINGS = [
 export const TargetingSchema = z.enum(TARGETINGS);
 export type Targeting = z.infer<typeof TargetingSchema>;
 
-/** Who an individual effect hits, relative to the selection. */
+/**
+ * Who an individual effect hits, relative to the selection. `primary` is the selected target of the
+ * ability (an enemy or, for ally-targeted abilities, the ally); `memosprite` is the owner's
+ * memosprite and `owner` is the memosprite's owner (used by memosprite abilities and talents).
+ */
 export const EFFECT_TARGETS = [
   'primary',
   'adjacent',
@@ -72,11 +76,16 @@ export const EFFECT_TARGETS = [
   'allAlliesExceptSelf',
   'attacker',
   'memosprite',
+  'owner',
 ] as const;
 export const EffectTargetSchema = z.enum(EFFECT_TARGETS);
 export type EffectTarget = z.infer<typeof EffectTargetSchema>;
 
 export const ScalingStatSchema = z.enum(['atk', 'hp', 'def']);
+
+/** Reference to a named parameter of the owning definition (Light Cone `passive.params`, status `params`). */
+export const ParamRefSchema = z.object({ param: z.string().min(1) }).strict();
+export type ParamRef = z.infer<typeof ParamRefSchema>;
 
 const DamageEffectSchema = z
   .object({
@@ -129,8 +138,12 @@ const ApplyStatusEffectSchema = z
     fixedChance: z.boolean().optional(),
     duration: z.number().int().positive().optional(),
     stacks: z.number().int().positive().optional(),
-    /** Values substituted into the status effect's modifiers (e.g. the ATK% of a buff at this level). */
-    params: z.record(z.string(), LevelScaledSchema).optional(),
+    /**
+     * Values substituted into the status effect's modifiers (e.g. the ATK% of a buff at this level).
+     * `{ "param": "name" }` takes the value from the owning definition's own params instead, e.g. a
+     * Light Cone passive's superimposed `params` at the equipped Superimposition rank.
+     */
+    params: z.record(z.string(), z.union([LevelScaledSchema, ParamRefSchema])).optional(),
   })
   .strict();
 
@@ -150,6 +163,18 @@ const EnergyEffectSchema = z
     amount: z.number(),
     /** Fixed energy ignores Energy Regeneration Rate. */
     fixed: z.boolean().optional(),
+  })
+  .strict();
+
+/**
+ * Charges a points-based Ultimate (characters whose `ultimate.resource` is `points`, e.g. stacks
+ * gained from allies' Skills instead of Energy). Energy-based Ultimates use the `energy` effect.
+ */
+const UltimatePointsEffectSchema = z
+  .object({
+    kind: z.literal('ultimatePoints'),
+    target: EffectTargetSchema,
+    amount: z.number().int(),
   })
   .strict();
 
@@ -189,6 +214,7 @@ export const EffectSchema = z.discriminatedUnion('kind', [
   ApplyStatusEffectSchema,
   DispelEffectSchema,
   EnergyEffectSchema,
+  UltimatePointsEffectSchema,
   SkillPointEffectSchema,
   ActionAdvanceEffectSchema,
   SummonEffectSchema,
@@ -196,17 +222,50 @@ export const EffectSchema = z.discriminatedUnion('kind', [
 ]);
 export type Effect = z.infer<typeof EffectSchema>;
 
-/** Combat events that talents, traces, eidolons, light cones and relic sets can react to. */
+/** Names of `{ "param": ... }` references used by applyStatus effects. */
+export function paramRefsOf(effects: readonly Effect[]): string[] {
+  return effects.flatMap((e) =>
+    e.kind === 'applyStatus' ? Object.values(e.params ?? {}).flatMap((v) => (typeof v === 'object' && 'param' in v ? [v.param] : [])) : [],
+  );
+}
+
+/**
+ * Combat events that talents, traces, eidolons, light cones, relic sets and statuses can react to.
+ * "Owner" is the unit that carries the trigger (the wearer for equipment).
+ *
+ * - `battleStart` / `waveStart`: once per battle / per wave, before the first turn.
+ * - `onEnterBattleField`: the owner enters the field (battle start, a memosprite being summoned, a
+ *   revived ally re-entering). Fires before `battleStart` handlers of other units see it.
+ * - `turnStart` / `turnEnd`: the owner's own turn (extra turns included).
+ * - `beforeAttack` / `afterAttack`: around any attack by the owner (Basic, Skill, Ultimate, Follow-up).
+ * - `afterUseBasic` / `afterUseSkill` / `afterUseUltimate`: after the owner uses that ability, whether
+ *   or not it deals damage (e.g. a buff-only Ultimate still fires `afterUseUltimate`).
+ * - `onFollowUp`: the owner performs a follow-up attack or counter (an inserted action).
+ * - `afterBeingHit`: the owner is hit by an enemy attack.
+ * - `afterAllyAttack`: another ally (memosprites included) finishes an attack.
+ * - `afterAllyHit`: another ally is hit by an enemy attack (counters, "when an ally is attacked").
+ * - `afterAllyUsesUltimate`: another ally uses their Ultimate.
+ * - `onMemospriteSummoned` / `onMemospriteLeave`: the owner's memosprite is summoned / leaves the field.
+ * - `onKill`, `onWeaknessBreak`, `onDebuffApplied`, `onEnemyDefeated`, `onHpChanged`, `onShieldBroken`.
+ */
 export const TRIGGER_EVENTS = [
   'battleStart',
   'waveStart',
+  'onEnterBattleField',
   'turnStart',
   'turnEnd',
   'beforeAttack',
   'afterAttack',
+  'afterUseBasic',
+  'afterUseSkill',
+  'afterUseUltimate',
+  'onFollowUp',
   'afterBeingHit',
-  'afterAllyAttacked',
+  'afterAllyAttack',
+  'afterAllyHit',
   'afterAllyUsesUltimate',
+  'onMemospriteSummoned',
+  'onMemospriteLeave',
   'onKill',
   'onWeaknessBreak',
   'onDebuffApplied',
@@ -217,10 +276,39 @@ export const TRIGGER_EVENTS = [
 export const TriggerEventSchema = z.enum(TRIGGER_EVENTS);
 export type TriggerEvent = z.infer<typeof TriggerEventSchema>;
 
+/**
+ * Condition types understood by the combat engine's condition registry (Phase 5). A closed list, so
+ * a typo in data fails at load time instead of silently never matching.
+ *
+ * - `attackType { is }`: the triggering attack has this attack type.
+ * - `attackerHasStatus { status }` / `targetHasStatus { status }` / `hasStatus { status }` (the unit receiving a modifier).
+ * - `attackerIsOwnMemosprite`: the triggering unit is the owner's memosprite.
+ * - `sourceIsMemosprite`: the damage source is a memosprite (for DMG% modifiers).
+ * - `memospriteOnField`: the owner's memosprite is currently on the field.
+ * - `targetHasShield`: the triggering ally / target currently has a Shield.
+ * - `abilityTargetsAlly`: the triggering ability was used on an ally (Courier 4pc, Harmony cones).
+ * - `hpBelow { ratio }` / `statAtLeast { stat, value }`: the owner's current HP ratio / panel stat.
+ */
+export const CONDITION_TYPES = [
+  'attackType',
+  'attackerHasStatus',
+  'attackerIsOwnMemosprite',
+  'sourceIsMemosprite',
+  'memospriteOnField',
+  'hasStatus',
+  'targetHasStatus',
+  'targetHasShield',
+  'abilityTargetsAlly',
+  'hpBelow',
+  'statAtLeast',
+] as const;
+export const ConditionTypeSchema = z.enum(CONDITION_TYPES);
+export type ConditionType = z.infer<typeof ConditionTypeSchema>;
+
 /** Structured condition evaluated by the combat engine's condition registry (Phase 5). */
 export const ConditionSchema = z
   .object({
-    type: z.string().min(1),
+    type: ConditionTypeSchema,
     params: z.record(z.string(), z.unknown()).optional(),
   })
   .strict();

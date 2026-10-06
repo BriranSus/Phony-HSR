@@ -37,24 +37,15 @@ export function maxToughnessMultiplier(maxToughness: number, rules: BreakRules):
 }
 
 /**
- * Attacker-level multiplier used by Break / Super Break / break DoT damage. Anchors come from data;
- * values between authored anchors are linearly interpolated until Phase 8 completes the table.
+ * Attacker-level multiplier used by Break / Super Break / break DoT damage, read from the full
+ * per-level table in `rules/combat/default.json` (Lv1-80 for characters, up to Lv95 for enemies).
+ * There is no interpolation: a level missing from the table is a data error.
  */
 export function levelMultiplier(level: number, rules: BreakRules): number {
-  const pts = Object.entries(rules.levelMultiplier)
-    .map(([k, v]) => [Number(k), v] as const)
-    .sort((a, b) => a[0] - b[0]);
-  if (pts.length === 0) throw new Error('combat rules define no level multipliers');
-  const first = pts[0] as readonly [number, number];
-  const last = pts[pts.length - 1] as readonly [number, number];
-  if (level <= first[0]) return first[1];
-  if (level >= last[0]) return last[1];
-  for (let i = 1; i < pts.length; i++) {
-    const [l1, v1] = pts[i] as readonly [number, number];
-    const [l0, v0] = pts[i - 1] as readonly [number, number];
-    if (level <= l1) return v0 + ((v1 - v0) * (level - l0)) / (l1 - l0);
-  }
-  return last[1];
+  if (!Number.isInteger(level)) throw new RangeError(`Level multiplier needs an integer level (got ${level})`);
+  const v = rules.levelMultiplier[String(level)];
+  if (v === undefined) throw new RangeError(`No break level multiplier for Lv${level}`);
+  return v;
 }
 
 /** Break DMG before DEF/RES/Vulnerability/Broken zones: ElementMult x LevelMult x MaxToughnessMult x (1 + BE). */

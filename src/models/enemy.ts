@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { ElementSchema, IdSchema, PresentationHooksSchema, TextSchema } from './common';
 import { AbilitySchema, ConditionSchema, EffectSchema } from './ability';
 import { CcTypeSchema } from './status';
+import { abilityTemplateSlots, templateProblems } from './templates';
 
 export const ENEMY_RANKS = ['normal', 'elite', 'boss', 'weeklyBoss', 'storyBoss', 'event'] as const;
 export const EnemyRankSchema = z.enum(ENEMY_RANKS);
@@ -94,6 +95,7 @@ export function validateEnemy(e: Enemy): string[] {
   const abilityIds = new Set(e.abilities.map((a) => a.id));
   for (const id of e.ai.sequence ?? []) if (!abilityIds.has(id)) problems.push(`ai.sequence references unknown ability "${id}"`);
   for (const p of e.phases) for (const id of p.abilities) if (!abilityIds.has(id)) problems.push(`phase "${p.id}" references unknown ability "${id}"`);
+  for (const a of e.abilities) for (const p of templateProblems(a.description, abilityTemplateSlots(a))) problems.push(`${a.id}: description placeholder ${p} does not resolve`);
   for (const w of e.weaknesses) {
     const res = e.resistances[w];
     if (res !== undefined && res > 0) problems.push(`enemy is weak to ${w} but has positive ${w} RES`);

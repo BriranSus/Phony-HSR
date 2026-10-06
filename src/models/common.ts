@@ -52,3 +52,17 @@ export const PresentationHooksSchema = z
   })
   .strict();
 export type PresentationHooks = z.infer<typeof PresentationHooksSchema>;
+
+/**
+ * Citation for reference-game numbers that are data (e.g. the break level multiplier table), so
+ * every non-original constant can be traced back to where it was verified.
+ */
+export const SourceSchema = z
+  .object({
+    topic: TextSchema,
+    url: z.url(),
+    /** ISO date (YYYY-MM-DD) the source was read. */
+    retrieved: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  })
+  .strict();
+export type Source = z.infer<typeof SourceSchema>;

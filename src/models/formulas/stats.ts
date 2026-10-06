@@ -19,9 +19,11 @@ export function isValidLevelForAscension(level: number, ascension: number, rules
   return level >= prev && level <= cap;
 }
 
-/** stat = base x (1 + ascensionStep x asc) + base x levelGrowth x (level - 1) */
-export function grownStat(base: number, level: number, ascension: number, curve: { levelGrowth: number; ascensionStep: number }): number {
-  return base * (1 + curve.ascensionStep * ascension) + base * curve.levelGrowth * (level - 1);
+/** stat = base x (1 + ascensionBonus[asc] + levelGrowth x (level - 1)) */
+export function grownStat(base: number, level: number, ascension: number, curve: { levelGrowth: number; ascensionBonus: readonly number[] }): number {
+  const bonus = curve.ascensionBonus[ascension];
+  if (bonus === undefined) throw new RangeError(`Invalid ascension phase ${ascension}`);
+  return base * (1 + bonus + curve.levelGrowth * (level - 1));
 }
 
 /** Resolve a level-scaled ability value at an ability level. */
