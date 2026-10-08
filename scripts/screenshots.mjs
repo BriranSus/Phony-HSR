@@ -258,6 +258,10 @@ async function main() {
     const unresolved = await page.evaluate(() => [...document.querySelectorAll('.lc-card p')].map((p) => p.textContent).filter((t) => /[{}?]/.test(t ?? '')));
     if (unresolved.length) errors.push(`archive: unresolved Light Cone placeholders: ${unresolved.join(' | ')}`);
     await shot('04b-archive-light-cones');
+    await page.click('[data-tab="relics"]');
+    await uiSettled();
+    await sleep(300);
+    await shot('04c-archive-relic-sets');
     await page.click('[data-tab="enemies"]');
     await uiSettled();
     await sleep(300);

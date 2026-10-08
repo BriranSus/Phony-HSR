@@ -1412,3 +1412,12 @@
     max-height: 45vh;
   }
 }
+
+/* Relic set cards: gold edge for Cavern Relics, cyan for Planar Ornaments. */
+.relic-card--cavern {
+  border-left: 3px solid var(--c-gold);
+}
+
+.relic-card--planar {
+  border-left: 3px solid var(--c-cyan);
+}

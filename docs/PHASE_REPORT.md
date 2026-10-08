@@ -2,7 +2,7 @@
 
 **Project:** Astral Rail, an original fan project inspired by the gameplay structure of *Honkai: Star Rail*
 **Scope:** spec §39 "FIRST ACTION" (analysis, engine, stack, architecture, folders, data models, dependencies, roadmap) and **Phase 1** of §37
-**Status:** complete, **Revision 1 applied** (validator feedback on the 7.5/10 review, see [§7](#7-revision-1-changelog)), awaiting validation. No Phase 2+ gameplay was implemented (interfaces, data models and stubs only).
+**Status:** complete. **Revision 1** (validator feedback on the 7.5/10 review, see [§7](#7-revision-1-changelog)) was validated at 8.5/10. **Revision 2** (real Honkai: Star Rail content, see [§8](#8-revision-2-changelog-real-hsr-data)) is applied and awaiting validation. No Phase 2+ gameplay was implemented (interfaces, data models and stubs only).
 
 ---
 
@@ -19,17 +19,18 @@
 - **Tooling:** Vite 8, TypeScript 5.9 (`strict` + `noUncheckedIndexedAccess`), ESLint 10 + typescript-eslint, Vitest 4, and a Playwright 1.63 end-to-end/screenshot script.
 - **Engine core (`src/core`):** fixed-timestep `GameLoop`; stack-based `StateManager` with queued operations, overlays and transition hooks; typed `EventBus` (extensible through declaration merging); `ServiceRegistry` DI with cycle detection; `DataRegistry` (Zod validation, duplicate-id, semantic and cross-reference checks, progress); `ConfigService` (data defaults + URL overrides); `Logger`; action-mapped `InputManager` (keyboard, mouse, wheel, gamepad); `RenderService` (one WebGL renderer, per-state views with bloom); `ModuleManager` (topological init).
 - **Data models (`src/models`):** 16 schema files (incl. description templates), a collection catalog, and pure formulas for AV and turn order, damage zones, toughness and break (incl. Bleed cap, Wind Shear stacks, Entanglement, Super Break, the full Lv1–95 level-multiplier table), SP, energy, effect-hit chance, stat growth and unit lifecycle (memosprites leave the field at 0 HP). All constants are read from data.
-- **Sample content (`src/data`, 30 files / 105 records / 19 collections, all original):**
-  - 4 characters with full kits, traces and E1–E6: *Ignatius* (Fire, Destruction, 5★), *Lyra* (Lightning, Remembrance, 5★, with memosprite *Aria*: Memosprite Skill + Memosprite Talent), *Brann* (Physical, Preservation, 4★), *Seraphine* (Wind, Harmony, 4★)
-  - 3 enemies (normal, elite, and a 2-phase boss with summons and a charge-up)
-  - 3 Light Cones (5★/4★/3★), 2 Cavern + 2 Planar relic sets, 5★ relic stat tables
-  - the 7 break statuses plus kit and equipment statuses, items, cost tables, a limited character banner and a limited Light Cone banner, a quest + branching dialogue, input bindings, loading tips and combat/progression/scaling rules
+- **Reference content (`src/data`, 79 files / 670 records / 20 collections; real Honkai: Star Rail data since Revision 2, see [DATA_SOURCES.md](DATA_SOURCES.md)):**
+  - 18 characters with full kits (per-level reference parameters), Traces and E1–E6, covering all 7 Types and 8 Paths: Clara, Blade, Seele, Dan Heng, Himeko, Jing Yuan (with the Lightning-Lord summon), Bronya, Tingyun, Ruan Mei, Kafka, Silver Wolf, Pela, Welt, March 7th, Gepard, Natasha, Bailu and Trailblazer (Remembrance) with the memosprite Mem
+  - 24 Light Cones: 12 signature 5★, 9 popular 4★, 3 × 3★
+  - 15 enemies: Voidranger: Reaver, Silvermane Soldier, Frostspawn, Flamespawn, Thunderspawn, Automaton Beetle, Automaton Spider, Vagrant, Mara-Struck Soldier, 2 Lances of the Eternal Freeze, Automaton Grizzly, Voidranger: Trampler, Silvermane Lieutenant, and the 2-phase boss Cocolia, Mother of Deception
+  - 12 Cavern + 8 Planar relic sets, 5★ relic stat tables, real items (95), 309 Trace cost tables, a real enemy level curve (Lv1–95)
+  - the 7 break statuses plus 65 kit / Light Cone / relic / enemy statuses, 85 documented script handlers, a Seele character banner and an In the Night Light Cone banner, a quest + branching dialogue, input bindings, loading tips and combat/progression/scaling rules
 - **Modules (`src/modules`):** 28 `GameModule`s covering every system in spec §36 (and more), each with a public interface, a DI token, a roadmap phase and declared dependencies. Two are partial: **ui** (layers, transitions, theme, SVG icon set, screens) and **vfx** (procedural starfield, nebula, ringed planet).
 - **Boot flow (in the browser):**
   1. **Loading:** emblem with rotating rings, a gameplay tip loaded from data, and a gold progress rail tracking real per-file validation and module initialisation.
   2. **Title:** a procedural express rides a rail of light through a nebula past a ringed gas giant (tracking shot, bloom), with the "ASTRAL RAIL" wordmark, a pulsing "CLICK TO START" and side shortcuts.
   3. **Main menu:** a "Departure Board" overlay sliding in over the live backdrop. Future systems appear with phase badges.
-  4. **Data Archive:** a registry browser with character cards (rarity, element/Path icons, Lv80 stats computed by the shared formulas, base AV, kit), Light Cones (S1/S5 values), enemies (weakness icons, toughness), and a combat-rules / break-effects table.
+  4. **Data Archive:** a registry browser with character cards (rarity, element/Path icons, Lv80 stats computed by the shared formulas, base AV, Taunt, kit incl. memosprite/summon), Light Cones (S1/S5 values), relic sets (2/4-piece bonuses), enemies (weakness icons, toughness, Lv80 HP/SPD from the real level curve, RES and debuff RES), and a combat-rules / break-effects table.
   5. **Test Scene:** a calibration platform with one crystal per element (colours from data), a placeholder mannequin and a light-rail arch. A debug orbit camera responds to WASD/Q/E/drag/wheel, a live input monitor shows held actions, and the F3 debug overlay (off by default) shows FPS, draw calls, state stack, registry and modules.
   6. Diagonal shutter transitions (navy panels, gold seam, emblem) between Loading → Title and Menu ↔ Test Scene. Esc returns to the menu.
 
@@ -43,6 +44,7 @@ npm run preview        # serve dist/ → http://localhost:4173
 npm test               # Vitest unit tests (core, formulas, schemas, all shipped data)
 npm run lint           # ESLint
 npm run screenshots    # build + preview + Playwright walk-through → docs/screenshots/*.png
+npm run import:reference   # regenerate the HSR reference content from the pinned sources
 npm run screenshots -- --dev          # same against the dev server
 npm run screenshots -- --swiftshader  # force software WebGL
 ```
@@ -55,10 +57,10 @@ npm run screenshots -- --swiftshader  # force software WebGL
 
 | Check | Result |
 |---|---|
-| `npm run build` (tsc + vite) | ✅ 0 type errors. Bundle: app 115 KB (37.3 KB gzip), three 579 KB (144 KB gzip), zod 95 KB, plus lazy per-file data chunks |
-| `npm test` | ✅ **117 / 117 tests passed** in 12 files |
+| `npm run build` (tsc + vite) | ✅ 0 type errors. Bundle: app 130 KB (40.8 KB gzip), three 579 KB (144 KB gzip), zod 95 KB, plus lazy per-file data chunks |
+| `npm test` | ✅ **144 / 144 tests passed** in 13 files |
 | `npm run lint` | ✅ 0 problems |
-| `npm run screenshots` (production build) | ✅ 25 screenshots: full flow at 1600×900 plus menu / archive / test scene at 1280×720, 1024×768 and 390×844. **0 console or page errors, 0 layout problems** (overlap, cut-off and horizontal-overflow checks), 0 unresolved placeholders, input actions verified (`moveForward, moveRight, sprint, cameraDrag`) |
+| `npm run screenshots` (production build) | ✅ 26 screenshots: full flow at 1600×900 plus menu / archive / test scene at 1280×720, 1024×768 and 390×844. **0 console or page errors, 0 layout problems** (overlap, cut-off and horizontal-overflow checks), 0 unresolved placeholders, input actions verified (`moveForward, moveRight, sprint, cameraDrag`) |
 | `npm run screenshots -- --dev` | ✅ same flow on the dev server |
 | Runtime FPS (headless Chromium, Intel UHD via ANGLE D3D11, 1600×900) | 60 FPS in the test scene |
 
@@ -74,10 +76,11 @@ npm run screenshots -- --swiftshader  # force software WebGL
 | `tests/core/ModuleManager.test.ts` | 6 | topological order, cycle/unknown detection, **real module graph acyclic + spec §36 coverage**, headless boot |
 | `tests/core/ConfigLoggerInput.test.ts` | 11 | config overrides and validation, logger levels and sinks, input edges, axes, mouse, blur, wheel, rebinding, gamepad |
 | `tests/models/formulas.test.ts` | 31 | AV, advance/delay, SPD change, cycles, turn order, DEF/RES/mitigation/broken zones, toughness, **full level-multiplier table** (anchors Lv1/4/20/40/50/60/70/80/95, monotonic, no interpolation, gap rejection), break multipliers and delays, Bleed cap, DoTs, Freeze advance, SP pool, energy, debuff chance, stat growth (87.12 → 640; **Light Cones 26.4 → 582.12** and all three rarity tiers), memosprite leave-field lifecycle |
-| `tests/models/templates.test.ts` | 4 | `{n}`/`{name}` placeholder resolution, load-time failures for abilities / Eidolons / Light Cones / relic sets, Light Cone param usage |
-| `tests/models/kit-model.test.ts` | 5 | trigger hooks, closed condition types, memosprite Skill + Talent, memosprite Eidolon bonuses, Energy vs points Ultimates |
+| `tests/models/templates.test.ts` | 5 | `{n}`/`{name}` placeholder resolution, load-time failures for abilities / Eidolons / Light Cones / relic sets, Light Cone param usage |
+| `tests/models/kit-model.test.ts` | 6 | trigger hooks, closed condition types, memosprite Skill + Talent, memosprite Eidolon bonuses, Energy vs points Ultimates |
 | `tests/models/schemas.test.ts` | 13 | rejection of invalid elements, paths, rarities, eidolon counts, typos, effects, relic sets, LC superimposition, statuses, curves, banners, dialogue |
-| `tests/data/content.test.ts` | 12 | every shipped file validates, all elements and paths present, break mapping, SP/energy rules, kits, curves, 5★ relic max main stats, LC S1–S5, **every set / Light Cone bonus encoded as data**, Light Cone stat tiers, Remembrance kit, Light Cone banner |
+| `tests/data/content.test.ts` | 11 | every shipped file validates (schemas, references, placeholders, param refs, script handlers), all elements and paths, roster covers 7 Types / 8 Paths with a memosprite and a summon, standard Basic/Skill/Ultimate economy and levels, relic tables, every set / Light Cone bonus encoded as data, documented handlers, banners |
+| `tests/data/reference.test.ts` | 26 | **real values:** Lv80 stats of 8 characters, Energy / Taunt / Path / Type, Seele / Kafka / Jing Yuan / Blade multipliers and economy, Silver Wolf implant, Bronya advance, Clara counter, Mem HP, E3/E5 bonuses, Lv80 stats of 6 Light Cones, enemy weaknesses / toughness / RES, Cocolia phases, enemy level curve |
 
 ## 4. Screenshots (`docs/screenshots/`)
 
@@ -88,6 +91,7 @@ npm run screenshots -- --swiftshader  # force software WebGL
 | `03-main-menu.png` | Departure Board main menu over the live backdrop |
 | `04-archive-characters.png` | Data Archive: character cards (gold 5★ / purple 4★) |
 | `04b-archive-light-cones.png` | Data Archive: Light Cones with resolved passives and Lv80 stats |
+| `04c-archive-relic-sets.png` | Data Archive: Cavern and Planar relic sets |
 | `05-archive-enemies.png` | Data Archive: enemies with weaknesses and toughness |
 | `06-archive-rules.png` | Data Archive: combat rules and weakness-break table |
 | `07-transition.png` | Shutter transition (navy panels, gold seam, emblem) |
@@ -100,9 +104,9 @@ npm run screenshots -- --swiftshader  # force software WebGL
 ## 5. Known limitations (intentional for Phase 1, or data to be completed later)
 
 - **No gameplay yet.** Player controller, combat, progression and the other systems are interfaces and stubs, as the spec requires before Phase 1 is validated. The Test Scene's orbit camera is a sandbox tool, not the Phase-3 camera system.
-- **Approximations marked in data:** the `support`/`heal` ability curves, linear enemy level scaling (replaced by curve tables in Phase 7), relic main-stat drop weights, and Light Cone ascension credit costs. Relic stat tables cover 5★ only (other rarities in Phase 11).
-- **Data references not executed yet:** script handler ids (e.g. `ignatius.e6`) are validated structurally only; their registry arrives with the skills module in Phase 5. Condition types and trigger events are closed enums (typos fail at load), but they are evaluated only once the Phase 5 engine exists.
-- **UI:** only the Phase-1 screens exist. Side shortcuts and disabled menu entries show their target phase. There's no localisation yet (plain strings), no audio (Phase 22), and characters show generic silhouettes (no character art by design).
+- **Interpretations and unverified fields** of the reference data are listed in [DATA_SOURCES.md §3](DATA_SOURCES.md#3-unverified-fields-and-interpretations) (e.g. Cocolia's phase transition, loot quantities, 4★ banner line-ups). Relic main-stat drop weights remain approximations. Relic stat tables cover 5★ only (other rarities in Phase 11).
+- **Data references not executed yet:** script handler ids (e.g. `kafka.e6`) must be documented in `script-handlers/handlers.json` (85 handlers), but their implementations arrive with the skills module in Phase 5. Condition types and trigger events are closed enums (typos fail at load), but they are evaluated only once the Phase 5 engine exists.
+- **UI:** only the Phase-1 screens exist. Characters keep procedural silhouettes: no copyrighted art, splash, icons, models, audio or fonts are used. Side shortcuts and disabled menu entries show their target phase. There's no localisation yet (plain strings), no audio (Phase 22), and characters show generic silhouettes (no character art by design).
 - **Headless rendering:** the screenshot script prefers the hardware GPU through ANGLE and falls back to SwiftShader, where frames are slow but captures still work.
 
 ## 6. Revision note on reference numbers
@@ -139,7 +143,25 @@ Validator score before revision: **7.5/10** (Mechanics 8, Architecture 8.5, Visu
 | Rarity colours | Gold 5★ / purple 4★ (/ blue 3★) tokens, rarity-coloured stars, gradient card backdrops and Light Cone card tints. |
 | Chamfered corners | `--chamfer-*` clip-path tokens: menu rows, character cards, info cards, the input monitor and the debug overlay use clipped corners; pills remain for buttons, chips and badges. |
 
-## 8. What Phase 2 will add (Player controller)
+## 8. Revision 2 changelog (real HSR data)
+
+Phase 1 passed validation at **8.5/10** after Revision 1. Before Phase 2, the user asked for the characters, Light Cones and enemies to be real Honkai: Star Rail content researched from real data. The rule against HSR names was lifted for this private test project. Binary assets stay forbidden, and the title stays "Astral Rail".
+
+| Area | What changed |
+|---|---|
+| Sources | `npm run import:reference` regenerates the content from **StarRailRes** (structured English data: names, per-level ability parameters, promotions, Traces, Eidolons, Light Cones, relic sets, items) and the **TurnBasedGameData** datamine (Energy, SP, toughness per ability, memosprite skills, enemies, enemy level curve, EXP values, factions, bios), both pinned by commit, plus the HSR wiki for cross-checks. Every record has `sources`. [DATA_SOURCES.md](DATA_SOURCES.md) lists the sources, conversions, verified values and every unverified field. |
+| Characters (18) | Destruction: Clara, Blade · Hunt: Seele, Dan Heng · Erudition: Himeko, Jing Yuan · Harmony: Bronya, Tingyun, Ruan Mei · Nihility: Kafka, Silver Wolf, Pela, Welt · Preservation: March 7th, Gepard · Abundance: Natasha, Bailu · Remembrance: **Trailblazer (Remembrance) with Mem** (chosen over Castorice; see DATA_SOURCES §3). Real rarity, Path, Type, base stats (promotion growth asserted against the reference tables), Taunt, max Energy, per-level multipliers, Energy / SP / toughness per ability, all 6 Eidolons with real E3/E5 bonuses (incl. Mem's), and the real Trace tree (A2/A4/A6, stat nodes, unlock requirements, costs). |
+| Kits exercised | Follow-ups (Kafka, Himeko, Blade, Jing Yuan's Lightning-Lord), counters (Clara, March 7th), extra turns (Seele, Dan Heng E4), DoT + detonation (Kafka, Himeko Burn), shields (March 7th, Gepard), heals / HoT / revives (Natasha, Bailu, Gepard), summons (Lightning-Lord, Mem), Weakness implant (Silver Wolf), action advance (Bronya), Break DMG and break extension (Ruan Mei), HP consumption (Blade). |
+| Light Cones (24) | 5★: Something Irreplaceable, The Unreachable Side, In the Night, Night on the Milky Way, Before Dawn, But the Battle Isn't Over, Past Self in Mirror, Patience Is All You Need, Incessant Rain, In the Name of the World, Moment of Victory, Time Waits for No One. 4★: Memories of the Past, Dance! Dance! Dance!, Good Night and Sleep Well, Post-Op Conversation, Only Silence Remains, Subscribe for More!, Resolution Shines As Pearls of Sweat, Day One of My New Life, Victory In a Blink. 3★: Arrows, Void, Defense. Real stats, promotion costs, fodder EXP and S1–S5 passives as modifiers / triggers. |
+| Enemies (15) | Normal: Voidranger: Reaver, Silvermane Soldier, Frostspawn, Flamespawn, Thunderspawn, Automaton Beetle, Automaton Spider, Vagrant, Mara-Struck Soldier, Lance of the Eternal Freeze ×2. Elite: Automaton Grizzly, Voidranger: Trampler, Silvermane Lieutenant. Boss: **Cocolia, Mother of Deception** (Echo of War): 2 phases (Ice → Imaginary, toughness 180 → 160, Creator's Resolve +40 SPD), summons the Lances, Weakness Protected while they live, Lock On, Freeze / Imprisonment and a charged AoE. Real weaknesses, toughness, element RES, debuff RES, SPD, skills, multipliers and energy, scaled by the real HardLevelGroup curve. |
+| Relic sets (20) | 12 Cavern (Passerby, Musketeer, Knight, Hunter, Champion, Guard, Genius, Band, Eagle, Thief, Messenger, Prisoner) + 8 Planar (Space Sealing Station, Fleet of the Ageless, Pan-Cosmic Commercial Enterprise, Belobog of the Architects, Inert Salsotto, Talia, Sprightly Vonwacq, Broken Keel) with real piece names and 2/4-piece effects encoded as data. |
+| Schema (generic, data-driven) | Ability `params` tables with `{ param }` / `{ param, from }` references; custom resources (Charge, Hits Per Action); summons; new effects (`hpChange`, `insertAction`, `detonateDot`, `implantWeakness`, `breakDamage`, `revive`, `gainResource`, `applyRandomStatus`, `removeStatus`); damage `extraScaling` / `source` / `repeat` / `targetConditions`; new trigger events and conditions; modifier `scaling` and `negate`; HoT, CC delay-on-apply, ability replacement, toughness protection; multi-bar boss phases; the enemy level curve. See DATA_MODELS §14. |
+| Script handlers | 85 handlers for mechanics generic effects can't express. Each is documented with its behaviour (`script-handlers/handlers.json`, DATA_SOURCES §4). The data registry rejects references to undocumented handlers, and the importer refuses to write them. Implementations arrive in Phase 5. |
+| Removed | The original samples (Ignatius, Lyra/Aria, Brann, Seraphine, the original Light Cones, enemies, relic sets, statuses, items and banners) and every reference to them (tests, docs, quest, dialogue, loot). |
+| UI | The Data Archive shows the real roster: floored Lv80 stats as in game, Taunt, memosprite/summon in the kit, a new **Relic Sets** tab, enemies sorted by rank with Lv80 HP/SPD, RES and debuff RES, and constant Light Cone values printed once. Visuals stay procedural/CSS. |
+| Tests | `tests/data/reference.test.ts` pins real values. The template, kit-model, schema and content tests were moved to the real data. |
+
+## 9. What Phase 2 will add (Player controller)
 
 - A third-person procedural placeholder character with walk / run / sprint, acceleration and turn smoothing, ground snapping, slope limits and capsule collision against a greybox collision world.
 - The `PlayerController` service behind `PlayerToken`, driven only by input **actions**, with locomotion tuning in `src/data/rules/locomotion.json`.

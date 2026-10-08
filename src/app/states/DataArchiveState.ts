@@ -3,7 +3,7 @@ import type { DataRegistry } from '@core/data/DataRegistry';
 import { Collections } from '@models/collections';
 import { ELEMENTS } from '@models/common';
 import type { Element as GameElement } from '@models/common';
-import { baseActionValue, breakActionDelay, grownStat } from '@models/formulas';
+import { baseActionValue, breakActionDelay, enemyStatAtLevel, grownStat } from '@models/formulas';
 import { ELITE_OR_HIGHER } from '@models/enemy';
 import { fillTemplate, lightConeTemplateSlots } from '@models/templates';
 import { DataArchiveScreen, type ArchiveViewModel } from '@modules/ui';
@@ -36,7 +36,8 @@ export function buildArchiveViewModel(data: DataRegistry): ArchiveViewModel {
     .sort((a, b) => b.rarity - a.rarity || a.name.localeCompare(b.name))
     .map((c) => {
       const s = c.baseStats;
-      const at80 = (base: number): number => grownStat(base, prog.maxLevel, maxAsc, prog.character);
+      // The game displays panel stats rounded down.
+      const at80 = (base: number): number => Math.floor(grownStat(base, prog.maxLevel, maxAsc, prog.character));
       return {
         id: c.id,
         name: c.name,
@@ -53,6 +54,7 @@ export function buildArchiveViewModel(data: DataRegistry): ArchiveViewModel {
           ['DEF (Lv. 80)', fmt(at80(s.def))],
           ['SPD', fmt(s.spd)],
           ['Base Action Value', fmt(baseActionValue(s.spd, combat), 1)],
+          ['Taunt', fmt(s.aggro ?? 0)],
           c.ultimateResource.kind === 'energy'
             ? (['Max Energy', fmt(c.ultimateResource.max)] as const)
             : ([c.ultimateResource.name, `${fmt(c.ultimateResource.cost)} pts`] as const),
@@ -63,6 +65,7 @@ export function buildArchiveViewModel(data: DataRegistry): ArchiveViewModel {
           ['Ultimate', c.abilities.ultimate.name],
           ['Talent', c.abilities.talent.name],
           ...(c.memosprite ? ([['Memosprite', c.memosprite.name]] as const) : []),
+          ...c.summons.map((s) => ['Summon', s.name] as const),
         ] as const,
       };
     });
@@ -71,12 +74,12 @@ export function buildArchiveViewModel(data: DataRegistry): ArchiveViewModel {
     .all(Collections.lightCones)
     .sort((a, b) => b.rarity - a.rarity)
     .map((lc) => {
-      const at80 = (base: number): number => grownStat(base, prog.maxLevel, maxAsc, prog.lightCone);
+      const at80 = (base: number): number => Math.floor(grownStat(base, prog.maxLevel, maxAsc, prog.lightCone));
       // Placeholders are validated at load time (validateLightCone), so every one resolves here.
       const passive = fillTemplate(lc.passive.description, lightConeTemplateSlots(lc), (v, isPct) => {
         if (v.kind !== 'superimposed') return '';
-        const show = (n: number): string => (isPct ? pct(n, Math.round(n * 1000) % 10 ? 1 : 0) : fmt(n, 2));
-        return `${show(v.value[0])} (S5 ${show(v.value[4])})`;
+        const show = (n: number): string => (isPct ? pct(n, Math.round(n * 1000) % 10 ? 1 : 0) : fmt(n, Number.isInteger(n) ? 0 : 1));
+        return v.value[0] === v.value[4] ? show(v.value[0]) : `${show(v.value[0])} (S5 ${show(v.value[4])})`;
       });
       return {
         name: lc.name,
@@ -88,8 +91,9 @@ export function buildArchiveViewModel(data: DataRegistry): ArchiveViewModel {
       };
     });
 
-  const enemies = data.all(Collections.enemies).map((e) => {
-    const maxToughness = Math.max(...data.all(Collections.enemies).map((x) => x.toughness));
+  const rankOrder = ['normal', 'elite', 'boss', 'weeklyBoss', 'storyBoss', 'event'];
+  const maxToughness = Math.max(...data.all(Collections.enemies).map((x) => x.toughness));
+  const enemies = [...data.all(Collections.enemies)].sort((a, b) => rankOrder.indexOf(a.rank) - rankOrder.indexOf(b.rank) || a.name.localeCompare(b.name)).map((e) => {
     const resList = Object.entries(e.resistances)
       .map(([el, v]) => `${el} RES ${pct(v)}`)
       .join(', ');
@@ -100,9 +104,10 @@ export function buildArchiveViewModel(data: DataRegistry): ArchiveViewModel {
       maxToughness,
       weaknesses: e.weaknesses.map((w) => ({ element: w, color: color(w) })),
       detail: [
-        `Toughness ${e.toughness}`,
-        `SPD ${e.baseStats.spd}`,
-        e.phases.length ? `${e.phases.length} phases` : null,
+        `Toughness ${e.toughness}${e.phases.some((p) => p.toughness) ? ` → ${e.phases.map((p) => p.toughness ?? e.toughness).join(' → ')}` : ''}`,
+        `Lv. 80 HP ${fmt(enemyStatAtLevel(e.baseStats.hp, 'hp', prog.maxLevel, prog))} · SPD ${fmt(enemyStatAtLevel(e.baseStats.spd, 'spd', prog.maxLevel, prog))}`,
+        e.phases.length > 1 ? `${e.phases.length} phases` : null,
+        Object.keys(e.debuffRes).length ? `Resists ${Object.keys(e.debuffRes).join(', ')}` : null,
         resList || null,
         ELITE_OR_HIGHER.has(e.rank) ? 'Elite-tier break rules (Bleed 7%, Wind Shear x3)' : 'Normal-tier break rules',
       ]
@@ -110,6 +115,10 @@ export function buildArchiveViewModel(data: DataRegistry): ArchiveViewModel {
         .join(' · '),
     };
   });
+
+  const relicSets = [...data.all(Collections.relicSets)]
+    .sort((a, b) => (a.kind === b.kind ? a.name.localeCompare(b.name) : a.kind === 'cavern' ? -1 : 1))
+    .map((s) => ({ name: s.name, kind: s.kind, bonuses: s.bonuses.map((b) => [`${b.pieces}-Pc`, b.description] as const) }));
 
   const breaks = ELEMENTS.map((el) => {
     const b = combat.weaknessBreak.elements[el];
@@ -140,6 +149,7 @@ export function buildArchiveViewModel(data: DataRegistry): ArchiveViewModel {
     characters,
     lightCones,
     enemies,
+    relicSets,
     breaks,
     rules,
     summary: `${total} validated records across ${Object.keys(counts).length} collections`,

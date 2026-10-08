@@ -39,6 +39,12 @@ export interface EnemyCardView {
   readonly detail: string;
 }
 
+export interface RelicSetCardView {
+  readonly name: string;
+  readonly kind: 'cavern' | 'planar';
+  readonly bonuses: ReadonlyArray<readonly [string, string]>;
+}
+
 export interface BreakRowView {
   readonly element: GameElement;
   readonly color: string;
@@ -52,12 +58,13 @@ export interface ArchiveViewModel {
   readonly characters: readonly CharacterCardView[];
   readonly lightCones: readonly LightConeCardView[];
   readonly enemies: readonly EnemyCardView[];
+  readonly relicSets: readonly RelicSetCardView[];
   readonly rules: ReadonlyArray<readonly [string, string]>;
   readonly breaks: readonly BreakRowView[];
   readonly summary: string;
 }
 
-type TabId = 'characters' | 'lightCones' | 'enemies' | 'rules';
+type TabId = 'characters' | 'lightCones' | 'relics' | 'enemies' | 'rules';
 
 const SILHOUETTE = `<svg viewBox="0 0 150 180" aria-hidden="true"><defs><linearGradient id="sil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff" stop-opacity=".05"/></linearGradient></defs><circle cx="75" cy="46" r="24" fill="url(#sil)"/><path d="M75 74c-32 0-52 18-56 50l-6 56h124l-6-56c-4-32-24-50-56-50z" fill="url(#sil)"/></svg>`;
 
@@ -71,14 +78,14 @@ export class DataArchiveScreen {
   readonly el: HTMLElement;
   private readonly body: HTMLElement;
   private readonly tabs = new Map<TabId, HTMLElement>();
-  private readonly order: TabId[] = ['characters', 'lightCones', 'enemies', 'rules'];
+  private readonly order: TabId[] = ['characters', 'lightCones', 'relics', 'enemies', 'rules'];
   private active: TabId = 'characters';
 
   constructor(
     private readonly vm: ArchiveViewModel,
     onBack: () => void,
   ) {
-    const labels: Record<TabId, string> = { characters: 'Characters', lightCones: 'Light Cones', enemies: 'Enemies', rules: 'Combat Rules' };
+    const labels: Record<TabId, string> = { characters: 'Characters', lightCones: 'Light Cones', relics: 'Relic Sets', enemies: 'Enemies', rules: 'Combat Rules' };
     const tabBar = h('nav', { class: 'archive__tabs', attrs: { role: 'tablist' } });
     for (const id of this.order) {
       const b = h('button', { class: 'archive-tab', text: labels[id], attrs: { type: 'button', role: 'tab', 'data-tab': id }, on: { click: () => this.show(id) } });
@@ -120,6 +127,8 @@ export class DataArchiveScreen {
         return h('div', { class: 'card-grid' }, ...this.vm.characters.map((c, i) => this.characterCard(c, i)));
       case 'lightCones':
         return h('div', { class: 'card-grid' }, ...this.vm.lightCones.map((lc, i) => this.lightConeCard(lc, i)));
+      case 'relics':
+        return h('div', { class: 'card-grid' }, ...this.vm.relicSets.map((s, i) => this.relicCard(s, i)));
       case 'enemies':
         return h('div', { class: 'card-grid' }, ...this.vm.enemies.map((e, i) => this.enemyCard(e, i)));
       case 'rules':
@@ -130,7 +139,7 @@ export class DataArchiveScreen {
   private characterCard(c: CharacterCardView, i: number): HTMLElement {
     return h(
       'article',
-      { class: `char-card char-card--${c.rarity}`, style: { '--portrait': c.portraitColor, '--el': c.elementColor, 'animation-delay': `${i * 70}ms` }, dataset: { id: c.id } },
+      { class: `char-card char-card--${c.rarity}`, style: { '--portrait': c.portraitColor, '--el': c.elementColor, 'animation-delay': `${Math.min(i, 12) * 40}ms` }, dataset: { id: c.id } },
       h(
         'div',
         { class: 'char-card__art' },
@@ -155,7 +164,7 @@ export class DataArchiveScreen {
     const rarityColor = lc.rarity === 5 ? 'var(--c-5star-a)' : lc.rarity === 4 ? 'var(--c-4star-a)' : 'var(--c-3star-a)';
     return h(
       'article',
-      { class: 'info-card lc-card', style: { '--rarity': rarityColor, 'animation-delay': `${i * 70}ms` } },
+      { class: 'info-card lc-card', style: { '--rarity': rarityColor, 'animation-delay': `${Math.min(i, 12) * 40}ms` } },
       h('div', { class: 'info-card__head' }, h('span', { class: 'icon', trustedHtml: PATH_ICONS[lc.path] }), h('div', { class: 'info-card__title', text: lc.name })),
       stars(lc.rarity),
       h('div', { class: 'char-card__meta', text: `${lc.path} · ${lc.stats}` }),
@@ -163,10 +172,20 @@ export class DataArchiveScreen {
     );
   }
 
+  private relicCard(s: RelicSetCardView, i: number): HTMLElement {
+    return h(
+      'article',
+      { class: `info-card relic-card relic-card--${s.kind}`, style: { 'animation-delay': `${Math.min(i, 12) * 40}ms` } },
+      h('div', { class: 'info-card__head' }, h('div', { class: 'info-card__title', text: s.name })),
+      h('div', { class: 'char-card__meta', text: s.kind === 'cavern' ? 'Cavern Relic' : 'Planar Ornament' }),
+      ...s.bonuses.map(([pieces, text]) => h('p', {}, h('b', { text: `${pieces}: ` }), text)),
+    );
+  }
+
   private enemyCard(e: EnemyCardView, i: number): HTMLElement {
     return h(
       'article',
-      { class: 'info-card', style: { 'animation-delay': `${i * 70}ms` } },
+      { class: 'info-card', style: { 'animation-delay': `${Math.min(i, 12) * 40}ms` } },
       h('div', { class: 'info-card__head' }, h('div', { class: 'info-card__title', text: e.name })),
       h('div', { class: 'char-card__meta', text: e.rank }),
       h('div', { class: 'weak-row' }, ...e.weaknesses.map((w) => h('span', { class: 'icon', style: { color: w.color }, attrs: { title: `Weak to ${w.element}` }, trustedHtml: ELEMENT_ICONS[w.element] }))),
