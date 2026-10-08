@@ -1,0 +1,109 @@
+{
+  "id": "lc.incessant-rain",
+  "name": "Incessant Rain",
+  "rarity": 5,
+  "path": "Nihility",
+  "baseStats": { "hp": 48, "atk": 26.4, "def": 21 },
+  "passive": {
+    "name": "Mirage of Reality",
+    "description": "Increases the wearer's Effect Hit Rate by {p1}%. When the wearer deals DMG to an enemy that currently has {p4} or more debuffs, increases the wearer's CRIT Rate by {p5}%. After the wearer uses their Basic ATK, Skill, or Ultimate, there is a {p2}% base chance to implant Aether Code on a random hit target that does not yet have it. Targets with Aether Code receive {p3}% increased DMG for 1 turn.",
+    "modifiers": [
+      { "stat": "effectHitRate", "value": { "param": "p1" } },
+      {
+        "stat": "critRate",
+        "value": { "param": "p5" },
+        "conditions": [{ "type": "debuffCountAtLeast", "params": { "count": 3 } }]
+      }
+    ],
+    "triggers": [
+      {
+        "on": "afterUseBasic",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "randomEnemy",
+            "status": "lc.aether-code",
+            "baseChance": { "param": "p2" },
+            "duration": 1,
+            "params": { "vuln": { "param": "p3" } }
+          }
+        ]
+      },
+      {
+        "on": "afterUseSkill",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "randomEnemy",
+            "status": "lc.aether-code",
+            "baseChance": { "param": "p2" },
+            "duration": 1,
+            "params": { "vuln": { "param": "p3" } }
+          }
+        ]
+      },
+      {
+        "on": "afterUseUltimate",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "randomEnemy",
+            "status": "lc.aether-code",
+            "baseChance": { "param": "p2" },
+            "duration": 1,
+            "params": { "vuln": { "param": "p3" } }
+          }
+        ]
+      }
+    ],
+    "params": {
+      "p1": [0.24, 0.28, 0.32, 0.36, 0.4],
+      "p2": [1, 1, 1, 1, 1],
+      "p3": [0.12, 0.14, 0.16, 0.18, 0.2],
+      "p4": [3, 3, 3, 3, 3],
+      "p5": [0.12, 0.14, 0.16, 0.18, 0.2]
+    }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 5000 }, { "item": "ancient-part", "count": 8 }],
+    [
+      { "item": "credit", "count": 10000 },
+      { "item": "obsidian-of-dread", "count": 4 },
+      { "item": "ancient-part", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 20000 },
+      { "item": "obsidian-of-desolation", "count": 4 },
+      { "item": "ancient-spindle", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 50000 },
+      { "item": "obsidian-of-desolation", "count": 8 },
+      { "item": "ancient-spindle", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 100000 },
+      { "item": "obsidian-of-obsession", "count": 5 },
+      { "item": "ancient-engine", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 200000 },
+      { "item": "obsidian-of-obsession", "count": 10 },
+      { "item": "ancient-engine", "count": 8 }
+    ]
+  ],
+  "fodderExp": 60000,
+  "lore": "She leaves the cover of the awning, opens her umbrella, and dives into an alley while humming a lighthearted tune. The rain stops a little while after. She scratches her head and swipes her screen open. After a few taps, raindrops begin to fall in an area no wider than her umbrella. The pitter-patter sound of raindrops on the umbrella mixes with music from the game. All was calm and relaxing. \"Gaming and rain totally go together.\"",
+  "sources": [
+    {
+      "topic": "Incessant Rain: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Incessant Rain: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

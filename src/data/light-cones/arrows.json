@@ -1,0 +1,69 @@
+{
+  "id": "lc.arrows",
+  "name": "Arrows",
+  "rarity": 3,
+  "path": "Hunt",
+  "baseStats": { "hp": 38.4, "atk": 14.4, "def": 12 },
+  "passive": {
+    "name": "Crisis",
+    "description": "At the start of the battle, the wearer's CRIT Rate increases by {p1}% for {p2} turn(s).",
+    "modifiers": [],
+    "triggers": [
+      {
+        "on": "battleStart",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "self",
+            "status": "buff.crit-rate-up",
+            "duration": { "param": "p2" },
+            "params": { "critRate": { "param": "p1" } }
+          }
+        ]
+      }
+    ],
+    "params": { "p1": [0.12, 0.15, 0.18, 0.21, 0.24], "p2": [3, 3, 3, 3, 3] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 3000 }, { "item": "thiefs-instinct", "count": 4 }],
+    [
+      { "item": "credit", "count": 6000 },
+      { "item": "arrow-of-the-beast-hunter", "count": 2 },
+      { "item": "thiefs-instinct", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 12000 },
+      { "item": "arrow-of-the-demon-slayer", "count": 2 },
+      { "item": "usurpers-scheme", "count": 4 }
+    ],
+    [
+      { "item": "credit", "count": 30000 },
+      { "item": "arrow-of-the-demon-slayer", "count": 4 },
+      { "item": "usurpers-scheme", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 60000 },
+      { "item": "arrow-of-the-starchaser", "count": 3 },
+      { "item": "conquerors-will", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 120000 },
+      { "item": "arrow-of-the-starchaser", "count": 6 },
+      { "item": "conquerors-will", "count": 5 }
+    ]
+  ],
+  "fodderExp": 500,
+  "lore": "A drop of strength condensed from time itself. All the seemingly insignificant moments come together to form the magnificent choir of fate. \"The hunter's eyes are the clearest when they pull back the bowstring with the arrow nocked.\"",
+  "sources": [
+    {
+      "topic": "Arrows: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Arrows: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

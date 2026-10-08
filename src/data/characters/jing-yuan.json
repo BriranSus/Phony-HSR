@@ -1,0 +1,445 @@
+{
+  "id": "char.jing-yuan",
+  "name": "Jing Yuan",
+  "rarity": 5,
+  "element": "Lightning",
+  "path": "Erudition",
+  "ultimateResource": { "kind": "energy", "max": 130 },
+  "baseStats": { "hp": 158.4, "atk": 95.04, "def": 66, "spd": 99, "critRate": 0.05, "critDmg": 0.5, "aggro": 75 },
+  "abilities": {
+    "basic": {
+      "id": "jing-yuan.basic",
+      "name": "Glistening Light",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Jing Yuan deals Lightning DMG equal to {p1}% of his ATK to one designated enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "jing-yuan.skill",
+      "name": "Rifting Zenith",
+      "kind": "skill",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 10,
+      "params": { "p1": [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8125, 0.875, 0.9375, 1, 1.05, 1.1, 1.15, 1.2, 1.25], "p2": [2] },
+      "description": "Deals Lightning DMG equal to {p1}% of Jing Yuan's ATK to all enemies and increases Lightning-Lord's Hits Per Action by {p2} for the next turn.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        { "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 },
+        {
+          "kind": "gainResource",
+          "target": "summon",
+          "resource": "jing-yuan.hits-per-action",
+          "amount": { "param": "p2" },
+          "duration": "untilNextAction"
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "jing-yuan.ultimate",
+      "name": "Lightbringer",
+      "kind": "ultimate",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 10,
+      "params": { "p1": [1.2, 1.28, 1.36, 1.44, 1.52, 1.6, 1.7, 1.8, 1.9, 2, 2.08, 2.16, 2.24, 2.32, 2.4], "p2": [3] },
+      "description": "Deals Lightning DMG equal to {p1}% of Jing Yuan's ATK to all enemies and increases Lightning-Lord's Hits Per Action by {p2} for the next turn.",
+      "energyGain": 5,
+      "effects": [
+        { "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 20 },
+        {
+          "kind": "gainResource",
+          "target": "summon",
+          "resource": "jing-yuan.hits-per-action",
+          "amount": { "param": "p2" },
+          "duration": "untilNextAction"
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "jing-yuan.talent",
+      "name": "Prana Extirpated",
+      "kind": "talent",
+      "tags": ["bounce"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": {
+        "p1": [60],
+        "p2": [0.33, 0.363, 0.396, 0.429, 0.462, 0.495, 0.5363, 0.5775, 0.6188, 0.66, 0.693, 0.726, 0.759, 0.792, 0.825],
+        "p3": [10],
+        "p4": [3],
+        "p5": [0.25],
+        "p6": [10]
+      },
+      "description": "Summons \"Lightning-Lord\" at the start of the battle. \"Lightning-Lord\" has {p1} base SPD and {p4} base Hits Per Action. When the Lightning-Lord takes action, its hits are considered as Follow-Up ATKs, with each hit dealing Lightning DMG equal to {p2}% of Jing Yuan's ATK to a random single enemy, and enemies adjacent to it also receive Lightning DMG equal to {p5}% of the DMG dealt to the primary target enemy. The Lightning-Lord's Hits Per Action can reach a max of {p6}. Every time \"Lightning-Lord's\" Hits Per Action increases by 1, its SPD increases by {p3}. After the \"Lightning-Lord's\" action ends, its SPD and Hits Per Action return to their base values. When Jing Yuan is knocked down, the \"Lightning-Lord\" will disappear. When Jing Yuan is affected by Crowd Control debuff, the \"Lightning-Lord\" is unable to take action.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [{ "kind": "summon", "unit": "jing-yuan.lightning-lord", "unitType": "summon" }]
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "jing-yuan.technique",
+      "name": "Spiritus Invocation",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [3] },
+      "description": "After the Technique is used, the Lightning-Lord's Hits Per Action in the first turn increases by {p1} at the start of the next battle.",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "gainResource",
+              "target": "summon",
+              "resource": "jing-yuan.hits-per-action",
+              "amount": { "param": "p1" },
+              "duration": "untilNextAction"
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": []
+  },
+  "summons": [
+    {
+      "id": "jing-yuan.lightning-lord",
+      "name": "Lightning-Lord",
+      "spd": { "fixed": 60 },
+      "levelFrom": "talent",
+      "resources": [{ "id": "jing-yuan.hits-per-action", "name": "Hits Per Action", "max": 10, "initial": 3, "resetAfterAction": 3 }],
+      "modifiers": [{ "stat": "spd", "value": 10, "scaling": { "per": "resource", "id": "jing-yuan.hits-per-action", "offset": 3 } }],
+      "abilities": [
+        {
+          "id": "jing-yuan.lightning-lord.strike",
+          "name": "Prana Extirpated",
+          "kind": "followUp",
+          "tags": ["bounce"],
+          "targeting": "enemyBounce",
+          "maxLevel": 10,
+          "params": {
+            "p1": [60],
+            "p2": [0.33, 0.363, 0.396, 0.429, 0.462, 0.495, 0.5363, 0.5775, 0.6188, 0.66, 0.693, 0.726, 0.759, 0.792, 0.825],
+            "p3": [10],
+            "p4": [3],
+            "p5": [0.25],
+            "p6": [10]
+          },
+          "description": "Each hit deals Lightning DMG equal to {p2}% of Jing Yuan's ATK to a random enemy (Follow-Up DMG), and adjacent enemies take {p5}% of that DMG. Hits Per Action: base {p4}, max {p6}; each extra hit adds {p3} SPD.",
+          "effects": [
+            {
+              "kind": "damage",
+              "target": "randomEnemy",
+              "stat": "atk",
+              "multiplier": { "param": "p2" },
+              "source": "owner",
+              "attackType": "followUp",
+              "repeat": { "resource": "jing-yuan.hits-per-action" },
+              "toughness": 5
+            },
+            {
+              "kind": "script",
+              "handler": "jing-yuan.lightning-lord-splash",
+              "params": { "adjacentRatio": { "param": "p5" } }
+            }
+          ],
+          "triggers": [],
+          "modifiers": []
+        }
+      ]
+    }
+  ],
+  "traces": [
+    {
+      "id": "jing-yuan.t001",
+      "requirements": {},
+      "costTable": "trace-cost.jing-yuan.1204001",
+      "kind": "ability",
+      "name": "Glistening Light",
+      "ability": "basic"
+    },
+    {
+      "id": "jing-yuan.t002",
+      "requirements": {},
+      "costTable": "trace-cost.jing-yuan.1204002",
+      "kind": "ability",
+      "name": "Rifting Zenith",
+      "ability": "skill"
+    },
+    {
+      "id": "jing-yuan.t003",
+      "requirements": {},
+      "costTable": "trace-cost.jing-yuan.1204003",
+      "kind": "ability",
+      "name": "Lightbringer",
+      "ability": "ultimate"
+    },
+    {
+      "id": "jing-yuan.t004",
+      "requirements": {},
+      "costTable": "trace-cost.jing-yuan.1204004",
+      "kind": "ability",
+      "name": "Prana Extirpated",
+      "ability": "talent"
+    },
+    {
+      "id": "jing-yuan.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.jing-yuan.1204101",
+      "kind": "major",
+      "name": "Battalia Crush",
+      "passive": {
+        "description": "If the Lightning-Lord's Hits Per Action is greater or equal to 6 in the next turn, its CRIT DMG increases by 25% for the next turn.",
+        "modifiers": [
+          {
+            "stat": "critDmg",
+            "value": 0.25,
+            "scope": "summon",
+            "conditions": [{ "type": "resourceAtLeast", "params": { "resource": "jing-yuan.hits-per-action", "value": 6 } }]
+          }
+        ],
+        "triggers": []
+      }
+    },
+    {
+      "id": "jing-yuan.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.jing-yuan.1204102",
+      "kind": "major",
+      "name": "Savant Providence",
+      "passive": {
+        "description": "At the start of the battle, immediately regenerates 15 Energy.",
+        "modifiers": [],
+        "triggers": [{ "on": "battleStart", "effects": [{ "kind": "energy", "target": "self", "amount": 15, "fixed": true }] }]
+      }
+    },
+    {
+      "id": "jing-yuan.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.jing-yuan.1204103",
+      "kind": "major",
+      "name": "War Marshal",
+      "passive": {
+        "description": "After the Skill is used, the CRIT Rate increases by 10% for 2 turn(s).",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterUseSkill",
+            "effects": [
+              {
+                "kind": "applyStatus",
+                "target": "self",
+                "status": "buff.crit-rate-up",
+                "duration": 2,
+                "params": { "critRate": 0.1 }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "jing-yuan.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.jing-yuan.1204201",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "jing-yuan.t202",
+      "parent": "jing-yuan.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.jing-yuan.1204202",
+      "kind": "stat",
+      "name": "CRIT Rate Boost",
+      "stat": { "stat": "critRate", "value": 0.027 }
+    },
+    {
+      "id": "jing-yuan.t203",
+      "parent": "jing-yuan.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.jing-yuan.1204203",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "jing-yuan.t204",
+      "parent": "jing-yuan.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.jing-yuan.1204204",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.05 }
+    },
+    {
+      "id": "jing-yuan.t205",
+      "parent": "jing-yuan.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.jing-yuan.1204205",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "jing-yuan.t206",
+      "parent": "jing-yuan.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.jing-yuan.1204206",
+      "kind": "stat",
+      "name": "CRIT Rate Boost",
+      "stat": { "stat": "critRate", "value": 0.04 }
+    },
+    {
+      "id": "jing-yuan.t207",
+      "parent": "jing-yuan.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.jing-yuan.1204207",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "jing-yuan.t208",
+      "parent": "jing-yuan.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.jing-yuan.1204208",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.075 }
+    },
+    {
+      "id": "jing-yuan.t209",
+      "parent": "jing-yuan.t103",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.jing-yuan.1204209",
+      "kind": "stat",
+      "name": "CRIT Rate Boost",
+      "stat": { "stat": "critRate", "value": 0.053 }
+    },
+    {
+      "id": "jing-yuan.t210",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.jing-yuan.1204210",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.08 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Slash, Seas Split",
+      "description": "When Lightning-Lord attacks, the DMG multiplier on enemies adjacent to the target enemy increases by an extra amount equal to 25% of the DMG multiplier against the primary target enemy.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "jing-yuan.e1"
+    },
+    {
+      "rank": 2,
+      "name": "Swing, Skies Squashed",
+      "description": "After Lightning-Lord takes action, DMG dealt by Jing Yuan's Basic ATK, Skill, and Ultimate increases by 20%, lasting for 2 turn(s).",
+      "modifiers": [],
+      "triggers": [],
+      "script": "jing-yuan.e2"
+    },
+    {
+      "rank": 3,
+      "name": "Strike, Suns Subdued",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "ultimate": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Spin, Stars Sieged",
+      "description": "For each hit performed by the Lightning-Lord when it takes action, Jing Yuan regenerates 2 Energy.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "jing-yuan.e4"
+    },
+    {
+      "rank": 5,
+      "name": "Stride, Spoils Seized",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "skill": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Sweep, Souls Slain",
+      "description": "Each hit performed by the Lightning-Lord when it takes action will make the target enemy Vulnerable. While Vulnerable, enemies receive 12% more DMG until the end of the Lightning-Lord's current turn, stacking up to 3 time(s).",
+      "modifiers": [],
+      "triggers": [],
+      "script": "jing-yuan.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "immortal-scionette", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "immortal-scionette", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "immortal-aeroblossom", "count": 6 },
+      { "item": "shape-shifters-lightning-staff", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "immortal-aeroblossom", "count": 9 },
+      { "item": "shape-shifters-lightning-staff", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "immortal-lumintwig", "count": 6 },
+      { "item": "shape-shifters-lightning-staff", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "immortal-lumintwig", "count": 9 },
+      { "item": "shape-shifters-lightning-staff", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "jing-yuans-eidolon",
+  "presentation": { "model": "proc.humanoid.jing-yuan", "portraitColor": "#c46cf0", "voice": {} },
+  "lore": {
+    "title": "The Xianzhou Luofu",
+    "faction": "The Xianzhou Luofu",
+    "bio": "The Divine Foresight, one of the Seven Arbiter-Generals."
+  },
+  "sources": [
+    {
+      "topic": "Jing Yuan: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Jing Yuan: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

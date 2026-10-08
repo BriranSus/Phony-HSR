@@ -176,7 +176,22 @@ export const ProgressionRulesSchema = z
     levelCaps: z.array(z.number().int().positive()).length(7),
     character: GrowthCurveSchema,
     lightCone: GrowthCurveSchema,
-    enemy: z.object({ hpPerLevel: z.number().min(0), atkPerLevel: z.number().min(0) }).strict(),
+    /**
+     * Enemy level scaling (reference HardLevelGroup 1): stat(L) = template base x levels[L].{hp,atk,spd};
+     * DEF ratio x 210 equals the combat-rule DEF (200 + 10 x L). One entry per level 1..95.
+     */
+    enemy: z
+      .object({
+        levels: z.record(
+          z.string().regex(/^\d+$/),
+          z.object({ hp: z.number().positive(), atk: z.number().positive(), def: z.number().positive(), spd: z.number().positive() }).strict(),
+        ),
+      })
+      .strict()
+      .refine((e) => {
+        const ls = Object.keys(e.levels).map(Number).sort((a, b) => a - b);
+        return ls[0] === 1 && ls.length === ls[ls.length - 1];
+      }, "enemy.levels must list every level from 1 upwards"),
     /** Ascension phase required to unlock Major Traces A2/A4/A6. */
     majorTraceAscension: z.array(z.number().int().min(0).max(6)).length(3),
     eidolons: z.object({ max: z.number().int().positive() }).strict(),

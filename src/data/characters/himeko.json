@@ -1,0 +1,438 @@
+{
+  "id": "char.himeko",
+  "name": "Himeko",
+  "rarity": 5,
+  "element": "Fire",
+  "path": "Erudition",
+  "ultimateResource": { "kind": "energy", "max": 120 },
+  "baseStats": { "hp": 142.56, "atk": 102.96, "def": 59.4, "spd": 96, "critRate": 0.05, "critDmg": 0.5, "aggro": 75 },
+  "abilities": {
+    "basic": {
+      "id": "himeko.basic",
+      "name": "Sawblade Tuning",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Fire DMG equal to {p1}% of Himeko's ATK to one enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "himeko.skill",
+      "name": "Molten Detonation",
+      "kind": "skill",
+      "tags": ["blast"],
+      "targeting": "enemyBlast",
+      "maxLevel": 10,
+      "params": {
+        "p1": [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.625, 1.75, 1.875, 2, 2.1, 2.2, 2.3, 2.4, 2.5],
+        "p2": [0.4, 0.44, 0.48, 0.52, 0.56, 0.6, 0.65, 0.7, 0.75, 0.8, 0.84, 0.88, 0.92, 0.96, 1]
+      },
+      "description": "Deals Fire DMG equal to {p1}% of Himeko's ATK to one designated enemy and Fire DMG equal to {p2}% of Himeko's ATK to enemies adjacent to it.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 20 },
+        { "kind": "damage", "target": "adjacent", "stat": "atk", "multiplier": { "param": "p2" }, "toughness": 10 }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "himeko.ultimate",
+      "name": "Heavenly Flare",
+      "kind": "ultimate",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 10,
+      "params": {
+        "p1": [1.38, 1.472, 1.564, 1.656, 1.748, 1.84, 1.955, 2.07, 2.185, 2.3, 2.392, 2.484, 2.576, 2.668, 2.76],
+        "p2": [5]
+      },
+      "description": "Deals Fire DMG equal to {p1}% of Himeko's ATK to all enemies. Himeko regenerates {p2} extra Energy for each enemy defeated.",
+      "energyGain": 5,
+      "effects": [{ "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 20 }],
+      "triggers": [
+        {
+          "on": "onKill",
+          "effects": [{ "kind": "energy", "target": "self", "amount": { "param": "p2" } }],
+          "conditions": [{ "type": "attackType", "params": { "is": "ultimate" } }]
+        }
+      ],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "himeko.talent",
+      "name": "Victory Rush",
+      "kind": "talent",
+      "tags": ["aoe"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": { "p1": [0.7, 0.77, 0.84, 0.91, 0.98, 1.05, 1.1375, 1.225, 1.3125, 1.4, 1.47, 1.54, 1.61, 1.68, 1.75], "p2": [3] },
+      "description": "When an enemy target is inflicted with Weakness Break, Himeko gains 1 point of Charge (max {p2} points). If Himeko is fully Charged when an ally target performs an attack, Himeko immediately performs 1 Follow-Up ATK and deals Fire DMG equal to {p1}% of her ATK to all enemies, consuming all Charge points. At the start of the battle, Himeko gains 1 point of Charge.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "afterAllyWeaknessBreak",
+          "effects": [{ "kind": "gainResource", "target": "self", "resource": "himeko.charge", "amount": 1 }]
+        },
+        {
+          "on": "afterAllyAttack",
+          "effects": [{ "kind": "insertAction", "action": "followUp", "ability": "himeko.victory-rush" }],
+          "conditions": [{ "type": "resourceAtLeast", "params": { "resource": "himeko.charge", "value": 3 } }]
+        },
+        {
+          "on": "afterAttack",
+          "effects": [{ "kind": "insertAction", "action": "followUp", "ability": "himeko.victory-rush" }],
+          "conditions": [{ "type": "resourceAtLeast", "params": { "resource": "himeko.charge", "value": 3 } }]
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "himeko.technique",
+      "name": "Incomplete Combustion",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [1], "p2": [0.1], "p3": [2], "p4": [15] },
+      "description": "After using Technique, creates a Special Dimension that lasts for {p4} second(s). After entering battle with enemies in the Special Dimension, there is a {p1}% base chance to increase Fire DMG taken by enemies by {p2}% for {p3} turn(s). Only 1 Dimension Effect created by allies can exist at the same time.",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "allEnemies",
+              "status": "himeko.fire-vulnerability",
+              "baseChance": { "param": "p1" },
+              "duration": { "param": "p3" },
+              "params": { "vuln": { "param": "p2" } }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": [
+      {
+        "id": "himeko.victory-rush",
+        "name": "Victory Rush",
+        "kind": "followUp",
+        "tags": ["aoe"],
+        "targeting": "enemyAll",
+        "maxLevel": 10,
+        "params": {
+          "p1": [0.7, 0.77, 0.84, 0.91, 0.98, 1.05, 1.1375, 1.225, 1.3125, 1.4, 1.47, 1.54, 1.61, 1.68, 1.75],
+          "p2": [3]
+        },
+        "description": "Follow-Up ATK dealing Fire DMG equal to {p1}% of Himeko's ATK to all enemies, consuming all Charge.",
+        "energyGain": 10,
+        "effects": [
+          {
+            "kind": "damage",
+            "target": "allEnemies",
+            "stat": "atk",
+            "multiplier": { "param": "p1" },
+            "attackType": "followUp",
+            "toughness": 10
+          },
+          { "kind": "gainResource", "target": "self", "resource": "himeko.charge", "amount": -3 }
+        ],
+        "triggers": [],
+        "modifiers": []
+      }
+    ]
+  },
+  "resources": [{ "id": "himeko.charge", "name": "Charge", "max": 3, "initial": 1 }],
+  "traces": [
+    {
+      "id": "himeko.t001",
+      "requirements": {},
+      "costTable": "trace-cost.himeko.1003001",
+      "kind": "ability",
+      "name": "Sawblade Tuning",
+      "ability": "basic"
+    },
+    {
+      "id": "himeko.t002",
+      "requirements": {},
+      "costTable": "trace-cost.himeko.1003002",
+      "kind": "ability",
+      "name": "Molten Detonation",
+      "ability": "skill"
+    },
+    {
+      "id": "himeko.t003",
+      "requirements": {},
+      "costTable": "trace-cost.himeko.1003003",
+      "kind": "ability",
+      "name": "Heavenly Flare",
+      "ability": "ultimate"
+    },
+    {
+      "id": "himeko.t004",
+      "requirements": {},
+      "costTable": "trace-cost.himeko.1003004",
+      "kind": "ability",
+      "name": "Victory Rush",
+      "ability": "talent"
+    },
+    {
+      "id": "himeko.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.himeko.1003101",
+      "kind": "major",
+      "name": "Starfire",
+      "passive": {
+        "description": "After using an attack, there is a 50% base chance to inflict Burn on enemies, lasting for 2 turn(s). When afflicted with Burn, enemies take Fire DoT equal to 30% of Himeko's ATK at the start of each turn.",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterAttack",
+            "effects": [
+              {
+                "kind": "applyStatus",
+                "target": "primary",
+                "status": "himeko.burn",
+                "baseChance": 0.5,
+                "duration": 2,
+                "params": { "multiplier": 0.3 }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "himeko.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.himeko.1003102",
+      "kind": "major",
+      "name": "Magma",
+      "passive": {
+        "description": "Skill deals 20% more DMG to enemies currently afflicted with Burn.",
+        "modifiers": [
+          {
+            "stat": "skillDmg",
+            "value": 0.2,
+            "conditions": [{ "type": "targetHasStatus", "params": { "status": "himeko.burn" } }]
+          }
+        ],
+        "triggers": []
+      }
+    },
+    {
+      "id": "himeko.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.himeko.1003103",
+      "kind": "major",
+      "name": "Benchmark",
+      "passive": {
+        "description": "When current HP percentage is 80% or higher, CRIT Rate increases by 15%.",
+        "modifiers": [{ "stat": "critRate", "value": 0.15, "conditions": [{ "type": "hpAtLeast", "params": { "ratio": 0.8 } }] }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "himeko.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.himeko.1003201",
+      "kind": "stat",
+      "name": "DMG Boost: Fire",
+      "stat": { "stat": "fireDmg", "value": 0.032 }
+    },
+    {
+      "id": "himeko.t202",
+      "parent": "himeko.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.himeko.1003202",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "himeko.t203",
+      "parent": "himeko.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.himeko.1003203",
+      "kind": "stat",
+      "name": "DMG Boost: Fire",
+      "stat": { "stat": "fireDmg", "value": 0.032 }
+    },
+    {
+      "id": "himeko.t204",
+      "parent": "himeko.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.himeko.1003204",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.04 }
+    },
+    {
+      "id": "himeko.t205",
+      "parent": "himeko.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.himeko.1003205",
+      "kind": "stat",
+      "name": "DMG Boost: Fire",
+      "stat": { "stat": "fireDmg", "value": 0.048 }
+    },
+    {
+      "id": "himeko.t206",
+      "parent": "himeko.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.himeko.1003206",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "himeko.t207",
+      "parent": "himeko.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.himeko.1003207",
+      "kind": "stat",
+      "name": "DMG Boost: Fire",
+      "stat": { "stat": "fireDmg", "value": 0.048 }
+    },
+    {
+      "id": "himeko.t208",
+      "parent": "himeko.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.himeko.1003208",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.06 }
+    },
+    {
+      "id": "himeko.t209",
+      "parent": "himeko.t103",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.himeko.1003209",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.08 }
+    },
+    {
+      "id": "himeko.t210",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.himeko.1003210",
+      "kind": "stat",
+      "name": "DMG Boost: Fire",
+      "stat": { "stat": "fireDmg", "value": 0.064 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Childhood",
+      "description": "After \"Victory Rush\" is triggered, Himeko's SPD increases by 20% for 2 turn(s).",
+      "modifiers": [],
+      "triggers": [
+        {
+          "on": "onFollowUp",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "buff.spd-up",
+              "duration": 2,
+              "params": { "spdPct": 0.2 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "name": "Convergence",
+      "description": "Deals 15% more DMG to enemies whose HP percentage is 50% or less.",
+      "modifiers": [{ "stat": "allDmg", "value": 0.15, "conditions": [{ "type": "targetHpBelow", "params": { "ratio": 0.5 } }] }],
+      "triggers": []
+    },
+    {
+      "rank": 3,
+      "name": "Poised",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "skill": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Dedication",
+      "description": "When Himeko's Skill inflicts Weakness Break on an enemy, she gains 1 extra point(s) of Charge.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "himeko.e4"
+    },
+    {
+      "rank": 5,
+      "name": "Aspiration",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "ultimate": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Trailblaze!",
+      "description": "Ultimate deals 2 extra instances of Fire DMG equal to 40% of the original DMG to one random enemy.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "himeko.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "extinguished-core", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "extinguished-core", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "glimmering-core", "count": 6 },
+      { "item": "endotherm-chitin", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "glimmering-core", "count": 9 },
+      { "item": "endotherm-chitin", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "squirming-core", "count": 6 },
+      { "item": "endotherm-chitin", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "squirming-core", "count": 9 },
+      { "item": "endotherm-chitin", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "himekos-eidolon",
+  "presentation": { "model": "proc.humanoid.himeko", "portraitColor": "#f0603a", "voice": {} },
+  "lore": {
+    "title": "Astral Express",
+    "faction": "Astral Express",
+    "bio": "An adventurous scientist who encountered the Astral Express as a young woman when it got stranded in her homeworld."
+  },
+  "sources": [
+    {
+      "topic": "Himeko: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Himeko: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

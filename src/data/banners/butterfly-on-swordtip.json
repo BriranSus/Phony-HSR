@@ -1,0 +1,33 @@
+{
+  "id": "banner.butterfly-on-swordtip",
+  "name": "Butterfly on Swordtip",
+  "type": "character",
+  "cost": { "item": "star-rail-special-pass", "count": 1 },
+  "pityGroup": "limited-character",
+  "rates": { "fiveStar": 0.006, "fourStar": 0.051 },
+  "pity": { "fiveStarHard": 90, "fiveStarSoftStart": 74, "fiveStarSoftIncrement": 0.06, "fourStarHard": 10 },
+  "featured": {
+    "fiveStar": ["char.seele"],
+    "fourStar": ["char.pela", "char.natasha"],
+    "fiveStarChance": 0.5,
+    "fourStarChance": 0.5,
+    "guaranteeAfterLoss": true
+  },
+  "pools": {
+    "fiveStar": ["char.seele", "char.clara", "char.himeko", "char.welt", "char.bronya", "char.gepard", "char.bailu"],
+    "fourStar": [
+      "char.pela",
+      "char.natasha",
+      "char.dan-heng",
+      "char.march-7th",
+      "char.tingyun",
+      "lc.only-silence-remains",
+      "lc.post-op-conversation",
+      "lc.good-night-and-sleep-well",
+      "lc.memories-of-the-past",
+      "lc.dance-dance-dance"
+    ],
+    "threeStar": ["lc.arrows", "lc.void", "lc.defense"]
+  },
+  "tenPullDiscount": 0
+}

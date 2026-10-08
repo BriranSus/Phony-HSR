@@ -7,13 +7,13 @@
   "objectives": [
     { "id": "talk-conductor", "text": "Talk to the Conductor", "type": "talk", "target": "npc.conductor", "dialogue": "dlg.conductor-briefing", "next": ["reach-platform"] },
     { "id": "reach-platform", "text": "Reach the outer platform", "type": "reach", "target": "area.outer-platform", "marker": { "map": "map.waystation", "x": 12, "y": 0, "z": -40 }, "next": ["defeat-scouts"] },
-    { "id": "defeat-scouts", "text": "Defeat the Hollow Scouts", "type": "defeat", "target": "enemy.hollow-scout", "count": 3, "next": ["collect-beacon"] },
+    { "id": "defeat-scouts", "text": "Defeat the Voidranger: Reavers", "type": "defeat", "target": "enemy.voidranger-reaver", "count": 3, "next": ["collect-beacon"] },
     { "id": "collect-beacon", "text": "Recover the Signal Beacon", "type": "collect", "target": "quest.signal-beacon" }
   ],
   "start": "talk-conductor",
   "rewards": [
-    { "item": "aster-jade", "count": 160 },
+    { "item": "stellar-jade", "count": 160 },
     { "item": "credit", "count": 20000 },
-    { "item": "exp.char-2", "count": 3 }
+    { "item": "adventure-log", "count": 3 }
   ]
 }

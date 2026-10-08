@@ -1,8 +1,135 @@
 [
-  { "id": "credit", "name": "Credit", "category": "currency", "rarity": 3, "description": "Universal currency used for upgrades and shops.", "maxStack": 999999999, "hidden": true },
-  { "id": "aster-jade", "name": "Aster Jade", "category": "premiumCurrency", "rarity": 5, "description": "Premium crystallised starlight. Exchanged for Voyage Passes.", "maxStack": 999999999, "hidden": true },
-  { "id": "voyage-pass", "name": "Voyage Pass", "category": "warpPass", "rarity": 5, "description": "Used for Warps on the standard banner.", "maxStack": 9999 },
-  { "id": "voyage-pass-special", "name": "Special Voyage Pass", "category": "warpPass", "rarity": 5, "description": "Used for Warps on event banners.", "maxStack": 9999 },
-  { "id": "astral-shard", "name": "Astral Shard", "category": "currency", "rarity": 4, "description": "Obtained from duplicate Warp results. Spent in the Embers Exchange.", "maxStack": 999999 },
-  { "id": "stamina", "name": "Stamina Reserve", "category": "currency", "rarity": 4, "description": "Energy spent to claim rewards from resource domains.", "maxStack": 2400, "hidden": true }
+  {
+    "id": "credit",
+    "name": "Credit",
+    "category": "currency",
+    "rarity": 3,
+    "description": "This currency, used by the Interastral Peace Corporation to settle accounts with its customers, is now widely accepted as the hard currency for space travel.",
+    "maxStack": 999999999,
+    "hidden": true
+  },
+  {
+    "id": "stellar-jade",
+    "name": "Stellar Jade",
+    "category": "premiumCurrency",
+    "rarity": 5,
+    "description": "Stellar Jade",
+    "maxStack": 999999999,
+    "hidden": true
+  },
+  {
+    "id": "oneiric-shard",
+    "name": "Oneiric Shard",
+    "category": "currency",
+    "rarity": 5,
+    "description": "Oneiric Shard",
+    "maxStack": 999999999,
+    "hidden": true
+  },
+  {
+    "id": "trailblaze-power",
+    "name": "Trailblaze Power",
+    "category": "currency",
+    "rarity": 4,
+    "description": "Trailblaze Power will constantly regenerate at a rate of 1 point every 6 minutes to a max of 300 points. You may exchange Stellar Jade for Trailblaze Power. When Trailblaze Power has been fully regenerated or exceeds the maximum accumulation amount, it will no longer regenerate. At the same time, Reserved Trailblaze Power will begin to regenerate over time.",
+    "maxStack": 99999,
+    "hidden": true
+  },
+  {
+    "id": "star-rail-pass",
+    "name": "Star Rail Pass",
+    "category": "warpPass",
+    "rarity": 5,
+    "description": "Star Rail Pass",
+    "maxStack": 99999
+  },
+  {
+    "id": "star-rail-special-pass",
+    "name": "Star Rail Special Pass",
+    "category": "warpPass",
+    "rarity": 5,
+    "description": "Star Rail Special Pass",
+    "maxStack": 99999
+  },
+  {
+    "id": "travel-encounters",
+    "name": "Travel Encounters",
+    "category": "characterExp",
+    "rarity": 2,
+    "description": "Experience material for characters. Provides 1000 Character EXP.",
+    "maxStack": 99999,
+    "exp": 1000
+  },
+  {
+    "id": "adventure-log",
+    "name": "Adventure Log",
+    "category": "characterExp",
+    "rarity": 3,
+    "description": "Experience material for characters. Provides 5000 Character EXP.",
+    "maxStack": 99999,
+    "exp": 5000
+  },
+  {
+    "id": "travelers-guide",
+    "name": "Traveler's Guide",
+    "category": "characterExp",
+    "rarity": 4,
+    "description": "Experience material for characters. Provides 20,000 Character EXP.",
+    "maxStack": 99999,
+    "exp": 20000
+  },
+  {
+    "id": "sparse-aether",
+    "name": "Sparse Aether",
+    "category": "lightConeExp",
+    "rarity": 2,
+    "description": "Enhancement material for Light Cones, provides 500 Light Cone EXP.",
+    "maxStack": 99999,
+    "exp": 500
+  },
+  {
+    "id": "condensed-aether",
+    "name": "Condensed Aether",
+    "category": "lightConeExp",
+    "rarity": 3,
+    "description": "Enhancement material for Light Cones, provides 2000 Light Cone EXP.",
+    "maxStack": 99999,
+    "exp": 2000
+  },
+  {
+    "id": "refined-aether",
+    "name": "Refined Aether",
+    "category": "lightConeExp",
+    "rarity": 4,
+    "description": "Enhancement material for Light Cones, provides 6000 Light Cone EXP.",
+    "maxStack": 99999,
+    "exp": 6000
+  },
+  {
+    "id": "lost-lightdust",
+    "name": "Lost Lightdust",
+    "category": "relicExp",
+    "rarity": 2,
+    "description": "Enhancement material for Relics. Provides 100 Relic EXP.",
+    "maxStack": 99999,
+    "exp": 100
+  },
+  {
+    "id": "lost-gold-fragment",
+    "name": "Lost Gold Fragment",
+    "category": "relicExp",
+    "rarity": 3,
+    "description": "Enhancement material for Relics. Provides 500 Relic EXP.",
+    "maxStack": 99999,
+    "exp": 500
+  },
+  {
+    "id": "lost-crystal",
+    "name": "Lost Crystal",
+    "category": "relicExp",
+    "rarity": 4,
+    "description": "Enhancement material for Relics. Provides 1000 Relic EXP.",
+    "maxStack": 99999,
+    "exp": 1000
+  }
 ]

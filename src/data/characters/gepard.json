@@ -1,0 +1,383 @@
+{
+  "id": "char.gepard",
+  "name": "Gepard",
+  "rarity": 5,
+  "element": "Ice",
+  "path": "Preservation",
+  "ultimateResource": { "kind": "energy", "max": 100 },
+  "baseStats": { "hp": 190.08, "atk": 73.92, "def": 89.1, "spd": 92, "critRate": 0.05, "critDmg": 0.5, "aggro": 150 },
+  "abilities": {
+    "basic": {
+      "id": "gepard.basic",
+      "name": "Fist of Conviction",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Ice DMG equal to {p1}% of Gepard's ATK to one designated enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "gepard.skill",
+      "name": "Daunting Smite",
+      "kind": "skill",
+      "tags": ["singleTarget", "impair"],
+      "targeting": "enemySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.625, 1.75, 1.875, 2, 2.1, 2.2, 2.3, 2.4, 2.5],
+        "p2": [0.65],
+        "p3": [1],
+        "p4": [0.3, 0.33, 0.36, 0.39, 0.42, 0.45, 0.4875, 0.525, 0.5625, 0.6, 0.63, 0.66, 0.69, 0.72, 0.75]
+      },
+      "description": "Deals Ice DMG equal to {p1}% of Gepard's ATK to one designated enemy, with a {p2}% base chance to Freeze the enemy for {p3} turn(s). While Frozen, the enemy cannot take action and will take Ice Additional DMG equal to {p4}% of Gepard's ATK at the beginning of each turn.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 20 },
+        {
+          "kind": "applyStatus",
+          "target": "primary",
+          "status": "gepard.freeze",
+          "baseChance": { "param": "p2" },
+          "duration": { "param": "p3" },
+          "params": { "multiplier": { "param": "p4" } }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "gepard.ultimate",
+      "name": "Enduring Bulwark",
+      "kind": "ultimate",
+      "tags": ["defense"],
+      "targeting": "allyAll",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.3, 0.3187, 0.3375, 0.3563, 0.375, 0.39, 0.405, 0.42, 0.435, 0.45, 0.465, 0.48, 0.495, 0.51, 0.525],
+        "p2": [3],
+        "p3": [150, 240, 307.5, 375, 420, 465, 498.75, 532.5, 566.25, 600, 633.75, 667.5, 701.25, 735, 768.75]
+      },
+      "description": "Applies a Shield to all allies, absorbing DMG equal to {p1}% of Gepard's DEF plus {p3} for {p2} turn(s).",
+      "energyGain": 5,
+      "effects": [
+        {
+          "kind": "shield",
+          "target": "allAllies",
+          "stat": "def",
+          "multiplier": { "param": "p1" },
+          "flat": { "param": "p3" },
+          "duration": { "param": "p2" }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "gepard.talent",
+      "name": "Unyielding Will",
+      "kind": "talent",
+      "tags": ["restore"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": { "p1": [0.25, 0.275, 0.3, 0.325, 0.35, 0.375, 0.4062, 0.4375, 0.4688, 0.5, 0.525, 0.55, 0.575, 0.6, 0.625] },
+      "description": "When struck with a killing blow, instead of becoming knocked down, Gepard's HP immediately restores to {p1}% of his Max HP. This effect can only trigger once per battle.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "beforeKnockedDown",
+          "effects": [{ "kind": "revive", "target": "self", "ratio": { "param": "p1" } }],
+          "limitPerBattle": 1
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "gepard.technique",
+      "name": "Comradery",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [0.24], "p2": [2], "p3": [150] },
+      "description": "After Gepard uses his Technique, when the next battle begins, a Shield will be applied to all allies, absorbing DMG equal to {p1}% of Gepard's DEF plus {p3} for {p2} turn(s).",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "shield",
+              "target": "allAllies",
+              "stat": "def",
+              "multiplier": { "param": "p1" },
+              "flat": { "param": "p3" },
+              "duration": { "param": "p2" }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": []
+  },
+  "traces": [
+    {
+      "id": "gepard.t001",
+      "requirements": {},
+      "costTable": "trace-cost.gepard.1104001",
+      "kind": "ability",
+      "name": "Fist of Conviction",
+      "ability": "basic"
+    },
+    {
+      "id": "gepard.t002",
+      "requirements": {},
+      "costTable": "trace-cost.gepard.1104002",
+      "kind": "ability",
+      "name": "Daunting Smite",
+      "ability": "skill"
+    },
+    {
+      "id": "gepard.t003",
+      "requirements": {},
+      "costTable": "trace-cost.gepard.1104003",
+      "kind": "ability",
+      "name": "Enduring Bulwark",
+      "ability": "ultimate"
+    },
+    {
+      "id": "gepard.t004",
+      "requirements": {},
+      "costTable": "trace-cost.gepard.1104004",
+      "kind": "ability",
+      "name": "Unyielding Will",
+      "ability": "talent"
+    },
+    {
+      "id": "gepard.t101",
+      "parent": "gepard.t201",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.gepard.1104101",
+      "kind": "major",
+      "name": "Integrity",
+      "passive": {
+        "description": "Gepard has a higher chance to be attacked by enemies.",
+        "modifiers": [{ "stat": "aggro", "value": 3 }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "gepard.t102",
+      "parent": "gepard.t201",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.gepard.1104102",
+      "kind": "major",
+      "name": "Commander",
+      "passive": {
+        "description": "When \"Unyielding Will\" is triggered, Gepard's Energy will be restored to 100%.",
+        "modifiers": [],
+        "triggers": [],
+        "script": "gepard.a4"
+      }
+    },
+    {
+      "id": "gepard.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.gepard.1104103",
+      "kind": "major",
+      "name": "Grit",
+      "passive": {
+        "description": "Gepard's ATK increases by 35% of his current DEF. This effect will refresh at the start of each turn.",
+        "modifiers": [{ "stat": "atk", "value": 0.35, "scaling": { "per": "stat", "id": "def" } }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "gepard.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.gepard.1104201",
+      "kind": "stat",
+      "name": "DMG Boost: Ice",
+      "stat": { "stat": "iceDmg", "value": 0.032 }
+    },
+    {
+      "id": "gepard.t202",
+      "parent": "gepard.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.gepard.1104202",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.04 }
+    },
+    {
+      "id": "gepard.t203",
+      "parent": "gepard.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.gepard.1104203",
+      "kind": "stat",
+      "name": "DMG Boost: Ice",
+      "stat": { "stat": "iceDmg", "value": 0.032 }
+    },
+    {
+      "id": "gepard.t204",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.gepard.1104204",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.05 }
+    },
+    {
+      "id": "gepard.t205",
+      "parent": "gepard.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.gepard.1104205",
+      "kind": "stat",
+      "name": "DMG Boost: Ice",
+      "stat": { "stat": "iceDmg", "value": 0.048 }
+    },
+    {
+      "id": "gepard.t206",
+      "parent": "gepard.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.gepard.1104206",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.06 }
+    },
+    {
+      "id": "gepard.t207",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.gepard.1104207",
+      "kind": "stat",
+      "name": "DMG Boost: Ice",
+      "stat": { "stat": "iceDmg", "value": 0.048 }
+    },
+    {
+      "id": "gepard.t208",
+      "parent": "gepard.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.gepard.1104208",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.075 }
+    },
+    {
+      "id": "gepard.t209",
+      "parent": "gepard.t208",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.gepard.1104209",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.08 }
+    },
+    {
+      "id": "gepard.t210",
+      "parent": "gepard.t208",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.gepard.1104210",
+      "kind": "stat",
+      "name": "DMG Boost: Ice",
+      "stat": { "stat": "iceDmg", "value": 0.064 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Due Diligence",
+      "description": "When using Skill, increases the base chance to Freeze the attacked target enemy by 35%.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "gepard.e1"
+    },
+    {
+      "rank": 2,
+      "name": "Lingering Cold",
+      "description": "After an enemy Frozen by Skill is unfrozen, their SPD is reduced by 20% for 1 turn(s).",
+      "modifiers": [],
+      "triggers": [],
+      "script": "gepard.e2"
+    },
+    {
+      "rank": 3,
+      "name": "Never Surrender",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "ultimate": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Faith Moves Mountains",
+      "description": "When Gepard is in battle, all allies' Effect RES increases by 20%.",
+      "modifiers": [{ "stat": "effectRes", "value": 0.2, "scope": "team" }],
+      "triggers": []
+    },
+    {
+      "rank": 5,
+      "name": "Cold Iron Fist",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "skill": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Unyielding Resolve",
+      "description": "When his Talent is triggered, Gepard immediately takes action and restores extra HP equal to 50% of his Max HP.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "gepard.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "silvermane-badge", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "silvermane-badge", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "silvermane-insignia", "count": 6 },
+      { "item": "horn-of-snow", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "silvermane-insignia", "count": 9 },
+      { "item": "horn-of-snow", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "silvermane-medal", "count": 6 },
+      { "item": "horn-of-snow", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "silvermane-medal", "count": 9 },
+      { "item": "horn-of-snow", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "gepards-eidolon",
+  "presentation": { "model": "proc.humanoid.gepard", "portraitColor": "#6fd0f0", "voice": {} },
+  "lore": {
+    "title": "Belobog",
+    "faction": "Belobog",
+    "bio": "The honorable and upstanding captain of the Silvermane Guards who bears the noble Landau family name."
+  },
+  "sources": [
+    {
+      "topic": "Gepard: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Gepard: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

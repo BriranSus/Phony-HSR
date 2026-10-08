@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { CostSchema, IdSchema, LightConeRaritySchema, PathSchema, TextSchema } from './common';
-import { paramRefsOf, SuperimposedModifierSchema, TriggerSchema } from './ability';
+import { CostSchema, IdSchema, LightConeRaritySchema, PathSchema, SourceSchema, TextSchema } from './common';
+import { paramRefsIn, SuperimposedModifierSchema, TriggerSchema } from './ability';
 import { lightConeTemplateProblems } from './templates';
 
 /**
@@ -31,7 +31,7 @@ export const LightConeSchema = z
         modifiers: z.array(SuperimposedModifierSchema).default([]),
         /** Conditional effects. applyStatus params may reference `params` with `{ "param": "name" }`. */
         triggers: z.array(TriggerSchema).default([]),
-        /** Extra superimposed numbers referenced by triggers (every entry must be used by one). */
+        /** Superimposed numbers (the reference game's #1..#n per S1..S5), referenced as `{ "param": "p1" }` and `{p1}`. */
         params: z.record(z.string(), z.tuple([z.number(), z.number(), z.number(), z.number(), z.number()])).default({}),
       })
       .strict(),
@@ -39,16 +39,23 @@ export const LightConeSchema = z
     /** EXP provided when used as enhancement fodder. */
     fodderExp: z.number().int().min(0),
     lore: TextSchema,
+    /** Where the reference numbers were verified. */
+    sources: z.array(SourceSchema).default([]),
   })
   .strict();
 export type LightCone = z.infer<typeof LightConeSchema>;
 
-/** Semantic checks: placeholders resolve, trigger param references exist, and no param is dead data. */
+/**
+ * Semantic checks: placeholders resolve, `{ "param" }` references name a passive param, and no
+ * param is dead data (each one is used by a modifier, a trigger or the description).
+ */
 export function validateLightCone(lc: LightCone): string[] {
   const problems = lightConeTemplateProblems(lc);
-  const refs = new Set(paramRefsOf(lc.passive.triggers.flatMap((t) => t.effects)));
-  for (const r of refs) if (!(r in lc.passive.params)) problems.push(`trigger references unknown passive param "${r}"`);
-  for (const p of Object.keys(lc.passive.params)) if (!refs.has(p)) problems.push(`passive param "${p}" is not used by any trigger`);
+  const refs = new Set(paramRefsIn([lc.passive.modifiers, lc.passive.triggers]));
+  for (const r of refs) if (!(r in lc.passive.params)) problems.push(`passive references unknown param "${r}"`);
+  for (const p of Object.keys(lc.passive.params)) {
+    if (!refs.has(p) && !lc.passive.description.includes(`{${p}}`)) problems.push(`passive param "${p}" is not used by any modifier, trigger or the description`);
+  }
   return problems;
 }
 

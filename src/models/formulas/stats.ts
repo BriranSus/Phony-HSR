@@ -60,3 +60,30 @@ export function aggregateStat(stat: 'hp' | 'atk' | 'def' | 'spd', base: number, 
   const pct = pctKey ? (bonuses[pctKey] ?? 0) : 0;
   return base * (1 + pct) + (bonuses[stat] ?? 0);
 }
+
+/**
+ * Resolve an effect value: a level-scaled number, or a `{ param }` reference into the owner's
+ * per-level `params` table (abilities) at `level`. Tables shorter than the level use their last entry.
+ */
+export function resolveValue(
+  value: LevelScaled | { readonly param: string },
+  level: number,
+  params: Readonly<Record<string, readonly number[]>>,
+  curves: ScalingCurves,
+): number {
+  if (typeof value === 'object' && 'param' in value) {
+    const table = params[value.param];
+    if (!table) throw new Error(`Unknown param "${value.param}"`);
+    const v = table[Math.min(level, table.length) - 1];
+    if (v === undefined) throw new RangeError(`level ${level} out of range for param "${value.param}"`);
+    return v;
+  }
+  return resolveLevelScaled(value, level, curves);
+}
+
+/** Enemy stat at a level: template base x the level curve ratio (`rules/progression -> enemy.levels`). */
+export function enemyStatAtLevel(base: number, stat: 'hp' | 'atk' | 'spd', level: number, rules: Pick<ProgressionRules, 'enemy'>): number {
+  const row = rules.enemy.levels[String(level)];
+  if (!row) throw new RangeError(`No enemy level curve entry for Lv${level}`);
+  return base * row[stat];
+}

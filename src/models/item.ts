@@ -53,3 +53,18 @@ export const ItemSchema = z
     }
   });
 export type Item = z.infer<typeof ItemSchema>;
+
+/**
+ * A documented script handler: behaviour that is not expressible as generic effects (unique kit
+ * mechanics). Data may only reference handlers listed here; the skills module (Phase 5) registers
+ * an implementation for each id.
+ */
+export const ScriptHandlerSchema = z
+  .object({
+    id: IdSchema,
+    /** Roadmap phase that implements the handler. */
+    phase: z.number().int().positive(),
+    description: TextSchema,
+  })
+  .strict();
+export type ScriptHandler = z.infer<typeof ScriptHandlerSchema>;

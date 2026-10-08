@@ -1,0 +1,70 @@
+{
+  "id": "lc.resolution-shines-as-pearls-of-sweat",
+  "name": "Resolution Shines As Pearls of Sweat",
+  "rarity": 4,
+  "path": "Nihility",
+  "baseStats": { "hp": 43.2, "atk": 21.6, "def": 15 },
+  "passive": {
+    "name": "Glance Back",
+    "description": "When the wearer hits an enemy and if the hit enemy is not already \"Ensnared,\" then there is a {p1}% base chance to \"Ensnare\" the hit enemy. \"Ensnared\" enemies' DEF decreases by {p2}% for {p3} turn(s).",
+    "modifiers": [],
+    "triggers": [
+      {
+        "on": "afterAttack",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "primary",
+            "status": "lc.ensnared",
+            "baseChance": { "param": "p1" },
+            "duration": { "param": "p3" },
+            "params": { "defDown": { "param": "p2" } }
+          }
+        ]
+      }
+    ],
+    "params": { "p1": [0.6, 0.7, 0.8, 0.9, 1], "p2": [0.12, 0.13, 0.14, 0.15, 0.16], "p3": [1, 1, 1, 1, 1] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "artifexs-module", "count": 5 }],
+    [
+      { "item": "credit", "count": 8000 },
+      { "item": "obsidian-of-dread", "count": 3 },
+      { "item": "artifexs-module", "count": 10 }
+    ],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "obsidian-of-desolation", "count": 3 },
+      { "item": "artifexs-cogwheel", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "obsidian-of-desolation", "count": 6 },
+      { "item": "artifexs-cogwheel", "count": 9 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "obsidian-of-obsession", "count": 4 },
+      { "item": "artifexs-gyreheart", "count": 5 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "obsidian-of-obsession", "count": 8 },
+      { "item": "artifexs-gyreheart", "count": 7 }
+    ]
+  ],
+  "fodderExp": 12000,
+  "lore": "The limelight cast on the boxing ring is bright, but no brighter than all those beads of sweat running down his back. He has long been determined to use his two fists to protect those he cherishes the most. After all, they are the ones who ignited his determination in the first place. They are the ones who have always been there for him, be it inside or outside the boxing ring.",
+  "sources": [
+    {
+      "topic": "Resolution Shines As Pearls of Sweat: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Resolution Shines As Pearls of Sweat: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

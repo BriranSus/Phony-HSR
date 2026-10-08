@@ -1,0 +1,47 @@
+{
+  "id": "enemy.silvermane-soldier",
+  "name": "Silvermane Soldier",
+  "rank": "normal",
+  "faction": "Jarilo-VI",
+  "baseStats": { "hp": 120.9, "atk": 18, "spd": 83, "effectRes": 0.1 },
+  "toughness": 20,
+  "weaknesses": ["Wind", "Quantum"],
+  "resistances": { "Physical": 0.2, "Fire": 0.2, "Ice": 0.2, "Lightning": 0.2, "Imaginary": 0.2 },
+  "debuffRes": {},
+  "abilities": [
+    {
+      "id": "silvermane-soldier.tireless-charge",
+      "name": "Tireless Charge",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals Physical DMG to a single target, with a high chance to reduce the target's DEF.",
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 3, "element": "Physical", "toughness": 0 },
+        {
+          "kind": "applyStatus",
+          "target": "primary",
+          "status": "debuff.def-down",
+          "baseChance": 1,
+          "duration": 2,
+          "params": { "defDown": 0.5 }
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "A member of Belobog's Silvermane Guards, tasked with leading the charge into enemy lines. Silvermane Soldiers' attacks will reduce their enemies' defense during combat.",
+  "presentation": { "model": "proc.enemy.silvermane-soldier", "scale": 1, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Silvermane Soldier: MonsterConfig 1002040, MonsterTemplateConfig 1002040, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

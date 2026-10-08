@@ -12,7 +12,7 @@ export interface QuestSystem {
   accept(questId: string): void;
   tracked(): string | null;
   track(questId: string | null): void;
-  /** Report a gameplay fact ("defeat enemy.hollow-scout", "reach area.x"). */
+  /** Report a gameplay fact ("defeat enemy.voidranger-reaver", "reach area.x"). */
   notify(type: string, target: string, amount?: number): void;
 }
 

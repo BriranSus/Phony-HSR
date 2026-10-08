@@ -1,0 +1,63 @@
+{
+  "id": "lc.post-op-conversation",
+  "name": "Post-Op Conversation",
+  "rarity": 4,
+  "path": "Abundance",
+  "baseStats": { "hp": 48, "atk": 19.2, "def": 15 },
+  "passive": {
+    "name": "Mutual Healing",
+    "description": "Increases the wearer's Energy Regeneration Rate by {p1}% and increases Outgoing Healing when they use their Ultimate by {p2}%.",
+    "modifiers": [
+      { "stat": "energyRegen", "value": { "param": "p1" } },
+      {
+        "stat": "outgoingHealing",
+        "value": { "param": "p2" },
+        "conditions": [{ "type": "attackType", "params": { "is": "ultimate" } }]
+      }
+    ],
+    "triggers": [],
+    "params": { "p1": [0.08, 0.1, 0.12, 0.14, 0.16], "p2": [0.12, 0.15, 0.18, 0.21, 0.24] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "extinguished-core", "count": 5 }],
+    [
+      { "item": "credit", "count": 8000 },
+      { "item": "seed-of-abundance", "count": 3 },
+      { "item": "extinguished-core", "count": 10 }
+    ],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "sprout-of-life", "count": 3 },
+      { "item": "glimmering-core", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "sprout-of-life", "count": 6 },
+      { "item": "glimmering-core", "count": 9 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "flower-of-eternity", "count": 4 },
+      { "item": "squirming-core", "count": 5 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "flower-of-eternity", "count": 8 },
+      { "item": "squirming-core", "count": 7 }
+    ]
+  ],
+  "fodderExp": 12000,
+  "lore": "\"You're awake... Thank you.\" \"You... saved my life, Natasha. The one who should be saying thanks... is me.\" \"No, I should be thanking you... for holding on until I finished the surgery.\" The doctor and patient smiled wearily at each other and said nothing more.",
+  "sources": [
+    {
+      "topic": "Post-Op Conversation: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Post-Op Conversation: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

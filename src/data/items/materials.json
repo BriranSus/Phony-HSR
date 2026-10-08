@@ -1,29 +1,634 @@
 [
-  { "id": "exp.char-1", "name": "Field Notes", "category": "characterExp", "rarity": 2, "description": "Grants character EXP.", "maxStack": 9999, "exp": 1000 },
-  { "id": "exp.char-2", "name": "Expedition Log", "category": "characterExp", "rarity": 3, "description": "Grants character EXP.", "maxStack": 9999, "exp": 5000 },
-  { "id": "exp.char-3", "name": "Voyager's Codex", "category": "characterExp", "rarity": 4, "description": "Grants character EXP.", "maxStack": 9999, "exp": 20000 },
-  { "id": "exp.lc-1", "name": "Faint Stardust", "category": "lightConeExp", "rarity": 2, "description": "Grants Light Cone EXP.", "maxStack": 9999, "exp": 500 },
-  { "id": "exp.lc-2", "name": "Dense Stardust", "category": "lightConeExp", "rarity": 3, "description": "Grants Light Cone EXP.", "maxStack": 9999, "exp": 2000 },
-  { "id": "exp.lc-3", "name": "Crystal Stardust", "category": "lightConeExp", "rarity": 4, "description": "Grants Light Cone EXP.", "maxStack": 9999, "exp": 6000 },
-  { "id": "exp.relic-1", "name": "Dim Relic Dust", "category": "relicExp", "rarity": 2, "description": "Grants relic EXP.", "maxStack": 9999, "exp": 100 },
-  { "id": "exp.relic-2", "name": "Bright Relic Dust", "category": "relicExp", "rarity": 3, "description": "Grants relic EXP.", "maxStack": 9999, "exp": 500 },
-  { "id": "exp.relic-3", "name": "Radiant Relic Dust", "category": "relicExp", "rarity": 4, "description": "Grants relic EXP.", "maxStack": 9999, "exp": 1000 },
-  { "id": "asc.ember-core", "name": "Ember Core", "category": "ascension", "rarity": 4, "description": "Ascension material dropped by the Ash Sovereign.", "maxStack": 9999 },
-  { "id": "asc.gale-feather", "name": "Gale Feather", "category": "ascension", "rarity": 4, "description": "Ascension material carried on stellar winds.", "maxStack": 9999 },
-  { "id": "asc.stone-heart", "name": "Stone Heart", "category": "ascension", "rarity": 4, "description": "Ascension material from ancient bulwarks.", "maxStack": 9999 },
-  { "id": "asc.echo-prism", "name": "Echo Prism", "category": "ascension", "rarity": 4, "description": "Ascension material that hums with memory.", "maxStack": 9999 },
-  { "id": "mat.hollow-1", "name": "Hollow Thread", "category": "ascension", "rarity": 2, "description": "Common drop from the Hollow Choir.", "maxStack": 9999 },
-  { "id": "mat.hollow-2", "name": "Hollow Filament", "category": "ascension", "rarity": 3, "description": "Uncommon drop from the Hollow Choir.", "maxStack": 9999 },
-  { "id": "mat.hollow-3", "name": "Hollow Lattice", "category": "ascension", "rarity": 4, "description": "Rare drop from the Hollow Choir.", "maxStack": 9999 },
-  { "id": "trace.t1", "name": "Spark of Resolve", "category": "trace", "rarity": 2, "description": "Trace material, tier 1.", "maxStack": 9999 },
-  { "id": "trace.t2", "name": "Flame of Resolve", "category": "trace", "rarity": 3, "description": "Trace material, tier 2.", "maxStack": 9999 },
-  { "id": "trace.t3", "name": "Blaze of Resolve", "category": "trace", "rarity": 4, "description": "Trace material, tier 3.", "maxStack": 9999 },
-  { "id": "trace.weekly", "name": "Crown of the Sovereign", "category": "trace", "rarity": 5, "description": "Weekly boss material for advanced Traces.", "maxStack": 9999 },
-  { "id": "trace.tracks", "name": "Tracks of Destiny", "category": "trace", "rarity": 5, "description": "Rare material that unlocks a Trace level beyond the usual limit.", "maxStack": 9999 },
-  { "id": "eidolon.ignatius", "name": "Ignatius's Eidolon", "category": "eidolon", "rarity": 5, "description": "Unlocks one of Ignatius's Eidolons.", "maxStack": 6 },
-  { "id": "eidolon.seraphine", "name": "Seraphine's Eidolon", "category": "eidolon", "rarity": 4, "description": "Unlocks one of Seraphine's Eidolons.", "maxStack": 6 },
-  { "id": "eidolon.brann", "name": "Brann's Eidolon", "category": "eidolon", "rarity": 4, "description": "Unlocks one of Brann's Eidolons.", "maxStack": 6 },
-  { "id": "eidolon.lyra", "name": "Lyra's Eidolon", "category": "eidolon", "rarity": 5, "description": "Unlocks one of Lyra's Eidolons.", "maxStack": 6 },
-  { "id": "consumable.star-tea", "name": "Star Tea", "category": "consumable", "rarity": 3, "description": "Restores 30% of all allies' HP outside of combat.", "maxStack": 99, "use": "consumable.healParty" },
-  { "id": "quest.signal-beacon", "name": "Signal Beacon", "category": "quest", "rarity": 4, "description": "A beacon recovered from the derelict platform.", "maxStack": 1 }
+  {
+    "id": "undying-embers",
+    "name": "Undying Embers",
+    "category": "misc",
+    "rarity": 4,
+    "description": "Obtained from: Warp.",
+    "maxStack": 999999
+  },
+  {
+    "id": "undying-starlight",
+    "name": "Undying Starlight",
+    "category": "misc",
+    "rarity": 5,
+    "description": "Obtained from: Warp.",
+    "maxStack": 999999
+  },
+  {
+    "id": "ancient-part",
+    "name": "Ancient Part",
+    "category": "ascension",
+    "rarity": 2,
+    "description": "Mechanical part left behind from the Old World. Crude material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "ancient-spindle",
+    "name": "Ancient Spindle",
+    "category": "ascension",
+    "rarity": 3,
+    "description": "Mechanical spindle left behind from the Old World. Normal material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "broken-teeth-of-iron-wolf",
+    "name": "Broken Teeth of Iron Wolf",
+    "category": "misc",
+    "rarity": 4,
+    "description": "Fragmented saw teeth left behind by automatons. Can be used for the Ascension of Physical characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "ancient-engine",
+    "name": "Ancient Engine",
+    "category": "ascension",
+    "rarity": 4,
+    "description": "Mechanical engine left behind from the Old World. Advanced material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "shattered-blade",
+    "name": "Shattered Blade",
+    "category": "trace",
+    "rarity": 2,
+    "description": "Weapon fragments left behind by members of the Antimatter Legion. Used to level up Traces slightly for Destruction characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "lifeless-blade",
+    "name": "Lifeless Blade",
+    "category": "trace",
+    "rarity": 3,
+    "description": "Weapon remnants left behind by members of the Antimatter Legion. Used to level up Traces moderately for Destruction characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "worldbreaker-blade",
+    "name": "Worldbreaker Blade",
+    "category": "trace",
+    "rarity": 4,
+    "description": "Broken weapon left behind by members of the Antimatter Legion. Used to level up Traces significantly for Destruction characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "guardians-lament",
+    "name": "Guardian's Lament",
+    "category": "trace",
+    "rarity": 4,
+    "description": "Advanced level-up material for Traces.",
+    "maxStack": 99999
+  },
+  {
+    "id": "tracks-of-destiny",
+    "name": "Tracks of Destiny",
+    "category": "trace",
+    "rarity": 5,
+    "description": "Advanced level-up material for Traces.",
+    "maxStack": 99999
+  },
+  {
+    "id": "claras-eidolon",
+    "name": "Clara's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Clara's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "immortal-scionette",
+    "name": "Immortal Scionette",
+    "category": "ascension",
+    "rarity": 2,
+    "description": "New and young shoot budding from an ancient divine construct. Crude material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "immortal-aeroblossom",
+    "name": "Immortal Aeroblossom",
+    "category": "ascension",
+    "rarity": 3,
+    "description": "New flowers blooming out of an ancient divine construct. Normal material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "ascendant-debris",
+    "name": "Ascendant Debris",
+    "category": "misc",
+    "rarity": 4,
+    "description": "Remains of The Ascended. Can be used for Ascension of Wind characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "immortal-lumintwig",
+    "name": "Immortal Lumintwig",
+    "category": "ascension",
+    "rarity": 4,
+    "description": "Deciduous twigs from an ancient divine construct. Advanced material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "regret-of-infinite-ochema",
+    "name": "Regret of Infinite Ochema",
+    "category": "trace",
+    "rarity": 4,
+    "description": "Advanced level-up material for Traces.",
+    "maxStack": 99999
+  },
+  {
+    "id": "blades-eidolon",
+    "name": "Blade's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Blade's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "thiefs-instinct",
+    "name": "Thief's Instinct",
+    "category": "ascension",
+    "rarity": 2,
+    "description": "A small amount of anti-matter. Crude material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "usurpers-scheme",
+    "name": "Usurper's Scheme",
+    "category": "ascension",
+    "rarity": 3,
+    "description": "A moderate amount of anti-matter. Normal material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "void-cast-iron",
+    "name": "Void Cast Iron",
+    "category": "misc",
+    "rarity": 4,
+    "description": "Horseshoe of a Voidranger: Trampler. Can be used for the Ascension of Quantum characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "conquerors-will",
+    "name": "Conqueror's Will",
+    "category": "ascension",
+    "rarity": 4,
+    "description": "Condensed anti-matter. Advanced material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "arrow-of-the-beast-hunter",
+    "name": "Arrow of the Beast Hunter",
+    "category": "trace",
+    "rarity": 2,
+    "description": "An arrowhead forged with Frost Steel by the craftsmen of Xianzhou. Used to level up Traces slightly for Hunt characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "arrow-of-the-demon-slayer",
+    "name": "Arrow of the Demon Slayer",
+    "category": "trace",
+    "rarity": 3,
+    "description": "An arrowhead forged with Stellaris Essence by the craftsmen of Xianzhou. Used to level up Traces moderately for Hunt characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "arrow-of-the-starchaser",
+    "name": "Arrow of the Starchaser",
+    "category": "trace",
+    "rarity": 4,
+    "description": "A shard of the Sky-Shattering Lux Arrow shot by the Reignbow Arbiter. Used to level up Traces significantly for Hunt characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "seeles-eidolon",
+    "name": "Seele's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Seele's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "extinguished-core",
+    "name": "Extinguished Core",
+    "category": "ascension",
+    "rarity": 2,
+    "description": "The heart of a monster wandering the Fragmentum. Crude material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "glimmering-core",
+    "name": "Glimmering Core",
+    "category": "ascension",
+    "rarity": 3,
+    "description": "The heart of a monster wandering the Fragmentum. Normal material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "storm-eye",
+    "name": "Storm Eye",
+    "category": "misc",
+    "rarity": 4,
+    "description": "Arrows belonged to a Stormbringer. Can be used for the Ascension of Wind characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "squirming-core",
+    "name": "Squirming Core",
+    "category": "ascension",
+    "rarity": 4,
+    "description": "The heart of a monster wandering the Fragmentum. Advanced material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "destroyers-final-road",
+    "name": "Destroyer's Final Road",
+    "category": "trace",
+    "rarity": 4,
+    "description": "Advanced level-up material for Traces.",
+    "maxStack": 99999
+  },
+  {
+    "id": "dan-hengs-eidolon",
+    "name": "Dan Heng's Eidolon",
+    "category": "eidolon",
+    "rarity": 4,
+    "description": "Dan Heng's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "endotherm-chitin",
+    "name": "Endotherm Chitin",
+    "category": "misc",
+    "rarity": 4,
+    "description": "Hot, translucent substance almost like fire in the solid state. Can be used for the Ascension of Fire characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "key-of-inspiration",
+    "name": "Key of Inspiration",
+    "category": "trace",
+    "rarity": 2,
+    "description": "A mythical key that appears in the hands of the Meditative Scholars. Used to level up Traces slightly for Erudition characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "key-of-knowledge",
+    "name": "Key of Knowledge",
+    "category": "trace",
+    "rarity": 3,
+    "description": "A mythical key that appears in the hands of the sages of the worlds. Used to level up Traces moderately for Erudition characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "key-of-wisdom",
+    "name": "Key of Wisdom",
+    "category": "trace",
+    "rarity": 4,
+    "description": "A mythical key that appears in the hands of the greatest prodigies of the cosmos. Used to level up Traces significantly for Erudition characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "himekos-eidolon",
+    "name": "Himeko's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Himeko's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "shape-shifters-lightning-staff",
+    "name": "Shape Shifter's Lightning Staff",
+    "category": "misc",
+    "rarity": 4,
+    "description": "A wooden staff with a pointed tip. It belonged to a shape shifter from the Disciples of Sanctus Medicus. Can be used for the Ascension of Lightning characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "jing-yuans-eidolon",
+    "name": "Jing Yuan's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Jing Yuan's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "silvermane-badge",
+    "name": "Silvermane Badge",
+    "category": "ascension",
+    "rarity": 2,
+    "description": "Pin badge worn by soldiers of the Silvermane Guards. Crude material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "silvermane-insignia",
+    "name": "Silvermane Insignia",
+    "category": "ascension",
+    "rarity": 3,
+    "description": "Military rank insignia worn by captains of the Silvermane Guard. Normal material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "silvermane-medal",
+    "name": "Silvermane Medal",
+    "category": "ascension",
+    "rarity": 4,
+    "description": "Medal of honor worn by soldiers of the Silvermane Guards with gallant and meritorious service. Advanced material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "harmonic-tune",
+    "name": "Harmonic Tune",
+    "category": "trace",
+    "rarity": 2,
+    "description": "A compact music box made by an unknown person. Used to level up Traces slightly for Harmony characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "ancestral-hymn",
+    "name": "Ancestral Hymn",
+    "category": "trace",
+    "rarity": 3,
+    "description": "A music box made by an unknown person. Used to level up Traces moderately for Harmony characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "stellaris-symphony",
+    "name": "Stellaris Symphony",
+    "category": "trace",
+    "rarity": 4,
+    "description": "A music box with complex structures made by an unknown person. Used to level up Traces significantly for Harmony characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "bronyas-eidolon",
+    "name": "Bronya's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Bronya's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "lightning-crown-of-the-past-shadow",
+    "name": "Lightning Crown of the Past Shadow",
+    "category": "misc",
+    "rarity": 4,
+    "description": "Headwear of the Guardian Shadows. Can be used for the Ascension of Lightning characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "tingyuns-eidolon",
+    "name": "Tingyun's Eidolon",
+    "category": "eidolon",
+    "rarity": 4,
+    "description": "Tingyun's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "gelid-chitin",
+    "name": "Gelid Chitin",
+    "category": "misc",
+    "rarity": 4,
+    "description": "Frosty chitin emitting a cold humming. Can be used for the Ascension of Ice characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "past-evils-of-the-borehole-planet-disaster",
+    "name": "Past Evils of the Borehole Planet Disaster",
+    "category": "trace",
+    "rarity": 4,
+    "description": "Advanced level-up material for Traces.",
+    "maxStack": 99999
+  },
+  {
+    "id": "ruan-meis-eidolon",
+    "name": "Ruan Mei's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Ruan Mei's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "obsidian-of-dread",
+    "name": "Obsidian of Dread",
+    "category": "trace",
+    "rarity": 2,
+    "description": "A fragment of dark matter captured from the void. Used to level up Traces slightly for Nihility characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "obsidian-of-desolation",
+    "name": "Obsidian of Desolation",
+    "category": "trace",
+    "rarity": 3,
+    "description": "A chunk of dark matter captured from the void. Used to level up Traces moderately for Nihility characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "obsidian-of-obsession",
+    "name": "Obsidian of Obsession",
+    "category": "trace",
+    "rarity": 4,
+    "description": "A sizable piece of dark matter captured from the void. Used to level up Traces significantly for Nihility characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "kafkas-eidolon",
+    "name": "Kafka's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Kafka's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "silver-wolfs-eidolon",
+    "name": "Silver Wolf's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Silver Wolf's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "horn-of-snow",
+    "name": "Horn of Snow",
+    "category": "misc",
+    "rarity": 4,
+    "description": "Broken horn of a Frigid Prowler. Can be used for the Ascension of Ice characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "pelas-eidolon",
+    "name": "Pela's Eidolon",
+    "category": "eidolon",
+    "rarity": 4,
+    "description": "Pela's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "golden-crown-of-the-past-shadow",
+    "name": "Golden Crown of the Past Shadow",
+    "category": "misc",
+    "rarity": 4,
+    "description": "Headwear of the Decaying Shadow. Can be used for the Ascension of Imaginary characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "welts-eidolon",
+    "name": "Welt's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Welt's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "endurance-of-bronze",
+    "name": "Endurance of Bronze",
+    "category": "trace",
+    "rarity": 2,
+    "description": "A crude but durable ancient hand-held bronze shield. Used to level up Traces slightly for Preservation characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "oath-of-steel",
+    "name": "Oath of Steel",
+    "category": "trace",
+    "rarity": 3,
+    "description": "A shield forged with irreplaceable craftsmanship from an unknown alloy. Used to level up Traces moderately for Preservation characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "safeguard-of-amber",
+    "name": "Safeguard of Amber",
+    "category": "trace",
+    "rarity": 4,
+    "description": "An unusual shield embedded with ambers mined from beyond the skies. Used to level up Traces significantly for Preservation characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "march-7ths-eidolon",
+    "name": "March 7th's Eidolon",
+    "category": "eidolon",
+    "rarity": 4,
+    "description": "March 7th: Preservation's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "gepards-eidolon",
+    "name": "Gepard's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Gepard's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "seed-of-abundance",
+    "name": "Seed of Abundance",
+    "category": "trace",
+    "rarity": 2,
+    "description": "A seed of blessing sown by the Aeon of Abundance. Used to level up Traces slightly for Abundance characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "sprout-of-life",
+    "name": "Sprout of Life",
+    "category": "trace",
+    "rarity": 3,
+    "description": "A young sprout emerging from the Seed of Abundance. Used to level up Traces moderately for Abundance characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "flower-of-eternity",
+    "name": "Flower of Eternity",
+    "category": "trace",
+    "rarity": 4,
+    "description": "A gorgeous flower blooming from the Sprout of Life. Used to level up Traces significantly for Abundance characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "natashas-eidolon",
+    "name": "Natasha's Eidolon",
+    "category": "eidolon",
+    "rarity": 4,
+    "description": "Natasha's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "bailus-eidolon",
+    "name": "Bailu's Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Bailu's Eidolon",
+    "maxStack": 999999
+  },
+  {
+    "id": "enigmatic-ectostella",
+    "name": "Enigmatic Ectostella",
+    "category": "misc",
+    "rarity": 4,
+    "description": "A fathomless crystal. Ascension material for the Trailblazer.",
+    "maxStack": 99999
+  },
+  {
+    "id": "b-ja-of-consciousness",
+    "name": "Bīja of Consciousness",
+    "category": "trace",
+    "rarity": 2,
+    "description": "Consciousness fuses with matter, giving rise to the embryo of memory. Used to level up Traces slightly for Remembrance characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "seedling-of-manas",
+    "name": "Seedling of Manas",
+    "category": "trace",
+    "rarity": 3,
+    "description": "Memory's cells extract thoughts, propagating in the heart of the inscriber. Used to level up Traces moderately for Remembrance characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "flower-of-laya",
+    "name": "Flower of Ālaya",
+    "category": "trace",
+    "rarity": 4,
+    "description": "This is another form for life to exist and a substance that the universe cannot forget. Used to level up Traces significantly for Remembrance characters.",
+    "maxStack": 99999
+  },
+  {
+    "id": "auspice-sliver",
+    "name": "Auspice Sliver",
+    "category": "trace",
+    "rarity": 4,
+    "description": "Advanced upgrade material for Traces.",
+    "maxStack": 99999
+  },
+  {
+    "id": "trailblazer-remembrance-s-eidolon",
+    "name": "Trailblazer (Remembrance)'s Eidolon",
+    "category": "eidolon",
+    "rarity": 5,
+    "description": "Obtained from: Trailblaze Mission Rewards, Level Rewards from Tidal Bounty, As I've Written.",
+    "maxStack": 999999
+  },
+  {
+    "id": "artifexs-module",
+    "name": "Artifex's Module",
+    "category": "ascension",
+    "rarity": 2,
+    "description": "Components used in Xianzhou's ingenium creations. Crude material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "artifexs-cogwheel",
+    "name": "Artifex's Cogwheel",
+    "category": "ascension",
+    "rarity": 3,
+    "description": "Parts of the Xianzhou machines. Normal material used for enhancement.",
+    "maxStack": 99999
+  },
+  {
+    "id": "artifexs-gyreheart",
+    "name": "Artifex's Gyreheart",
+    "category": "ascension",
+    "rarity": 4,
+    "description": "Components used in Xianzhou's ingenium creations. Advanced material used for enhancement.",
+    "maxStack": 99999
+  }
 ]

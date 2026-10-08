@@ -1,0 +1,66 @@
+{
+  "id": "enemy.mara-struck-soldier",
+  "name": "Mara-Struck Soldier",
+  "rank": "normal",
+  "faction": "The Xianzhou Luofu",
+  "baseStats": { "hp": 111.6, "atk": 18, "spd": 83, "effectRes": 0.1 },
+  "toughness": 20,
+  "weaknesses": ["Fire", "Ice", "Quantum"],
+  "resistances": { "Physical": 0.2, "Lightning": 0.2, "Wind": 0.4, "Imaginary": 0.2 },
+  "debuffRes": {},
+  "abilities": [
+    {
+      "id": "mara-struck-soldier.callous-tailwind",
+      "name": "Callous Tailwind",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals minor Wind DMG to a single target, with a high chance to inflict Wind Shear.",
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 2, "element": "Wind", "toughness": 0 },
+        {
+          "kind": "applyStatus",
+          "target": "primary",
+          "status": "enemy.wind-shear",
+          "baseChance": 1,
+          "stacks": 2,
+          "duration": 3,
+          "params": { "multiplier": 0.5 }
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 15,
+      "aiWeight": 1
+    },
+    {
+      "id": "mara-struck-soldier.rejuvenate",
+      "name": "Rejuvenate",
+      "kind": "enemy",
+      "tags": ["enhance"],
+      "targeting": "none",
+      "maxLevel": 1,
+      "description": "Upon receiving a killing blow, restores a certain amount of HP. This effect does not have a time limit but can be dispelled. This effect can only trigger 1 time per battle.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [{ "kind": "applyStatus", "target": "self", "status": "enemy.rejuvenate", "params": { "ratio": 0.5 } }]
+        }
+      ],
+      "energyToTarget": 0,
+      "aiWeight": 0
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "Soldiers of the Xianzhou who somehow fell into madness. Their bodies continue to grow and mutate and have long lost their humanoid form. It is said that the long-lived Xianzhou natives would eventually be stricken with mara.",
+  "presentation": { "model": "proc.enemy.mara-struck-soldier", "scale": 1, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Mara-Struck Soldier: MonsterConfig 2022010, MonsterTemplateConfig 2022010, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

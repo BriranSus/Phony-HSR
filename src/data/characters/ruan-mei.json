@@ -1,0 +1,399 @@
+{
+  "id": "char.ruan-mei",
+  "name": "Ruan Mei",
+  "rarity": 5,
+  "element": "Ice",
+  "path": "Harmony",
+  "ultimateResource": { "kind": "energy", "max": 130 },
+  "baseStats": { "hp": 147.84, "atk": 89.76, "def": 66, "spd": 104, "critRate": 0.05, "critDmg": 0.5, "aggro": 100 },
+  "abilities": {
+    "basic": {
+      "id": "ruan-mei.basic",
+      "name": "Threading Fragrance",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Ice DMG equal to {p1}% of Ruan Mei's ATK to one designated enemy target.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "ruan-mei.skill",
+      "name": "String Sings Slow Swirls",
+      "kind": "skill",
+      "tags": ["support"],
+      "targeting": "self",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.16, 0.176, 0.192, 0.208, 0.224, 0.24, 0.26, 0.28, 0.3, 0.32, 0.336, 0.352, 0.368, 0.384, 0.4],
+        "p2": [0.5],
+        "p3": [3]
+      },
+      "description": "After using her Skill, Ruan Mei gains Overtone, lasting for {p3} turn(s). This duration decreases by 1 at the start of Ruan Mei's every turn. When Ruan Mei has Overtone, all allies' DMG increases by {p1}% and Weakness Break Efficiency increases by {p2}%.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "self",
+          "status": "ruan-mei.overtone",
+          "duration": { "param": "p3" },
+          "params": { "allDmg": { "param": "p1" }, "breakEff": { "param": "p2" } }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "ruan-mei.ultimate",
+      "name": "Petals to Stream, Repose in Dream",
+      "kind": "ultimate",
+      "tags": ["support"],
+      "targeting": "allyAll",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.2125, 0.225, 0.2375, 0.25, 0.26, 0.27, 0.28, 0.29, 0.3],
+        "p2": [2],
+        "p3": [0.2],
+        "p4": [0.1],
+        "p5": [0.3, 0.32, 0.34, 0.36, 0.38, 0.4, 0.425, 0.45, 0.475, 0.5, 0.52, 0.54, 0.56, 0.58, 0.6]
+      },
+      "description": "Ruan Mei deploys a Zone that lasts for {p2} turns. The Zone's duration decreases by 1 at the start of her turn. While inside the Zone, all allies' All-Type RES PEN increases by {p1}% and their attacks apply Thanatoplum Rebloom to the enemies hit. When these enemies attempt to recover from Weakness Break, Thanatoplum Rebloom is triggered, extending the duration of their Weakness Break, delaying their action by an amount equal to {p3}% of Ruan Mei's Break Effect plus {p4}%, and dealing Break DMG equal to {p5}% of Ruan Mei's Ice Break DMG. Enemy targets cannot have Thanatoplum Rebloom re-applied to them until they recover from Weakness Break.",
+      "energyGain": 5,
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "self",
+          "status": "ruan-mei.zone",
+          "duration": { "param": "p2" },
+          "params": {
+            "resPen": { "param": "p1" },
+            "delayRatio": { "param": "p3" },
+            "delayBase": { "param": "p4" },
+            "breakDmg": { "param": "p5" }
+          }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "ruan-mei.talent",
+      "name": "Somatotypical Helix",
+      "kind": "talent",
+      "tags": ["support"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.08, 0.082, 0.084, 0.086, 0.088, 0.09, 0.0925, 0.095, 0.0975, 0.1, 0.102, 0.104, 0.106, 0.108, 0.11],
+        "p2": [0.6, 0.66, 0.72, 0.78, 0.84, 0.9, 0.975, 1.05, 1.125, 1.2, 1.26, 1.32, 1.38, 1.44, 1.5]
+      },
+      "description": "Increases SPD by {p1}% for all teammates (i.e., excluding this unit). When allies Break an enemy target's Weakness, Ruan Mei deals to this enemy target Break DMG equal to {p2}% of her Ice Break DMG.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "afterAllyWeaknessBreak",
+          "effects": [{ "kind": "breakDamage", "target": "primary", "multiplier": { "param": "p2" } }]
+        }
+      ],
+      "modifiers": [{ "stat": "spdPct", "value": { "param": "p1" }, "scope": "teamExceptSelf" }]
+    },
+    "technique": {
+      "id": "ruan-mei.technique",
+      "name": "Silken Serenade",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [1], "p2": [1], "p3": [1], "p4": [20] },
+      "description": "After using the Technique, gains Silken Serenade. At the start of the next battle, automatically triggers the Skill for {p1} time(s) without consuming Skill Points. In Simulated Universe or Divergent Universe, when Ruan Mei has Silken Serenade, the team actively attacking enemies will always be regarded as attacking their Weakness to enter combat, and this attack can reduce all enemies' Toughness regardless of Weakness types. When breaking Weakness, triggers Weakness Break Effect corresponding to the attacker's Type. For every Blessing in possession (up to a max of {p4} Blessings will be taken into account), additionally increases the Toughness Reduction of this attack by {p2}%. After breaking an enemy target's Weakness, additionally deals to the enemy target Break DMG equal to {p3}% of Ruan Mei's Ice Break DMG.",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "ruan-mei.overtone",
+              "duration": { "param": "p3", "from": "skill" },
+              "params": { "allDmg": { "param": "p1", "from": "skill" }, "breakEff": { "param": "p2", "from": "skill" } }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": []
+  },
+  "traces": [
+    {
+      "id": "ruan-mei.t001",
+      "requirements": {},
+      "costTable": "trace-cost.ruan-mei.1303001",
+      "kind": "ability",
+      "name": "Threading Fragrance",
+      "ability": "basic"
+    },
+    {
+      "id": "ruan-mei.t002",
+      "requirements": {},
+      "costTable": "trace-cost.ruan-mei.1303002",
+      "kind": "ability",
+      "name": "String Sings Slow Swirls",
+      "ability": "skill"
+    },
+    {
+      "id": "ruan-mei.t003",
+      "requirements": {},
+      "costTable": "trace-cost.ruan-mei.1303003",
+      "kind": "ability",
+      "name": "Petals to Stream, Repose in Dream",
+      "ability": "ultimate"
+    },
+    {
+      "id": "ruan-mei.t004",
+      "requirements": {},
+      "costTable": "trace-cost.ruan-mei.1303004",
+      "kind": "ability",
+      "name": "Somatotypical Helix",
+      "ability": "talent"
+    },
+    {
+      "id": "ruan-mei.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.ruan-mei.1303101",
+      "kind": "major",
+      "name": "Inert Respiration",
+      "passive": {
+        "description": "Increases Break Effect by 20% for all allies.",
+        "modifiers": [{ "stat": "breakEffect", "value": 0.2, "scope": "team" }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "ruan-mei.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.ruan-mei.1303102",
+      "kind": "major",
+      "name": "Days Wane, Thoughts Wax",
+      "passive": {
+        "description": "Ruan Mei regenerates 5 Energy at the start of her turn.",
+        "modifiers": [],
+        "triggers": [{ "on": "turnStart", "effects": [{ "kind": "energy", "target": "self", "amount": 5, "fixed": true }] }]
+      }
+    },
+    {
+      "id": "ruan-mei.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.ruan-mei.1303103",
+      "kind": "major",
+      "name": "Candle Lights on Still Waters",
+      "passive": {
+        "description": "In battle, for every 10% of Ruan Mei's Break Effect that exceeds 120%, her Skill additionally increases allies' DMG by 6%, up to a maximum of 36%.",
+        "modifiers": [],
+        "triggers": [],
+        "script": "ruan-mei.a6"
+      }
+    },
+    {
+      "id": "ruan-mei.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.ruan-mei.1303201",
+      "kind": "stat",
+      "name": "Break Boost",
+      "stat": { "stat": "breakEffect", "value": 0.053 }
+    },
+    {
+      "id": "ruan-mei.t202",
+      "parent": "ruan-mei.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.ruan-mei.1303202",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.05 }
+    },
+    {
+      "id": "ruan-mei.t203",
+      "parent": "ruan-mei.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.ruan-mei.1303203",
+      "kind": "stat",
+      "name": "Break Boost",
+      "stat": { "stat": "breakEffect", "value": 0.053 }
+    },
+    {
+      "id": "ruan-mei.t204",
+      "parent": "ruan-mei.t201",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.ruan-mei.1303204",
+      "kind": "stat",
+      "name": "SPD Boost",
+      "stat": { "stat": "spd", "value": 2 }
+    },
+    {
+      "id": "ruan-mei.t205",
+      "parent": "ruan-mei.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.ruan-mei.1303205",
+      "kind": "stat",
+      "name": "Break Boost",
+      "stat": { "stat": "breakEffect", "value": 0.08 }
+    },
+    {
+      "id": "ruan-mei.t206",
+      "parent": "ruan-mei.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.ruan-mei.1303206",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.075 }
+    },
+    {
+      "id": "ruan-mei.t207",
+      "parent": "ruan-mei.t201",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.ruan-mei.1303207",
+      "kind": "stat",
+      "name": "Break Boost",
+      "stat": { "stat": "breakEffect", "value": 0.08 }
+    },
+    {
+      "id": "ruan-mei.t208",
+      "parent": "ruan-mei.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.ruan-mei.1303208",
+      "kind": "stat",
+      "name": "SPD Boost",
+      "stat": { "stat": "spd", "value": 3 }
+    },
+    {
+      "id": "ruan-mei.t209",
+      "parent": "ruan-mei.t208",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.ruan-mei.1303209",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.1 }
+    },
+    {
+      "id": "ruan-mei.t210",
+      "parent": "ruan-mei.t208",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.ruan-mei.1303210",
+      "kind": "stat",
+      "name": "Break Boost",
+      "stat": { "stat": "breakEffect", "value": 0.107 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Neuronic Embroidery",
+      "description": "While the Ultimate's Zone is deployed, the DMG dealt by all allies ignores 20% of the target's DEF.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "ruan-mei.e1"
+    },
+    {
+      "rank": 2,
+      "name": "Reedside Promenade",
+      "description": "While Ruan Mei is on the field, all allies increase their ATK by 40% when dealing DMG to enemies that are Weakness Broken.",
+      "modifiers": [{ "stat": "atkPct", "value": 0.4, "scope": "team", "conditions": [{ "type": "targetIsWeaknessBroken" }] }],
+      "triggers": []
+    },
+    {
+      "rank": 3,
+      "name": "Viridescent Pirouette",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "ultimate": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Chatoyant Éclat",
+      "description": "When an enemy target's Weakness is Broken, Ruan Mei's Break Effect increases by 100% for 3 turn(s).",
+      "modifiers": [],
+      "triggers": [
+        {
+          "on": "afterAllyWeaknessBreak",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "buff.break-effect-up",
+              "duration": 3,
+              "params": { "breakEffect": 1 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "name": "Languid Barrette",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "skill": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Sash Cascade",
+      "description": "Extends the duration of the Ultimate's Zone by 1 turn(s). The Talent's Break DMG multiplier additionally increases by 200%.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "ruan-mei.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "immortal-scionette", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "immortal-scionette", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "immortal-aeroblossom", "count": 6 },
+      { "item": "gelid-chitin", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "immortal-aeroblossom", "count": 9 },
+      { "item": "gelid-chitin", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "immortal-lumintwig", "count": 6 },
+      { "item": "gelid-chitin", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "immortal-lumintwig", "count": 9 },
+      { "item": "gelid-chitin", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "ruan-meis-eidolon",
+  "presentation": { "model": "proc.humanoid.ruan-mei", "portraitColor": "#6fd0f0", "voice": {} },
+  "lore": {
+    "title": "Herta Space Station",
+    "faction": "Herta Space Station",
+    "bio": "A scholar of exquisite temperament, member #81 of the illustrious Genius Society, and an expert in the field of life sciences."
+  },
+  "sources": [
+    {
+      "topic": "Ruan Mei: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Ruan Mei: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

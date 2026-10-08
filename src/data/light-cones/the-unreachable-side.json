@@ -1,0 +1,79 @@
+{
+  "id": "lc.the-unreachable-side",
+  "name": "The Unreachable Side",
+  "rarity": 5,
+  "path": "Destruction",
+  "baseStats": { "hp": 57.6, "atk": 26.4, "def": 15 },
+  "passive": {
+    "name": "Unfulfilled Yearning",
+    "description": "Increases the wearer's CRIT Rate by {p1}% and increases their Max HP by {p2}%. When the wearer is attacked or consumes their own HP, their DMG increases by {p3}%. This effect is removed after the wearer uses an attack.",
+    "modifiers": [{ "stat": "critRate", "value": { "param": "p1" } }, { "stat": "hpPct", "value": { "param": "p2" } }],
+    "triggers": [
+      {
+        "on": "afterBeingHit",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "self",
+            "status": "lc.unfulfilled-yearning",
+            "params": { "allDmg": { "param": "p3" } }
+          }
+        ]
+      },
+      {
+        "on": "onHpChanged",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "self",
+            "status": "lc.unfulfilled-yearning",
+            "params": { "allDmg": { "param": "p3" } }
+          }
+        ]
+      }
+    ],
+    "params": { "p1": [0.18, 0.21, 0.24, 0.27, 0.3], "p2": [0.18, 0.21, 0.24, 0.27, 0.3], "p3": [0.24, 0.28, 0.32, 0.36, 0.4] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 5000 }, { "item": "immortal-scionette", "count": 8 }],
+    [
+      { "item": "credit", "count": 10000 },
+      { "item": "shattered-blade", "count": 4 },
+      { "item": "immortal-scionette", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 20000 },
+      { "item": "lifeless-blade", "count": 4 },
+      { "item": "immortal-aeroblossom", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 50000 },
+      { "item": "lifeless-blade", "count": 8 },
+      { "item": "immortal-aeroblossom", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 100000 },
+      { "item": "worldbreaker-blade", "count": 5 },
+      { "item": "immortal-lumintwig", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 200000 },
+      { "item": "worldbreaker-blade", "count": 10 },
+      { "item": "immortal-lumintwig", "count": 8 }
+    ]
+  ],
+  "fodderExp": 60000,
+  "lore": "He would come to this place every year, bringing new swords with him each time. He had seen all the owners of the swords draw their last breath. Every time he leaves, he would sorrowfully ponder... When would his own blade be brought here by someone else?",
+  "sources": [
+    {
+      "topic": "The Unreachable Side: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "The Unreachable Side: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

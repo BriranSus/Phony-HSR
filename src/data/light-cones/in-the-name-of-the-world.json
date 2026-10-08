@@ -1,0 +1,68 @@
+{
+  "id": "lc.in-the-name-of-the-world",
+  "name": "In the Name of the World",
+  "rarity": 5,
+  "path": "Nihility",
+  "baseStats": { "hp": 48, "atk": 26.4, "def": 21 },
+  "passive": {
+    "name": "Inheritor",
+    "description": "Increases the wearer's DMG to debuffed enemies by {p1}%. When the wearer uses their Skill, the Effect Hit Rate for this attack increases by {p2}%, and ATK increases by {p3}%.",
+    "modifiers": [
+      { "stat": "allDmg", "value": { "param": "p1" }, "conditions": [{ "type": "targetIsDebuffed" }] },
+      {
+        "stat": "effectHitRate",
+        "value": { "param": "p2" },
+        "conditions": [{ "type": "attackType", "params": { "is": "skill" } }]
+      },
+      {
+        "stat": "atkPct",
+        "value": { "param": "p3" },
+        "conditions": [{ "type": "attackType", "params": { "is": "skill" } }]
+      }
+    ],
+    "triggers": [],
+    "params": { "p1": [0.24, 0.28, 0.32, 0.36, 0.4], "p2": [0.18, 0.21, 0.24, 0.27, 0.3], "p3": [0.24, 0.28, 0.32, 0.36, 0.4] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 5000 }, { "item": "silvermane-badge", "count": 8 }],
+    [
+      { "item": "credit", "count": 10000 },
+      { "item": "obsidian-of-dread", "count": 4 },
+      { "item": "silvermane-badge", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 20000 },
+      { "item": "obsidian-of-desolation", "count": 4 },
+      { "item": "silvermane-insignia", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 50000 },
+      { "item": "obsidian-of-desolation", "count": 8 },
+      { "item": "silvermane-insignia", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 100000 },
+      { "item": "obsidian-of-obsession", "count": 5 },
+      { "item": "silvermane-medal", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 200000 },
+      { "item": "obsidian-of-obsession", "count": 10 },
+      { "item": "silvermane-medal", "count": 8 }
+    ]
+  ],
+  "fodderExp": 60000,
+  "lore": "\"Welt...?\" \"It's a... great name, right?\" \"Then...\" \"From now on, you are Welt.\" \"This Herrscher core... and the mission to protect the world...\" \"I'll leave them to you, Welt.\"",
+  "sources": [
+    {
+      "topic": "In the Name of the World: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "In the Name of the World: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

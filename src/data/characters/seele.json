@@ -1,0 +1,395 @@
+{
+  "id": "char.seele",
+  "name": "Seele",
+  "rarity": 5,
+  "element": "Quantum",
+  "path": "Hunt",
+  "ultimateResource": { "kind": "energy", "max": 120 },
+  "baseStats": { "hp": 126.72, "atk": 87.12, "def": 49.5, "spd": 115, "critRate": 0.05, "critDmg": 0.5, "aggro": 75 },
+  "abilities": {
+    "basic": {
+      "id": "seele.basic",
+      "name": "Thwack",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Quantum DMG equal to {p1}% of Seele's ATK to one designated enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "seele.skill",
+      "name": "Sheathed Blade",
+      "kind": "skill",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [1.1, 1.21, 1.32, 1.43, 1.54, 1.65, 1.7875, 1.925, 2.0625, 2.2, 2.31, 2.42, 2.53, 2.64, 2.75],
+        "p2": [0.25],
+        "p3": [2]
+      },
+      "description": "Increases Seele's SPD by {p2}% for {p3} turn(s) and deals Quantum DMG equal to {p1}% of Seele's ATK to one designated enemy.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "self",
+          "status": "seele.sheathed-blade",
+          "duration": { "param": "p3" },
+          "params": { "spdPct": { "param": "p2" } }
+        },
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 20 }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "seele.ultimate",
+      "name": "Butterfly Flurry",
+      "kind": "ultimate",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 10,
+      "params": { "p1": [2.55, 2.72, 2.89, 3.06, 3.23, 3.4, 3.6125, 3.825, 4.0375, 4.25, 4.42, 4.59, 4.76, 4.93, 5.1] },
+      "description": "Seele enters the Amplification state and deals Quantum DMG equal to {p1}% of her ATK to one designated enemy.",
+      "energyGain": 5,
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "self",
+          "status": "seele.amplification",
+          "duration": { "param": "p2", "from": "talent" },
+          "params": { "allDmg": { "param": "p1", "from": "talent" } }
+        },
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 30 }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "seele.talent",
+      "name": "Resurgence",
+      "kind": "talent",
+      "tags": ["enhance"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": { "p1": [0.4, 0.44, 0.48, 0.52, 0.56, 0.6, 0.65, 0.7, 0.75, 0.8, 0.84, 0.88, 0.92, 0.96, 1], "p2": [1] },
+      "description": "Enters the Amplification state upon defeating an enemy with Basic ATK, Skill, or Ultimate, and receives an extra turn. While in the Amplification state, increases the DMG of Seele's attacks by {p1}% for {p2} turn(s). Enemies defeated in the extra turn provided by \"Resurgence\" will not trigger another \"Resurgence.\"",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "onKill",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "seele.amplification",
+              "duration": { "param": "p2" },
+              "params": { "allDmg": { "param": "p1" } }
+            },
+            { "kind": "insertAction", "action": "extraTurn" },
+            { "kind": "script", "handler": "seele.resurgence-no-chain" }
+          ],
+          "conditions": [{ "type": "attackType", "params": { "is": ["basic", "skill", "ultimate"] } }]
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "seele.technique",
+      "name": "Phantom Illusion",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [20] },
+      "description": "After using her Technique, Seele gains Stealth for {p1} second(s). While Stealth is active, Seele cannot be detected by enemies. And when entering battle by attacking enemies, Seele will immediately enter the Amplification state.",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "seele.amplification",
+              "duration": { "param": "p2", "from": "talent" },
+              "params": { "allDmg": { "param": "p1", "from": "talent" } }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": []
+  },
+  "traces": [
+    {
+      "id": "seele.t001",
+      "requirements": {},
+      "costTable": "trace-cost.seele.1102001",
+      "kind": "ability",
+      "name": "Thwack",
+      "ability": "basic"
+    },
+    {
+      "id": "seele.t002",
+      "requirements": {},
+      "costTable": "trace-cost.seele.1102002",
+      "kind": "ability",
+      "name": "Sheathed Blade",
+      "ability": "skill"
+    },
+    {
+      "id": "seele.t003",
+      "requirements": {},
+      "costTable": "trace-cost.seele.1102003",
+      "kind": "ability",
+      "name": "Butterfly Flurry",
+      "ability": "ultimate"
+    },
+    {
+      "id": "seele.t004",
+      "requirements": {},
+      "costTable": "trace-cost.seele.1102004",
+      "kind": "ability",
+      "name": "Resurgence",
+      "ability": "talent"
+    },
+    {
+      "id": "seele.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.seele.1102101",
+      "kind": "major",
+      "name": "Nightshade",
+      "passive": {
+        "description": "When current HP percentage is 50% or lower, reduces the chance of being attacked by enemies.",
+        "modifiers": [
+          {
+            "stat": "aggro",
+            "value": 0.5,
+            "negate": true,
+            "conditions": [{ "type": "hpBelow", "params": { "ratio": 0.5 } }]
+          }
+        ],
+        "triggers": []
+      }
+    },
+    {
+      "id": "seele.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.seele.1102102",
+      "kind": "major",
+      "name": "Lacerate",
+      "passive": {
+        "description": "While Seele is in the Amplification state, her Quantum RES PEN increases by 20%.",
+        "modifiers": [
+          {
+            "stat": "resPen",
+            "value": 0.2,
+            "conditions": [{ "type": "hasStatus", "params": { "status": "seele.amplification" } }]
+          }
+        ],
+        "triggers": []
+      }
+    },
+    {
+      "id": "seele.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.seele.1102103",
+      "kind": "major",
+      "name": "Rippling Waves",
+      "passive": {
+        "description": "After using a Basic ATK, advances Seele's next action by 20%.",
+        "modifiers": [],
+        "triggers": [{ "on": "afterUseBasic", "effects": [{ "kind": "actionAdvance", "target": "self", "fraction": 0.2 }] }]
+      }
+    },
+    {
+      "id": "seele.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.seele.1102201",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "seele.t202",
+      "parent": "seele.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.seele.1102202",
+      "kind": "stat",
+      "name": "CRIT DMG Boost",
+      "stat": { "stat": "critDmg", "value": 0.053 }
+    },
+    {
+      "id": "seele.t203",
+      "parent": "seele.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.seele.1102203",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "seele.t204",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.seele.1102204",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.05 }
+    },
+    {
+      "id": "seele.t205",
+      "parent": "seele.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.seele.1102205",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "seele.t206",
+      "parent": "seele.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.seele.1102206",
+      "kind": "stat",
+      "name": "CRIT DMG Boost",
+      "stat": { "stat": "critDmg", "value": 0.08 }
+    },
+    {
+      "id": "seele.t207",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.seele.1102207",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "seele.t208",
+      "parent": "seele.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.seele.1102208",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.075 }
+    },
+    {
+      "id": "seele.t209",
+      "parent": "seele.t208",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.seele.1102209",
+      "kind": "stat",
+      "name": "CRIT DMG Boost",
+      "stat": { "stat": "critDmg", "value": 0.107 }
+    },
+    {
+      "id": "seele.t210",
+      "parent": "seele.t208",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.seele.1102210",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.08 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Extirpating Slash",
+      "description": "When dealing DMG to an enemy whose HP percentage is 80% or lower, increases CRIT Rate by 15%.",
+      "modifiers": [{ "stat": "critRate", "value": 0.15, "conditions": [{ "type": "targetHpBelow", "params": { "ratio": 0.8 } }] }],
+      "triggers": []
+    },
+    {
+      "rank": 2,
+      "name": "Dancing Butterfly",
+      "description": "The SPD Boost effect of Seele's Skill can stack up to 2 time(s).",
+      "modifiers": [],
+      "triggers": [],
+      "script": "seele.e2"
+    },
+    {
+      "rank": 3,
+      "name": "Dazzling Tumult",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "skill": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Flitting Phantasm",
+      "description": "Seele regenerates 15 Energy when she defeats an enemy.",
+      "modifiers": [],
+      "triggers": [{ "on": "onKill", "effects": [{ "kind": "energy", "target": "self", "amount": 15 }] }]
+    },
+    {
+      "rank": 5,
+      "name": "Piercing Shards",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "ultimate": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Shattering Shambles",
+      "description": "After attacking with Ultimate, Seele inflicts \"Butterfly Flurry\" on the attacked enemy target for 1 turn(s). Enemies in \"Butterfly Flurry\" will additionally take 1 instance of Quantum Additional DMG equal to 15% of Seele's Ultimate DMG every time they are attacked. If the target is defeated by the \"Butterfly Flurry\" state's Additional DMG triggered by other allies' attacks, Seele's Talent will not be triggered. When Seele is knocked down, the \"Butterfly Flurry\" inflicted on the enemies will be removed.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "seele.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "thiefs-instinct", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "thiefs-instinct", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "usurpers-scheme", "count": 6 },
+      { "item": "void-cast-iron", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "usurpers-scheme", "count": 9 },
+      { "item": "void-cast-iron", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "conquerors-will", "count": 6 },
+      { "item": "void-cast-iron", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "conquerors-will", "count": 9 },
+      { "item": "void-cast-iron", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "seeles-eidolon",
+  "presentation": { "model": "proc.humanoid.seele", "portraitColor": "#6a6ff0", "voice": {} },
+  "lore": {
+    "title": "Belobog",
+    "faction": "Belobog",
+    "bio": "A spirited and valiant member of Wildfire who grew up in the perilous Underworld of Belobog."
+  },
+  "sources": [
+    {
+      "topic": "Seele: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Seele: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

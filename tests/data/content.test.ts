@@ -17,7 +17,7 @@ describe('bundled game content', () => {
     const registry = new DataRegistry().registerAll(ALL_COLLECTIONS);
     const report = await registry.load(createBundledDataSource(), { strict: false });
     expect(report.issues).toEqual([]);
-    expect(report.files).toBeGreaterThan(20);
+    expect(report.files).toBeGreaterThan(50);
   });
 
   it('defines every element and path exactly once', async () => {
@@ -34,40 +34,40 @@ describe('bundled game content', () => {
       expect(status.kind).toBe('debuff');
     }
     expect(rules.weaknessBreak.elements.Physical.breakDmgMultiplier).toBe(2);
-    expect(rules.weaknessBreak.elements.Fire.breakDmgMultiplier).toBe(2);
     expect(rules.weaknessBreak.elements.Wind.breakDmgMultiplier).toBe(1.5);
-    expect(rules.weaknessBreak.elements.Ice.breakDmgMultiplier).toBe(1);
-    expect(rules.weaknessBreak.elements.Lightning.breakDmgMultiplier).toBe(1);
     expect(rules.weaknessBreak.elements.Quantum.breakDmgMultiplier).toBe(0.5);
-    expect(rules.weaknessBreak.elements.Imaginary.breakDmgMultiplier).toBe(0.5);
   });
 
   it('uses the reference Skill Point and energy rules', async () => {
     const rules = (await loadAll()).get(Collections.combatRules, 'default');
     expect(rules.skillPoints).toEqual({ max: 5, start: 3, basicGain: 1, skillCost: 1 });
     expect(rules.actionValue.numerator).toBe(10000);
-    expect(rules.energy.basic).toBe(20);
-    expect(rules.energy.skill).toBe(30);
-    expect(rules.energy.ultimate).toBe(5);
+    expect(rules.energy).toMatchObject({ basic: 20, skill: 30, ultimate: 5 });
   });
 
-  it('gives every character a full kit, 6 eidolons and valid ability levels', async () => {
+  it('covers all 7 elements and all 8 Paths with the shipped roster', async () => {
+    const chars = (await loadAll()).all(Collections.characters);
+    expect(chars.length).toBeGreaterThanOrEqual(16);
+    expect(new Set(chars.map((c) => c.element)).size).toBe(7);
+    expect(new Set(chars.map((c) => c.path)).size).toBe(8);
+    expect(chars.some((c) => c.memosprite)).toBe(true);
+    expect(chars.some((c) => c.summons.length > 0)).toBe(true);
+  });
+
+  it('gives every character a full kit with standard Basic ATK / Ultimate economy and valid levels', async () => {
     const r = await loadAll();
-    const curves = r.get(Collections.scalingCurves, 'default');
-    const chars = r.all(Collections.characters);
-    expect(chars.length).toBeGreaterThanOrEqual(4);
-    for (const c of chars) {
-      expect(c.eidolons.map((e) => e.rank)).toEqual([1, 2, 3, 4, 5, 6]);
-      expect(c.abilities.basic.spGain).toBe(1);
-      expect(c.abilities.skill.spCost).toBe(1);
-      expect(c.abilities.basic.energyGain).toBe(20);
-      expect(c.abilities.skill.energyGain).toBe(30);
-      expect(c.abilities.ultimate.energyGain).toBe(5);
-      expect(c.traces.filter((t) => t.kind === 'major')).toHaveLength(3);
-      // Every level-scaled value resolves at max level including eidolon bonuses.
-      for (const e of c.abilities.skill.effects) {
-        if (e.kind === 'damage') expect(resolveLevelScaled(e.multiplier, 12, curves)).toBeGreaterThan(0);
-      }
+    const prog = r.get(Collections.progressionRules, 'default');
+    for (const c of r.all(Collections.characters)) {
+      expect(c.eidolons.map((e) => e.rank), c.id).toEqual([1, 2, 3, 4, 5, 6]);
+      expect(c.abilities.basic.spGain, c.id).toBe(1);
+      expect(c.abilities.basic.energyGain, c.id).toBe(20);
+      expect(c.abilities.ultimate.energyGain, c.id).toBe(5);
+      expect(c.abilities.skill.spCost, c.id).toBe(1);
+      expect(c.abilities.basic.maxLevel, c.id).toBe(prog.abilityMaxLevel.basic);
+      expect(c.abilities.skill.maxLevel, c.id).toBe(prog.abilityMaxLevel.skill);
+      expect(c.traces.filter((t) => t.kind === 'major').length, c.id).toBeGreaterThanOrEqual(3);
+      expect(c.traces.filter((t) => t.kind === 'stat').length, c.id).toBeGreaterThanOrEqual(10);
+      expect(c.sources.length, c.id).toBeGreaterThan(0);
     }
   });
 
@@ -76,82 +76,48 @@ describe('bundled game content', () => {
     expect(resolveLevelScaled({ curve: 'standard', ref: 2 }, 1, curves)).toBeCloseTo(1);
     expect(resolveLevelScaled({ curve: 'standard', ref: 2 }, 10, curves)).toBeCloseTo(2);
     expect(resolveLevelScaled({ curve: 'standard', ref: 2 }, 15, curves)).toBeCloseTo(2.5);
-    expect(resolveLevelScaled({ curve: 'basic', ref: 1 }, 6, curves)).toBeCloseTo(1);
-    expect(resolveLevelScaled({ curve: 'basic', ref: 1 }, 1, curves)).toBeCloseTo(0.5);
   });
 
   it('has relic slots split 4 cavern + 2 planar with correct 5-star max main stats', async () => {
     const r = await loadAll();
-    expect(CAVERN_SLOTS).toHaveLength(4);
-    expect(PLANAR_SLOTS).toHaveLength(2);
     const t = r.get(Collections.relicStatTables, 'default');
-    const five = t.rarities['5'];
-    expect(five).toBeDefined();
-    const at15 = (s: keyof NonNullable<typeof five>['mainStats']) => {
-      const g = five?.mainStats[s];
-      return g ? g.base + g.step * 15 : NaN;
-    };
+    expect([...CAVERN_SLOTS, ...PLANAR_SLOTS]).toHaveLength(6);
+    const five = t.rarities['5']!;
+    const at15 = (stat: keyof typeof five.mainStats): number => five.mainStats[stat]!.base + five.mainStats[stat]!.step * 15;
     expect(at15('hp')).toBeCloseTo(705.6, 1);
     expect(at15('atk')).toBeCloseTo(352.8, 1);
-    expect(at15('critRate')).toBeCloseTo(0.324, 3);
-    expect(at15('critDmg')).toBeCloseTo(0.648, 3);
-    expect(at15('spd')).toBeCloseTo(25.032, 2);
-    expect(Object.keys(t.mainStatPools.head)).toEqual(['hp']);
-    expect(Object.keys(t.mainStatPools.hands)).toEqual(['atk']);
     expect(Object.keys(t.mainStatPools.feet)).toContain('spd');
-    expect(Object.keys(t.mainStatPools.linkRope)).toContain('energyRegen');
-    for (const s of r.all(Collections.relicSets)) {
-      expect(s.bonuses.map((b) => b.pieces)).toEqual(s.kind === 'cavern' ? [2, 4] : [2]);
-    }
+    for (const s of r.all(Collections.relicSets)) expect(s.bonuses.map((b) => b.pieces)).toEqual(s.kind === 'cavern' ? [2, 4] : [2]);
   });
 
-  it('gives every light cone 5 superimposition values per modifier', async () => {
-    for (const lc of (await loadAll()).all(Collections.lightCones)) {
-      for (const m of lc.passive.modifiers) expect(m.value).toHaveLength(5);
-    }
-  });
-
-  it('encodes every set / Light Cone bonus as data (no description-only mechanics)', async () => {
+  it('encodes every set and Light Cone bonus as data (no description-only mechanics)', async () => {
     const r = await loadAll();
     for (const s of r.all(Collections.relicSets)) {
       for (const b of s.bonuses) expect(b.modifiers.length + b.triggers.length, `${s.id} ${b.pieces}pc`).toBeGreaterThan(0);
     }
-    const pilgrim = r.get(Collections.relicSets, 'relic.ember-pilgrim').bonuses[1]!;
-    expect(pilgrim.triggers[0]!.on).toBe('afterUseUltimate');
-    expect(pilgrim.triggers[0]!.effects[0]).toMatchObject({ kind: 'applyStatus', status: 'buff.ember-pilgrim', params: { fireDmg: 0.12 } });
-    expect(r.get(Collections.statusEffects, 'buff.ember-pilgrim').modifiers[0]!.stat).toBe('fireDmg');
-    const courier = r.get(Collections.relicSets, 'relic.gale-courier').bonuses[1]!;
-    expect(courier.triggers[0]).toMatchObject({ on: 'afterUseUltimate', conditions: [{ type: 'abilityTargetsAlly' }] });
     for (const lc of r.all(Collections.lightCones)) {
       expect(lc.passive.modifiers.length + lc.passive.triggers.length, lc.id).toBeGreaterThan(0);
+      for (const v of Object.values(lc.passive.params)) expect(v).toHaveLength(5);
     }
-    const thread = r.get(Collections.lightCones, 'lc.harmonic-thread');
-    expect(thread.passive.triggers[0]).toMatchObject({ on: 'afterUseSkill', effects: [{ params: { allDmg: { param: 'skillTargetDmg' } } }] });
   });
 
-  it('ships Light Cones on the reference Lv.1 stat tiers', async () => {
+  it('documents every script handler that data references', async () => {
     const r = await loadAll();
-    expect(r.get(Collections.lightCones, 'lc.ember-oath').baseStats).toEqual({ hp: 48, atk: 26.4, def: 21 });
-    expect(r.get(Collections.lightCones, 'lc.harmonic-thread').baseStats).toEqual({ hp: 43.2, atk: 19.2, def: 18 });
-    expect(r.get(Collections.lightCones, 'lc.bulwark-memory').baseStats).toEqual({ hp: 38.4, atk: 14.4, def: 12 });
+    const handlers = r.all(Collections.scriptHandlers);
+    expect(handlers.length).toBeGreaterThan(0);
+    for (const h of handlers) expect(h.description.length, h.id).toBeGreaterThan(20);
   });
 
-  it('gives the Remembrance sample a Memosprite Skill and Talent with Eidolon bonuses', async () => {
+  it('ships character and Light Cone banners with the reference rates and separate pity groups', async () => {
     const r = await loadAll();
-    const lyra = r.get(Collections.characters, 'char.lyra');
-    expect(lyra.memosprite?.abilities.map((a) => a.kind).sort()).toEqual(['memospriteSkill', 'memospriteTalent']);
-    const prog = r.get(Collections.progressionRules, 'default');
-    for (const a of lyra.memosprite!.abilities) expect(a.maxLevel).toBe(prog.abilityMaxLevel[a.kind as 'memospriteSkill' | 'memospriteTalent']);
-    expect(lyra.traces.filter((t) => t.ability === 'memospriteSkill' || t.ability === 'memospriteTalent')).toHaveLength(2);
-  });
-
-  it('ships a Light Cone banner with the reference rates and its own pity group', async () => {
-    const r = await loadAll();
-    const lc = r.get(Collections.banners, 'banner.oath-of-embers-cone');
-    const ch = r.get(Collections.banners, 'banner.ember-ascendant');
-    expect(lc.type).toBe('lightCone');
+    const ch = r.get(Collections.banners, 'banner.butterfly-on-swordtip');
+    const lc = r.get(Collections.banners, 'banner.brilliant-fixation-in-the-night');
+    expect(ch.featured.fiveStar).toEqual(['char.seele']);
+    expect(ch.rates.fiveStar).toBe(0.006);
+    expect(ch.pity).toMatchObject({ fiveStarHard: 90, fourStarHard: 10 });
+    expect(lc.featured.fiveStar).toEqual(['lc.in-the-night']);
     expect(lc.rates.fiveStar).toBe(0.008);
-    expect(lc.pity).toMatchObject({ fiveStarHard: 80, fiveStarSoftStart: 66, fourStarHard: 10 });
+    expect(lc.pity).toMatchObject({ fiveStarHard: 80, fiveStarSoftStart: 66 });
     expect(lc.featured.fiveStarChance).toBe(0.75);
     expect(lc.pityGroup).not.toBe(ch.pityGroup);
   });

@@ -1,0 +1,53 @@
+{
+  "id": "enemy.lance-of-the-eternal-freeze-a",
+  "name": "Lance of the Eternal Freeze",
+  "rank": "normal",
+  "faction": "Jarilo-VI",
+  "baseStats": { "hp": 209.25, "atk": 18, "spd": 100, "effectRes": 0.2 },
+  "toughness": 40,
+  "weaknesses": ["Fire", "Lightning"],
+  "resistances": { "Physical": 0.2, "Ice": 0.2, "Wind": 0.2, "Quantum": 0.2, "Imaginary": 0.2 },
+  "debuffRes": { "freeze": 1 },
+  "abilities": [
+    {
+      "id": "lance-of-the-eternal-freeze-a.everwinter-reverberance",
+      "name": "Everwinter Reverberance",
+      "kind": "enemy",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 1,
+      "description": "Deals minor Ice DMG to all targets.",
+      "effects": [{ "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": 2.5, "element": "Ice", "toughness": 0 }],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    },
+    {
+      "id": "lance-of-the-eternal-freeze-a.subzero-pursuit",
+      "name": "Subzero Pursuit",
+      "kind": "enemy",
+      "tags": ["support"],
+      "targeting": "allySingle",
+      "maxLevel": 1,
+      "description": "Locks on to a target. Some of Cocolia, Mother of Deception (Illusion)'s abilities will be released for one more time on the locked-on target until Lance of the Eternal Freeze (Illusion) had their Weakness Broken or defeated.",
+      "effects": [
+        { "kind": "applyStatus", "target": "primary", "status": "enemy.lock-on" },
+        { "kind": "script", "handler": "enemy.lance.subzero-pursuit" }
+      ],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "A giant lance of ice summon by Cocolia. It's surrounded by an icy cold current that can tear through flesh like a blade.",
+  "presentation": { "model": "proc.enemy.lance-of-the-eternal-freeze-a", "scale": 1, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Lance of the Eternal Freeze: MonsterConfig 1002017, MonsterTemplateConfig 1002017, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

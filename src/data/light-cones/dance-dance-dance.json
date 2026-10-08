@@ -1,0 +1,61 @@
+{
+  "id": "lc.dance-dance-dance",
+  "name": "Dance! Dance! Dance!",
+  "rarity": 4,
+  "path": "Harmony",
+  "baseStats": { "hp": 43.2, "atk": 19.2, "def": 18 },
+  "passive": {
+    "name": "Cannot Stop It!",
+    "description": "When the wearer uses their Ultimate, all allies' actions are Advanced Forward by {p1}%.",
+    "modifiers": [],
+    "triggers": [
+      {
+        "on": "afterUseUltimate",
+        "effects": [{ "kind": "actionAdvance", "target": "allAllies", "fraction": { "param": "p1" } }]
+      }
+    ],
+    "params": { "p1": [0.16, 0.18, 0.2, 0.22, 0.24] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "artifexs-module", "count": 5 }],
+    [
+      { "item": "credit", "count": 8000 },
+      { "item": "harmonic-tune", "count": 3 },
+      { "item": "artifexs-module", "count": 10 }
+    ],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "ancestral-hymn", "count": 3 },
+      { "item": "artifexs-cogwheel", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "ancestral-hymn", "count": 6 },
+      { "item": "artifexs-cogwheel", "count": 9 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "stellaris-symphony", "count": 4 },
+      { "item": "artifexs-gyreheart", "count": 5 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "stellaris-symphony", "count": 8 },
+      { "item": "artifexs-gyreheart", "count": 7 }
+    ]
+  ],
+  "fodderExp": 12000,
+  "lore": "\"Why couldn't Hook do a spinning dance move, just like how Clara does?\" She clenched her tiny fists and pouted her cute lips, her chubby little face looking redder than ever under her signature felt hat. \"Please, Mr. Svarog, can you please help Hook with this?\" Without saying any words, Mr. Svarog began to hold out his robotic arm. \"I'm g—gonna be sick!!! Put me down now! Please!\"",
+  "sources": [
+    {
+      "topic": "Dance! Dance! Dance!: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Dance! Dance! Dance!: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

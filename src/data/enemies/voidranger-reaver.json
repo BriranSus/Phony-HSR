@@ -1,0 +1,77 @@
+{
+  "id": "enemy.voidranger-reaver",
+  "name": "Voidranger: Reaver",
+  "rank": "normal",
+  "faction": "Antimatter Legion",
+  "baseStats": { "hp": 139.5, "atk": 18, "spd": 100, "effectRes": 0.1 },
+  "toughness": 20,
+  "weaknesses": ["Physical", "Lightning"],
+  "resistances": { "Fire": 0.2, "Ice": 0.2, "Wind": 0.2, "Quantum": 0.2, "Imaginary": 0.2 },
+  "debuffRes": {},
+  "abilities": [
+    {
+      "id": "voidranger-reaver.hunting-blade",
+      "name": "Hunting Blade",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals minor Imaginary DMG to a single target.",
+      "effects": [
+        {
+          "kind": "damage",
+          "target": "primary",
+          "stat": "atk",
+          "multiplier": 2.5,
+          "element": "Imaginary",
+          "toughness": 0
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    },
+    {
+      "id": "voidranger-reaver.vortex-leap",
+      "name": "Vortex Leap",
+      "kind": "enemy",
+      "tags": ["blast"],
+      "targeting": "enemyBlast",
+      "maxLevel": 1,
+      "description": "Deals minor Imaginary DMG to one designated target and units adjacent to the target.",
+      "effects": [
+        {
+          "kind": "damage",
+          "target": "primary",
+          "stat": "atk",
+          "multiplier": 1.5,
+          "element": "Imaginary",
+          "toughness": 0
+        },
+        {
+          "kind": "damage",
+          "target": "adjacent",
+          "stat": "atk",
+          "multiplier": 1.5,
+          "element": "Imaginary",
+          "toughness": 0
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 5,
+      "aiWeight": 1
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "Warriors yet to perish were recast in the Warforge and gained Destruction's power. Antimatter completes their bodies and negative particles reverberate throughout their forms. Violently aggressive, they embody the will of Destruction and are basic combat units of the Antimatter Legion, acting only according to their destructive instincts.",
+  "presentation": { "model": "proc.enemy.voidranger-reaver", "scale": 1, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Voidranger: Reaver: MonsterConfig 8012010, MonsterTemplateConfig 8012010, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ],
+  "lootTable": "loot.antimatter-legion"
+}

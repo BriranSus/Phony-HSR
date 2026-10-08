@@ -1,0 +1,477 @@
+{
+  "id": "char.bailu",
+  "name": "Bailu",
+  "rarity": 5,
+  "element": "Lightning",
+  "path": "Abundance",
+  "ultimateResource": { "kind": "energy", "max": 100 },
+  "baseStats": { "hp": 179.52, "atk": 76.56, "def": 66, "spd": 98, "critRate": 0.05, "critDmg": 0.5, "aggro": 100 },
+  "abilities": {
+    "basic": {
+      "id": "bailu.basic",
+      "name": "Diagnostic Kick",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Lightning DMG equal to {p1}% of Bailu's ATK to one designated enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "bailu.skill",
+      "name": "Singing Among Clouds",
+      "kind": "skill",
+      "tags": ["restore"],
+      "targeting": "allySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [
+          0.078,
+          0.0829,
+          0.0877,
+          0.0926,
+          0.0975,
+          0.1014,
+          0.1053,
+          0.1092,
+          0.1131,
+          0.117,
+          0.1209,
+          0.1248,
+          0.1287,
+          0.1326,
+          0.1365
+        ],
+        "p2": [78, 124.8, 159.9, 195, 218.4, 241.8, 259.35, 276.9, 294.45, 312, 329.55, 347.1, 364.65, 382.2, 399.75],
+        "p3": [0.15],
+        "p4": [2]
+      },
+      "description": "Heals a single ally for {p1}% of Bailu's Max HP plus {p2}. Bailu then heals random allies {p4} time(s). After each healing, HP restored from the next healing is reduced by {p3}%.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        {
+          "kind": "heal",
+          "target": "selectedAlly",
+          "stat": "hp",
+          "multiplier": { "param": "p1" },
+          "flat": { "param": "p2" },
+          "repeats": { "count": { "param": "p4" }, "decay": { "param": "p3" } }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "bailu.ultimate",
+      "name": "Felicitous Thunderleap",
+      "kind": "ultimate",
+      "tags": ["restore"],
+      "targeting": "allyAll",
+      "maxLevel": 10,
+      "params": {
+        "p1": [
+          0.09,
+          0.0956,
+          0.1013,
+          0.1069,
+          0.1125,
+          0.117,
+          0.1215,
+          0.126,
+          0.1305,
+          0.135,
+          0.1395,
+          0.144,
+          0.1485,
+          0.153,
+          0.1575
+        ],
+        "p2": [90, 144, 184.5, 225, 252, 279, 299.25, 319.5, 339.75, 360, 380.25, 400.5, 420.75, 441, 461.25],
+        "p3": [2]
+      },
+      "description": "Heals all allies for {p1}% of Bailu's Max HP plus {p2}. Bailu applies Invigoration to allies that are not already Invigorated. For those already Invigorated, Bailu extends the duration of their Invigoration by 1 turn. The effect of Invigoration can last for {p3} turn(s). This effect cannot stack.",
+      "energyGain": 5,
+      "effects": [
+        {
+          "kind": "heal",
+          "target": "allAllies",
+          "stat": "hp",
+          "multiplier": { "param": "p1" },
+          "flat": { "param": "p2" }
+        },
+        {
+          "kind": "applyStatus",
+          "target": "allAllies",
+          "status": "bailu.invigoration",
+          "duration": { "param": "p3" },
+          "params": {
+            "multiplier": { "param": "p1", "from": "talent" },
+            "flat": { "param": "p2", "from": "talent" },
+            "triggers": { "param": "p5", "from": "talent" }
+          }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "bailu.talent",
+      "name": "Gourdful of Elixir",
+      "kind": "talent",
+      "tags": ["restore"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": {
+        "p1": [
+          0.036,
+          0.0382,
+          0.0405,
+          0.0428,
+          0.045,
+          0.0468,
+          0.0486,
+          0.0504,
+          0.0522,
+          0.054,
+          0.0558,
+          0.0576,
+          0.0594,
+          0.0612,
+          0.063
+        ],
+        "p2": [36, 57.6, 73.8, 90, 100.8, 111.6, 119.7, 127.8, 135.9, 144, 152.1, 160.2, 168.3, 176.4, 184.5],
+        "p3": [0.12, 0.1275, 0.135, 0.1425, 0.15, 0.156, 0.162, 0.168, 0.174, 0.18, 0.186, 0.192, 0.198, 0.204, 0.21],
+        "p4": [120, 192, 246, 300, 336, 372, 399, 426, 453, 480, 507, 534, 561, 588, 615],
+        "p5": [2]
+      },
+      "description": "After an ally target with Invigoration is hit, restores the ally's HP for {p1}% of Bailu's Max HP plus {p2}. This effect can trigger {p5} time(s). When Bailu's teammate receives a killing blow, they will not be knocked down. Bailu immediately heals the ally for {p3}% of Bailu's Max HP plus {p4} HP. This effect can be triggered 1 time per battle.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "beforeAllyKnockedDown",
+          "effects": [
+            {
+              "kind": "revive",
+              "target": "primary",
+              "ratio": { "param": "p3" },
+              "flat": { "param": "p4" },
+              "fromSource": true
+            }
+          ],
+          "limitPerBattle": 1
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "bailu.technique",
+      "name": "Saunter in the Rain",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [2] },
+      "description": "After Technique is used, at the start of the next battle, all allies are granted Invigoration for {p1} turn(s).",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "allAllies",
+              "status": "bailu.invigoration",
+              "duration": { "param": "p1" },
+              "params": {
+                "multiplier": { "param": "p1", "from": "talent" },
+                "flat": { "param": "p2", "from": "talent" },
+                "triggers": { "param": "p5", "from": "talent" }
+              }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": []
+  },
+  "traces": [
+    {
+      "id": "bailu.t001",
+      "requirements": {},
+      "costTable": "trace-cost.bailu.1211001",
+      "kind": "ability",
+      "name": "Diagnostic Kick",
+      "ability": "basic"
+    },
+    {
+      "id": "bailu.t002",
+      "requirements": {},
+      "costTable": "trace-cost.bailu.1211002",
+      "kind": "ability",
+      "name": "Singing Among Clouds",
+      "ability": "skill"
+    },
+    {
+      "id": "bailu.t003",
+      "requirements": {},
+      "costTable": "trace-cost.bailu.1211003",
+      "kind": "ability",
+      "name": "Felicitous Thunderleap",
+      "ability": "ultimate"
+    },
+    {
+      "id": "bailu.t004",
+      "requirements": {},
+      "costTable": "trace-cost.bailu.1211004",
+      "kind": "ability",
+      "name": "Gourdful of Elixir",
+      "ability": "talent"
+    },
+    {
+      "id": "bailu.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.bailu.1211101",
+      "kind": "major",
+      "name": "Qihuang Analects",
+      "passive": {
+        "description": "When Bailu heals a target ally above their normal Max HP, the target's Max HP increases by 10% for 2 turns.",
+        "modifiers": [],
+        "triggers": [],
+        "script": "bailu.a2"
+      }
+    },
+    {
+      "id": "bailu.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.bailu.1211102",
+      "kind": "major",
+      "name": "Vidyadhara Ichor Lines",
+      "passive": {
+        "description": "Invigoration can trigger 1 more time(s).",
+        "modifiers": [],
+        "triggers": [],
+        "script": "bailu.a4"
+      }
+    },
+    {
+      "id": "bailu.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.bailu.1211103",
+      "kind": "major",
+      "name": "Aquatic Benediction",
+      "passive": {
+        "description": "Characters with Invigoration receive 10% less DMG.",
+        "modifiers": [
+          {
+            "stat": "dmgMitigation",
+            "value": 0.1,
+            "scope": "team",
+            "conditions": [{ "type": "hasStatus", "params": { "status": "bailu.invigoration" } }]
+          }
+        ],
+        "triggers": []
+      }
+    },
+    {
+      "id": "bailu.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.bailu.1211201",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.04 }
+    },
+    {
+      "id": "bailu.t202",
+      "parent": "bailu.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.bailu.1211202",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.05 }
+    },
+    {
+      "id": "bailu.t203",
+      "parent": "bailu.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.bailu.1211203",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.04 }
+    },
+    {
+      "id": "bailu.t204",
+      "parent": "bailu.t203",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.bailu.1211204",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.04 }
+    },
+    {
+      "id": "bailu.t205",
+      "parent": "bailu.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.bailu.1211205",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.06 }
+    },
+    {
+      "id": "bailu.t206",
+      "parent": "bailu.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.bailu.1211206",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.075 }
+    },
+    {
+      "id": "bailu.t207",
+      "parent": "bailu.t206",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.bailu.1211207",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.06 }
+    },
+    {
+      "id": "bailu.t208",
+      "parent": "bailu.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.bailu.1211208",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.06 }
+    },
+    {
+      "id": "bailu.t209",
+      "parent": "bailu.t103",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.bailu.1211209",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.1 }
+    },
+    {
+      "id": "bailu.t210",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.bailu.1211210",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.08 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Ambrosial Aqua",
+      "description": "If the target ally's current HP is equal to their Max HP when Invigoration ends, regenerates 8 extra Energy for this target.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "bailu.e1"
+    },
+    {
+      "rank": 2,
+      "name": "Sylphic Slumber",
+      "description": "After using her Ultimate, Bailu's Outgoing Healing increases by an additional 15% for 2 turn(s).",
+      "modifiers": [],
+      "triggers": [
+        {
+          "on": "afterUseUltimate",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "buff.healing-up",
+              "duration": 2,
+              "params": { "outgoingHealing": 0.15 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "name": "Omniscient Opulence",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "skill": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Evil Excision",
+      "description": "Every healing provided by the Skill makes the recipient deal 10% more DMG for 2 turn(s). This effect can stack up to 3 time(s).",
+      "modifiers": [],
+      "triggers": [],
+      "script": "bailu.e4"
+    },
+    {
+      "rank": 5,
+      "name": "Waning Worries",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "ultimate": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Drooling Drop of Draconic Divinity",
+      "description": "Bailu can heal allies who received a killing blow 1 more time(s) in a single battle.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "bailu.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "extinguished-core", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "extinguished-core", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "glimmering-core", "count": 6 },
+      { "item": "lightning-crown-of-the-past-shadow", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "glimmering-core", "count": 9 },
+      { "item": "lightning-crown-of-the-past-shadow", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "squirming-core", "count": 6 },
+      { "item": "lightning-crown-of-the-past-shadow", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "squirming-core", "count": 9 },
+      { "item": "lightning-crown-of-the-past-shadow", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "bailus-eidolon",
+  "presentation": { "model": "proc.humanoid.bailu", "portraitColor": "#c46cf0", "voice": {} },
+  "lore": {
+    "title": "The Xianzhou Luofu",
+    "faction": "The Xianzhou Luofu",
+    "bio": "A vivacious young lady of the Vidyadhara race, she is known as the \"Healer Lady\" due to her expertise with medicine."
+  },
+  "sources": [
+    {
+      "topic": "Bailu: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Bailu: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

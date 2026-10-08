@@ -1,4 +1,4 @@
-import type { Ability, Effect, StatModifier, SuperimposedModifier, Trigger } from './ability';
+import type { Ability, Effect, ParamRef, StatModifier, SuperimposedModifier, Trigger, Value } from './ability';
 import type { Character } from './character';
 import type { LightCone } from './lightcone';
 import type { RelicSet } from './relic';
@@ -16,8 +16,11 @@ import type { LevelScaled, Superimposed } from './scaling';
  *     `multiplier` then `flat`; applyStatus `params` values in key order. Then the ability's `modifiers`.
  *   - Light Cone passives: `modifiers` values in order, then `params` in key order.
  *   - Traces, Eidolons, relic set bonuses: `modifiers` values in order, then trigger applyStatus params.
- * - `{name}`: a named value (applyStatus param names for abilities/traces/eidolons/relics, `params`
- *   keys for Light Cones).
+ * - `{name}`: a named value: an ability's per-level `params` (`{p1}` = the reference game's `#1`),
+ *   a Light Cone's superimposed `params`, or a literal applyStatus param name.
+ *
+ * Values given as `{ "param": ... }` references are not listed separately: they already appear under
+ * their param name.
  *
  * A trailing `%` (`{0}%`) formats the value as a percentage. `templateProblems()` lists placeholders
  * that do not resolve; the data registry runs it for every shipped record, so a broken placeholder
@@ -35,6 +38,9 @@ export interface TemplateSlots {
 const PLACEHOLDER = /\{([A-Za-z0-9_]+)\}(%?)/g;
 
 const level = (value: LevelScaled): TemplateValue => ({ kind: 'level', value });
+const isRef = (v: unknown): v is ParamRef => typeof v === 'object' && v !== null && 'param' in v;
+/** Literal values only; references are reachable by their param name. */
+const lit = (v: Value | undefined): TemplateValue[] => (v === undefined || isRef(v) ? [] : [level(v)]);
 
 function effectValues(effects: readonly Effect[]): { indexed: TemplateValue[]; named: Record<string, TemplateValue> } {
   const indexed: TemplateValue[] = [];
@@ -42,17 +48,15 @@ function effectValues(effects: readonly Effect[]): { indexed: TemplateValue[]; n
   for (const e of effects) {
     switch (e.kind) {
       case 'damage':
-        indexed.push(level(e.multiplier));
+        indexed.push(...lit(e.multiplier));
         break;
       case 'heal':
       case 'shield':
-        indexed.push(level(e.multiplier));
-        if (e.flat !== undefined) indexed.push(level(e.flat));
+        indexed.push(...lit(e.multiplier), ...lit(e.flat));
         break;
       case 'applyStatus':
         for (const [k, v] of Object.entries(e.params ?? {})) {
-          // Param references are resolved by the owner (e.g. Light Cone params), not by the effect.
-          if (typeof v === 'object' && 'param' in v) continue;
+          if (isRef(v)) continue;
           indexed.push(level(v));
           named[k] = level(v);
         }
@@ -68,20 +72,21 @@ const triggerEffects = (triggers: readonly Trigger[]): Effect[] => triggers.flat
 
 export function abilityTemplateSlots(a: Ability): TemplateSlots {
   const fx = effectValues([...a.effects, ...triggerEffects(a.triggers)]);
-  return { indexed: [...fx.indexed, ...a.modifiers.map((m) => level(m.value))], named: fx.named };
+  const params = Object.fromEntries(Object.entries(a.params).map(([k, table]) => [k, level({ table })]));
+  return { indexed: [...fx.indexed, ...a.modifiers.flatMap((m) => lit(m.value))], named: { ...fx.named, ...params } };
 }
 
 /** Traces, Eidolons and relic set bonuses: modifiers first, then trigger applyStatus params. */
 export function passiveTemplateSlots(p: { readonly modifiers: readonly StatModifier[]; readonly triggers: readonly Trigger[] }): TemplateSlots {
   const fx = effectValues(triggerEffects(p.triggers));
-  return { indexed: [...p.modifiers.map((m) => level(m.value)), ...fx.indexed], named: fx.named };
+  return { indexed: [...p.modifiers.flatMap((m) => lit(m.value)), ...fx.indexed], named: fx.named };
 }
 
 export function lightConeTemplateSlots(lc: LightCone): TemplateSlots {
   const params = Object.entries(lc.passive.params);
   const sup = (value: Superimposed): TemplateValue => ({ kind: 'superimposed', value });
   return {
-    indexed: [...lc.passive.modifiers.map((m: SuperimposedModifier) => sup(m.value)), ...params.map(([, v]) => sup(v))],
+    indexed: [...lc.passive.modifiers.flatMap((m: SuperimposedModifier) => (isRef(m.value) ? [] : [sup(m.value)])), ...params.map(([, v]) => sup(v))],
     named: Object.fromEntries(params.map(([k, v]) => [k, sup(v)])),
   };
 }
@@ -124,6 +129,7 @@ export function characterTemplateProblems(c: Character): string[] {
     c.abilities.technique,
     ...c.abilities.extra,
     ...(c.memosprite?.abilities ?? []),
+    ...c.summons.flatMap((s) => s.abilities),
   ];
   return [
     ...abilities.flatMap((a) => describe(a.id, a.description, abilityTemplateSlots(a))),

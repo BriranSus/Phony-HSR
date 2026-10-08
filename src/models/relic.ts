@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { IdSchema, TextSchema } from './common';
-import { paramRefsOf, StatModifierSchema, TriggerSchema } from './ability';
+import { paramRefsIn, StatModifierSchema, TriggerSchema } from './ability';
 import { relicSetTemplateProblems } from './templates';
 import { StatIdSchema } from './stats';
 
@@ -103,7 +103,7 @@ export interface RelicInstance {
 export function validateRelicSet(s: RelicSet): string[] {
   const problems = relicSetTemplateProblems(s);
   for (const b of s.bonuses) {
-    for (const p of paramRefsOf(b.triggers.flatMap((t) => t.effects))) problems.push(`${b.pieces}-piece bonus references param "${p}" but relic sets have no params`);
+    for (const p of paramRefsIn([b.modifiers, b.triggers])) problems.push(`${b.pieces}-piece bonus references param "${p}" but relic sets have no params`);
   }
   return problems;
 }

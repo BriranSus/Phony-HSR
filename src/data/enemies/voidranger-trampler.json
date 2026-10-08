@@ -1,0 +1,117 @@
+{
+  "id": "enemy.voidranger-trampler",
+  "name": "Voidranger: Trampler",
+  "rank": "elite",
+  "faction": "Antimatter Legion",
+  "baseStats": { "hp": 1023, "atk": 18, "spd": 100, "effectRes": 0.2 },
+  "toughness": 100,
+  "weaknesses": ["Physical", "Wind", "Imaginary"],
+  "resistances": { "Fire": 0.2, "Ice": 0.2, "Lightning": 0.2, "Quantum": 0.2 },
+  "debuffRes": {},
+  "abilities": [
+    {
+      "id": "voidranger-trampler.unreal-projection",
+      "name": "Unreal Projection",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals Quantum DMG to a single target.",
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 3, "element": "Quantum", "toughness": 0 }],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    },
+    {
+      "id": "voidranger-trampler.rule-of-force",
+      "name": "Rule of Force",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals Quantum DMG to a single target.",
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 4, "element": "Quantum", "toughness": 0 }],
+      "triggers": [],
+      "energyToTarget": 15,
+      "aiWeight": 1
+    },
+    {
+      "id": "voidranger-trampler.war-trample",
+      "name": "War Trample",
+      "kind": "enemy",
+      "tags": ["blast"],
+      "targeting": "enemyBlast",
+      "maxLevel": 1,
+      "description": "Deals minor Quantum DMG to one designated target and units adjacent to the target.",
+      "effects": [
+        {
+          "kind": "damage",
+          "target": "primary",
+          "stat": "atk",
+          "multiplier": 2.5,
+          "element": "Quantum",
+          "toughness": 0
+        },
+        {
+          "kind": "damage",
+          "target": "adjacent",
+          "stat": "atk",
+          "multiplier": 2.5,
+          "element": "Quantum",
+          "toughness": 0
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    },
+    {
+      "id": "voidranger-trampler.spiral-arrow",
+      "name": "Spiral Arrow",
+      "kind": "enemy",
+      "tags": ["impair"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Locks on to a single target. Cast End of Bow to this target in the next action.",
+      "effects": [{ "kind": "applyStatus", "target": "primary", "status": "enemy.lock-on" }],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    },
+    {
+      "id": "voidranger-trampler.end-of-bow",
+      "name": "End of Bow",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals massive Quantum DMG to a single target, with a high chance to inflict Entanglement.",
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 6, "element": "Quantum", "toughness": 0 },
+        {
+          "kind": "applyStatus",
+          "target": "primary",
+          "status": "enemy.entanglement",
+          "baseChance": 1,
+          "duration": 1,
+          "params": { "delay": 0.5, "multiplier": 0.8 }
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 25,
+      "aiWeight": 1
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "A product of the Antimatter Legion utilizing the Warforge to recast and fuse remnants of fallen warriors and leviathans. Though relatively rare, they possess both the intelligence of a warrior and the power and mobility of a leviathan. Its screech can summon a large number of Voidrangers.",
+  "presentation": { "model": "proc.enemy.voidranger-trampler", "scale": 1.5, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Voidranger: Trampler: MonsterConfig 8013010, MonsterTemplateConfig 8013010, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ],
+  "lootTable": "loot.antimatter-legion"
+}

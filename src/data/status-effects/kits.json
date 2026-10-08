@@ -1,0 +1,787 @@
+[
+  {
+    "id": "buff.atk-up",
+    "name": "ATK Boost",
+    "description": "ATK increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkPct" } }]
+  },
+  {
+    "id": "buff.def-up",
+    "name": "DEF Boost",
+    "description": "DEF increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "defPct", "value": { "param": "defPct" } }]
+  },
+  {
+    "id": "buff.spd-up",
+    "name": "SPD Boost",
+    "description": "SPD increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdPct" } }]
+  },
+  {
+    "id": "buff.dmg-up",
+    "name": "DMG Boost",
+    "description": "DMG dealt increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }]
+  },
+  {
+    "id": "buff.crit-rate-up",
+    "name": "CRIT Rate Boost",
+    "description": "CRIT Rate increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "critRate", "value": { "param": "critRate" } }]
+  },
+  {
+    "id": "buff.crit-dmg-up",
+    "name": "CRIT DMG Boost",
+    "description": "CRIT DMG increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "critDmg", "value": { "param": "critDmg" } }]
+  },
+  {
+    "id": "buff.break-effect-up",
+    "name": "Break Effect Boost",
+    "description": "Break Effect increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "breakEffect", "value": { "param": "breakEffect" } }]
+  },
+  {
+    "id": "buff.healing-up",
+    "name": "Outgoing Healing Boost",
+    "description": "Outgoing Healing increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "outgoingHealing", "value": { "param": "outgoingHealing" } }]
+  },
+  {
+    "id": "buff.ehr-up",
+    "name": "Effect Hit Rate Boost",
+    "description": "Effect Hit Rate increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "effectHitRate", "value": { "param": "effectHitRate" } }]
+  },
+  {
+    "id": "buff.dmg-reduction",
+    "name": "DMG Reduction",
+    "description": "DMG taken reduced.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "dmgMitigation", "value": { "param": "dmgMitigation" } }]
+  },
+  {
+    "id": "debuff.def-down",
+    "name": "DEF Reduction",
+    "description": "DEF decreased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "defReduction", "value": { "param": "defDown" } }]
+  },
+  {
+    "id": "debuff.spd-down",
+    "name": "Slow",
+    "description": "SPD decreased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdDown" }, "negate": true }]
+  },
+  {
+    "id": "debuff.atk-down",
+    "name": "ATK Reduction",
+    "description": "ATK decreased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkDown" }, "negate": true }]
+  },
+  {
+    "id": "debuff.vulnerability",
+    "name": "Vulnerability",
+    "description": "DMG taken increased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "vulnerability", "value": { "param": "vuln" } }]
+  },
+  {
+    "id": "debuff.all-res-down",
+    "name": "All-Type RES Reduction",
+    "description": "All-Type RES decreased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "allRes", "value": { "param": "resDown" }, "negate": true }]
+  },
+  {
+    "id": "debuff.ice-res-down",
+    "name": "Ice RES Reduction",
+    "description": "Ice RES decreased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "iceRes", "value": { "param": "resDown" }, "negate": true }]
+  },
+  {
+    "id": "cc.reference-taunt",
+    "name": "Taunt",
+    "description": "Can only attack the unit that applied Taunt.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "cc": { "type": "taunt", "skipsTurn": false }
+  },
+  {
+    "id": "clara.mark-of-counter",
+    "name": "Mark of Counter",
+    "description": "Marked by Svarog. Clara's Skill deals additional DMG to marked enemies.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "modifiers": []
+  },
+  {
+    "id": "clara.promise-not-command",
+    "name": "Promise, Not Command",
+    "description": "DMG taken reduced, much more likely to be attacked, and Svarog's Counters are enhanced.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [
+      { "stat": "dmgMitigation", "value": { "param": "dmgMitigation" } },
+      { "stat": "aggro", "value": { "param": "aggro" } }
+    ],
+    "maxStacks": 1,
+    "script": "clara.enhanced-counter"
+  },
+  {
+    "id": "clara.technique-taunt",
+    "name": "A Small Price for Victory",
+    "description": "More likely to be attacked.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "aggro", "value": { "param": "aggro" } }]
+  },
+  {
+    "id": "blade.hellscape",
+    "name": "Hellscape",
+    "description": "DMG dealt increased; Basic ATK becomes Forest of Swords and the Skill cannot be used.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 3, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }],
+    "replacesAbility": { "slot": "basic", "ability": "blade.forest-of-swords" },
+    "blocksAbilities": ["skill"]
+  },
+  {
+    "id": "seele.sheathed-blade",
+    "name": "SPD Boost",
+    "description": "SPD increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdPct" } }]
+  },
+  {
+    "id": "seele.amplification",
+    "name": "Amplification",
+    "description": "DMG dealt increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }]
+  },
+  {
+    "id": "dan-heng.superiority-of-reach",
+    "name": "Superiority of Reach",
+    "description": "The next attack's Wind RES PEN is increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "resPen", "value": { "param": "resPen" } }]
+  },
+  {
+    "id": "himeko.burn",
+    "name": "Burn",
+    "description": "Takes Fire DoT at the start of each turn.",
+    "kind": "debuff",
+    "category": "dot",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
+    "dot": { "element": "Fire", "formula": "attackerScaled", "stat": "atk", "multiplier": { "param": "multiplier" } }
+  },
+  {
+    "id": "himeko.fire-vulnerability",
+    "name": "Fire Vulnerability",
+    "description": "Fire DMG taken increased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [
+      {
+        "stat": "vulnerability",
+        "value": { "param": "vuln" },
+        "conditions": [{ "type": "damageElement", "params": { "is": "Fire" } }]
+      }
+    ]
+  },
+  {
+    "id": "bronya.combat-redeployment",
+    "name": "Combat Redeployment",
+    "description": "DMG dealt increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }]
+  },
+  {
+    "id": "bronya.belobog-march",
+    "name": "The Belobog March",
+    "description": "ATK and CRIT DMG increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "modifiers": [
+      { "stat": "atkPct", "value": { "param": "atkPct" } },
+      { "stat": "critDmg", "value": { "param": "critDmgFlat" } },
+      { "stat": "critDmg", "value": { "param": "critDmgRatio" }, "scaling": { "per": "sourceStat", "id": "critDmg" } }
+    ]
+  },
+  {
+    "id": "tingyun.benediction",
+    "name": "Benediction",
+    "description": "ATK increased (capped by Tingyun's ATK); attacks deal extra Lightning Additional DMG.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 3, "tickOn": "casterTurnStart" },
+    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkPct" } }],
+    "triggers": [
+      {
+        "on": "afterAttack",
+        "effects": [
+          {
+            "kind": "damage",
+            "target": "primary",
+            "stat": "atk",
+            "multiplier": { "param": "additional" },
+            "element": "Lightning",
+            "attackType": "additional",
+            "toughness": 0
+          }
+        ]
+      }
+    ],
+    "script": "tingyun.benediction-atk-cap"
+  },
+  {
+    "id": "ruan-mei.overtone",
+    "name": "Overtone",
+    "description": "All allies' DMG and Weakness Break Efficiency increase.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 3, "tickOn": "ownerTurnStart" },
+    "modifiers": [
+      { "stat": "allDmg", "value": { "param": "allDmg" }, "scope": "team" },
+      { "stat": "breakEfficiency", "value": { "param": "breakEff" }, "scope": "team" }
+    ]
+  },
+  {
+    "id": "ruan-mei.zone",
+    "name": "Petals to Stream, Repose in Dream",
+    "description": "All allies' All-Type RES PEN increases; their attacks apply Thanatoplum Rebloom.",
+    "kind": "neutral",
+    "category": "field",
+    "dispellable": false,
+    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
+    "modifiers": [{ "stat": "resPen", "value": { "param": "resPen" }, "scope": "team" }],
+    "triggers": [
+      {
+        "on": "afterAllyAttack",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "primary",
+            "status": "ruan-mei.thanatoplum-rebloom",
+            "params": {
+              "delayRatio": { "param": "delayRatio" },
+              "delayBase": { "param": "delayBase" },
+              "breakDmg": { "param": "breakDmg" }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ruan-mei.thanatoplum-rebloom",
+    "name": "Thanatoplum Rebloom",
+    "description": "When this enemy would recover from Weakness Break, the Break is extended, its action is delayed and it takes Ice Break DMG.",
+    "kind": "debuff",
+    "category": "mark",
+    "dispellable": false,
+    "duration": { "turns": 0, "tickOn": "ownerTurnStart" },
+    "triggers": [
+      {
+        "on": "onToughnessRecover",
+        "effects": [
+          { "kind": "breakDamage", "target": "self", "multiplier": { "param": "breakDmg" } },
+          { "kind": "script", "handler": "ruan-mei.rebloom-delay" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kafka.shock",
+    "name": "Shocked",
+    "description": "Takes Lightning DoT at the start of each turn.",
+    "kind": "debuff",
+    "category": "dot",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
+    "dot": { "element": "Lightning", "formula": "attackerScaled", "stat": "atk", "multiplier": { "param": "multiplier" } }
+  },
+  {
+    "id": "kafka.da-capo",
+    "name": "Da Capo",
+    "description": "DoT received increased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "modifiers": [
+      {
+        "stat": "vulnerability",
+        "value": { "param": "vuln" },
+        "conditions": [{ "type": "attackType", "params": { "is": "dot" } }]
+      }
+    ]
+  },
+  {
+    "id": "silver-wolf.bug-atk",
+    "name": "Bug: ATK Reduction",
+    "description": "ATK decreased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 3, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkDown" }, "negate": true }]
+  },
+  {
+    "id": "silver-wolf.bug-def",
+    "name": "Bug: DEF Reduction",
+    "description": "DEF decreased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 3, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "defReduction", "value": { "param": "defDown" } }]
+  },
+  {
+    "id": "silver-wolf.bug-spd",
+    "name": "Bug: SPD Reduction",
+    "description": "SPD decreased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 3, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdDown" }, "negate": true }]
+  },
+  {
+    "id": "pela.exposed",
+    "name": "Exposed",
+    "description": "DEF decreased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "defReduction", "value": { "param": "defDown" } }]
+  },
+  {
+    "id": "welt.imprisonment",
+    "name": "Imprisoned",
+    "description": "Action delayed and SPD reduced.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
+    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdDown" }, "negate": true }],
+    "cc": { "type": "imprisonment", "skipsTurn": false, "delayOnApply": { "param": "delay" } }
+  },
+  {
+    "id": "march-7th.freeze",
+    "name": "Frozen",
+    "description": "Cannot take action; takes Ice Additional DMG at the start of each turn.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
+    "cc": { "type": "freeze", "skipsTurn": true, "advanceOnExpire": 0.5 },
+    "dot": {
+      "element": "Ice",
+      "formula": "attackerScaled",
+      "stat": "atk",
+      "multiplier": { "param": "multiplier" },
+      "damageType": "additional",
+      "tickOn": "ownerTurnStart"
+    }
+  },
+  {
+    "id": "march-7th.power-of-cuteness",
+    "name": "The Power of Cuteness",
+    "description": "Much more likely to be attacked by enemies.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 3, "tickOn": "casterTurnStart" },
+    "modifiers": [{ "stat": "aggro", "value": { "param": "aggro" } }]
+  },
+  {
+    "id": "gepard.freeze",
+    "name": "Frozen",
+    "description": "Cannot take action; takes Ice Additional DMG at the start of each turn.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
+    "cc": { "type": "freeze", "skipsTurn": true, "advanceOnExpire": 0.5 },
+    "dot": {
+      "element": "Ice",
+      "formula": "attackerScaled",
+      "stat": "atk",
+      "multiplier": { "param": "multiplier" },
+      "damageType": "additional",
+      "tickOn": "ownerTurnStart"
+    }
+  },
+  {
+    "id": "natasha.continuous-healing",
+    "name": "Continuous Healing",
+    "description": "Restores HP at the start of each turn.",
+    "kind": "buff",
+    "category": "hot",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
+    "hot": { "stat": "hp", "multiplier": { "param": "multiplier" }, "flat": { "param": "flat" } }
+  },
+  {
+    "id": "natasha.weakened",
+    "name": "Weakened",
+    "description": "DMG dealt reduced.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "weaken", "value": { "param": "weaken" } }]
+  },
+  {
+    "id": "bailu.invigoration",
+    "name": "Invigoration",
+    "description": "Restores HP after being hit (from Bailu's Max HP).",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "modifiers": [],
+    "script": "bailu.invigoration"
+  },
+  {
+    "id": "trailblazer-remembrance.mem.support",
+    "name": "Mem's Support",
+    "description": "Each instance of DMG dealt also deals True DMG equal to a percentage of the original DMG.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 3, "tickOn": "ownerTurnEnd" },
+    "modifiers": [],
+    "script": "mem.support-true-damage"
+  },
+  {
+    "id": "lc.ensnared",
+    "name": "Ensnared",
+    "description": "DEF decreased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "defReduction", "value": { "param": "defDown" } }]
+  },
+  {
+    "id": "lc.patience-spd",
+    "name": "Spider Web",
+    "description": "SPD increased (stacks).",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdPct" } }],
+    "maxStacks": 3
+  },
+  {
+    "id": "lc.erode",
+    "name": "Erode",
+    "description": "Counts as Shocked: takes Lightning DoT at the start of each turn.",
+    "kind": "debuff",
+    "category": "dot",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
+    "dot": { "element": "Lightning", "formula": "attackerScaled", "stat": "atk", "multiplier": { "param": "multiplier" } }
+  },
+  {
+    "id": "lc.aether-code",
+    "name": "Aether Code",
+    "description": "DMG taken increased.",
+    "kind": "debuff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "vulnerability", "value": { "param": "vuln" } }]
+  },
+  {
+    "id": "lc.unfulfilled-yearning",
+    "name": "Unfulfilled Yearning",
+    "description": "DMG dealt increased; removed after attacking.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }],
+    "script": "lc.remove-after-attack"
+  },
+  {
+    "id": "lc.somnus-corpus",
+    "name": "Somnus Corpus",
+    "description": "The next Follow-Up ATK deals more DMG.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "followUpDmg", "value": { "param": "followUpDmg" } }],
+    "script": "lc.consume-on-follow-up"
+  },
+  {
+    "id": "relic.champion-atk",
+    "name": "Champion of Streetwise Boxing",
+    "description": "ATK increased for the rest of the battle (stacks).",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkPct" } }],
+    "maxStacks": 5
+  },
+  {
+    "id": "enemy.shock",
+    "name": "Shock",
+    "description": "Takes Lightning DoT at the start of each turn.",
+    "kind": "debuff",
+    "category": "dot",
+    "dispellable": true,
+    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
+    "dot": { "element": "Lightning", "formula": "attackerScaled", "stat": "atk", "multiplier": { "param": "multiplier" } }
+  },
+  {
+    "id": "enemy.wind-shear",
+    "name": "Wind Shear",
+    "description": "Takes Wind DoT per stack at the start of each turn.",
+    "kind": "debuff",
+    "category": "dot",
+    "dispellable": true,
+    "maxStacks": 5,
+    "duration": { "turns": 3, "tickOn": "ownerTurnStart" },
+    "dot": {
+      "element": "Wind",
+      "formula": "attackerScaled",
+      "stat": "atk",
+      "multiplier": { "param": "multiplier" },
+      "perStack": true
+    }
+  },
+  {
+    "id": "enemy.entanglement",
+    "name": "Entanglement",
+    "description": "Action delayed; takes Quantum Additional DMG per stack when the effect ends.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "maxStacks": 5,
+    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
+    "cc": { "type": "entanglement", "skipsTurn": false, "delayOnApply": { "param": "delay" } },
+    "dot": {
+      "element": "Quantum",
+      "formula": "attackerScaled",
+      "stat": "atk",
+      "multiplier": { "param": "multiplier" },
+      "perStack": true,
+      "damageType": "additional",
+      "tickOn": "onExpire"
+    }
+  },
+  {
+    "id": "enemy.freeze",
+    "name": "Frozen",
+    "description": "Cannot take action; takes Ice DMG when the effect ends.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
+    "cc": { "type": "freeze", "skipsTurn": true },
+    "dot": {
+      "element": "Ice",
+      "formula": "attackerScaled",
+      "stat": "atk",
+      "multiplier": { "param": "multiplier" },
+      "damageType": "additional",
+      "tickOn": "onExpire"
+    }
+  },
+  {
+    "id": "enemy.imprisonment",
+    "name": "Imprisoned",
+    "description": "Action delayed.",
+    "kind": "debuff",
+    "category": "cc",
+    "dispellable": true,
+    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
+    "cc": { "type": "imprisonment", "skipsTurn": false, "delayOnApply": { "param": "delay" } }
+  },
+  {
+    "id": "enemy.barrier",
+    "name": "Barrier",
+    "description": "Nullifies all DMG received except DoT until after being attacked.",
+    "kind": "buff",
+    "category": "shield",
+    "dispellable": true,
+    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "script": "enemy.barrier"
+  },
+  {
+    "id": "enemy.lock-on",
+    "name": "Locked On",
+    "description": "The enemy will focus its next attack on this target.",
+    "kind": "debuff",
+    "category": "mark",
+    "dispellable": false,
+    "duration": { "turns": 1, "tickOn": "casterTurnEnd" }
+  },
+  {
+    "id": "enemy.charging",
+    "name": "Charging",
+    "description": "Charging a powerful attack; DMG dealt increased.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }]
+  },
+  {
+    "id": "enemy.counter-stance",
+    "name": "Shield Reflect",
+    "description": "When attacked by a single character, acts immediately and casts \"Pierce\" on the attacker.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "modifiers": [],
+    "triggers": [
+      {
+        "on": "afterBeingHit",
+        "effects": [
+          {
+            "kind": "insertAction",
+            "action": "counter",
+            "ability": "silvermane-lieutenant.pierce",
+            "target": "attacker"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "enemy.rejuvenate",
+    "name": "Rebirth",
+    "description": "Upon receiving a killing blow, restores HP. Can be dispelled.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": true,
+    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "modifiers": [],
+    "triggers": [
+      {
+        "on": "beforeKnockedDown",
+        "effects": [{ "kind": "revive", "target": "self", "ratio": { "param": "ratio" } }],
+        "limitPerBattle": 1
+      }
+    ]
+  },
+  {
+    "id": "enemy.creators-resolve",
+    "name": "Creator's Resolve",
+    "description": "SPD increased; attacks deal Imaginary DMG.",
+    "kind": "buff",
+    "category": "stat",
+    "dispellable": false,
+    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "modifiers": [{ "stat": "spd", "value": { "param": "spd" } }]
+  },
+  {
+    "id": "enemy.weakness-protected",
+    "name": "Weakness Protected",
+    "description": "(Unremovable) Toughness cannot be reduced while the boss's summons are on the field.",
+    "kind": "buff",
+    "category": "other",
+    "dispellable": false,
+    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "toughnessProtection": "whileSummonsOnField"
+  }
+]

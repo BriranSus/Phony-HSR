@@ -1,0 +1,10 @@
+[
+  {
+    "id": "quest.signal-beacon",
+    "name": "Signal Beacon",
+    "category": "quest",
+    "rarity": 4,
+    "description": "The waystation's emergency beacon. Its light has gone out.",
+    "maxStack": 1
+  }
+]

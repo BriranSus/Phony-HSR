@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import ignatius from '@data/characters/ignatius.json';
-import sovereign from '@data/enemies/ash-sovereign.json';
+import seele from '@data/characters/seele.json';
+import cocolia from '@data/enemies/cocolia-mother-of-deception.json';
 import sets from '@data/relics/sets/sets.json';
-import emberOath from '@data/light-cones/ember-oath.json';
+import inTheNight from '@data/light-cones/in-the-night.json';
 import { CharacterSchema, validateCharacter } from '@models/character';
 import { EnemySchema, validateEnemy } from '@models/enemy';
 import { RelicSetSchema } from '@models/relic';
@@ -18,53 +18,53 @@ const clone = <T>(v: T): T => structuredClone(v);
 
 describe('schema validation of sample data', () => {
   it('accepts the sample character and fills defaults', () => {
-    const c = CharacterSchema.parse(ignatius);
+    const c = CharacterSchema.parse(seele);
     expect(c.baseStats.critRate).toBe(0.05);
     expect(c.baseStats.critDmg).toBe(0.5);
     expect(validateCharacter(c)).toEqual([]);
   });
 
   it('rejects unknown elements, paths and rarities', () => {
-    expect(CharacterSchema.safeParse({ ...clone(ignatius), element: 'Water' }).success).toBe(false);
-    expect(CharacterSchema.safeParse({ ...clone(ignatius), path: 'Gluttony' }).success).toBe(false);
-    expect(CharacterSchema.safeParse({ ...clone(ignatius), rarity: 3 }).success).toBe(false);
+    expect(CharacterSchema.safeParse({ ...clone(seele), element: 'Water' }).success).toBe(false);
+    expect(CharacterSchema.safeParse({ ...clone(seele), path: 'Gluttony' }).success).toBe(false);
+    expect(CharacterSchema.safeParse({ ...clone(seele), rarity: 3 }).success).toBe(false);
     expect(ELEMENTS).toHaveLength(7);
     expect(PATHS).toEqual(['Destruction', 'Hunt', 'Erudition', 'Harmony', 'Nihility', 'Preservation', 'Abundance', 'Remembrance']);
   });
 
   it('requires exactly six eidolons in order', () => {
-    const bad = clone(ignatius);
+    const bad = clone(seele);
     bad.eidolons = bad.eidolons.slice(0, 5);
     expect(CharacterSchema.safeParse(bad).success).toBe(false);
-    const swapped = clone(ignatius);
+    const swapped = clone(seele);
     [swapped.eidolons[0], swapped.eidolons[1]] = [swapped.eidolons[1]!, swapped.eidolons[0]!];
     expect(validateCharacter(CharacterSchema.parse(swapped))).toContain('eidolons must be ranks 1..6 in order (got 2,1,3,4,5,6)');
   });
 
   it('rejects unknown properties (typos) thanks to strict objects', () => {
-    const typo = clone(ignatius) as Record<string, unknown>;
+    const typo = clone(seele) as Record<string, unknown>;
     typo.maxEnergyy = 120;
     expect(CharacterSchema.safeParse(typo).success).toBe(false);
   });
 
   it('enforces Remembrance characters to have memosprites', () => {
-    const c = CharacterSchema.parse({ ...clone(ignatius), path: 'Remembrance' });
+    const c = CharacterSchema.parse({ ...clone(seele), path: 'Remembrance' });
     expect(validateCharacter(c)).toContain('Remembrance characters must define a memosprite');
   });
 
   it('validates the effect union by kind', () => {
     expect(EffectSchema.safeParse({ kind: 'damage', target: 'primary', stat: 'atk', multiplier: { curve: 'standard', ref: 2 } }).success).toBe(true);
     expect(EffectSchema.safeParse({ kind: 'damage', target: 'primary', stat: 'spd', multiplier: 1 }).success).toBe(false);
-    expect(EffectSchema.safeParse({ kind: 'actionAdvance', target: 'self', fraction: 1.5 }).success).toBe(false);
+    expect(EffectSchema.safeParse({ kind: 'actionAdvance', target: 'self', fraction: 'fast' }).success).toBe(false);
     expect(EffectSchema.safeParse({ kind: 'teleport' }).success).toBe(false);
-    expect(AbilitySchema.safeParse({ ...clone(ignatius.abilities.basic), spCost: -1 }).success).toBe(false);
+    expect(AbilitySchema.safeParse({ ...clone(seele.abilities.basic), spCost: -1 }).success).toBe(false);
   });
 
   it('enemy rules: bosses need phases, weaknesses cannot have positive RES', () => {
-    const boss = EnemySchema.parse(sovereign);
+    const boss = EnemySchema.parse(cocolia);
     expect(validateEnemy(boss)).toEqual([]);
     expect(validateEnemy({ ...boss, phases: [] })).toContain('bosses must define at least one phase');
-    expect(validateEnemy({ ...boss, resistances: { Ice: 0.2 } })).toContain('enemy is weak to Ice but has positive Ice RES');
+    expect(validateEnemy({ ...boss, resistances: { Fire: 0.2 } })).toContain('enemy is weak to Fire but has positive Fire RES');
     expect(validateEnemy({ ...boss, ai: { pattern: 'sequence', sequence: ['missing'] } })).toContain('ai.sequence references unknown ability "missing"');
   });
 
@@ -78,10 +78,10 @@ describe('schema validation of sample data', () => {
     expect(RelicSetSchema.safeParse(planar).success).toBe(false);
   });
 
-  it('light cones need 5 superimposition values per passive modifier', () => {
-    expect(LightConeSchema.safeParse(emberOath).success).toBe(true);
-    const bad = clone(emberOath);
-    bad.passive.modifiers[0]!.value = [0.2, 0.25, 0.3, 0.35];
+  it('light cones need 5 superimposition values per passive param', () => {
+    expect(LightConeSchema.safeParse(inTheNight).success).toBe(true);
+    const bad = clone(inTheNight);
+    (bad.passive.params as Record<string, number[]>).p1 = [0.18, 0.21, 0.24, 0.27];
     expect(LightConeSchema.safeParse(bad).success).toBe(false);
   });
 

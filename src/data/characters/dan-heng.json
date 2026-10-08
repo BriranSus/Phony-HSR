@@ -1,0 +1,409 @@
+{
+  "id": "char.dan-heng",
+  "name": "Dan Heng",
+  "rarity": 4,
+  "element": "Wind",
+  "path": "Hunt",
+  "ultimateResource": { "kind": "energy", "max": 100 },
+  "baseStats": { "hp": 120, "atk": 74.4, "def": 54, "spd": 110, "critRate": 0.05, "critDmg": 0.5, "aggro": 75 },
+  "abilities": {
+    "basic": {
+      "id": "dan-heng.basic",
+      "name": "Cloudlancer Art: North Wind",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Wind DMG equal to {p1}% of Dan Heng's ATK to one enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "dan-heng.skill",
+      "name": "Cloudlancer Art: Torrent",
+      "kind": "skill",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [1.3, 1.43, 1.56, 1.69, 1.82, 1.95, 2.1125, 2.275, 2.4375, 2.6, 2.73, 2.86, 2.99, 3.12, 3.25],
+        "p2": [0.12],
+        "p3": [2],
+        "p4": [1]
+      },
+      "description": "Deals Wind DMG equal to {p1}% of Dan Heng's ATK to one designated enemy. When DMG dealt by Skill triggers CRIT Hit, there is a {p4}% base chance to reduce the target's SPD by {p2}%, lasting for {p3} turn(s).",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 20 },
+        {
+          "kind": "applyStatus",
+          "target": "primary",
+          "status": "debuff.spd-down",
+          "baseChance": { "param": "p4" },
+          "duration": { "param": "p3" },
+          "params": { "spdDown": { "param": "p2" } },
+          "targetConditions": [{ "type": "isCrit" }]
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "dan-heng.ultimate",
+      "name": "Ethereal Dream",
+      "kind": "ultimate",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [2.4, 2.56, 2.72, 2.88, 3.04, 3.2, 3.4, 3.6, 3.8, 4, 4.16, 4.32, 4.48, 4.64, 4.8],
+        "p2": [0.72, 0.768, 0.816, 0.864, 0.912, 0.96, 1.02, 1.08, 1.14, 1.2, 1.248, 1.296, 1.344, 1.392, 1.44]
+      },
+      "description": "Deals Wind DMG equal to {p1}% of Dan Heng's ATK to one designated enemy target. If the attacked enemy is Slowed, the multiplier for the DMG dealt by Ultimate increases by {p2}%.",
+      "energyGain": 5,
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 30 },
+        { "kind": "script", "handler": "dan-heng.ultimate-slowed-bonus", "params": { "bonus": { "param": "p2" } } }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "dan-heng.talent",
+      "name": "Superiority of Reach",
+      "kind": "talent",
+      "tags": ["enhance"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.18, 0.198, 0.216, 0.234, 0.252, 0.27, 0.2925, 0.315, 0.3375, 0.36, 0.378, 0.396, 0.414, 0.432, 0.45],
+        "p2": [2]
+      },
+      "description": "When Dan Heng becomes the target of an ally's ability, his next attack's Wind RES PEN increases by {p1}%. This effect can be triggered again after {p2} turn(s).",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "onTargetedByAlly",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "dan-heng.superiority-of-reach",
+              "params": { "resPen": { "param": "p1" } }
+            }
+          ],
+          "cooldown": 2
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "dan-heng.technique",
+      "name": "Splitting Spearhead",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [0.4], "p2": [3] },
+      "description": "After Dan Heng uses his Technique, his ATK increases by {p1}% at the start of the next battle for {p2} turn(s).",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "buff.atk-up",
+              "duration": { "param": "p2" },
+              "params": { "atkPct": { "param": "p1" } }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": []
+  },
+  "traces": [
+    {
+      "id": "dan-heng.t001",
+      "requirements": {},
+      "costTable": "trace-cost.dan-heng.1002001",
+      "kind": "ability",
+      "name": "Cloudlancer Art: North Wind",
+      "ability": "basic"
+    },
+    {
+      "id": "dan-heng.t002",
+      "requirements": {},
+      "costTable": "trace-cost.dan-heng.1002002",
+      "kind": "ability",
+      "name": "Cloudlancer Art: Torrent",
+      "ability": "skill"
+    },
+    {
+      "id": "dan-heng.t003",
+      "requirements": {},
+      "costTable": "trace-cost.dan-heng.1002003",
+      "kind": "ability",
+      "name": "Ethereal Dream",
+      "ability": "ultimate"
+    },
+    {
+      "id": "dan-heng.t004",
+      "requirements": {},
+      "costTable": "trace-cost.dan-heng.1002004",
+      "kind": "ability",
+      "name": "Superiority of Reach",
+      "ability": "talent"
+    },
+    {
+      "id": "dan-heng.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.dan-heng.1002101",
+      "kind": "major",
+      "name": "Hidden Dragon",
+      "passive": {
+        "description": "When current HP percentage is 50% or lower, reduces the chance of being attacked by enemies.",
+        "modifiers": [
+          {
+            "stat": "aggro",
+            "value": 0.5,
+            "negate": true,
+            "conditions": [{ "type": "hpBelow", "params": { "ratio": 0.5 } }]
+          }
+        ],
+        "triggers": []
+      }
+    },
+    {
+      "id": "dan-heng.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.dan-heng.1002102",
+      "kind": "major",
+      "name": "Faster Than Light",
+      "passive": {
+        "description": "After launching an attack, there is a 50% fixed chance to increase this unit's SPD by 20% for 2 turn(s).",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterAttack",
+            "effects": [
+              {
+                "kind": "applyStatus",
+                "target": "self",
+                "status": "buff.spd-up",
+                "duration": 2,
+                "params": { "spdPct": 0.2 }
+              }
+            ],
+            "conditions": [{ "type": "fixedChance", "params": { "chance": 0.5 } }]
+          }
+        ]
+      }
+    },
+    {
+      "id": "dan-heng.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.dan-heng.1002103",
+      "kind": "major",
+      "name": "High Gale",
+      "passive": {
+        "description": "Basic ATK deals 40% more DMG to Slowed enemies.",
+        "modifiers": [{ "stat": "basicDmg", "value": 0.4, "conditions": [{ "type": "targetIsSlowed" }] }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "dan-heng.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.dan-heng.1002201",
+      "kind": "stat",
+      "name": "DMG Boost: Wind",
+      "stat": { "stat": "windDmg", "value": 0.032 }
+    },
+    {
+      "id": "dan-heng.t202",
+      "parent": "dan-heng.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.dan-heng.1002202",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "dan-heng.t203",
+      "parent": "dan-heng.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.dan-heng.1002203",
+      "kind": "stat",
+      "name": "DMG Boost: Wind",
+      "stat": { "stat": "windDmg", "value": 0.032 }
+    },
+    {
+      "id": "dan-heng.t204",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.dan-heng.1002204",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.05 }
+    },
+    {
+      "id": "dan-heng.t205",
+      "parent": "dan-heng.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.dan-heng.1002205",
+      "kind": "stat",
+      "name": "DMG Boost: Wind",
+      "stat": { "stat": "windDmg", "value": 0.048 }
+    },
+    {
+      "id": "dan-heng.t206",
+      "parent": "dan-heng.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.dan-heng.1002206",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "dan-heng.t207",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.dan-heng.1002207",
+      "kind": "stat",
+      "name": "DMG Boost: Wind",
+      "stat": { "stat": "windDmg", "value": 0.048 }
+    },
+    {
+      "id": "dan-heng.t208",
+      "parent": "dan-heng.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.dan-heng.1002208",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.075 }
+    },
+    {
+      "id": "dan-heng.t209",
+      "parent": "dan-heng.t208",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.dan-heng.1002209",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.08 }
+    },
+    {
+      "id": "dan-heng.t210",
+      "parent": "dan-heng.t208",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.dan-heng.1002210",
+      "kind": "stat",
+      "name": "DMG Boost: Wind",
+      "stat": { "stat": "windDmg", "value": 0.064 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "The Higher You Fly, the Harder You Fall",
+      "description": "When the target enemy's current HP percentage is greater than or equal to 50%, CRIT Rate increases by 12%.",
+      "modifiers": [{ "stat": "critRate", "value": 0.12, "conditions": [{ "type": "targetHpAtLeast", "params": { "ratio": 0.5 } }] }],
+      "triggers": []
+    },
+    {
+      "rank": 2,
+      "name": "Quell the Venom Octet, Quench the Vice O'Flame",
+      "description": "Reduces Talent cooldown by 1 turn.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "dan-heng.e2"
+    },
+    {
+      "rank": 3,
+      "name": "Seen and Unseen",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "skill": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Roaring Dragon and Soaring Sun",
+      "description": "When Dan Heng uses his Ultimate to defeat an enemy, he will immediately take action again.",
+      "modifiers": [],
+      "triggers": [
+        {
+          "on": "onKill",
+          "effects": [{ "kind": "insertAction", "action": "extraTurn" }],
+          "conditions": [{ "type": "attackType", "params": { "is": "ultimate" } }]
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "name": "A Drop of Rain Feeds a Torrent",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "ultimate": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "The Troubled Soul Lies in Wait",
+      "description": "The Slow state triggered by Skill reduces the enemy's SPD by an extra 8%.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "dan-heng.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 3200 }, { "item": "extinguished-core", "count": 4 }],
+    [{ "item": "credit", "count": 6400 }, { "item": "extinguished-core", "count": 8 }],
+    [
+      { "item": "credit", "count": 12800 },
+      { "item": "glimmering-core", "count": 5 },
+      { "item": "storm-eye", "count": 2 }
+    ],
+    [
+      { "item": "credit", "count": 32000 },
+      { "item": "glimmering-core", "count": 8 },
+      { "item": "storm-eye", "count": 5 }
+    ],
+    [
+      { "item": "credit", "count": 64000 },
+      { "item": "squirming-core", "count": 5 },
+      { "item": "storm-eye", "count": 15 }
+    ],
+    [
+      { "item": "credit", "count": 128000 },
+      { "item": "squirming-core", "count": 7 },
+      { "item": "storm-eye", "count": 28 }
+    ]
+  ],
+  "eidolonItem": "dan-hengs-eidolon",
+  "presentation": { "model": "proc.humanoid.dan-heng", "portraitColor": "#5fd6a0", "voice": {} },
+  "lore": {
+    "title": "Astral Express",
+    "faction": "Astral Express",
+    "bio": "A cold and reserved young man who wields a spear known as Cloud-Piercer."
+  },
+  "sources": [
+    {
+      "topic": "Dan Heng: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Dan Heng: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

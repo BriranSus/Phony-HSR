@@ -1,0 +1,429 @@
+{
+  "id": "char.silver-wolf",
+  "name": "Silver Wolf",
+  "rarity": 5,
+  "element": "Quantum",
+  "path": "Nihility",
+  "ultimateResource": { "kind": "energy", "max": 110 },
+  "baseStats": { "hp": 142.56, "atk": 87.12, "def": 62.7, "spd": 107, "critRate": 0.05, "critDmg": 0.5, "aggro": 100 },
+  "abilities": {
+    "basic": {
+      "id": "silver-wolf.basic",
+      "name": "System Warning",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Quantum DMG equal to {p1}% of Silver Wolf's ATK to one designated enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "silver-wolf.skill",
+      "name": "Allow Changes?",
+      "kind": "skill",
+      "tags": ["singleTarget", "impair"],
+      "targeting": "enemySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.98, 1.078, 1.176, 1.274, 1.372, 1.47, 1.5925, 1.715, 1.8375, 1.96, 2.058, 2.156, 2.254, 2.352, 2.45],
+        "p2": [0.75, 0.76, 0.77, 0.78, 0.79, 0.8, 0.8125, 0.825, 0.8375, 0.85, 0.86, 0.87, 0.88, 0.89, 0.9],
+        "p3": [2],
+        "p4": [0.2],
+        "p5": [1],
+        "p6": [0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.0906, 0.0938, 0.0969, 0.1, 0.1025, 0.105, 0.1075, 0.11, 0.1125],
+        "p7": [2]
+      },
+      "description": "There is a {p2}% base chance to add 1 Weakness of an on-field character's Type to the target enemy. This also reduces the enemy's DMG RES to that Weakness Type by {p4}% for {p3} turn(s). If the enemy already has that Type Weakness, the effect of DMG RES reduction to that Weakness Type will not be triggered. Each enemy can only have 1 Weakness implanted by Silver Wolf. When Silver Wolf implants another Weakness to the target, only the most recent implanted Weakness will be kept. In addition, there is a {p5}% base chance to further reduce the All-Type RES of the enemy by {p6}% for {p7} turn(s). Deals Quantum DMG equal to {p1}% of Silver Wolf's ATK to this enemy.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        {
+          "kind": "implantWeakness",
+          "target": "primary",
+          "element": "randomPartyElement",
+          "duration": { "param": "p3" },
+          "resReduction": { "param": "p4" },
+          "baseChance": { "param": "p2" }
+        },
+        {
+          "kind": "applyStatus",
+          "target": "primary",
+          "status": "debuff.all-res-down",
+          "baseChance": { "param": "p5" },
+          "duration": { "param": "p7" },
+          "params": { "resDown": { "param": "p6" } }
+        },
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 20 }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "silver-wolf.ultimate",
+      "name": "User Banned",
+      "kind": "ultimate",
+      "tags": ["singleTarget", "impair"],
+      "targeting": "enemySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [2.28, 2.432, 2.584, 2.736, 2.888, 3.04, 3.23, 3.42, 3.61, 3.8, 3.952, 4.104, 4.256, 4.408, 4.56],
+        "p2": [0.85, 0.865, 0.88, 0.895, 0.91, 0.925, 0.9437, 0.9625, 0.9812, 1, 1.015, 1.03, 1.045, 1.06, 1.075],
+        "p3": [0.36, 0.369, 0.378, 0.387, 0.396, 0.405, 0.4163, 0.4275, 0.4387, 0.45, 0.459, 0.468, 0.477, 0.486, 0.495],
+        "p4": [3]
+      },
+      "description": "There's a {p2}% base chance to decrease the target enemy's DEF by {p3}% for {p4} turn(s). And at the same time, deals Quantum DMG equal to {p1}% of Silver Wolf's ATK to the target enemy.",
+      "energyGain": 5,
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "primary",
+          "status": "debuff.def-down",
+          "baseChance": { "param": "p2" },
+          "duration": { "param": "p4" },
+          "params": { "defDown": { "param": "p3" } }
+        },
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 30 }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "silver-wolf.talent",
+      "name": "Awaiting System Response...",
+      "kind": "talent",
+      "tags": ["impair"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.0813, 0.0875, 0.0938, 0.1, 0.105, 0.11, 0.115, 0.12, 0.125],
+        "p2": [0.04, 0.044, 0.048, 0.052, 0.056, 0.06, 0.065, 0.07, 0.075, 0.08, 0.084, 0.088, 0.092, 0.096, 0.1],
+        "p3": [0.03, 0.033, 0.036, 0.039, 0.042, 0.045, 0.0488, 0.0525, 0.0563, 0.06, 0.063, 0.066, 0.069, 0.072, 0.075],
+        "p4": [0.6, 0.612, 0.624, 0.636, 0.648, 0.66, 0.675, 0.69, 0.705, 0.72, 0.732, 0.744, 0.756, 0.768, 0.78],
+        "p5": [3]
+      },
+      "description": "Silver Wolf can create three types of Bugs: Reduce ATK by {p1}%, reduce DEF by {p2}%, and reduce SPD by {p3}%. Every time Silver Wolf attacks, she has a {p4}% base chance to implant a random Bug that lasts for {p5} turn(s) in an enemy target.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "afterAttack",
+          "effects": [
+            {
+              "kind": "applyRandomStatus",
+              "target": "primary",
+              "pool": ["silver-wolf.bug-atk", "silver-wolf.bug-def", "silver-wolf.bug-spd"],
+              "baseChance": { "param": "p4" },
+              "duration": { "param": "p5" },
+              "params": { "atkDown": { "param": "p1" }, "defDown": { "param": "p2" }, "spdDown": { "param": "p3" } }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "silver-wolf.technique",
+      "name": "Force Quit Program",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [0.8] },
+      "description": "Immediately attacks the enemy. After entering battle, deals Quantum DMG equal to {p1}% of Silver Wolf's ATK to all enemies, and ignores Weakness Types and reduces Toughness from all enemies. Enemies with their Weakness Broken in this way will trigger the Quantum Weakness Break effect.",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "damage",
+              "target": "allEnemies",
+              "stat": "atk",
+              "multiplier": { "param": "p1" },
+              "toughness": 20,
+              "ignoresWeakness": true
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": []
+  },
+  "traces": [
+    {
+      "id": "silver-wolf.t001",
+      "requirements": {},
+      "costTable": "trace-cost.silver-wolf.1006001",
+      "kind": "ability",
+      "name": "System Warning",
+      "ability": "basic"
+    },
+    {
+      "id": "silver-wolf.t002",
+      "requirements": {},
+      "costTable": "trace-cost.silver-wolf.1006002",
+      "kind": "ability",
+      "name": "Allow Changes?",
+      "ability": "skill"
+    },
+    {
+      "id": "silver-wolf.t003",
+      "requirements": {},
+      "costTable": "trace-cost.silver-wolf.1006003",
+      "kind": "ability",
+      "name": "User Banned",
+      "ability": "ultimate"
+    },
+    {
+      "id": "silver-wolf.t004",
+      "requirements": {},
+      "costTable": "trace-cost.silver-wolf.1006004",
+      "kind": "ability",
+      "name": "Awaiting System Response...",
+      "ability": "talent"
+    },
+    {
+      "id": "silver-wolf.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.silver-wolf.1006101",
+      "kind": "major",
+      "name": "Generate",
+      "passive": {
+        "description": "The duration of \"Bug\" is extended by 1 turn(s). Every time an enemy is inflicted with Weakness Break, Silver Wolf has a 65% base chance of implanting a random \"Bug\" on that target.",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterAllyWeaknessBreak",
+            "effects": [
+              {
+                "kind": "applyRandomStatus",
+                "target": "primary",
+                "pool": ["silver-wolf.bug-atk", "silver-wolf.bug-def", "silver-wolf.bug-spd"],
+                "baseChance": 0.65,
+                "duration": { "param": "p5", "from": "talent" },
+                "params": {
+                  "atkDown": { "param": "p1", "from": "talent" },
+                  "defDown": { "param": "p2", "from": "talent" },
+                  "spdDown": { "param": "p3", "from": "talent" }
+                }
+              }
+            ]
+          }
+        ],
+        "script": "silver-wolf.a2-bug-duration"
+      }
+    },
+    {
+      "id": "silver-wolf.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.silver-wolf.1006102",
+      "kind": "major",
+      "name": "Inject",
+      "passive": {
+        "description": "The duration of the Weakness implanted by Silver Wolf's Skill increases by 1 turn(s).",
+        "modifiers": [],
+        "triggers": [],
+        "script": "silver-wolf.a4"
+      }
+    },
+    {
+      "id": "silver-wolf.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.silver-wolf.1006103",
+      "kind": "major",
+      "name": "Side Note",
+      "passive": {
+        "description": "If there are 3 or more debuff(s) affecting the enemy when the Skill is used, then the Skill decreases the enemy's All-Type RES by an additional 3%.",
+        "modifiers": [],
+        "triggers": [],
+        "script": "silver-wolf.a6"
+      }
+    },
+    {
+      "id": "silver-wolf.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.silver-wolf.1006201",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "silver-wolf.t202",
+      "parent": "silver-wolf.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.silver-wolf.1006202",
+      "kind": "stat",
+      "name": "Effect Hit Rate Boost",
+      "stat": { "stat": "effectHitRate", "value": 0.04 }
+    },
+    {
+      "id": "silver-wolf.t203",
+      "parent": "silver-wolf.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.silver-wolf.1006203",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "silver-wolf.t204",
+      "parent": "silver-wolf.t203",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.silver-wolf.1006204",
+      "kind": "stat",
+      "name": "DMG Boost: Quantum",
+      "stat": { "stat": "quantumDmg", "value": 0.032 }
+    },
+    {
+      "id": "silver-wolf.t205",
+      "parent": "silver-wolf.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.silver-wolf.1006205",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "silver-wolf.t206",
+      "parent": "silver-wolf.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.silver-wolf.1006206",
+      "kind": "stat",
+      "name": "Effect Hit Rate Boost",
+      "stat": { "stat": "effectHitRate", "value": 0.06 }
+    },
+    {
+      "id": "silver-wolf.t207",
+      "parent": "silver-wolf.t206",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.silver-wolf.1006207",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "silver-wolf.t208",
+      "parent": "silver-wolf.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.silver-wolf.1006208",
+      "kind": "stat",
+      "name": "DMG Boost: Quantum",
+      "stat": { "stat": "quantumDmg", "value": 0.048 }
+    },
+    {
+      "id": "silver-wolf.t209",
+      "parent": "silver-wolf.t103",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.silver-wolf.1006209",
+      "kind": "stat",
+      "name": "Effect Hit Rate Boost",
+      "stat": { "stat": "effectHitRate", "value": 0.08 }
+    },
+    {
+      "id": "silver-wolf.t210",
+      "parent": "silver-wolf.t201",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.silver-wolf.1006210",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.08 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Social Engineering",
+      "description": "After using her Ultimate to attack enemies, Silver Wolf regenerates 7 Energy for every debuff that the target enemy currently has. This effect can be triggered up to 5 time(s) in each use of her Ultimate.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "silver-wolf.e1"
+    },
+    {
+      "rank": 2,
+      "name": "Zombie Network",
+      "description": "When an enemy enters combat, reduces their Effect RES by 20%.",
+      "modifiers": [{ "stat": "effectRes", "value": 0.2, "scope": "allEnemies", "negate": true }],
+      "triggers": []
+    },
+    {
+      "rank": 3,
+      "name": "Payload",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "skill": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Bounce Attack",
+      "description": "After using her Ultimate to attack enemies, deals Quantum Additional DMG equal to 20% of Silver Wolf's ATK for every debuff currently on the enemy target. This effect can be triggered for a maximum of 5 time(s) during each use of her Ultimate.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "silver-wolf.e4"
+    },
+    {
+      "rank": 5,
+      "name": "Brute Force Attack",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "ultimate": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Overlay Network",
+      "description": "For every debuff the enemy target has, the DMG dealt by Silver Wolf to it increases by 20%, up to a max increase of 100%.",
+      "modifiers": [{ "stat": "allDmg", "value": 0.2, "scaling": { "per": "targetDebuffCount", "max": 5 } }],
+      "triggers": []
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "ancient-part", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "ancient-part", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "ancient-spindle", "count": 6 },
+      { "item": "void-cast-iron", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "ancient-spindle", "count": 9 },
+      { "item": "void-cast-iron", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "ancient-engine", "count": 6 },
+      { "item": "void-cast-iron", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "ancient-engine", "count": 9 },
+      { "item": "void-cast-iron", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "silver-wolfs-eidolon",
+  "presentation": { "model": "proc.humanoid.silver-wolf", "portraitColor": "#6a6ff0", "voice": {} },
+  "lore": {
+    "title": "Stellaron Hunters",
+    "faction": "Stellaron Hunters",
+    "bio": "The universe is just another game to this super hacker."
+  },
+  "sources": [
+    {
+      "topic": "Silver Wolf: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Silver Wolf: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

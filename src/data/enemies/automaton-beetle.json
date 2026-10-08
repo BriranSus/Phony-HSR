@@ -1,0 +1,40 @@
+{
+  "id": "enemy.automaton-beetle",
+  "name": "Automaton Beetle",
+  "rank": "normal",
+  "faction": "Jarilo-VI",
+  "baseStats": { "hp": 130.2, "atk": 18, "spd": 100, "effectRes": 0.1 },
+  "toughness": 20,
+  "weaknesses": ["Lightning", "Wind", "Imaginary"],
+  "resistances": { "Physical": 0.2, "Fire": 0.2, "Ice": 0.2, "Quantum": 0.2 },
+  "debuffRes": {},
+  "abilities": [
+    {
+      "id": "automaton-beetle.unstable-forcefield",
+      "name": "Unstable Forcefield",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals Physical DMG to a single target, and grants a Barrier to another friendly unit. The Barrier nullifies all DMG received except for DoT until after the friendly unit is attacked.",
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 3, "element": "Physical", "toughness": 0 },
+        { "kind": "applyStatus", "target": "self", "status": "enemy.barrier" }
+      ],
+      "triggers": [],
+      "energyToTarget": 15,
+      "aiWeight": 1
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "An automaton pieced together with Old World technology. A signal light is placed on its legs, and the unit may have been used for mining or construction operations. In combat, Automaton Beetles can create forcefields to shield themselves.",
+  "presentation": { "model": "proc.enemy.automaton-beetle", "scale": 1, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Automaton Beetle: MonsterConfig 1012030, MonsterTemplateConfig 1012030, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

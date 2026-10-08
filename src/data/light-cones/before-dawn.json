@@ -1,0 +1,83 @@
+{
+  "id": "lc.before-dawn",
+  "name": "Before Dawn",
+  "rarity": 5,
+  "path": "Erudition",
+  "baseStats": { "hp": 48, "atk": 26.4, "def": 21 },
+  "passive": {
+    "name": "Long Night",
+    "description": "Increases the wearer's CRIT DMG by {p1}%. Increases DMG dealt by the wearer's Skill and Ultimate by {p2}%. After the wearer uses Skill or Ultimate, gains \"Somnus Corpus.\" Upon triggering a Follow-Up ATK, consumes \"Somnus Corpus,\" and increases DMG dealt by Follow-Up ATK by {p3}%.",
+    "modifiers": [
+      { "stat": "critDmg", "value": { "param": "p1" } },
+      { "stat": "skillDmg", "value": { "param": "p2" } },
+      { "stat": "ultimateDmg", "value": { "param": "p2" } }
+    ],
+    "triggers": [
+      {
+        "on": "afterUseSkill",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "self",
+            "status": "lc.somnus-corpus",
+            "params": { "followUpDmg": { "param": "p3" } }
+          }
+        ]
+      },
+      {
+        "on": "afterUseUltimate",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "self",
+            "status": "lc.somnus-corpus",
+            "params": { "followUpDmg": { "param": "p3" } }
+          }
+        ]
+      }
+    ],
+    "params": { "p1": [0.36, 0.42, 0.48, 0.54, 0.6], "p2": [0.18, 0.21, 0.24, 0.27, 0.3], "p3": [0.48, 0.56, 0.64, 0.72, 0.8] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 5000 }, { "item": "immortal-scionette", "count": 8 }],
+    [
+      { "item": "credit", "count": 10000 },
+      { "item": "key-of-inspiration", "count": 4 },
+      { "item": "immortal-scionette", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 20000 },
+      { "item": "key-of-knowledge", "count": 4 },
+      { "item": "immortal-aeroblossom", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 50000 },
+      { "item": "key-of-knowledge", "count": 8 },
+      { "item": "immortal-aeroblossom", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 100000 },
+      { "item": "key-of-wisdom", "count": 5 },
+      { "item": "immortal-lumintwig", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 200000 },
+      { "item": "key-of-wisdom", "count": 10 },
+      { "item": "immortal-lumintwig", "count": 8 }
+    ]
+  ],
+  "fodderExp": 60000,
+  "lore": "\"Do not make this decision lightly, general... Think about how you will be remembered in history...\" The general of the Cloud Knights listens to his subordinates' words with eyes half-closed. \"History will make its own judgment, but I have no interest in my legacy.\" \"If I succeed, history will state that I am currently supremely confident in my masterful strategy.\" \"But if I fail, then history will state that I am currently neglecting my duties in wanton pleasure, preferring finches over my people.\" A finch jumps down from his shoulder, and he extends his hand to catch the small creature. \"I have simply made my own decision.\"",
+  "sources": [
+    {
+      "topic": "Before Dawn: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Before Dawn: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

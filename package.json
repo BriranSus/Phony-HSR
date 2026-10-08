@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "validate:data": "vitest run tests/data",
-    "screenshots": "node scripts/screenshots.mjs"
+    "screenshots": "node scripts/screenshots.mjs",
+    "import:reference": "node scripts/import-reference-data.mjs"
   },
   "engines": {
     "node": ">=20.19.0"

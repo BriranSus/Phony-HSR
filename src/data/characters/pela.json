@@ -1,0 +1,406 @@
+{
+  "id": "char.pela",
+  "name": "Pela",
+  "rarity": 4,
+  "element": "Ice",
+  "path": "Nihility",
+  "ultimateResource": { "kind": "energy", "max": 110 },
+  "baseStats": { "hp": 134.4, "atk": 74.4, "def": 63, "spd": 105, "critRate": 0.05, "critDmg": 0.5, "aggro": 100 },
+  "abilities": {
+    "basic": {
+      "id": "pela.basic",
+      "name": "Frost Shot",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Ice DMG equal to {p1}% of Pela's ATK to one designated enemy target.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "pela.skill",
+      "name": "Frostbite",
+      "kind": "skill",
+      "tags": ["singleTarget", "impair"],
+      "targeting": "enemySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [1.05, 1.155, 1.26, 1.365, 1.47, 1.575, 1.7063, 1.8375, 1.9688, 2.1, 2.205, 2.31, 2.415, 2.52, 2.625],
+        "p2": [1]
+      },
+      "description": "Removes {p2} buff(s) and deals Ice DMG equal to {p1}% of Pela's ATK to one designated target enemy.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        { "kind": "dispel", "target": "primary", "statusKind": "buff", "count": { "param": "p2" } },
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 20 }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "pela.ultimate",
+      "name": "Zone Suppression",
+      "kind": "ultimate",
+      "tags": ["aoe", "impair"],
+      "targeting": "enemyAll",
+      "maxLevel": 10,
+      "params": {
+        "p1": [1],
+        "p2": [0.3, 0.31, 0.32, 0.33, 0.34, 0.35, 0.3625, 0.375, 0.3875, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45],
+        "p3": [2],
+        "p4": [0.6, 0.64, 0.68, 0.72, 0.76, 0.8, 0.85, 0.9, 0.95, 1, 1.04, 1.08, 1.12, 1.16, 1.2]
+      },
+      "description": "Deals Ice DMG equal to {p4}% of Pela's ATK to all enemies, with a {p1}% base chance to inflict Exposed on all enemies. When Exposed, enemies' DEF is reduced by {p2}% for {p3} turn(s).",
+      "energyGain": 5,
+      "effects": [
+        { "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": { "param": "p4" }, "toughness": 20 },
+        {
+          "kind": "applyStatus",
+          "target": "allEnemies",
+          "status": "pela.exposed",
+          "baseChance": { "param": "p1" },
+          "duration": { "param": "p3" },
+          "params": { "defDown": { "param": "p2" } }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "pela.talent",
+      "name": "Data Collecting",
+      "kind": "talent",
+      "tags": ["support"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": { "p1": [5, 5.5, 6, 6.5, 7, 7.5, 8.125, 8.75, 9.375, 10, 10.5, 11, 11.5, 12, 12.5] },
+      "description": "If the enemy is debuffed after Pela's attack, Pela will restore {p1} additional Energy. This effect can only be triggered 1 time per attack.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "afterAttack",
+          "effects": [{ "kind": "energy", "target": "self", "amount": { "param": "p1" } }],
+          "conditions": [{ "type": "targetIsDebuffed" }]
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "pela.technique",
+      "name": "Preemptive Strike",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [1], "p2": [0.2], "p3": [2], "p4": [0.8] },
+      "description": "Immediately attacks the enemy. Upon entering battle, Pela deals Ice DMG equal to {p4}% of her ATK to a random enemy, with a {p1}% base chance of lowering the DEF of all enemies by {p2}% for {p3} turn(s).",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "damage",
+              "target": "randomEnemy",
+              "stat": "atk",
+              "multiplier": { "param": "p4" },
+              "toughness": 20
+            },
+            {
+              "kind": "applyStatus",
+              "target": "allEnemies",
+              "status": "debuff.def-down",
+              "baseChance": { "param": "p1" },
+              "duration": { "param": "p3" },
+              "params": { "defDown": { "param": "p2" } }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": []
+  },
+  "traces": [
+    {
+      "id": "pela.t001",
+      "requirements": {},
+      "costTable": "trace-cost.pela.1106001",
+      "kind": "ability",
+      "name": "Frost Shot",
+      "ability": "basic"
+    },
+    {
+      "id": "pela.t002",
+      "requirements": {},
+      "costTable": "trace-cost.pela.1106002",
+      "kind": "ability",
+      "name": "Frostbite",
+      "ability": "skill"
+    },
+    {
+      "id": "pela.t003",
+      "requirements": {},
+      "costTable": "trace-cost.pela.1106003",
+      "kind": "ability",
+      "name": "Zone Suppression",
+      "ability": "ultimate"
+    },
+    {
+      "id": "pela.t004",
+      "requirements": {},
+      "costTable": "trace-cost.pela.1106004",
+      "kind": "ability",
+      "name": "Data Collecting",
+      "ability": "talent"
+    },
+    {
+      "id": "pela.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.pela.1106101",
+      "kind": "major",
+      "name": "Bash",
+      "passive": {
+        "description": "Deals 20% more DMG to debuffed enemy targets.",
+        "modifiers": [{ "stat": "allDmg", "value": 0.2, "conditions": [{ "type": "targetIsDebuffed" }] }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "pela.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.pela.1106102",
+      "kind": "major",
+      "name": "The Secret Strategy",
+      "passive": {
+        "description": "When Pela is on the battlefield, all allies' Effect Hit Rate increases by 10%.",
+        "modifiers": [{ "stat": "effectHitRate", "value": 0.1, "scope": "team" }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "pela.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.pela.1106103",
+      "kind": "major",
+      "name": "Wipe Out",
+      "passive": {
+        "description": "When using Skill to dispel buff(s), increases the DMG dealt by the next attack by 20%.",
+        "modifiers": [],
+        "triggers": [],
+        "script": "pela.a6"
+      }
+    },
+    {
+      "id": "pela.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.pela.1106201",
+      "kind": "stat",
+      "name": "DMG Boost: Ice",
+      "stat": { "stat": "iceDmg", "value": 0.032 }
+    },
+    {
+      "id": "pela.t202",
+      "parent": "pela.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.pela.1106202",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "pela.t203",
+      "parent": "pela.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.pela.1106203",
+      "kind": "stat",
+      "name": "DMG Boost: Ice",
+      "stat": { "stat": "iceDmg", "value": 0.032 }
+    },
+    {
+      "id": "pela.t204",
+      "parent": "pela.t203",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.pela.1106204",
+      "kind": "stat",
+      "name": "Effect Hit Rate Boost",
+      "stat": { "stat": "effectHitRate", "value": 0.04 }
+    },
+    {
+      "id": "pela.t205",
+      "parent": "pela.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.pela.1106205",
+      "kind": "stat",
+      "name": "DMG Boost: Ice",
+      "stat": { "stat": "iceDmg", "value": 0.048 }
+    },
+    {
+      "id": "pela.t206",
+      "parent": "pela.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.pela.1106206",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "pela.t207",
+      "parent": "pela.t206",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.pela.1106207",
+      "kind": "stat",
+      "name": "DMG Boost: Ice",
+      "stat": { "stat": "iceDmg", "value": 0.048 }
+    },
+    {
+      "id": "pela.t208",
+      "parent": "pela.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.pela.1106208",
+      "kind": "stat",
+      "name": "Effect Hit Rate Boost",
+      "stat": { "stat": "effectHitRate", "value": 0.06 }
+    },
+    {
+      "id": "pela.t209",
+      "parent": "pela.t103",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.pela.1106209",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.08 }
+    },
+    {
+      "id": "pela.t210",
+      "parent": "pela.t201",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.pela.1106210",
+      "kind": "stat",
+      "name": "DMG Boost: Ice",
+      "stat": { "stat": "iceDmg", "value": 0.064 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Victory Report",
+      "description": "When an enemy is defeated, Pela regenerates 5 Energy.",
+      "modifiers": [],
+      "triggers": [{ "on": "onEnemyDefeated", "effects": [{ "kind": "energy", "target": "self", "amount": 5 }] }]
+    },
+    {
+      "rank": 2,
+      "name": "Adamant Charge",
+      "description": "Using Skill to dispel buff(s) increases SPD by 10% for 2 turn(s).",
+      "modifiers": [],
+      "triggers": [],
+      "script": "pela.e2"
+    },
+    {
+      "rank": 3,
+      "name": "Suppressive Force",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "skill": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Full Analysis",
+      "description": "When using Skill, there is a 100% base chance to reduce the target enemy's Ice RES by 12% for 2 turn(s).",
+      "modifiers": [],
+      "triggers": [
+        {
+          "on": "afterUseSkill",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "primary",
+              "status": "debuff.ice-res-down",
+              "baseChance": 1,
+              "duration": 2,
+              "params": { "resDown": 0.12 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "name": "Absolute Jeopardy",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "ultimate": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Feeble Pursuit",
+      "description": "After Pela attacks, if the enemy target is debuffed, deals Ice Additional DMG equal to 40% of Pela's ATK to the enemy.",
+      "modifiers": [],
+      "triggers": [
+        {
+          "on": "afterAttack",
+          "effects": [
+            {
+              "kind": "damage",
+              "target": "primary",
+              "stat": "atk",
+              "multiplier": 0.4,
+              "attackType": "additional",
+              "toughness": 0
+            }
+          ],
+          "conditions": [{ "type": "targetIsDebuffed" }]
+        }
+      ]
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 3200 }, { "item": "extinguished-core", "count": 4 }],
+    [{ "item": "credit", "count": 6400 }, { "item": "extinguished-core", "count": 8 }],
+    [
+      { "item": "credit", "count": 12800 },
+      { "item": "glimmering-core", "count": 5 },
+      { "item": "horn-of-snow", "count": 2 }
+    ],
+    [
+      { "item": "credit", "count": 32000 },
+      { "item": "glimmering-core", "count": 8 },
+      { "item": "horn-of-snow", "count": 5 }
+    ],
+    [
+      { "item": "credit", "count": 64000 },
+      { "item": "squirming-core", "count": 5 },
+      { "item": "horn-of-snow", "count": 15 }
+    ],
+    [
+      { "item": "credit", "count": 128000 },
+      { "item": "squirming-core", "count": 7 },
+      { "item": "horn-of-snow", "count": 28 }
+    ]
+  ],
+  "eidolonItem": "pelas-eidolon",
+  "presentation": { "model": "proc.humanoid.pela", "portraitColor": "#6fd0f0", "voice": {} },
+  "lore": { "title": "Belobog", "faction": "Belobog", "bio": "The meticulous Intelligence Officer of the Silvermane Guards." },
+  "sources": [
+    {
+      "topic": "Pela: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Pela: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

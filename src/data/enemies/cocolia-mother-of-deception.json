@@ -1,0 +1,236 @@
+{
+  "id": "enemy.cocolia-mother-of-deception",
+  "name": "Cocolia, Mother of Deception",
+  "rank": "weeklyBoss",
+  "faction": "Jarilo-VI",
+  "baseStats": { "hp": 1767, "atk": 18, "spd": 120, "effectRes": 0 },
+  "toughness": 180,
+  "weaknesses": ["Fire", "Lightning", "Quantum"],
+  "resistances": { "Physical": 0.4, "Ice": 0.6, "Wind": 0.4, "Imaginary": 0.2 },
+  "debuffRes": { "freeze": 1, "imprisonment": 1 },
+  "abilities": [
+    {
+      "id": "cocolia-mother-of-deception.bone-shattering-cold",
+      "name": "Bone-Shattering Cold",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals Ice DMG to a single target.",
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 3.5, "element": "Ice", "toughness": 0 }],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    },
+    {
+      "id": "cocolia-mother-of-deception.soulrend-coldstream",
+      "name": "Soulrend Coldstream",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals massive Ice DMG to a single target, with a high chance to Freeze the attacked target.",
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 6.5, "element": "Ice", "toughness": 0 },
+        {
+          "kind": "applyStatus",
+          "target": "primary",
+          "status": "enemy.freeze",
+          "baseChance": 1,
+          "duration": 1,
+          "params": { "multiplier": 1 }
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 15,
+      "aiWeight": 1
+    },
+    {
+      "id": "cocolia-mother-of-deception.icy-rain-of-annihilation",
+      "name": "Icy Rain of Annihilation",
+      "kind": "enemy",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 1,
+      "description": "Deals Ice DMG to all targets.",
+      "effects": [{ "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": 2.5, "element": "Ice", "toughness": 0 }],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    },
+    {
+      "id": "cocolia-mother-of-deception.heartless-annihilator-call",
+      "name": "Heartless Annihilator Call",
+      "kind": "enemy",
+      "tags": ["summon"],
+      "targeting": "none",
+      "maxLevel": 1,
+      "description": "Summons Lances of the Eternal Freeze.",
+      "effects": [
+        { "kind": "summon", "unit": "enemy.lance-of-the-eternal-freeze-a", "unitType": "enemy" },
+        { "kind": "summon", "unit": "enemy.lance-of-the-eternal-freeze-b", "unitType": "enemy" }
+      ],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    },
+    {
+      "id": "cocolia-mother-of-deception.genesis-chord",
+      "name": "Genesis Chord",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals Imaginary DMG to a single target, with a high chance of causing Imprisonment.",
+      "effects": [
+        {
+          "kind": "damage",
+          "target": "primary",
+          "stat": "atk",
+          "multiplier": 3,
+          "element": "Imaginary",
+          "toughness": 0
+        },
+        {
+          "kind": "applyStatus",
+          "target": "primary",
+          "status": "enemy.imprisonment",
+          "baseChance": 1,
+          "duration": 1,
+          "params": { "delay": 0.5 }
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    },
+    {
+      "id": "cocolia-mother-of-deception.the-creations-prelude",
+      "name": "The Creation's Prelude",
+      "kind": "enemy",
+      "tags": ["enhance"],
+      "targeting": "self",
+      "maxLevel": 1,
+      "description": "Enters the Charging state. The next action uses \"Last Choir of Genesis\" on all targets.",
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "self",
+          "status": "enemy.charging",
+          "duration": 1,
+          "params": { "allDmg": 0 }
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    },
+    {
+      "id": "cocolia-mother-of-deception.last-choir-of-genesis",
+      "name": "Last Choir of Genesis",
+      "kind": "enemy",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 1,
+      "description": "Deals massive Imaginary DMG to all targets.",
+      "effects": [
+        {
+          "kind": "damage",
+          "target": "allEnemies",
+          "stat": "atk",
+          "multiplier": 6.5,
+          "element": "Imaginary",
+          "toughness": 0
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 20,
+      "aiWeight": 1,
+      "chargeTurns": 1
+    },
+    {
+      "id": "cocolia-mother-of-deception.harbinger-of-annihilation",
+      "name": "Harbinger of Annihilation",
+      "kind": "enemy",
+      "tags": ["impair"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Locks Onto a single target. The next action uses \"Soulrend Coldstream.\"",
+      "effects": [{ "kind": "applyStatus", "target": "primary", "status": "enemy.lock-on" }],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    },
+    {
+      "id": "cocolia-mother-of-deception.harbingers-resolve",
+      "name": "Harbinger's Resolve",
+      "kind": "enemy",
+      "tags": ["enhance"],
+      "targeting": "none",
+      "maxLevel": 1,
+      "description": "Uses Soulrend Coldstream on a single target, with a high chance to Freeze the target.",
+      "effects": [{ "kind": "script", "handler": "enemy.cocolia.harbingers-resolve" }],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 0
+    },
+    {
+      "id": "cocolia-mother-of-deception.creators-resolve",
+      "name": "Creator's Resolve",
+      "kind": "enemy",
+      "tags": ["enhance"],
+      "targeting": "none",
+      "maxLevel": 1,
+      "description": "After changing phases, increases SPD and deals Imaginary DMG when attacking.",
+      "effects": [],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 0
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [
+    {
+      "id": "phase-1",
+      "hpThreshold": 1,
+      "abilities": [
+        "cocolia-mother-of-deception.bone-shattering-cold",
+        "cocolia-mother-of-deception.soulrend-coldstream",
+        "cocolia-mother-of-deception.icy-rain-of-annihilation",
+        "cocolia-mother-of-deception.heartless-annihilator-call",
+        "cocolia-mother-of-deception.harbinger-of-annihilation"
+      ],
+      "onEnter": [{ "kind": "applyStatus", "target": "self", "status": "enemy.weakness-protected" }]
+    },
+    {
+      "id": "phase-2",
+      "hpThreshold": 0,
+      "restoresHp": true,
+      "toughness": 160,
+      "abilities": [
+        "cocolia-mother-of-deception.icy-rain-of-annihilation",
+        "cocolia-mother-of-deception.genesis-chord",
+        "cocolia-mother-of-deception.the-creations-prelude",
+        "cocolia-mother-of-deception.last-choir-of-genesis"
+      ],
+      "onEnter": [
+        { "kind": "applyStatus", "target": "self", "status": "enemy.creators-resolve", "params": { "spd": 40 } },
+        { "kind": "removeStatus", "target": "self", "status": "enemy.weakness-protected" }
+      ]
+    }
+  ],
+  "description": "After being assimilated by the overflowing Fragmentum energy of the Stellaron, the Supreme Guardian transforms into a chantress able to control Imaginary Energy and the mouthpiece of the Stellaron's promised \"new world.\"",
+  "presentation": { "model": "proc.enemy.cocolia-mother-of-deception", "scale": 2.4, "bossBar": true },
+  "sources": [
+    {
+      "topic": "Cocolia, Mother of Deception: MonsterConfig 1005012, MonsterTemplateConfig 1005012, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Cocolia, Mother of Deception: phase-2 toughness 160, skill parameter meanings",
+      "url": "https://honkai-star-rail.fandom.com/wiki/Cocolia,_Mother_of_Deception",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

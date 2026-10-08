@@ -59,6 +59,8 @@ export const COMBAT_STATS = [
   'dmgMitigation',
   'weaken',
   'critRateTaken',
+  /** All-Type RES (reduces DMG taken of every Type). */
+  'allRes',
   'shieldBonus',
   'incomingHealing',
   'breakEfficiency',

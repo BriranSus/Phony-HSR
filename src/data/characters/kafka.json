@@ -1,0 +1,458 @@
+{
+  "id": "char.kafka",
+  "name": "Kafka",
+  "rarity": 5,
+  "element": "Lightning",
+  "path": "Nihility",
+  "ultimateResource": { "kind": "energy", "max": 120 },
+  "baseStats": { "hp": 147.84, "atk": 92.4, "def": 66, "spd": 100, "critRate": 0.05, "critDmg": 0.5, "aggro": 100 },
+  "abilities": {
+    "basic": {
+      "id": "kafka.basic",
+      "name": "Midnight Tumult",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Lightning DMG equal to {p1}% of Kafka's ATK to a one designated enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "kafka.skill",
+      "name": "Caressing Moonlight",
+      "kind": "skill",
+      "tags": ["blast"],
+      "targeting": "enemyBlast",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.8, 0.88, 0.96, 1.04, 1.12, 1.2, 1.3, 1.4, 1.5, 1.6, 1.68, 1.76, 1.84, 1.92, 2],
+        "p2": [0.6, 0.615, 0.63, 0.645, 0.66, 0.675, 0.6937, 0.7125, 0.7312, 0.75, 0.765, 0.78, 0.795, 0.81, 0.825],
+        "p3": [0.3, 0.33, 0.36, 0.39, 0.42, 0.45, 0.4875, 0.525, 0.5625, 0.6, 0.63, 0.66, 0.69, 0.72, 0.75]
+      },
+      "description": "Deals Lightning DMG equal to {p1}% of Kafka's ATK to a target enemy and Lightning DMG equal to {p3}% of Kafka's ATK to enemies adjacent to it. If the target enemy is currently receiving DoT, all DoTs currently placed on that enemy immediately produce DMG equal to {p2}% of their original DMG.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 20 },
+        { "kind": "damage", "target": "adjacent", "stat": "atk", "multiplier": { "param": "p3" }, "toughness": 10 },
+        { "kind": "detonateDot", "target": "primary", "fraction": { "param": "p2" } }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "kafka.ultimate",
+      "name": "Twilight Trill",
+      "kind": "ultimate",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.48, 0.512, 0.544, 0.576, 0.608, 0.64, 0.68, 0.72, 0.76, 0.8, 0.832, 0.864, 0.896, 0.928, 0.96],
+        "p2": [1],
+        "p3": [2],
+        "p4": [
+          1.16,
+          1.2688,
+          1.3775,
+          1.4863,
+          1.595,
+          1.7581,
+          1.9756,
+          2.2475,
+          2.5737,
+          2.9,
+          3.0414,
+          3.1827,
+          3.3241,
+          3.4655,
+          3.6069
+        ],
+        "p5": [0.8, 0.82, 0.84, 0.86, 0.88, 0.9, 0.925, 0.95, 0.975, 1, 1.02, 1.04, 1.06, 1.08, 1.1]
+      },
+      "description": "Deals Lightning DMG equal to {p1}% of Kafka's ATK to all enemies, with a {p2}% base chance for enemies hit to become Shocked and immediately take DMG from their current Shock state, equal to {p5}% of its original DMG. Shock lasts for {p3} turn(s). While Shocked, enemies receive Lightning DoT equal to {p4}% of Kafka's ATK at the beginning of each turn.",
+      "energyGain": 5,
+      "effects": [
+        { "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 20 },
+        {
+          "kind": "applyStatus",
+          "target": "allEnemies",
+          "status": "kafka.shock",
+          "baseChance": { "param": "p2" },
+          "duration": { "param": "p3" },
+          "params": { "multiplier": { "param": "p4" } }
+        },
+        { "kind": "detonateDot", "target": "allEnemies", "fraction": { "param": "p5" }, "statuses": ["kafka.shock"] }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "kafka.talent",
+      "name": "Gentle but Cruel",
+      "kind": "talent",
+      "tags": ["singleTarget"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.42, 0.518, 0.616, 0.714, 0.812, 0.91, 1.0325, 1.155, 1.2775, 1.4, 1.498, 1.596, 1.694, 1.792, 1.89],
+        "p2": [1],
+        "p3": [2]
+      },
+      "description": "After Kafka's teammate uses Basic ATK on an enemy target, Kafka immediately launches Follow-Up ATK and deals Lightning DMG equal to {p1}% of her ATK to that target, with a {p2}% base chance to inflict Shock equivalent to that applied by her Ultimate to the attacked enemy target, lasting for {p3} turns. This effect can only be triggered 1 time per turn.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "afterAllyAttack",
+          "effects": [{ "kind": "insertAction", "action": "followUp", "ability": "kafka.gentle-but-cruel", "target": "primary" }],
+          "conditions": [{ "type": "attackType", "params": { "is": "basic" } }],
+          "limitPerTurn": 1
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "kafka.technique",
+      "name": "Mercy Is Not Forgiveness",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [1], "p2": [2], "p3": [0.5] },
+      "description": "Immediately attacks all enemies within a set range. After entering battle, deals Lightning DMG equal to {p3}% of Kafka's ATK to all enemies, with a {p1}% base chance to inflict Shock equivalent to that applied by her Ultimate on every enemy target for {p2} turn(s).",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            { "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": { "param": "p3" }, "toughness": 0 },
+            {
+              "kind": "applyStatus",
+              "target": "allEnemies",
+              "status": "kafka.shock",
+              "baseChance": { "param": "p1" },
+              "duration": { "param": "p2" },
+              "params": { "multiplier": { "param": "p4", "from": "ultimate" } }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": [
+      {
+        "id": "kafka.gentle-but-cruel",
+        "name": "Gentle but Cruel",
+        "kind": "followUp",
+        "tags": ["singleTarget"],
+        "targeting": "enemySingle",
+        "maxLevel": 10,
+        "params": {
+          "p1": [0.42, 0.518, 0.616, 0.714, 0.812, 0.91, 1.0325, 1.155, 1.2775, 1.4, 1.498, 1.596, 1.694, 1.792, 1.89],
+          "p2": [1],
+          "p3": [2]
+        },
+        "description": "Follow-Up ATK dealing Lightning DMG equal to {p1}% of Kafka's ATK, with a {p2}% base chance to inflict Shock (as applied by her Ultimate) for {p3} turns.",
+        "energyGain": 10,
+        "effects": [
+          {
+            "kind": "damage",
+            "target": "primary",
+            "stat": "atk",
+            "multiplier": { "param": "p1" },
+            "attackType": "followUp",
+            "toughness": 10
+          },
+          {
+            "kind": "applyStatus",
+            "target": "primary",
+            "status": "kafka.shock",
+            "baseChance": { "param": "p2" },
+            "duration": { "param": "p3" },
+            "params": { "multiplier": { "param": "p4", "from": "ultimate" } }
+          }
+        ],
+        "triggers": [],
+        "modifiers": []
+      }
+    ]
+  },
+  "traces": [
+    {
+      "id": "kafka.t001",
+      "requirements": {},
+      "costTable": "trace-cost.kafka.1005001",
+      "kind": "ability",
+      "name": "Midnight Tumult",
+      "ability": "basic"
+    },
+    {
+      "id": "kafka.t002",
+      "requirements": {},
+      "costTable": "trace-cost.kafka.1005002",
+      "kind": "ability",
+      "name": "Caressing Moonlight",
+      "ability": "skill"
+    },
+    {
+      "id": "kafka.t003",
+      "requirements": {},
+      "costTable": "trace-cost.kafka.1005003",
+      "kind": "ability",
+      "name": "Twilight Trill",
+      "ability": "ultimate"
+    },
+    {
+      "id": "kafka.t004",
+      "requirements": {},
+      "costTable": "trace-cost.kafka.1005004",
+      "kind": "ability",
+      "name": "Gentle but Cruel",
+      "ability": "talent"
+    },
+    {
+      "id": "kafka.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.kafka.1005101",
+      "kind": "major",
+      "name": "Torture",
+      "passive": {
+        "description": "When the Ultimate is used, enemy targets will now receive DMG immediately from all currently applied DoT sources instead of just receiving DMG immediately from the currently applied Shock state.",
+        "modifiers": [],
+        "triggers": [],
+        "script": "kafka.a2"
+      }
+    },
+    {
+      "id": "kafka.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.kafka.1005102",
+      "kind": "major",
+      "name": "Plunder",
+      "passive": {
+        "description": "If an enemy is defeated while Shocked, Kafka additionally regenerates 5 Energy.",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "onEnemyDefeated",
+            "effects": [{ "kind": "energy", "target": "self", "amount": 5 }],
+            "conditions": [{ "type": "targetHasStatus", "params": { "status": "kafka.shock" } }]
+          }
+        ]
+      }
+    },
+    {
+      "id": "kafka.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.kafka.1005103",
+      "kind": "major",
+      "name": "Thorns",
+      "passive": {
+        "description": "The base chance for target enemies to be Shocked by the Ultimate, the Technique, and the Talent-triggered Follow-Up ATK increases by 30%.",
+        "modifiers": [],
+        "triggers": [],
+        "script": "kafka.a6"
+      }
+    },
+    {
+      "id": "kafka.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.kafka.1005201",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "kafka.t202",
+      "parent": "kafka.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.kafka.1005202",
+      "kind": "stat",
+      "name": "Effect Hit Rate Boost",
+      "stat": { "stat": "effectHitRate", "value": 0.04 }
+    },
+    {
+      "id": "kafka.t203",
+      "parent": "kafka.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.kafka.1005203",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "kafka.t204",
+      "parent": "kafka.t203",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.kafka.1005204",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.04 }
+    },
+    {
+      "id": "kafka.t205",
+      "parent": "kafka.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.kafka.1005205",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "kafka.t206",
+      "parent": "kafka.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.kafka.1005206",
+      "kind": "stat",
+      "name": "Effect Hit Rate Boost",
+      "stat": { "stat": "effectHitRate", "value": 0.06 }
+    },
+    {
+      "id": "kafka.t207",
+      "parent": "kafka.t206",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.kafka.1005207",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "kafka.t208",
+      "parent": "kafka.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.kafka.1005208",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.06 }
+    },
+    {
+      "id": "kafka.t209",
+      "parent": "kafka.t103",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.kafka.1005209",
+      "kind": "stat",
+      "name": "Effect Hit Rate Boost",
+      "stat": { "stat": "effectHitRate", "value": 0.08 }
+    },
+    {
+      "id": "kafka.t210",
+      "parent": "kafka.t201",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.kafka.1005210",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.08 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Da Capo",
+      "description": "When the Talent triggers a Follow-Up ATK, there is a 100% base chance to increase the DoT received by the target by 30% for 2 turn(s).",
+      "modifiers": [],
+      "triggers": [
+        {
+          "on": "onFollowUp",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "primary",
+              "status": "kafka.da-capo",
+              "baseChance": 1,
+              "duration": 2,
+              "params": { "vuln": 0.3 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "name": "Fortississimo",
+      "description": "While Kafka is on the field, DoT dealt by all allies increases by 25%.",
+      "modifiers": [{ "stat": "dotDmg", "value": 0.25, "scope": "team" }],
+      "triggers": []
+    },
+    {
+      "rank": 3,
+      "name": "Capriccio",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "skill": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Recitativo",
+      "description": "When an enemy target takes DMG from the Shock status inflicted by Kafka, Kafka additionally regenerates 2 Energy.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "kafka.e4"
+    },
+    {
+      "rank": 5,
+      "name": "Doloroso",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "ultimate": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Leggiero",
+      "description": "The Shock state inflicted on the enemy target by the Ultimate, Technique, or the Talent-triggered Follow-Up ATK has a DMG multiplier increase of 156% and lasts 1 turn(s) longer.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "kafka.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "thiefs-instinct", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "thiefs-instinct", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "usurpers-scheme", "count": 6 },
+      { "item": "shape-shifters-lightning-staff", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "usurpers-scheme", "count": 9 },
+      { "item": "shape-shifters-lightning-staff", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "conquerors-will", "count": 6 },
+      { "item": "shape-shifters-lightning-staff", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "conquerors-will", "count": 9 },
+      { "item": "shape-shifters-lightning-staff", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "kafkas-eidolon",
+  "presentation": { "model": "proc.humanoid.kafka", "portraitColor": "#c46cf0", "voice": {} },
+  "lore": {
+    "title": "Stellaron Hunters",
+    "faction": "Stellaron Hunters",
+    "bio": "On the Interastral Peace Corporation's wanted list, Kafka's record only shows her name and a note about her \"interest in collecting coats.\" Little is known about this Stellaron Hunter aside from her being one of \"Destiny's Slave\" Elio's most trusted members."
+  },
+  "sources": [
+    {
+      "topic": "Kafka: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Kafka: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

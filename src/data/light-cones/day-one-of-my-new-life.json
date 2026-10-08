@@ -1,0 +1,59 @@
+{
+  "id": "lc.day-one-of-my-new-life",
+  "name": "Day One of My New Life",
+  "rarity": 4,
+  "path": "Preservation",
+  "baseStats": { "hp": 43.2, "atk": 16.8, "def": 21 },
+  "passive": {
+    "name": "At This Very Moment",
+    "description": "Increases the wearer's DEF by {p1}%. After entering battle, increases All-Type RES of all allies by {p2}%. Abilities of the same type cannot stack.",
+    "modifiers": [
+      { "stat": "defPct", "value": { "param": "p1" } },
+      { "stat": "allRes", "value": { "param": "p2" }, "scope": "team" }
+    ],
+    "triggers": [],
+    "params": { "p1": [0.16, 0.18, 0.2, 0.22, 0.24], "p2": [0.08, 0.09, 0.1, 0.11, 0.12] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "extinguished-core", "count": 5 }],
+    [
+      { "item": "credit", "count": 8000 },
+      { "item": "endurance-of-bronze", "count": 3 },
+      { "item": "extinguished-core", "count": 10 }
+    ],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "oath-of-steel", "count": 3 },
+      { "item": "glimmering-core", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "oath-of-steel", "count": 6 },
+      { "item": "glimmering-core", "count": 9 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "safeguard-of-amber", "count": 4 },
+      { "item": "squirming-core", "count": 5 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "safeguard-of-amber", "count": 8 },
+      { "item": "squirming-core", "count": 7 }
+    ]
+  ],
+  "fodderExp": 12000,
+  "lore": "\"So happy I got to see Pom-Pom in new clothes today! I like it~\" \"Today's my birthday! I'm still as cute as ever.\" \"Today, I finally finally finally have a junior! Isn't that right, {NICKNAME}?\" We click the shutter many times without thinking. Do we do that to capture the happiness at that moment? Or to capture ourselves at that moment?",
+  "sources": [
+    {
+      "topic": "Day One of My New Life: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Day One of My New Life: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

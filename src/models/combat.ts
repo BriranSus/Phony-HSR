@@ -106,7 +106,7 @@ export type PlayerAction =
  * - `followUp`: follow-up attacks triggered by talents/traces.
  * - `counter`: retaliation when an ally is hit.
  * - `extraTurn`: the unit immediately takes another full turn (does not consume AV).
- * - `memospriteAction`: a memosprite acting immediately (e.g. "Aria immediately uses its Memosprite Skill").
+ * - `memospriteAction`: a memosprite acting immediately (e.g. Mem acting at 100% Charge).
  * Ultimates are queued separately in `BattleState.ultimateQueue` because the player can insert them
  * at almost any time, and they resolve before inserted actions queued later.
  */

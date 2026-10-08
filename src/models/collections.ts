@@ -5,7 +5,7 @@ import { CharacterSchema, validateCharacter } from './character';
 import { EnemySchema, LootTableSchema, validateEnemy } from './enemy';
 import { LightConeSchema, validateLightCone } from './lightcone';
 import { RelicSetSchema, RelicStatTablesSchema, validateRelicSet } from './relic';
-import { CostTableSchema, ItemSchema } from './item';
+import { CostTableSchema, ItemSchema, ScriptHandlerSchema } from './item';
 import { StatusEffectSchema } from './status';
 import { ScalingCurvesSchema } from './scaling';
 import { BannerSchema } from './gacha';
@@ -27,10 +27,28 @@ import {
 function effectRefs(effects: readonly Effect[], at: string): DataRef[] {
   const refs: DataRef[] = [];
   effects.forEach((e, i) => {
-    if (e.kind === 'applyStatus') refs.push({ collection: 'statusEffects', id: e.status, at: `${at}[${i}].status` });
+    if (e.kind === 'applyStatus' || e.kind === 'removeStatus') refs.push({ collection: 'statusEffects', id: e.status, at: `${at}[${i}].status` });
+    if (e.kind === 'applyRandomStatus') for (const st of e.pool) refs.push({ collection: 'statusEffects', id: st, at: `${at}[${i}].pool` });
+    if (e.kind === 'detonateDot') for (const st of e.statuses ?? []) refs.push({ collection: 'statusEffects', id: st, at: `${at}[${i}].statuses` });
     if (e.kind === 'summon' && e.unitType === 'enemy') refs.push({ collection: 'enemies', id: e.unit, at: `${at}[${i}].unit` });
   });
   return refs;
+}
+
+/** Script handler ids used anywhere in a record: `script` effects and `script` fields (statuses, Eidolons, Traces). */
+function scriptRefs(value: unknown, at: string): DataRef[] {
+  const ids = new Set<string>();
+  const walk = (v: unknown): void => {
+    if (Array.isArray(v)) return v.forEach(walk);
+    if (v && typeof v === 'object') {
+      const o = v as Record<string, unknown>;
+      if (o.kind === 'script' && typeof o.handler === 'string') ids.add(o.handler);
+      if (typeof o.script === 'string') ids.add(o.script);
+      Object.values(o).forEach(walk);
+    }
+  };
+  walk(value);
+  return [...ids].map((id) => ({ collection: 'scriptHandlers', id, at }));
 }
 
 function triggerRefs(triggers: readonly Trigger[], at: string): DataRef[] {
@@ -66,8 +84,9 @@ export const Collections = {
     dir: 'status-effects',
     format: 'list',
     schema: StatusEffectSchema,
-    references: (s) => triggerRefs(s.triggers, 'triggers'),
+    references: (s) => [...triggerRefs(s.triggers, 'triggers'), ...scriptRefs(s, 'script')],
   }),
+  scriptHandlers: defineCollection({ name: 'scriptHandlers', dir: 'script-handlers', format: 'list', schema: ScriptHandlerSchema }),
   items: defineCollection({ name: 'items', dir: 'items', format: 'list', schema: ItemSchema }),
   costTables: defineCollection({
     name: 'costTables',
@@ -93,6 +112,8 @@ export const Collections = {
       ...c.eidolons.flatMap((e) => triggerRefs(e.triggers, `eidolons[${e.rank}].triggers`)),
       ...costRefs(c.ascensionCosts, 'ascensionCosts'),
       { collection: 'items', id: c.eidolonItem, at: 'eidolonItem' },
+      ...c.summons.flatMap((s) => s.abilities.flatMap((a, i) => abilityRefs(a, `summons.${s.id}.abilities[${i}]`))),
+      ...scriptRefs(c, 'script handlers'),
     ],
   }),
   enemies: defineCollection({
@@ -108,6 +129,7 @@ export const Collections = {
         ...effectRefs(p.onEnter, `phases.${p.id}.onEnter`),
       ]),
       ...(e.lootTable ? [{ collection: 'lootTables', id: e.lootTable, at: 'lootTable' }] : []),
+      ...scriptRefs(e, 'script handlers'),
     ],
   }),
   lootTables: defineCollection({
@@ -123,7 +145,7 @@ export const Collections = {
     format: 'item',
     schema: LightConeSchema,
     validate: validateLightCone,
-    references: (lc) => [...costRefs(lc.ascensionCosts, 'ascensionCosts'), ...triggerRefs(lc.passive.triggers, 'passive.triggers')],
+    references: (lc) => [...costRefs(lc.ascensionCosts, 'ascensionCosts'), ...triggerRefs(lc.passive.triggers, 'passive.triggers'), ...scriptRefs(lc.passive, 'passive')],
   }),
   relicSets: defineCollection({
     name: 'relicSets',
@@ -131,7 +153,7 @@ export const Collections = {
     format: 'list',
     schema: RelicSetSchema,
     validate: validateRelicSet,
-    references: (s) => s.bonuses.flatMap((b) => triggerRefs(b.triggers, `bonuses[${b.pieces}].triggers`)),
+    references: (s) => [...s.bonuses.flatMap((b) => triggerRefs(b.triggers, `bonuses[${b.pieces}].triggers`)), ...scriptRefs(s, 'bonuses')],
   }),
   relicStatTables: defineCollection({ name: 'relicStatTables', dir: 'relics/stat-tables', format: 'item', schema: RelicStatTablesSchema }),
   banners: defineCollection({

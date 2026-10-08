@@ -1,0 +1,118 @@
+{
+  "id": "enemy.automaton-grizzly",
+  "name": "Automaton Grizzly",
+  "rank": "elite",
+  "faction": "Jarilo-VI",
+  "baseStats": { "hp": 1209, "atk": 18, "spd": 120, "effectRes": 0.2 },
+  "toughness": 140,
+  "weaknesses": ["Fire", "Ice", "Lightning"],
+  "resistances": { "Physical": 0.2, "Wind": 0.2, "Quantum": 0.2, "Imaginary": 0.2 },
+  "debuffRes": {},
+  "abilities": [
+    {
+      "id": "automaton-grizzly.detonation-order",
+      "name": "Detonation Order",
+      "kind": "enemy",
+      "tags": ["summon"],
+      "targeting": "none",
+      "maxLevel": 1,
+      "description": "Summons Automaton Spider.",
+      "effects": [
+        { "kind": "summon", "unit": "enemy.automaton-spider", "unitType": "enemy" },
+        { "kind": "summon", "unit": "enemy.automaton-spider", "unitType": "enemy" }
+      ],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    },
+    {
+      "id": "automaton-grizzly.enrage-order",
+      "name": "Enrage Order",
+      "kind": "enemy",
+      "tags": ["impair"],
+      "targeting": "enemyAll",
+      "maxLevel": 1,
+      "description": "Has a chance to Taunt all targets.",
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "allEnemies",
+          "status": "cc.reference-taunt",
+          "baseChance": 0.5,
+          "duration": 2
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    },
+    {
+      "id": "automaton-grizzly.overcombust-order",
+      "name": "Overcombust Order",
+      "kind": "enemy",
+      "tags": ["enhance"],
+      "targeting": "self",
+      "maxLevel": 1,
+      "description": "Enters the Charging state. The next action uses \"Purge Order\" on all targets.",
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "self",
+          "status": "enemy.charging",
+          "duration": 1,
+          "params": { "allDmg": 0.5 }
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    },
+    {
+      "id": "automaton-grizzly.purge-order",
+      "name": "Purge Order",
+      "kind": "enemy",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 1,
+      "description": "Deals Massive Physical DMG to all targets.",
+      "effects": [
+        {
+          "kind": "damage",
+          "target": "allEnemies",
+          "stat": "atk",
+          "multiplier": 4,
+          "element": "Physical",
+          "toughness": 0
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 20,
+      "aiWeight": 1,
+      "chargeTurns": 1
+    },
+    {
+      "id": "automaton-grizzly.destruction-order",
+      "name": "Destruction Order",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals Physical DMG to a single target.",
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 3, "element": "Physical", "toughness": 0 }],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "An automaton pieced together with Old World technology. It has been reinforced with durable armor, so it can charge forward and protect the Silvermane Guards. In combat, Automaton Grizzlys will summon Automaton Spiders and unleash a powerful charged attack.",
+  "presentation": { "model": "proc.enemy.automaton-grizzly", "scale": 1.5, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Automaton Grizzly: MonsterConfig 1013010, MonsterTemplateConfig 1013010, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

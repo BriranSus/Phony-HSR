@@ -1,0 +1,400 @@
+{
+  "id": "char.bronya",
+  "name": "Bronya",
+  "rarity": 5,
+  "element": "Wind",
+  "path": "Harmony",
+  "ultimateResource": { "kind": "energy", "max": 120 },
+  "baseStats": { "hp": 168.96, "atk": 79.2, "def": 72.6, "spd": 99, "critRate": 0.05, "critDmg": 0.5, "aggro": 100 },
+  "abilities": {
+    "basic": {
+      "id": "bronya.basic",
+      "name": "Windrider Bullet",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Wind DMG equal to {p1}% of Bronya's ATK to one designated enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "bronya.skill",
+      "name": "Combat Redeployment",
+      "kind": "skill",
+      "tags": ["support"],
+      "targeting": "allySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.33, 0.363, 0.396, 0.429, 0.462, 0.495, 0.5363, 0.5775, 0.6188, 0.66, 0.693, 0.726, 0.759, 0.792, 0.825],
+        "p2": [0],
+        "p3": [1],
+        "p4": [1]
+      },
+      "description": "Dispels a debuff from a single ally, allows them to immediately take action, and increases their DMG by {p1}% for {p3} turn(s). When this Skill is used on Bronya herself, she cannot immediately take action again.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        { "kind": "dispel", "target": "selectedAlly", "statusKind": "debuff", "count": 1 },
+        { "kind": "actionAdvance", "target": "selectedAlly", "fraction": 1 },
+        {
+          "kind": "applyStatus",
+          "target": "selectedAlly",
+          "status": "bronya.combat-redeployment",
+          "duration": { "param": "p3" },
+          "params": { "allDmg": { "param": "p1" } }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "bronya.ultimate",
+      "name": "The Belobog March",
+      "kind": "ultimate",
+      "tags": ["support"],
+      "targeting": "allyAll",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.33, 0.352, 0.374, 0.396, 0.418, 0.44, 0.4675, 0.495, 0.5225, 0.55, 0.572, 0.594, 0.616, 0.638, 0.66],
+        "p2": [0.12, 0.124, 0.128, 0.132, 0.136, 0.14, 0.145, 0.15, 0.155, 0.16, 0.164, 0.168, 0.172, 0.176, 0.18],
+        "p3": [0.12, 0.128, 0.136, 0.144, 0.152, 0.16, 0.17, 0.18, 0.19, 0.2, 0.208, 0.216, 0.224, 0.232, 0.24],
+        "p4": [2]
+      },
+      "description": "Increases the ATK of all allies by {p1}%, and increases their CRIT DMG equal to {p2}% of Bronya's CRIT DMG plus {p3}% for {p4} turn(s).",
+      "energyGain": 5,
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "allAllies",
+          "status": "bronya.belobog-march",
+          "duration": { "param": "p4" },
+          "params": { "atkPct": { "param": "p1" }, "critDmgRatio": { "param": "p2" }, "critDmgFlat": { "param": "p3" } }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "bronya.talent",
+      "name": "Leading the Way",
+      "kind": "talent",
+      "tags": ["enhance"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": { "p1": [0.15, 0.165, 0.18, 0.195, 0.21, 0.225, 0.2437, 0.2625, 0.2812, 0.3, 0.315, 0.33, 0.345, 0.36, 0.375] },
+      "description": "After using her Basic ATK, Bronya's next action will be Advanced Forward by {p1}%.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "afterUseBasic",
+          "effects": [{ "kind": "actionAdvance", "target": "self", "fraction": { "param": "p1" } }]
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "bronya.technique",
+      "name": "Banner of Command",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [0.15], "p2": [2] },
+      "description": "After using Bronya's Technique, at the start of the next battle, all allies' ATK increases by {p1}% for {p2} turn(s).",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "allAllies",
+              "status": "buff.atk-up",
+              "duration": { "param": "p2" },
+              "params": { "atkPct": { "param": "p1" } }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": []
+  },
+  "traces": [
+    {
+      "id": "bronya.t001",
+      "requirements": {},
+      "costTable": "trace-cost.bronya.1101001",
+      "kind": "ability",
+      "name": "Windrider Bullet",
+      "ability": "basic"
+    },
+    {
+      "id": "bronya.t002",
+      "requirements": {},
+      "costTable": "trace-cost.bronya.1101002",
+      "kind": "ability",
+      "name": "Combat Redeployment",
+      "ability": "skill"
+    },
+    {
+      "id": "bronya.t003",
+      "requirements": {},
+      "costTable": "trace-cost.bronya.1101003",
+      "kind": "ability",
+      "name": "The Belobog March",
+      "ability": "ultimate"
+    },
+    {
+      "id": "bronya.t004",
+      "requirements": {},
+      "costTable": "trace-cost.bronya.1101004",
+      "kind": "ability",
+      "name": "Leading the Way",
+      "ability": "talent"
+    },
+    {
+      "id": "bronya.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.bronya.1101101",
+      "kind": "major",
+      "name": "Command",
+      "passive": {
+        "description": "The CRIT Rate for Basic ATK increases to 100%.",
+        "modifiers": [{ "stat": "critRate", "value": 1, "conditions": [{ "type": "attackType", "params": { "is": "basic" } }] }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "bronya.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.bronya.1101102",
+      "kind": "major",
+      "name": "Battlefield",
+      "passive": {
+        "description": "At the start of the battle, all allies' DEF increases by 20% for 2 turn(s).",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "battleStart",
+            "effects": [
+              {
+                "kind": "applyStatus",
+                "target": "allAllies",
+                "status": "buff.def-up",
+                "duration": 2,
+                "params": { "defPct": 0.2 }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "bronya.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.bronya.1101103",
+      "kind": "major",
+      "name": "Military Might",
+      "passive": {
+        "description": "When Bronya is on the field, all allies deal 10% more DMG.",
+        "modifiers": [{ "stat": "allDmg", "value": 0.1, "scope": "team" }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "bronya.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.bronya.1101201",
+      "kind": "stat",
+      "name": "DMG Boost: Wind",
+      "stat": { "stat": "windDmg", "value": 0.032 }
+    },
+    {
+      "id": "bronya.t202",
+      "parent": "bronya.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.bronya.1101202",
+      "kind": "stat",
+      "name": "CRIT DMG Boost",
+      "stat": { "stat": "critDmg", "value": 0.053 }
+    },
+    {
+      "id": "bronya.t203",
+      "parent": "bronya.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.bronya.1101203",
+      "kind": "stat",
+      "name": "DMG Boost: Wind",
+      "stat": { "stat": "windDmg", "value": 0.032 }
+    },
+    {
+      "id": "bronya.t204",
+      "parent": "bronya.t201",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.bronya.1101204",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.04 }
+    },
+    {
+      "id": "bronya.t205",
+      "parent": "bronya.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.bronya.1101205",
+      "kind": "stat",
+      "name": "DMG Boost: Wind",
+      "stat": { "stat": "windDmg", "value": 0.048 }
+    },
+    {
+      "id": "bronya.t206",
+      "parent": "bronya.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.bronya.1101206",
+      "kind": "stat",
+      "name": "CRIT DMG Boost",
+      "stat": { "stat": "critDmg", "value": 0.08 }
+    },
+    {
+      "id": "bronya.t207",
+      "parent": "bronya.t201",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.bronya.1101207",
+      "kind": "stat",
+      "name": "DMG Boost: Wind",
+      "stat": { "stat": "windDmg", "value": 0.048 }
+    },
+    {
+      "id": "bronya.t208",
+      "parent": "bronya.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.bronya.1101208",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.06 }
+    },
+    {
+      "id": "bronya.t209",
+      "parent": "bronya.t208",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.bronya.1101209",
+      "kind": "stat",
+      "name": "CRIT DMG Boost",
+      "stat": { "stat": "critDmg", "value": 0.107 }
+    },
+    {
+      "id": "bronya.t210",
+      "parent": "bronya.t208",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.bronya.1101210",
+      "kind": "stat",
+      "name": "DMG Boost: Wind",
+      "stat": { "stat": "windDmg", "value": 0.064 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Hone Your Strength",
+      "description": "When using Skill, there is a 50% fixed chance of recovering 1 Skill Point. This effect has a 1-turn cooldown.",
+      "modifiers": [],
+      "triggers": [
+        {
+          "on": "afterUseSkill",
+          "effects": [{ "kind": "skillPoints", "amount": 1 }],
+          "conditions": [{ "type": "fixedChance", "params": { "chance": 0.5 } }],
+          "cooldown": 1
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "name": "Quick March",
+      "description": "When using Skill, the target ally's SPD increases by 30% after taking action, lasting for 1 turn.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "bronya.e2"
+    },
+    {
+      "rank": 3,
+      "name": "Bombardment",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "ultimate": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Take by Surprise",
+      "description": "After any other ally character uses Basic ATK on an enemy target that has Wind Weakness, Bronya immediately launches 1 instance of Follow-Up ATK, dealing Wind DMG to this target equal to 80% of her Basic ATK DMG. This effect can only trigger once per turn.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "bronya.e4"
+    },
+    {
+      "rank": 5,
+      "name": "Unstoppable",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "skill": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Piercing Rainbow",
+      "description": "The duration of the DMG Boost effect placed by the Skill on the target ally increases by 1 turn(s).",
+      "modifiers": [],
+      "triggers": [],
+      "script": "bronya.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "silvermane-badge", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "silvermane-badge", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "silvermane-insignia", "count": 6 },
+      { "item": "storm-eye", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "silvermane-insignia", "count": 9 },
+      { "item": "storm-eye", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "silvermane-medal", "count": 6 },
+      { "item": "storm-eye", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "silvermane-medal", "count": 9 },
+      { "item": "storm-eye", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "bronyas-eidolon",
+  "presentation": { "model": "proc.humanoid.bronya", "portraitColor": "#5fd6a0", "voice": {} },
+  "lore": {
+    "title": "Belobog",
+    "faction": "Belobog",
+    "bio": "Heir to the Supreme Guardian of Belobog, she is the young and capable commander of the Silvermane Guards."
+  },
+  "sources": [
+    {
+      "topic": "Bronya: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Bronya: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

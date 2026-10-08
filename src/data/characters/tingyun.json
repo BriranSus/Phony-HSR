@@ -1,0 +1,384 @@
+{
+  "id": "char.tingyun",
+  "name": "Tingyun",
+  "rarity": 4,
+  "element": "Lightning",
+  "path": "Harmony",
+  "ultimateResource": { "kind": "energy", "max": 130 },
+  "baseStats": { "hp": 115.2, "atk": 72, "def": 54, "spd": 112, "critRate": 0.05, "critDmg": 0.5, "aggro": 100 },
+  "abilities": {
+    "basic": {
+      "id": "tingyun.basic",
+      "name": "Dislodged",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Tingyun deals Lightning DMG equal to {p1}% of her ATK to one designated enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "tingyun.skill",
+      "name": "Soothing Melody",
+      "kind": "skill",
+      "tags": ["support"],
+      "targeting": "allySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.2, 0.22, 0.24, 0.26, 0.28, 0.3, 0.325, 0.35, 0.375, 0.4, 0.42, 0.44, 0.46, 0.48, 0.5],
+        "p2": [0.25, 0.275, 0.3, 0.325, 0.35, 0.375, 0.4062, 0.4375, 0.4688, 0.5, 0.525, 0.55, 0.575, 0.6, 0.625],
+        "p3": [3],
+        "p4": [0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.2125, 0.225, 0.2375, 0.25, 0.26, 0.27, 0.28, 0.29, 0.3]
+      },
+      "description": "Grants a single ally with Benediction to increase their ATK by {p2}%, up to {p4}% of Tingyun's current ATK. When the ally with Benediction attacks, they will deal Lightning Additional DMG equal to {p1}% of that ally's ATK for 1 time. Benediction lasts for {p3} turn(s) and is only effective on the most recent receiver of Tingyun's Skill.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "selectedAlly",
+          "status": "tingyun.benediction",
+          "duration": { "param": "p3" },
+          "params": { "atkPct": { "param": "p2" }, "atkCap": { "param": "p4" }, "additional": { "param": "p1" } }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "tingyun.ultimate",
+      "name": "Amidst the Rejoicing Clouds",
+      "kind": "ultimate",
+      "tags": ["support"],
+      "targeting": "allySingle",
+      "maxLevel": 10,
+      "params": {
+        "p1": [50],
+        "p2": [2],
+        "p3": [0.2, 0.23, 0.26, 0.29, 0.32, 0.35, 0.3875, 0.425, 0.4625, 0.5, 0.53, 0.56, 0.59, 0.62, 0.65]
+      },
+      "description": "Regenerates {p1} Energy for a single ally and increases the target's DMG by {p3}% for {p2} turn(s).",
+      "energyGain": 5,
+      "effects": [
+        { "kind": "energy", "target": "selectedAlly", "amount": { "param": "p1" }, "fixed": true },
+        {
+          "kind": "applyStatus",
+          "target": "selectedAlly",
+          "status": "buff.dmg-up",
+          "duration": { "param": "p2" },
+          "params": { "allDmg": { "param": "p3" } }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "tingyun.talent",
+      "name": "Violet Sparknado",
+      "kind": "talent",
+      "tags": ["enhance"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": { "p1": [0.3, 0.33, 0.36, 0.39, 0.42, 0.45, 0.4875, 0.525, 0.5625, 0.6, 0.63, 0.66, 0.69, 0.72, 0.75] },
+      "description": "When an enemy is attacked by Tingyun, the ally with Benediction immediately deals Lightning Additional DMG equal to {p1}% of that ally's ATK to the same enemy.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "afterAttack",
+          "effects": [{ "kind": "script", "handler": "tingyun.violet-sparknado", "params": { "ratio": { "param": "p1" } } }]
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "tingyun.technique",
+      "name": "Gentle Breeze",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [50] },
+      "description": "Tingyun immediately regenerates {p1} Energy upon using her Technique.",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [{ "kind": "energy", "target": "self", "amount": { "param": "p1" }, "fixed": true }]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": []
+  },
+  "traces": [
+    {
+      "id": "tingyun.t001",
+      "requirements": {},
+      "costTable": "trace-cost.tingyun.1202001",
+      "kind": "ability",
+      "name": "Dislodged",
+      "ability": "basic"
+    },
+    {
+      "id": "tingyun.t002",
+      "requirements": {},
+      "costTable": "trace-cost.tingyun.1202002",
+      "kind": "ability",
+      "name": "Soothing Melody",
+      "ability": "skill"
+    },
+    {
+      "id": "tingyun.t003",
+      "requirements": {},
+      "costTable": "trace-cost.tingyun.1202003",
+      "kind": "ability",
+      "name": "Amidst the Rejoicing Clouds",
+      "ability": "ultimate"
+    },
+    {
+      "id": "tingyun.t004",
+      "requirements": {},
+      "costTable": "trace-cost.tingyun.1202004",
+      "kind": "ability",
+      "name": "Violet Sparknado",
+      "ability": "talent"
+    },
+    {
+      "id": "tingyun.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.tingyun.1202101",
+      "kind": "major",
+      "name": "Nourished Joviality",
+      "passive": {
+        "description": "Tingyun's SPD increases by 20% for 1 turn after using Skill.",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterUseSkill",
+            "effects": [
+              {
+                "kind": "applyStatus",
+                "target": "self",
+                "status": "buff.spd-up",
+                "duration": 1,
+                "params": { "spdPct": 0.2 }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "tingyun.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.tingyun.1202102",
+      "kind": "major",
+      "name": "Knell Subdual",
+      "passive": {
+        "description": "DMG dealt by Basic ATK increases by 40%.",
+        "modifiers": [{ "stat": "basicDmg", "value": 0.4 }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "tingyun.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.tingyun.1202103",
+      "kind": "major",
+      "name": "Jubilant Passage",
+      "passive": {
+        "description": "Tingyun immediately regenerates 5 Energy at the start of her turn.",
+        "modifiers": [],
+        "triggers": [{ "on": "turnStart", "effects": [{ "kind": "energy", "target": "self", "amount": 5, "fixed": true }] }]
+      }
+    },
+    {
+      "id": "tingyun.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.tingyun.1202201",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "tingyun.t202",
+      "parent": "tingyun.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.tingyun.1202202",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.05 }
+    },
+    {
+      "id": "tingyun.t203",
+      "parent": "tingyun.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.tingyun.1202203",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "tingyun.t204",
+      "parent": "tingyun.t201",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.tingyun.1202204",
+      "kind": "stat",
+      "name": "DMG Boost: Lightning",
+      "stat": { "stat": "lightningDmg", "value": 0.032 }
+    },
+    {
+      "id": "tingyun.t205",
+      "parent": "tingyun.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.tingyun.1202205",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "tingyun.t206",
+      "parent": "tingyun.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.tingyun.1202206",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.075 }
+    },
+    {
+      "id": "tingyun.t207",
+      "parent": "tingyun.t201",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.tingyun.1202207",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "tingyun.t208",
+      "parent": "tingyun.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.tingyun.1202208",
+      "kind": "stat",
+      "name": "DMG Boost: Lightning",
+      "stat": { "stat": "lightningDmg", "value": 0.048 }
+    },
+    {
+      "id": "tingyun.t209",
+      "parent": "tingyun.t208",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.tingyun.1202209",
+      "kind": "stat",
+      "name": "DEF Boost",
+      "stat": { "stat": "defPct", "value": 0.1 }
+    },
+    {
+      "id": "tingyun.t210",
+      "parent": "tingyun.t208",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.tingyun.1202210",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.08 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Windfall of Lucky Springs",
+      "description": "After using their Ultimate, the ally with Benediction gains a 20% increase in SPD for 1 turn.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "tingyun.e1"
+    },
+    {
+      "rank": 2,
+      "name": "Gainfully Gives, Givingly Gains",
+      "description": "The ally with Benediction regenerates 5 Energy after defeating an enemy. This effect can only be triggered once per turn.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "tingyun.e2"
+    },
+    {
+      "rank": 3,
+      "name": "Halcyon Bequest",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "ultimate": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Jovial Versatility",
+      "description": "The DMG multiplier provided by Benediction increases by 20%.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "tingyun.e4"
+    },
+    {
+      "rank": 5,
+      "name": "Sauntering Coquette",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "skill": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Peace Brings Wealth to All",
+      "description": "Ultimate regenerates 10 more Energy for the target ally.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "tingyun.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 3200 }, { "item": "immortal-scionette", "count": 4 }],
+    [{ "item": "credit", "count": 6400 }, { "item": "immortal-scionette", "count": 8 }],
+    [
+      { "item": "credit", "count": 12800 },
+      { "item": "immortal-aeroblossom", "count": 5 },
+      { "item": "lightning-crown-of-the-past-shadow", "count": 2 }
+    ],
+    [
+      { "item": "credit", "count": 32000 },
+      { "item": "immortal-aeroblossom", "count": 8 },
+      { "item": "lightning-crown-of-the-past-shadow", "count": 5 }
+    ],
+    [
+      { "item": "credit", "count": 64000 },
+      { "item": "immortal-lumintwig", "count": 5 },
+      { "item": "lightning-crown-of-the-past-shadow", "count": 15 }
+    ],
+    [
+      { "item": "credit", "count": 128000 },
+      { "item": "immortal-lumintwig", "count": 7 },
+      { "item": "lightning-crown-of-the-past-shadow", "count": 28 }
+    ]
+  ],
+  "eidolonItem": "tingyuns-eidolon",
+  "presentation": { "model": "proc.humanoid.tingyun", "portraitColor": "#c46cf0", "voice": {} },
+  "lore": {
+    "title": "The Xianzhou Luofu",
+    "faction": "The Xianzhou Luofu",
+    "bio": "A silver-tongued foxian girl, Tingyun is the Head Representative of the Whistling Flames, a merchant guild officially approved by the Sky-Faring Commission."
+  },
+  "sources": [
+    {
+      "topic": "Tingyun: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Tingyun: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

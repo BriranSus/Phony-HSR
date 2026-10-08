@@ -1,0 +1,84 @@
+{
+  "id": "lc.past-self-in-mirror",
+  "name": "Past Self in Mirror",
+  "rarity": 5,
+  "path": "Harmony",
+  "baseStats": { "hp": 48, "atk": 24, "def": 24 },
+  "passive": {
+    "name": "The Plum Fragrance In My Bones",
+    "description": "Increases the wearer's Break Effect by {p1}%. When the wearer uses their Ultimate, increases all allies' DMG by {p2}%, lasting for {p3} turn(s). If the wearer's Break Effect exceeds or equals {p4}%, 1 Skill Point will be recovered. At the start of each wave, all allies regenerate {p5} Energy immediately. Abilities of the same type cannot stack.",
+    "modifiers": [{ "stat": "breakEffect", "value": { "param": "p1" } }],
+    "triggers": [
+      {
+        "on": "afterUseUltimate",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "allAllies",
+            "status": "buff.dmg-up",
+            "duration": { "param": "p3" },
+            "params": { "allDmg": { "param": "p2" } }
+          }
+        ]
+      },
+      {
+        "on": "afterUseUltimate",
+        "effects": [{ "kind": "skillPoints", "amount": 1 }],
+        "conditions": [{ "type": "statAtLeast", "params": { "stat": "breakEffect", "value": 1.5 } }]
+      },
+      {
+        "on": "waveStart",
+        "effects": [{ "kind": "energy", "target": "allAllies", "amount": { "param": "p5" }, "fixed": true }]
+      }
+    ],
+    "params": {
+      "p1": [0.6, 0.7, 0.8, 0.9, 1],
+      "p2": [0.24, 0.28, 0.32, 0.36, 0.4],
+      "p3": [3, 3, 3, 3, 3],
+      "p4": [1.5, 1.5, 1.5, 1.5, 1.5],
+      "p5": [10, 12.5, 15, 17.5, 20]
+    }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 5000 }, { "item": "immortal-scionette", "count": 8 }],
+    [
+      { "item": "credit", "count": 10000 },
+      { "item": "harmonic-tune", "count": 4 },
+      { "item": "immortal-scionette", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 20000 },
+      { "item": "ancestral-hymn", "count": 4 },
+      { "item": "immortal-aeroblossom", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 50000 },
+      { "item": "ancestral-hymn", "count": 8 },
+      { "item": "immortal-aeroblossom", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 100000 },
+      { "item": "stellaris-symphony", "count": 5 },
+      { "item": "immortal-lumintwig", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 200000 },
+      { "item": "stellaris-symphony", "count": 10 },
+      { "item": "immortal-lumintwig", "count": 8 }
+    ]
+  ],
+  "fodderExp": 60000,
+  "lore": "She once loved to seal the moment when plum blossoms were on the verge of wilting and keep them close to her. It has been many years since then. Many lifeforms — rambunctious, sweet, and everything in between — have bloomed from her hands, but the plum blossoms still wilt at their preordained times. It has been many years since then. Her visage in the mirror seems untouched by time. But, in the grand scheme of the cosmos, is she too destined to last for but a fleeting moment? \"If all is set for eventual demise, what purpose, then, does creation serve?\" After a silence that seems to stretch to eternity, the winds blow, the petals fall, and the reflection in the mirror tenders the same answer as always. \"For the day when plum blossoms are no longer kept.\" She deftly caresses the icy surface of the mirror. Such soliloquies have happened too many times for her to count.",
+  "sources": [
+    {
+      "topic": "Past Self in Mirror: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Past Self in Mirror: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

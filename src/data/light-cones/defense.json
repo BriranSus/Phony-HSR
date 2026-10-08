@@ -1,0 +1,61 @@
+{
+  "id": "lc.defense",
+  "name": "Defense",
+  "rarity": 3,
+  "path": "Preservation",
+  "baseStats": { "hp": 43.2, "atk": 12, "def": 12 },
+  "passive": {
+    "name": "Revitalization",
+    "description": "When the wearer unleashes their Ultimate, they restore HP by {p1}% of their Max HP.",
+    "modifiers": [],
+    "triggers": [
+      {
+        "on": "afterUseUltimate",
+        "effects": [{ "kind": "heal", "target": "self", "stat": "hp", "multiplier": { "param": "p1" } }]
+      }
+    ],
+    "params": { "p1": [0.18, 0.21, 0.24, 0.27, 0.3] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 3000 }, { "item": "thiefs-instinct", "count": 4 }],
+    [
+      { "item": "credit", "count": 6000 },
+      { "item": "endurance-of-bronze", "count": 2 },
+      { "item": "thiefs-instinct", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 12000 },
+      { "item": "oath-of-steel", "count": 2 },
+      { "item": "usurpers-scheme", "count": 4 }
+    ],
+    [
+      { "item": "credit", "count": 30000 },
+      { "item": "oath-of-steel", "count": 4 },
+      { "item": "usurpers-scheme", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 60000 },
+      { "item": "safeguard-of-amber", "count": 3 },
+      { "item": "conquerors-will", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 120000 },
+      { "item": "safeguard-of-amber", "count": 6 },
+      { "item": "conquerors-will", "count": 5 }
+    ]
+  ],
+  "fodderExp": 500,
+  "lore": "A drop of strength condensed from time itself. All the seemingly insignificant moments come together to form the magnificent choir of fate. \"If you ever doubt these walls will lead us to victory, just look at these brave souls standing atop them.\"",
+  "sources": [
+    {
+      "topic": "Defense: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Defense: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

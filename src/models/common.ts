@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-/** Lower-case dotted/dashed identifiers, e.g. "char.ignatius", "break.burn", "lc.ember-oath". */
+/** Lower-case dotted/dashed identifiers, e.g. "char.seele", "break.burn", "lc.in-the-night". */
 export const IdSchema = z.string().regex(/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/, 'ids must be lower-case, dot/dash separated');
 export type Id = z.infer<typeof IdSchema>;
 

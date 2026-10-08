@@ -1,0 +1,37 @@
+{
+  "id": "enemy.frostspawn",
+  "name": "Frostspawn",
+  "rank": "normal",
+  "faction": "Fragmentum Monsters",
+  "baseStats": { "hp": 55.8, "atk": 18, "spd": 83, "effectRes": 0 },
+  "toughness": 10,
+  "weaknesses": ["Fire", "Wind"],
+  "resistances": { "Physical": 0.2, "Ice": 0.4, "Lightning": 0.2, "Quantum": 0.2, "Imaginary": 0.2 },
+  "debuffRes": { "freeze": 1 },
+  "abilities": [
+    {
+      "id": "frostspawn.distract",
+      "name": "Distract",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals Ice DMG to a single target.",
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 2.5, "element": "Ice", "toughness": 0 }],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "Crystallized elements with only the simplest intelligence. It drifts in the Fragmentum in the form of a bird releasing eerily low temperatures, freezing everything around it.",
+  "presentation": { "model": "proc.enemy.frostspawn", "scale": 1, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Frostspawn: MonsterConfig 8001020, MonsterTemplateConfig 8001020, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "id": "banner.brilliant-fixation-in-the-night",
+  "name": "Brilliant Fixation: In the Night",
+  "type": "lightCone",
+  "cost": { "item": "star-rail-special-pass", "count": 1 },
+  "pityGroup": "limited-light-cone",
+  "rates": { "fiveStar": 0.008, "fourStar": 0.066 },
+  "pity": { "fiveStarHard": 80, "fiveStarSoftStart": 66, "fiveStarSoftIncrement": 0.07, "fourStarHard": 10 },
+  "featured": {
+    "fiveStar": ["lc.in-the-night"],
+    "fourStar": ["lc.only-silence-remains", "lc.post-op-conversation", "lc.good-night-and-sleep-well"],
+    "fiveStarChance": 0.75,
+    "fourStarChance": 0.75,
+    "guaranteeAfterLoss": true
+  },
+  "pools": {
+    "fiveStar": [
+      "lc.in-the-night",
+      "lc.something-irreplaceable",
+      "lc.night-on-the-milky-way",
+      "lc.but-the-battle-isnt-over",
+      "lc.in-the-name-of-the-world",
+      "lc.moment-of-victory",
+      "lc.time-waits-for-no-one"
+    ],
+    "fourStar": [
+      "lc.only-silence-remains",
+      "lc.post-op-conversation",
+      "lc.good-night-and-sleep-well",
+      "lc.memories-of-the-past",
+      "lc.dance-dance-dance",
+      "lc.subscribe-for-more",
+      "char.pela",
+      "char.natasha"
+    ],
+    "threeStar": ["lc.arrows", "lc.void", "lc.defense"]
+  },
+  "tenPullDiscount": 0
+}

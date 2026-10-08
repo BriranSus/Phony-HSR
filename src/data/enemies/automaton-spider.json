@@ -1,0 +1,79 @@
+{
+  "id": "enemy.automaton-spider",
+  "name": "Automaton Spider",
+  "rank": "normal",
+  "faction": "Jarilo-VI",
+  "baseStats": { "hp": 69.75, "atk": 18, "spd": 83, "effectRes": 0.1 },
+  "toughness": 20,
+  "weaknesses": ["Lightning", "Wind"],
+  "resistances": { "Physical": 0.2, "Fire": 0.2, "Ice": 0.2, "Quantum": 0.2, "Imaginary": 0.2 },
+  "debuffRes": {},
+  "abilities": [
+    {
+      "id": "automaton-spider.ram",
+      "name": "Ram",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals minor Physical DMG to a single target.",
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 2, "element": "Physical", "toughness": 0 }],
+      "triggers": [],
+      "energyToTarget": 15,
+      "aiWeight": 1
+    },
+    {
+      "id": "automaton-spider.self-exploding-module",
+      "name": "Self-Exploding Module",
+      "kind": "enemy",
+      "tags": ["blast"],
+      "targeting": "enemyBlast",
+      "maxLevel": 1,
+      "description": "Self-destructs, dealing Fire DMG to a single target and units adjacent to the target.",
+      "effects": [
+        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 5, "element": "Fire", "toughness": 0 },
+        { "kind": "damage", "target": "adjacent", "stat": "atk", "multiplier": 5, "element": "Fire", "toughness": 0 },
+        { "kind": "script", "handler": "enemy.self-destruct" }
+      ],
+      "triggers": [],
+      "energyToTarget": 15,
+      "aiWeight": 1,
+      "chargeTurns": 1
+    },
+    {
+      "id": "automaton-spider.chains-of-destruction",
+      "name": "Chains of Destruction",
+      "kind": "enemy",
+      "tags": ["enhance"],
+      "targeting": "none",
+      "maxLevel": 1,
+      "description": "Deals Fire DMG to adjacent units when suffering a killing blow.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "beforeKnockedDown",
+          "effects": [
+            {
+              "kind": "script",
+              "handler": "enemy.automaton-spider.chains-of-destruction",
+              "params": { "hpRatio": 1.2, "toughness": 20 }
+            }
+          ]
+        }
+      ],
+      "energyToTarget": 0,
+      "aiWeight": 0
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "An automaton pieced together with Old World technology, tasked with replacing humans in performing the most basic forms of physical labor. In combat, Automaton Spiders are highly unstable, capable of exploding when damaged.",
+  "presentation": { "model": "proc.enemy.automaton-spider", "scale": 1, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Automaton Spider: MonsterConfig 1012021, MonsterTemplateConfig 1012021, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

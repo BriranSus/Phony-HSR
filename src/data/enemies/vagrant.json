@@ -1,0 +1,68 @@
+{
+  "id": "enemy.vagrant",
+  "name": "Vagrant",
+  "rank": "normal",
+  "faction": "Jarilo-VI",
+  "baseStats": { "hp": 139.5, "atk": 18, "spd": 100, "effectRes": 0.1 },
+  "toughness": 20,
+  "weaknesses": ["Fire", "Ice", "Imaginary"],
+  "resistances": { "Physical": 0.2, "Lightning": 0.2, "Wind": 0.2, "Quantum": 0.2 },
+  "debuffRes": {},
+  "abilities": [
+    {
+      "id": "vagrant.shovel-attack",
+      "name": "Shovel Attack",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals minor Physical DMG to a single target.",
+      "effects": [
+        {
+          "kind": "damage",
+          "target": "primary",
+          "stat": "atk",
+          "multiplier": 2.5,
+          "element": "Physical",
+          "toughness": 0
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    },
+    {
+      "id": "vagrant.inspire",
+      "name": "Inspire",
+      "kind": "enemy",
+      "tags": ["support"],
+      "targeting": "allySingle",
+      "maxLevel": 1,
+      "description": "Increases a friendly unit's ATK and causes them to act immediately.",
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "randomAlly",
+          "status": "buff.atk-up",
+          "duration": 2,
+          "params": { "atkPct": 0.3 }
+        },
+        { "kind": "actionAdvance", "target": "randomAlly", "fraction": 1 }
+      ],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "In order to survive, some Underworlders are desperate enough to venture deep into the Fragmentum in search of anything salvageable. Ancient machinery that they dug up has become their best helper.",
+  "presentation": { "model": "proc.enemy.vagrant", "scale": 1, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Vagrant: MonsterConfig 1002020, MonsterTemplateConfig 1002020, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

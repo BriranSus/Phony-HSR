@@ -1,0 +1,448 @@
+{
+  "id": "char.clara",
+  "name": "Clara",
+  "rarity": 5,
+  "element": "Physical",
+  "path": "Destruction",
+  "ultimateResource": { "kind": "energy", "max": 110 },
+  "baseStats": { "hp": 168.96, "atk": 100.32, "def": 66, "spd": 90, "critRate": 0.05, "critDmg": 0.5, "aggro": 125 },
+  "abilities": {
+    "basic": {
+      "id": "clara.basic",
+      "name": "I Want to Help",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals Physical DMG equal to {p1}% of Clara's ATK to one designated enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "clara.skill",
+      "name": "Svarog Watches Over You",
+      "kind": "skill",
+      "tags": ["aoe"],
+      "targeting": "enemyAll",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.6, 0.66, 0.72, 0.78, 0.84, 0.9, 0.975, 1.05, 1.125, 1.2, 1.26, 1.32, 1.38, 1.44, 1.5],
+        "p2": [0.6, 0.66, 0.72, 0.78, 0.84, 0.9, 0.975, 1.05, 1.125, 1.2, 1.26, 1.32, 1.38, 1.44, 1.5]
+      },
+      "description": "Deals Physical DMG equal to {p1}% of Clara's ATK to all enemies, and additionally deals Physical DMG equal to {p2}% of Clara's ATK to enemies marked by Svarog with a Mark of Counter. All Marks of Counter will be removed after this Skill is used.",
+      "spCost": 1,
+      "energyGain": 30,
+      "effects": [
+        { "kind": "damage", "target": "allEnemies", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 },
+        {
+          "kind": "damage",
+          "target": "allEnemies",
+          "stat": "atk",
+          "multiplier": { "param": "p2" },
+          "toughness": 0,
+          "targetConditions": [{ "type": "targetHasStatus", "params": { "status": "clara.mark-of-counter" } }]
+        },
+        { "kind": "removeStatus", "target": "allEnemies", "status": "clara.mark-of-counter" }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "clara.ultimate",
+      "name": "Promise, Not Command",
+      "kind": "ultimate",
+      "tags": ["enhance"],
+      "targeting": "self",
+      "maxLevel": 10,
+      "params": {
+        "p1": [5],
+        "p2": [0.96, 1.024, 1.088, 1.152, 1.216, 1.28, 1.36, 1.44, 1.52, 1.6, 1.664, 1.728, 1.792, 1.856, 1.92],
+        "p3": [2],
+        "p4": [0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.2125, 0.225, 0.2375, 0.25, 0.26, 0.27, 0.28, 0.29, 0.3],
+        "p5": [2]
+      },
+      "description": "After Clara uses Ultimate, DMG dealt to her is reduced by an extra {p4}%, and she has greatly increased chances of being attacked by enemies for {p3} turn(s). In addition, Svarog's Counter is enhanced. When an ally is attacked, Svarog immediately launches a Counter, and its DMG multiplier against the enemy increases by {p2}%. Enemies adjacent to it take 50% of the DMG dealt to the primary target enemy. Enhanced Counter(s) can take effect {p5} time(s).",
+      "energyGain": 5,
+      "effects": [
+        {
+          "kind": "applyStatus",
+          "target": "self",
+          "status": "clara.promise-not-command",
+          "duration": { "param": "p3" },
+          "stacks": 1,
+          "params": {
+            "dmgMitigation": { "param": "p4" },
+            "aggro": { "param": "p1" },
+            "counterBonus": { "param": "p2" },
+            "counters": { "param": "p5" }
+          }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "clara.talent",
+      "name": "Because We're Family",
+      "kind": "talent",
+      "tags": ["singleTarget"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": {
+        "p1": [1],
+        "p2": [0.8, 0.88, 0.96, 1.04, 1.12, 1.2, 1.3, 1.4, 1.5, 1.6, 1.68, 1.76, 1.84, 1.92, 2],
+        "p3": [0.1]
+      },
+      "description": "Under the protection of Svarog, DMG taken by Clara when hit by enemy attacks is reduced by {p3}%. Svarog will mark enemies who attack Clara with his Mark of Counter and retaliate with a Counter, dealing Physical DMG equal to {p2}% of Clara's ATK.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "afterBeingHit",
+          "effects": [
+            { "kind": "applyStatus", "target": "attacker", "status": "clara.mark-of-counter" },
+            { "kind": "insertAction", "action": "counter", "ability": "clara.svarogs-counter", "target": "attacker" }
+          ]
+        }
+      ],
+      "modifiers": [{ "stat": "dmgMitigation", "value": { "param": "p3" } }]
+    },
+    "technique": {
+      "id": "clara.technique",
+      "name": "A Small Price for Victory",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [2], "p2": [5] },
+      "description": "Immediately attacks the enemy. Upon entering battle, the chance Clara will be attacked by enemies increases for {p1} turn(s).",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "clara.technique-taunt",
+              "duration": { "param": "p1" },
+              "params": { "aggro": { "param": "p2" } }
+            }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": [
+      {
+        "id": "clara.svarogs-counter",
+        "name": "Svarog's Counter",
+        "kind": "followUp",
+        "tags": ["singleTarget"],
+        "targeting": "enemySingle",
+        "maxLevel": 10,
+        "params": {
+          "p1": [1],
+          "p2": [0.8, 0.88, 0.96, 1.04, 1.12, 1.2, 1.3, 1.4, 1.5, 1.6, 1.68, 1.76, 1.84, 1.92, 2],
+          "p3": [0.1]
+        },
+        "description": "Svarog Counters the attacker, dealing Physical DMG equal to {p2}% of Clara's ATK and marking them with a Mark of Counter.",
+        "energyGain": 5,
+        "effects": [
+          {
+            "kind": "damage",
+            "target": "primary",
+            "stat": "atk",
+            "multiplier": { "param": "p2" },
+            "attackType": "followUp",
+            "toughness": 10
+          }
+        ],
+        "triggers": [],
+        "modifiers": []
+      }
+    ]
+  },
+  "traces": [
+    {
+      "id": "clara.t001",
+      "requirements": {},
+      "costTable": "trace-cost.clara.1107001",
+      "kind": "ability",
+      "name": "I Want to Help",
+      "ability": "basic"
+    },
+    {
+      "id": "clara.t002",
+      "requirements": {},
+      "costTable": "trace-cost.clara.1107002",
+      "kind": "ability",
+      "name": "Svarog Watches Over You",
+      "ability": "skill"
+    },
+    {
+      "id": "clara.t003",
+      "requirements": {},
+      "costTable": "trace-cost.clara.1107003",
+      "kind": "ability",
+      "name": "Promise, Not Command",
+      "ability": "ultimate"
+    },
+    {
+      "id": "clara.t004",
+      "requirements": {},
+      "costTable": "trace-cost.clara.1107004",
+      "kind": "ability",
+      "name": "Because We're Family",
+      "ability": "talent"
+    },
+    {
+      "id": "clara.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.clara.1107101",
+      "kind": "major",
+      "name": "Kinship",
+      "passive": {
+        "description": "When attacked, this unit has a 35% fixed chance to dispel 1 debuff placed on them.",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterBeingHit",
+            "effects": [{ "kind": "dispel", "target": "self", "statusKind": "debuff", "count": 1 }],
+            "conditions": [{ "type": "fixedChance", "params": { "chance": 0.35 } }]
+          }
+        ]
+      }
+    },
+    {
+      "id": "clara.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.clara.1107102",
+      "kind": "major",
+      "name": "Under Protection",
+      "passive": {
+        "description": "Increases the chance to resist Crowd Control debuffs by 35%.",
+        "modifiers": [{ "stat": "debuffRes", "value": 0.35 }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "clara.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.clara.1107103",
+      "kind": "major",
+      "name": "Revenge",
+      "passive": {
+        "description": "Increases DMG dealt by Svarog's Counter by 30%.",
+        "modifiers": [{ "stat": "followUpDmg", "value": 0.3 }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "clara.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.clara.1107201",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "clara.t202",
+      "parent": "clara.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.clara.1107202",
+      "kind": "stat",
+      "name": "DMG Boost: Physical",
+      "stat": { "stat": "physicalDmg", "value": 0.032 }
+    },
+    {
+      "id": "clara.t203",
+      "parent": "clara.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.clara.1107203",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.04 }
+    },
+    {
+      "id": "clara.t204",
+      "parent": "clara.t203",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.clara.1107204",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.04 }
+    },
+    {
+      "id": "clara.t205",
+      "parent": "clara.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.clara.1107205",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "clara.t206",
+      "parent": "clara.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.clara.1107206",
+      "kind": "stat",
+      "name": "DMG Boost: Physical",
+      "stat": { "stat": "physicalDmg", "value": 0.048 }
+    },
+    {
+      "id": "clara.t207",
+      "parent": "clara.t206",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.clara.1107207",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.06 }
+    },
+    {
+      "id": "clara.t208",
+      "parent": "clara.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.clara.1107208",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.06 }
+    },
+    {
+      "id": "clara.t209",
+      "parent": "clara.t208",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.clara.1107209",
+      "kind": "stat",
+      "name": "DMG Boost: Physical",
+      "stat": { "stat": "physicalDmg", "value": 0.064 }
+    },
+    {
+      "id": "clara.t210",
+      "parent": "clara.t208",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.clara.1107210",
+      "kind": "stat",
+      "name": "ATK Boost",
+      "stat": { "stat": "atkPct", "value": 0.08 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "A Tall Figure",
+      "description": "Using Skill will not remove Marks of Counter on the enemy.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "clara.e1"
+    },
+    {
+      "rank": 2,
+      "name": "A Tight Embrace",
+      "description": "After using the Ultimate, ATK increases by 30% for 2 turn(s).",
+      "modifiers": [],
+      "triggers": [
+        {
+          "on": "afterUseUltimate",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "buff.atk-up",
+              "duration": 2,
+              "params": { "atkPct": 0.3 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "name": "Cold Steel Armor",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "skill": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Family's Warmth",
+      "description": "After Clara is hit, the DMG taken by Clara is reduced by 30%. This effect lasts until the start of her next turn.",
+      "modifiers": [],
+      "triggers": [
+        {
+          "on": "afterBeingHit",
+          "effects": [
+            {
+              "kind": "applyStatus",
+              "target": "self",
+              "status": "buff.dmg-reduction",
+              "duration": 1,
+              "params": { "dmgMitigation": 0.3 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "name": "A Small Promise",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "ultimate": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Long Company",
+      "description": "After other allies are attacked, Svarog also has a 50% fixed chance to trigger a Counter on the attacker and mark them with a \"Mark of Counter.\" When using Ultimate, the number of Enhanced Counters increases by 1.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "clara.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "ancient-part", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "ancient-part", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "ancient-spindle", "count": 6 },
+      { "item": "broken-teeth-of-iron-wolf", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "ancient-spindle", "count": 9 },
+      { "item": "broken-teeth-of-iron-wolf", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "ancient-engine", "count": 6 },
+      { "item": "broken-teeth-of-iron-wolf", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "ancient-engine", "count": 9 },
+      { "item": "broken-teeth-of-iron-wolf", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "claras-eidolon",
+  "presentation": { "model": "proc.humanoid.clara", "portraitColor": "#c9ccd4", "voice": {} },
+  "lore": { "title": "Belobog", "faction": "Belobog", "bio": "A young girl raised by a robot." },
+  "sources": [
+    {
+      "topic": "Clara: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Clara: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

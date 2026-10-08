@@ -1,0 +1,56 @@
+{
+  "id": "lc.good-night-and-sleep-well",
+  "name": "Good Night and Sleep Well",
+  "rarity": 4,
+  "path": "Nihility",
+  "baseStats": { "hp": 43.2, "atk": 21.6, "def": 15 },
+  "passive": {
+    "name": "Toiler",
+    "description": "For every debuff the target enemy has, the DMG dealt by the wearer increases by {p1}%, stacking up to {p2} time(s). This effect also applies to DoT.",
+    "modifiers": [{ "stat": "allDmg", "value": { "param": "p1" }, "scaling": { "per": "targetDebuffCount", "max": 3 } }],
+    "triggers": [],
+    "params": { "p1": [0.12, 0.15, 0.18, 0.21, 0.24], "p2": [3, 3, 3, 3, 3] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "silvermane-badge", "count": 5 }],
+    [
+      { "item": "credit", "count": 8000 },
+      { "item": "obsidian-of-dread", "count": 3 },
+      { "item": "silvermane-badge", "count": 10 }
+    ],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "obsidian-of-desolation", "count": 3 },
+      { "item": "silvermane-insignia", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "obsidian-of-desolation", "count": 6 },
+      { "item": "silvermane-insignia", "count": 9 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "obsidian-of-obsession", "count": 4 },
+      { "item": "silvermane-medal", "count": 5 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "obsidian-of-obsession", "count": 8 },
+      { "item": "silvermane-medal", "count": 7 }
+    ]
+  ],
+  "fodderExp": 12000,
+  "lore": "The dim light outlines the dust tracks, As a young girl mumbles sweetly in her sleep. A silent figure appears behind her. \"Well, well, well, you're cuter without those glasses — I knew it.\" The guitarist stares at her sleeping face, muttering to herself: \"Good night, the genius girl that worries a lot.\"",
+  "sources": [
+    {
+      "topic": "Good Night and Sleep Well: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Good Night and Sleep Well: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ElementSchema, IdSchema, TextSchema } from './common';
-import { StatusModifierSchema, TriggerSchema } from './ability';
+import { StatusModifierSchema, TriggerSchema, ValueSchema } from './ability';
 
 /**
  * Status effects: buffs, debuffs, DoTs, crowd control, shields and marks. Weakness Break side effects
@@ -8,7 +8,7 @@ import { StatusModifierSchema, TriggerSchema } from './ability';
  * referenced from `rules/combat.json -> weaknessBreak.elements[*].status`.
  */
 export const STATUS_KINDS = ['buff', 'debuff', 'neutral'] as const;
-export const STATUS_CATEGORIES = ['stat', 'dot', 'cc', 'shield', 'mark', 'field', 'other'] as const;
+export const STATUS_CATEGORIES = ['stat', 'dot', 'hot', 'cc', 'shield', 'mark', 'field', 'other'] as const;
 export const CC_TYPES = ['freeze', 'entanglement', 'imprisonment', 'stun', 'dominated', 'taunt', 'outrage'] as const;
 export const CcTypeSchema = z.enum(CC_TYPES);
 export type CcType = z.infer<typeof CcTypeSchema>;
@@ -32,7 +32,8 @@ export const DotSchema = z
     maxHpRatio: z.object({ normal: z.number().positive(), elite: z.number().positive() }).strict().optional(),
     capLevelMultiplier: z.number().positive().optional(),
     stat: z.enum(['atk', 'hp', 'def']).optional(),
-    multiplier: z.number().positive().optional(),
+    /** attackerScaled: multiplier of the applier's stat, usually `{ "param": ... }` from the applying effect. */
+    multiplier: ValueSchema.optional(),
     /** When the damage is dealt. Freeze deals its damage when the frozen turn is skipped. */
     tickOn: z.enum(['ownerTurnStart', 'onExpire']).default('ownerTurnStart'),
     /**
@@ -62,8 +63,20 @@ export const CrowdControlSchema = z
     skipsTurn: z.boolean(),
     /** Action delay applied when the effect ends (fraction of base AV). */
     delayOnExpire: z.number().min(0).max(1).optional(),
+    /** Action delay applied when the effect lands (Imprisonment), usually `{ "param": ... }` from the applying effect. */
+    delayOnApply: ValueSchema.optional(),
     /** Action advance applied when the effect ends. Freeze: the frozen turn is skipped, then the next action is Advanced Forward 50%. */
     advanceOnExpire: z.number().min(0).max(1).optional(),
+  })
+  .strict();
+
+/** Heal-over-time (Natasha's Skill): heals `multiplier` x the applier's stat + `flat` each tick. */
+export const HotSchema = z
+  .object({
+    stat: z.enum(['atk', 'hp', 'def']),
+    multiplier: ValueSchema,
+    flat: ValueSchema.optional(),
+    tickOn: z.enum(['ownerTurnStart', 'ownerTurnEnd']).default('ownerTurnStart'),
   })
   .strict();
 
@@ -89,12 +102,22 @@ export const StatusEffectSchema = z
     modifiers: z.array(StatusModifierSchema).default([]),
     triggers: z.array(TriggerSchema).default([]),
     dot: DotSchema.optional(),
+    hot: HotSchema.optional(),
     cc: CrowdControlSchema.optional(),
+    /** Toughness cannot be reduced (boss Weakness Protection), always or while the owner's summons are on the field. */
+    toughnessProtection: z.enum(['always', 'whileSummonsOnField']).optional(),
+    /** While active, the owner's Basic ATK / Skill is replaced by another of its abilities (Blade's Hellscape). */
+    replacesAbility: z.object({ slot: z.enum(['basic', 'skill']), ability: IdSchema }).strict().optional(),
+    /** Ability slots that cannot be used while active. */
+    blocksAbilities: z.array(z.enum(['basic', 'skill', 'ultimate'])).optional(),
+    /** Script handler for statuses whose behaviour is not expressible as data (documented in DATA_SOURCES.md). */
+    script: z.string().optional(),
     presentation: z.object({ icon: z.string().optional(), vfx: z.string().optional() }).strict().optional(),
   })
   .strict()
   .superRefine((s, ctx) => {
     if (s.category === 'dot' && !s.dot) ctx.addIssue({ code: 'custom', message: 'dot statuses need a "dot" block' });
     if (s.category === 'cc' && !s.cc) ctx.addIssue({ code: 'custom', message: 'cc statuses need a "cc" block' });
+    if (s.category === 'hot' && !s.hot) ctx.addIssue({ code: 'custom', message: 'hot statuses need a "hot" block' });
   });
 export type StatusEffect = z.infer<typeof StatusEffectSchema>;

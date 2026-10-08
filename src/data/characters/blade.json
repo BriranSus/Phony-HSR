@@ -1,0 +1,492 @@
+{
+  "id": "char.blade",
+  "name": "Blade",
+  "rarity": 5,
+  "element": "Wind",
+  "path": "Destruction",
+  "ultimateResource": { "kind": "energy", "max": 130 },
+  "baseStats": { "hp": 184.8, "atk": 73.92, "def": 66, "spd": 97, "critRate": 0.05, "critDmg": 0.5, "aggro": 125 },
+  "abilities": {
+    "basic": {
+      "id": "blade.basic",
+      "name": "Shard Sword",
+      "kind": "basic",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 6,
+      "params": { "p1": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4] },
+      "description": "Deals {p1}% of Blade's ATK as Wind DMG to a target enemy.",
+      "spGain": 1,
+      "energyGain": 20,
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 }],
+      "triggers": [],
+      "modifiers": []
+    },
+    "skill": {
+      "id": "blade.skill",
+      "name": "Hellscape",
+      "kind": "skill",
+      "tags": ["enhance"],
+      "targeting": "self",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.3],
+        "p2": [3],
+        "p3": [1],
+        "p4": [0.12, 0.148, 0.176, 0.204, 0.232, 0.26, 0.295, 0.33, 0.365, 0.4, 0.428, 0.456, 0.484, 0.512, 0.54]
+      },
+      "description": "Consumes HP equal to {p1}% of Blade's Max HP to enter the Hellscape state. When Hellscape is active, his Skill cannot be used, his DMG dealt increases by {p4}%, and his Basic ATK Shard Sword is enhanced to Forest of Swords for {p2} turn(s). If Blade's current HP is insufficient, his HP will be reduced to 1 when he uses his Skill. This Skill does not regenerate Energy. Using this Skill does not end the current turn.",
+      "spCost": 1,
+      "keepsTurn": true,
+      "effects": [
+        { "kind": "hpChange", "target": "self", "mode": "consume", "ratio": { "param": "p1" } },
+        {
+          "kind": "applyStatus",
+          "target": "self",
+          "status": "blade.hellscape",
+          "duration": { "param": "p2" },
+          "params": { "allDmg": { "param": "p4" } }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "ultimate": {
+      "id": "blade.ultimate",
+      "name": "Death Sentence",
+      "kind": "ultimate",
+      "tags": ["blast"],
+      "targeting": "enemyBlast",
+      "maxLevel": 10,
+      "params": {
+        "p1": [0.24, 0.256, 0.272, 0.288, 0.304, 0.32, 0.34, 0.36, 0.38, 0.4, 0.416, 0.432, 0.448, 0.464, 0.48],
+        "p2": [0.6, 0.64, 0.68, 0.72, 0.76, 0.8, 0.85, 0.9, 0.95, 1, 1.04, 1.08, 1.12, 1.16, 1.2],
+        "p3": [0.096, 0.1024, 0.1088, 0.1152, 0.1216, 0.128, 0.136, 0.144, 0.152, 0.16, 0.1664, 0.1728, 0.1792, 0.1856, 0.192],
+        "p4": [0.24, 0.256, 0.272, 0.288, 0.304, 0.32, 0.34, 0.36, 0.38, 0.4, 0.416, 0.432, 0.448, 0.464, 0.48],
+        "p5": [0.6, 0.64, 0.68, 0.72, 0.76, 0.8, 0.85, 0.9, 0.95, 1, 1.04, 1.08, 1.12, 1.16, 1.2],
+        "p6": [0.24, 0.256, 0.272, 0.288, 0.304, 0.32, 0.34, 0.36, 0.38, 0.4, 0.416, 0.432, 0.448, 0.464, 0.48],
+        "p7": [0.9]
+      },
+      "description": "Sets Blade's current HP to 50% of his Max HP and deals Wind DMG to one enemy equal to the sum of {p1}% of his ATK, {p2}% of his Max HP, and {p5}% of the tally of Blade's HP loss in the current battle. At the same time, deals Wind DMG to adjacent targets equal to the sum of {p3}% of his ATK, {p4}% of his Max HP, and {p6}% of the tally of his HP loss in the current battle. The tally of Blade's HP loss in the current battle is capped at {p7}% of his Max HP. This value will be reset and re-accumulated after his Ultimate has been used.",
+      "energyGain": 5,
+      "effects": [
+        { "kind": "hpChange", "target": "self", "mode": "setTo", "ratio": 0.5 },
+        {
+          "kind": "damage",
+          "target": "primary",
+          "stat": "atk",
+          "multiplier": { "param": "p1" },
+          "extraScaling": [{ "stat": "hp", "multiplier": { "param": "p2" } }],
+          "toughness": 20
+        },
+        {
+          "kind": "damage",
+          "target": "adjacent",
+          "stat": "atk",
+          "multiplier": { "param": "p3" },
+          "extraScaling": [{ "stat": "hp", "multiplier": { "param": "p4" } }],
+          "toughness": 20
+        },
+        {
+          "kind": "script",
+          "handler": "blade.hp-loss-tally",
+          "params": { "primary": { "param": "p5" }, "adjacent": { "param": "p6" }, "cap": { "param": "p7" } }
+        }
+      ],
+      "triggers": [],
+      "modifiers": []
+    },
+    "talent": {
+      "id": "blade.talent",
+      "name": "Shuhu's Gift",
+      "kind": "talent",
+      "tags": ["aoe"],
+      "targeting": "none",
+      "maxLevel": 10,
+      "params": {
+        "p1": [3],
+        "p2": [0.22, 0.242, 0.264, 0.286, 0.308, 0.33, 0.3575, 0.385, 0.4125, 0.44, 0.462, 0.484, 0.506, 0.528, 0.55],
+        "p3": [0.25],
+        "p4": [0.55, 0.605, 0.66, 0.715, 0.77, 0.825, 0.8938, 0.9625, 1.0312, 1.1, 1.155, 1.21, 1.265, 1.32, 1.375]
+      },
+      "description": "When Blade sustains DMG or consumes his HP, he gains 1 stack of Charge, stacking up to 5 times. A max of 1 Charge stack can be gained every time he is attacked. When Charge stack reaches maximum, immediately launches a Follow-Up ATK on all enemies, dealing Wind DMG equal to {p2}% of Blade's ATK plus {p4}% of his Max HP. At the same time, restores Blade's HP by {p3}% of his Max HP. After the Follow-Up ATK, all Charges are consumed.",
+      "effects": [],
+      "triggers": [
+        {
+          "on": "afterBeingHit",
+          "effects": [{ "kind": "gainResource", "target": "self", "resource": "blade.charge", "amount": 1 }]
+        },
+        {
+          "on": "onHpChanged",
+          "effects": [{ "kind": "gainResource", "target": "self", "resource": "blade.charge", "amount": 1 }]
+        }
+      ],
+      "modifiers": []
+    },
+    "technique": {
+      "id": "blade.technique",
+      "name": "Karma Wind",
+      "kind": "technique",
+      "tags": [],
+      "targeting": "none",
+      "maxLevel": 1,
+      "params": { "p1": [0.4], "p2": [0.2] },
+      "description": "Immediately attacks the enemy. After entering combat, consumes {p2}% of Blade's Max HP while dealing Wind DMG equal to {p1}% of his Max HP to all enemies. If Blade's current HP is insufficient, his HP will be reduced to 1 when this Technique is used.",
+      "techniquePointCost": 1,
+      "effects": [],
+      "triggers": [
+        {
+          "on": "battleStart",
+          "effects": [
+            { "kind": "hpChange", "target": "self", "mode": "consume", "ratio": { "param": "p2" } },
+            { "kind": "damage", "target": "allEnemies", "stat": "hp", "multiplier": { "param": "p1" }, "toughness": 0 }
+          ]
+        }
+      ],
+      "modifiers": []
+    },
+    "extra": [
+      {
+        "id": "blade.forest-of-swords",
+        "name": "Forest of Swords",
+        "kind": "enhancedBasic",
+        "tags": ["blast"],
+        "targeting": "enemyBlast",
+        "maxLevel": 6,
+        "params": {
+          "p1": [0.1],
+          "p2": [0.2, 0.24, 0.28, 0.32, 0.36, 0.4, 0.44, 0.48, 0.52, 0.56],
+          "p3": [0.08, 0.096, 0.112, 0.128, 0.144, 0.16, 0.176, 0.192, 0.208, 0.224],
+          "p4": [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4],
+          "p5": [0.2, 0.24, 0.28, 0.32, 0.36, 0.4, 0.44, 0.48, 0.52, 0.56]
+        },
+        "description": "Consumes HP equal to {p1}% of Blade's Max HP and deals Wind DMG equal to the sum of {p2}% of his ATK and {p4}% of his Max HP to one designated enemy. In addition, deals Wind DMG equal to the sum of {p3}% of Blade's ATK and {p5}% of his Max HP to adjacent targets. If Blade's current HP is insufficient, his HP will be reduced to 1 when using \"Forest of Swords.\" \"Forest of Swords\" cannot regenerate Skill Points.",
+        "energyGain": 30,
+        "effects": [
+          { "kind": "hpChange", "target": "self", "mode": "consume", "ratio": { "param": "p1" } },
+          {
+            "kind": "damage",
+            "target": "primary",
+            "stat": "atk",
+            "multiplier": { "param": "p2" },
+            "attackType": "basic",
+            "extraScaling": [{ "stat": "hp", "multiplier": { "param": "p4" } }],
+            "toughness": 20
+          },
+          {
+            "kind": "damage",
+            "target": "adjacent",
+            "stat": "atk",
+            "multiplier": { "param": "p3" },
+            "attackType": "basic",
+            "extraScaling": [{ "stat": "hp", "multiplier": { "param": "p5" } }],
+            "toughness": 10
+          }
+        ],
+        "triggers": [],
+        "modifiers": []
+      },
+      {
+        "id": "blade.shuhus-gift",
+        "name": "Shuhu's Gift",
+        "kind": "followUp",
+        "tags": ["aoe"],
+        "targeting": "enemyAll",
+        "maxLevel": 10,
+        "params": {
+          "p1": [3],
+          "p2": [0.22, 0.242, 0.264, 0.286, 0.308, 0.33, 0.3575, 0.385, 0.4125, 0.44, 0.462, 0.484, 0.506, 0.528, 0.55],
+          "p3": [0.25],
+          "p4": [0.55, 0.605, 0.66, 0.715, 0.77, 0.825, 0.8938, 0.9625, 1.0312, 1.1, 1.155, 1.21, 1.265, 1.32, 1.375]
+        },
+        "description": "Follow-Up ATK on all enemies, dealing Wind DMG equal to {p2}% of Blade's ATK plus {p4}% of his Max HP, and restores HP equal to {p3}% of his Max HP.",
+        "energyGain": 10,
+        "effects": [
+          {
+            "kind": "damage",
+            "target": "allEnemies",
+            "stat": "atk",
+            "multiplier": { "param": "p2" },
+            "attackType": "followUp",
+            "extraScaling": [{ "stat": "hp", "multiplier": { "param": "p4" } }],
+            "toughness": 10
+          },
+          { "kind": "heal", "target": "self", "stat": "hp", "multiplier": { "param": "p3" } }
+        ],
+        "triggers": [],
+        "modifiers": []
+      }
+    ]
+  },
+  "resources": [
+    {
+      "id": "blade.charge",
+      "name": "Charge",
+      "max": 5,
+      "onFull": { "action": "followUp", "ability": "blade.shuhus-gift", "resetTo": 0 }
+    }
+  ],
+  "traces": [
+    {
+      "id": "blade.t001",
+      "requirements": {},
+      "costTable": "trace-cost.blade.1205001",
+      "kind": "ability",
+      "name": "Shard Sword",
+      "ability": "basic"
+    },
+    {
+      "id": "blade.t002",
+      "requirements": {},
+      "costTable": "trace-cost.blade.1205002",
+      "kind": "ability",
+      "name": "Hellscape",
+      "ability": "skill"
+    },
+    {
+      "id": "blade.t003",
+      "requirements": {},
+      "costTable": "trace-cost.blade.1205003",
+      "kind": "ability",
+      "name": "Death Sentence",
+      "ability": "ultimate"
+    },
+    {
+      "id": "blade.t004",
+      "requirements": {},
+      "costTable": "trace-cost.blade.1205004",
+      "kind": "ability",
+      "name": "Shuhu's Gift",
+      "ability": "talent"
+    },
+    {
+      "id": "blade.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.blade.1205101",
+      "kind": "major",
+      "name": "Vita Infinita",
+      "passive": {
+        "description": "When Blade's current HP percentage is at 50% of Max HP or lower, the HP restored when receiving healing increases by 20%.",
+        "modifiers": [{ "stat": "incomingHealing", "value": 0.2, "conditions": [{ "type": "hpBelow", "params": { "ratio": 0.5 } }] }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "blade.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.blade.1205102",
+      "kind": "major",
+      "name": "Neverending Deaths",
+      "passive": {
+        "description": "If Blade hits a Weakness Broken enemy after using \"Forest of Swords,\" he will restore HP equal to 5% of his Max HP plus 100.",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterAttack",
+            "effects": [{ "kind": "heal", "target": "self", "stat": "hp", "multiplier": 0.05, "flat": 100 }],
+            "conditions": [{ "type": "attackType", "params": { "is": "basic" } }, { "type": "targetIsWeaknessBroken" }]
+          }
+        ]
+      }
+    },
+    {
+      "id": "blade.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.blade.1205103",
+      "kind": "major",
+      "name": "Cyclone of Destruction",
+      "passive": {
+        "description": "Increases DMG dealt by the Talent's Follow-Up ATK by 20%.",
+        "modifiers": [{ "stat": "followUpDmg", "value": 0.2 }],
+        "triggers": []
+      }
+    },
+    {
+      "id": "blade.t201",
+      "requirements": { "level": 1 },
+      "costTable": "trace-cost.blade.1205201",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.04 }
+    },
+    {
+      "id": "blade.t202",
+      "parent": "blade.t101",
+      "requirements": { "ascension": 2 },
+      "costTable": "trace-cost.blade.1205202",
+      "kind": "stat",
+      "name": "CRIT Rate Boost",
+      "stat": { "stat": "critRate", "value": 0.027 }
+    },
+    {
+      "id": "blade.t203",
+      "parent": "blade.t202",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.blade.1205203",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.04 }
+    },
+    {
+      "id": "blade.t204",
+      "parent": "blade.t203",
+      "requirements": { "ascension": 3 },
+      "costTable": "trace-cost.blade.1205204",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.04 }
+    },
+    {
+      "id": "blade.t205",
+      "parent": "blade.t102",
+      "requirements": { "ascension": 4 },
+      "costTable": "trace-cost.blade.1205205",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.06 }
+    },
+    {
+      "id": "blade.t206",
+      "parent": "blade.t205",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.blade.1205206",
+      "kind": "stat",
+      "name": "CRIT Rate Boost",
+      "stat": { "stat": "critRate", "value": 0.04 }
+    },
+    {
+      "id": "blade.t207",
+      "parent": "blade.t206",
+      "requirements": { "ascension": 5 },
+      "costTable": "trace-cost.blade.1205207",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.06 }
+    },
+    {
+      "id": "blade.t208",
+      "parent": "blade.t103",
+      "requirements": { "ascension": 6 },
+      "costTable": "trace-cost.blade.1205208",
+      "kind": "stat",
+      "name": "Effect RES Boost",
+      "stat": { "stat": "effectRes", "value": 0.06 }
+    },
+    {
+      "id": "blade.t209",
+      "parent": "blade.t208",
+      "requirements": { "level": 75 },
+      "costTable": "trace-cost.blade.1205209",
+      "kind": "stat",
+      "name": "CRIT Rate Boost",
+      "stat": { "stat": "critRate", "value": 0.053 }
+    },
+    {
+      "id": "blade.t210",
+      "parent": "blade.t208",
+      "requirements": { "level": 80 },
+      "costTable": "trace-cost.blade.1205210",
+      "kind": "stat",
+      "name": "HP Boost",
+      "stat": { "stat": "hpPct", "value": 0.08 }
+    }
+  ],
+  "eidolons": [
+    {
+      "rank": 1,
+      "name": "Blade Cuts the Deepest in Hell",
+      "description": "Blade's Ultimate deals additionally increased DMG to one designated enemy target, with the increased amount equal to 150% of the tally of Blade's HP loss in the current battle. The tally of Blade's HP loss in the current battle is capped at 90% of his Max HP. The tally value will be reset and re-accumulated after his Ultimate has been used.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "blade.e1"
+    },
+    {
+      "rank": 2,
+      "name": "Ten Thousand Sorrows From One Broken Dream",
+      "description": "When Blade is in the Hellscape state, his CRIT Rate increases by 15%.",
+      "modifiers": [
+        {
+          "stat": "critRate",
+          "value": 0.15,
+          "conditions": [{ "type": "hasStatus", "params": { "status": "blade.hellscape" } }]
+        }
+      ],
+      "triggers": []
+    },
+    {
+      "rank": 3,
+      "name": "Hardened Blade Bleeds Coldest Shade",
+      "description": "Ultimate Lv. +2, up to a maximum of Lv. 15. Talent Lv. +2, up to a maximum of Lv. 15.",
+      "abilityLevelBonus": { "ultimate": 2, "talent": 2 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 4,
+      "name": "Rejected by Death, Infected With Life",
+      "description": "When Blade's current HP percentage drops to 50% or lower of his Max HP, increases his Max HP by 20%. Stacks up to 2 time(s).",
+      "modifiers": [],
+      "triggers": [],
+      "script": "blade.e4"
+    },
+    {
+      "rank": 5,
+      "name": "Death By Ten Lords' Gaze",
+      "description": "Skill Lv. +2, up to a maximum of Lv. 15. Basic ATK Lv. +1, up to a maximum of Lv. 10.",
+      "abilityLevelBonus": { "skill": 2, "basic": 1 },
+      "modifiers": [],
+      "triggers": []
+    },
+    {
+      "rank": 6,
+      "name": "Reborn Into an Empty Husk",
+      "description": "The maximum number of Charge stacks is reduced to 4. The Follow-Up ATK triggered by Talent deals additionally increased DMG, with the increased amount equal to 50% of Blade's Max HP.",
+      "modifiers": [],
+      "triggers": [],
+      "script": "blade.e6"
+    }
+  ],
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "immortal-scionette", "count": 5 }],
+    [{ "item": "credit", "count": 8000 }, { "item": "immortal-scionette", "count": 10 }],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "immortal-aeroblossom", "count": 6 },
+      { "item": "ascendant-debris", "count": 3 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "immortal-aeroblossom", "count": 9 },
+      { "item": "ascendant-debris", "count": 7 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "immortal-lumintwig", "count": 6 },
+      { "item": "ascendant-debris", "count": 20 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "immortal-lumintwig", "count": 9 },
+      { "item": "ascendant-debris", "count": 35 }
+    ]
+  ],
+  "eidolonItem": "blades-eidolon",
+  "presentation": { "model": "proc.humanoid.blade", "portraitColor": "#5fd6a0", "voice": {} },
+  "lore": {
+    "title": "Stellaron Hunters",
+    "faction": "Stellaron Hunters",
+    "bio": "A swordsman who abandoned his body to become a blade."
+  },
+  "sources": [
+    {
+      "topic": "Blade: names, descriptions, per-level ability parameters, promotions, Traces, Eidolons",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Blade: Energy, Skill Points and toughness per ability (AvatarSkillConfig)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "lc.time-waits-for-no-one",
+  "name": "Time Waits for No One",
+  "rarity": 5,
+  "path": "Abundance",
+  "baseStats": { "hp": 57.6, "atk": 21.6, "def": 21 },
+  "passive": {
+    "name": "Morn, Noon, Dusk, and Night",
+    "description": "Increases the wearer's Max HP by {p1}% and Outgoing Healing by {p2}%. When the wearer heals allies, record the amount of Outgoing Healing. When any ally launches an attack, a random attacked enemy takes Additional DMG equal to {p3}% of the recorded Outgoing Healing value. The type of this Additional DMG is of the same Type as the wearer's. This Additional DMG is not affected by other buffs, and can only occur 1 time per turn.",
+    "modifiers": [{ "stat": "hpPct", "value": { "param": "p1" } }, { "stat": "outgoingHealing", "value": { "param": "p2" } }],
+    "triggers": [
+      {
+        "on": "battleStart",
+        "effects": [{ "kind": "script", "handler": "lc.time-waits-for-no-one", "params": { "ratio": { "param": "p3" } } }]
+      }
+    ],
+    "params": { "p1": [0.18, 0.21, 0.24, 0.27, 0.3], "p2": [0.12, 0.14, 0.16, 0.18, 0.2], "p3": [0.36, 0.42, 0.48, 0.54, 0.6] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 5000 }, { "item": "extinguished-core", "count": 8 }],
+    [
+      { "item": "credit", "count": 10000 },
+      { "item": "seed-of-abundance", "count": 4 },
+      { "item": "extinguished-core", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 20000 },
+      { "item": "sprout-of-life", "count": 4 },
+      { "item": "glimmering-core", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 50000 },
+      { "item": "sprout-of-life", "count": 8 },
+      { "item": "glimmering-core", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 100000 },
+      { "item": "flower-of-eternity", "count": 5 },
+      { "item": "squirming-core", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 200000 },
+      { "item": "flower-of-eternity", "count": 10 },
+      { "item": "squirming-core", "count": 8 }
+    ]
+  ],
+  "fodderExp": 60000,
+  "lore": "She had spent many days next to the window. Flowers were blooming outside when she made gentle medicines with mint and nepeta. Rain was falling outside when she made strong medicines with mosla and ginger. Leaves were falling outside when she made sour medicines with peony roots and dry plums. And snow was falling outside when she made bitter medicines with skullcaps and anemarrhena. Time flows endlessly, but this window and the person sitting next to it remain forever the same.",
+  "sources": [
+    {
+      "topic": "Time Waits for No One: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Time Waits for No One: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "lc.only-silence-remains",
+  "name": "Only Silence Remains",
+  "rarity": 4,
+  "path": "Hunt",
+  "baseStats": { "hp": 43.2, "atk": 21.6, "def": 15 },
+  "passive": {
+    "name": "Record",
+    "description": "Increases the wearer's ATK by {p1}%. If there are 2 or fewer enemies on the field, increases wearer's CRIT Rate by {p2}%.",
+    "modifiers": [
+      { "stat": "atkPct", "value": { "param": "p1" } },
+      {
+        "stat": "critRate",
+        "value": { "param": "p2" },
+        "conditions": [{ "type": "enemyCountAtMost", "params": { "count": 2 } }]
+      }
+    ],
+    "triggers": [],
+    "params": { "p1": [0.16, 0.2, 0.24, 0.28, 0.32], "p2": [0.12, 0.15, 0.18, 0.21, 0.24] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "silvermane-badge", "count": 5 }],
+    [
+      { "item": "credit", "count": 8000 },
+      { "item": "arrow-of-the-beast-hunter", "count": 3 },
+      { "item": "silvermane-badge", "count": 10 }
+    ],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "arrow-of-the-demon-slayer", "count": 3 },
+      { "item": "silvermane-insignia", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "arrow-of-the-demon-slayer", "count": 6 },
+      { "item": "silvermane-insignia", "count": 9 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "arrow-of-the-starchaser", "count": 4 },
+      { "item": "silvermane-medal", "count": 5 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "arrow-of-the-starchaser", "count": 8 },
+      { "item": "silvermane-medal", "count": 7 }
+    ]
+  ],
+  "fodderExp": 12000,
+  "lore": "\"Shouldn't we get off? It's our stop.\" A chuckle came from above. His eyes moved, but he didn't look up. \"To be clear, March always says you're expressionless, but I don't agree.\" \"The train's data bank show traces of an update, but the results weren't saved.\" \"So... which entry were you having trouble with?\" He grasped his pen tighter as he looked at the bloody scene drawn in the notebook from memory. \"I see. It was the one about you...\"",
+  "sources": [
+    {
+      "topic": "Only Silence Remains: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Only Silence Remains: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "lc.subscribe-for-more",
+  "name": "Subscribe for More!",
+  "rarity": 4,
+  "path": "Hunt",
+  "baseStats": { "hp": 43.2, "atk": 21.6, "def": 15 },
+  "passive": {
+    "name": "Like Before You Leave!",
+    "description": "The wearer's Basic ATK and Skill deals {p1}% more DMG. This effect increases by an extra {p2}% when the wearer's current Energy reaches its max level.",
+    "modifiers": [
+      { "stat": "basicDmg", "value": { "param": "p1" } },
+      { "stat": "skillDmg", "value": { "param": "p1" } },
+      { "stat": "basicDmg", "value": { "param": "p2" }, "conditions": [{ "type": "energyFull" }] },
+      { "stat": "skillDmg", "value": { "param": "p2" }, "conditions": [{ "type": "energyFull" }] }
+    ],
+    "triggers": [],
+    "params": { "p1": [0.24, 0.3, 0.36, 0.42, 0.48], "p2": [0.24, 0.3, 0.36, 0.42, 0.48] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 4000 }, { "item": "artifexs-module", "count": 5 }],
+    [
+      { "item": "credit", "count": 8000 },
+      { "item": "arrow-of-the-beast-hunter", "count": 3 },
+      { "item": "artifexs-module", "count": 10 }
+    ],
+    [
+      { "item": "credit", "count": 16000 },
+      { "item": "arrow-of-the-demon-slayer", "count": 3 },
+      { "item": "artifexs-cogwheel", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 40000 },
+      { "item": "arrow-of-the-demon-slayer", "count": 6 },
+      { "item": "artifexs-cogwheel", "count": 9 }
+    ],
+    [
+      { "item": "credit", "count": 80000 },
+      { "item": "arrow-of-the-starchaser", "count": 4 },
+      { "item": "artifexs-gyreheart", "count": 5 }
+    ],
+    [
+      { "item": "credit", "count": 160000 },
+      { "item": "arrow-of-the-starchaser", "count": 8 },
+      { "item": "artifexs-gyreheart", "count": 7 }
+    ]
+  ],
+  "fodderExp": 12000,
+  "lore": "\"Yo, yo. What is up! Is everything coming through?\" The orange-haired girl slowly lifts a sledgehammer while shouting enthusiastically at the camera. \"Ever seen a pretty girl doing the cinder-block-smashed-on-chest stunt?\" \"I didn't sign up for this!\" The brunette girl cried out loud, only to be met with a sly smile from the girl with the orange hair. \"Please. Just let me do this. This is what people would've wanted.\"",
+  "sources": [
+    {
+      "topic": "Subscribe for More!: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Subscribe for More!: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

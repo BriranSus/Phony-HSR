@@ -1,58 +1,5811 @@
 [
   {
-    "id": "trace.basic",
-    "description": "Basic ATK levels 2..6",
+    "id": "trace-cost.clara.1107001",
+    "description": "Clara: basic levels 2..6",
     "steps": [
-      [{ "item": "credit", "count": 5000 }, { "item": "trace.t1", "count": 3 }],
-      [{ "item": "credit", "count": 10000 }, { "item": "trace.t2", "count": 3 }, { "item": "mat.hollow-2", "count": 6 }],
-      [{ "item": "credit", "count": 20000 }, { "item": "trace.t2", "count": 5 }, { "item": "mat.hollow-2", "count": 9 }],
-      [{ "item": "credit", "count": 45000 }, { "item": "trace.t3", "count": 3 }, { "item": "mat.hollow-3", "count": 5 }],
-      [{ "item": "credit", "count": 160000 }, { "item": "trace.t3", "count": 8 }, { "item": "mat.hollow-3", "count": 9 }, { "item": "trace.weekly", "count": 1 }]
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "ancient-part", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "ancient-spindle", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "ancient-engine", "count": 4 }
+      ]
     ]
   },
   {
-    "id": "trace.ability",
-    "description": "Skill / Ultimate / Talent levels 2..10",
+    "id": "trace-cost.clara.1107002",
+    "description": "Clara: skill levels 2..10",
     "steps": [
-      [{ "item": "credit", "count": 2500 }, { "item": "trace.t1", "count": 3 }],
-      [{ "item": "credit", "count": 5000 }, { "item": "trace.t2", "count": 3 }, { "item": "mat.hollow-2", "count": 3 }],
-      [{ "item": "credit", "count": 10000 }, { "item": "trace.t2", "count": 5 }, { "item": "mat.hollow-2", "count": 4 }],
-      [{ "item": "credit", "count": 20000 }, { "item": "trace.t2", "count": 7 }, { "item": "mat.hollow-2", "count": 6 }],
-      [{ "item": "credit", "count": 30000 }, { "item": "trace.t2", "count": 9 }, { "item": "mat.hollow-2", "count": 9 }],
-      [{ "item": "credit", "count": 45000 }, { "item": "trace.t3", "count": 3 }, { "item": "mat.hollow-3", "count": 3 }],
-      [{ "item": "credit", "count": 80000 }, { "item": "trace.t3", "count": 5 }, { "item": "mat.hollow-3", "count": 4 }, { "item": "trace.weekly", "count": 1 }],
-      [{ "item": "credit", "count": 160000 }, { "item": "trace.t3", "count": 7 }, { "item": "mat.hollow-3", "count": 6 }, { "item": "trace.weekly", "count": 1 }],
-      [{ "item": "credit", "count": 400000 }, { "item": "trace.t3", "count": 14 }, { "item": "mat.hollow-3", "count": 9 }, { "item": "trace.weekly", "count": 1 }, { "item": "trace.tracks", "count": 1 }]
+      [{ "item": "credit", "count": 2500 }, { "item": "ancient-part", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "ancient-part", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "ancient-spindle", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "lifeless-blade", "count": 7 },
+        { "item": "ancient-spindle", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "worldbreaker-blade", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "ancient-engine", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "worldbreaker-blade", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
     ]
   },
   {
-    "id": "trace.major-a2",
-    "description": "Major Trace at Ascension 2",
-    "steps": [[{ "item": "credit", "count": 5000 }, { "item": "trace.t1", "count": 3 }]]
+    "id": "trace-cost.clara.1107003",
+    "description": "Clara: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "ancient-part", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "ancient-part", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "ancient-spindle", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "lifeless-blade", "count": 7 },
+        { "item": "ancient-spindle", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "worldbreaker-blade", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "ancient-engine", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "worldbreaker-blade", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
   },
   {
-    "id": "trace.major-a4",
-    "description": "Major Trace at Ascension 4",
-    "steps": [[{ "item": "credit", "count": 20000 }, { "item": "trace.t2", "count": 5 }, { "item": "trace.weekly", "count": 1 }]]
+    "id": "trace-cost.clara.1107004",
+    "description": "Clara: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "ancient-part", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "ancient-part", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "ancient-spindle", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "lifeless-blade", "count": 7 },
+        { "item": "ancient-spindle", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "worldbreaker-blade", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "ancient-engine", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "worldbreaker-blade", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
   },
   {
-    "id": "trace.major-a6",
-    "description": "Major Trace at Ascension 6",
-    "steps": [[{ "item": "credit", "count": 160000 }, { "item": "trace.t3", "count": 8 }, { "item": "trace.weekly", "count": 1 }]]
+    "id": "trace-cost.clara.1107101",
+    "description": "Clara: Kinship",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
   },
   {
-    "id": "trace.stat-low",
-    "description": "Minor stat node (early)",
-    "steps": [[{ "item": "credit", "count": 5000 }, { "item": "trace.t1", "count": 3 }]]
+    "id": "trace-cost.clara.1107102",
+    "description": "Clara: Under Protection",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
   },
   {
-    "id": "trace.stat-mid",
-    "description": "Minor stat node (mid)",
-    "steps": [[{ "item": "credit", "count": 20000 }, { "item": "trace.t2", "count": 4 }]]
+    "id": "trace-cost.clara.1107103",
+    "description": "Clara: Revenge",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
   },
   {
-    "id": "trace.stat-high",
-    "description": "Minor stat node (late)",
-    "steps": [[{ "item": "credit", "count": 128000 }, { "item": "trace.t3", "count": 6 }]]
+    "id": "trace-cost.clara.1107201",
+    "description": "Clara: ATK Boost",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "ancient-part", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.clara.1107202",
+    "description": "Clara: DMG Boost: Physical",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "ancient-part", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.clara.1107203",
+    "description": "Clara: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.clara.1107204",
+    "description": "Clara: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.clara.1107205",
+    "description": "Clara: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "ancient-spindle", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.clara.1107206",
+    "description": "Clara: DMG Boost: Physical",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.clara.1107207",
+    "description": "Clara: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.clara.1107208",
+    "description": "Clara: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "ancient-engine", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.clara.1107209",
+    "description": "Clara: DMG Boost: Physical",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "ancient-engine", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.clara.1107210",
+    "description": "Clara: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "ancient-engine", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205001",
+    "description": "Blade: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205002",
+    "description": "Blade: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "lifeless-blade", "count": 7 },
+        { "item": "immortal-aeroblossom", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "worldbreaker-blade", "count": 5 },
+        { "item": "regret-of-infinite-ochema", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "worldbreaker-blade", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205003",
+    "description": "Blade: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "lifeless-blade", "count": 7 },
+        { "item": "immortal-aeroblossom", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "worldbreaker-blade", "count": 5 },
+        { "item": "regret-of-infinite-ochema", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "worldbreaker-blade", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205004",
+    "description": "Blade: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "lifeless-blade", "count": 7 },
+        { "item": "immortal-aeroblossom", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "worldbreaker-blade", "count": 5 },
+        { "item": "regret-of-infinite-ochema", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "worldbreaker-blade", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205101",
+    "description": "Blade: Vita Infinita",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205102",
+    "description": "Blade: Neverending Deaths",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205103",
+    "description": "Blade: Cyclone of Destruction",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205201",
+    "description": "Blade: HP Boost",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.blade.1205202",
+    "description": "Blade: CRIT Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "shattered-blade", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205203",
+    "description": "Blade: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205204",
+    "description": "Blade: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "lifeless-blade", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205205",
+    "description": "Blade: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "lifeless-blade", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205206",
+    "description": "Blade: CRIT Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205207",
+    "description": "Blade: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "worldbreaker-blade", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205208",
+    "description": "Blade: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205209",
+    "description": "Blade: CRIT Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.blade.1205210",
+    "description": "Blade: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "worldbreaker-blade", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102001",
+    "description": "Seele: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 3 },
+        { "item": "thiefs-instinct", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 5 },
+        { "item": "usurpers-scheme", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "arrow-of-the-starchaser", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "arrow-of-the-starchaser", "count": 8 },
+        { "item": "conquerors-will", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102002",
+    "description": "Seele: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "thiefs-instinct", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 3 },
+        { "item": "thiefs-instinct", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 5 },
+        { "item": "usurpers-scheme", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 7 },
+        { "item": "usurpers-scheme", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "arrow-of-the-starchaser", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "arrow-of-the-starchaser", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "conquerors-will", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "arrow-of-the-starchaser", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "arrow-of-the-starchaser", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102003",
+    "description": "Seele: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "thiefs-instinct", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 3 },
+        { "item": "thiefs-instinct", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 5 },
+        { "item": "usurpers-scheme", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 7 },
+        { "item": "usurpers-scheme", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "arrow-of-the-starchaser", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "arrow-of-the-starchaser", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "conquerors-will", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "arrow-of-the-starchaser", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "arrow-of-the-starchaser", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102004",
+    "description": "Seele: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "thiefs-instinct", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 3 },
+        { "item": "thiefs-instinct", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 5 },
+        { "item": "usurpers-scheme", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 7 },
+        { "item": "usurpers-scheme", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "arrow-of-the-starchaser", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "arrow-of-the-starchaser", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "conquerors-will", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "arrow-of-the-starchaser", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "arrow-of-the-starchaser", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102101",
+    "description": "Seele: Nightshade",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 3 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102102",
+    "description": "Seele: Lacerate",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102103",
+    "description": "Seele: Rippling Waves",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "arrow-of-the-starchaser", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102201",
+    "description": "Seele: ATK Boost",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "thiefs-instinct", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.seele.1102202",
+    "description": "Seele: CRIT DMG Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 3 },
+        { "item": "thiefs-instinct", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102203",
+    "description": "Seele: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102204",
+    "description": "Seele: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102205",
+    "description": "Seele: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 5 },
+        { "item": "usurpers-scheme", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102206",
+    "description": "Seele: CRIT DMG Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "arrow-of-the-starchaser", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102207",
+    "description": "Seele: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "arrow-of-the-starchaser", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102208",
+    "description": "Seele: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "arrow-of-the-starchaser", "count": 8 },
+        { "item": "conquerors-will", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102209",
+    "description": "Seele: CRIT DMG Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "arrow-of-the-starchaser", "count": 8 },
+        { "item": "conquerors-will", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.seele.1102210",
+    "description": "Seele: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "arrow-of-the-starchaser", "count": 8 },
+        { "item": "conquerors-will", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002001",
+    "description": "Dan Heng: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 2 },
+        { "item": "extinguished-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 4 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "arrow-of-the-starchaser", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "arrow-of-the-starchaser", "count": 6 },
+        { "item": "squirming-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002002",
+    "description": "Dan Heng: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "extinguished-core", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 2 },
+        { "item": "extinguished-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 4 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 6 },
+        { "item": "glimmering-core", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "arrow-of-the-starchaser", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "arrow-of-the-starchaser", "count": 4 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "arrow-of-the-starchaser", "count": 6 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "arrow-of-the-starchaser", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002003",
+    "description": "Dan Heng: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "extinguished-core", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 2 },
+        { "item": "extinguished-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 4 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 6 },
+        { "item": "glimmering-core", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "arrow-of-the-starchaser", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "arrow-of-the-starchaser", "count": 4 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "arrow-of-the-starchaser", "count": 6 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "arrow-of-the-starchaser", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002004",
+    "description": "Dan Heng: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "extinguished-core", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 2 },
+        { "item": "extinguished-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 4 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 6 },
+        { "item": "glimmering-core", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "arrow-of-the-starchaser", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "arrow-of-the-starchaser", "count": 4 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "arrow-of-the-starchaser", "count": 6 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "arrow-of-the-starchaser", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002101",
+    "description": "Dan Heng: Hidden Dragon",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 2 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002102",
+    "description": "Dan Heng: Faster Than Light",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 4 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002103",
+    "description": "Dan Heng: High Gale",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "arrow-of-the-starchaser", "count": 6 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002201",
+    "description": "Dan Heng: DMG Boost: Wind",
+    "steps": [[{ "item": "credit", "count": 2000 }, { "item": "extinguished-core", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002202",
+    "description": "Dan Heng: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "arrow-of-the-beast-hunter", "count": 2 },
+        { "item": "extinguished-core", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002203",
+    "description": "Dan Heng: DMG Boost: Wind",
+    "steps": [
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002204",
+    "description": "Dan Heng: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002205",
+    "description": "Dan Heng: DMG Boost: Wind",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "arrow-of-the-demon-slayer", "count": 4 },
+        { "item": "glimmering-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002206",
+    "description": "Dan Heng: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "arrow-of-the-starchaser", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002207",
+    "description": "Dan Heng: DMG Boost: Wind",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "arrow-of-the-starchaser", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002208",
+    "description": "Dan Heng: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "arrow-of-the-starchaser", "count": 6 },
+        { "item": "squirming-core", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002209",
+    "description": "Dan Heng: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "arrow-of-the-starchaser", "count": 6 },
+        { "item": "squirming-core", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.dan-heng.1002210",
+    "description": "Dan Heng: DMG Boost: Wind",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "arrow-of-the-starchaser", "count": 6 },
+        { "item": "squirming-core", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003001",
+    "description": "Himeko: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "extinguished-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "glimmering-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "squirming-core", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003002",
+    "description": "Himeko: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "extinguished-core", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "extinguished-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "glimmering-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "key-of-knowledge", "count": 7 },
+        { "item": "glimmering-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "key-of-wisdom", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "squirming-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "key-of-wisdom", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003003",
+    "description": "Himeko: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "extinguished-core", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "extinguished-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "glimmering-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "key-of-knowledge", "count": 7 },
+        { "item": "glimmering-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "key-of-wisdom", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "squirming-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "key-of-wisdom", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003004",
+    "description": "Himeko: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "extinguished-core", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "extinguished-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "glimmering-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "key-of-knowledge", "count": 7 },
+        { "item": "glimmering-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "key-of-wisdom", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "squirming-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "key-of-wisdom", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003101",
+    "description": "Himeko: Starfire",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003102",
+    "description": "Himeko: Magma",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003103",
+    "description": "Himeko: Benchmark",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003201",
+    "description": "Himeko: DMG Boost: Fire",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "extinguished-core", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.himeko.1003202",
+    "description": "Himeko: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "extinguished-core", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003203",
+    "description": "Himeko: DMG Boost: Fire",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003204",
+    "description": "Himeko: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003205",
+    "description": "Himeko: DMG Boost: Fire",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "glimmering-core", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003206",
+    "description": "Himeko: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003207",
+    "description": "Himeko: DMG Boost: Fire",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003208",
+    "description": "Himeko: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "squirming-core", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003209",
+    "description": "Himeko: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "squirming-core", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.himeko.1003210",
+    "description": "Himeko: DMG Boost: Fire",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "squirming-core", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204001",
+    "description": "Jing Yuan: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204002",
+    "description": "Jing Yuan: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "key-of-knowledge", "count": 7 },
+        { "item": "immortal-aeroblossom", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "key-of-wisdom", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "key-of-wisdom", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204003",
+    "description": "Jing Yuan: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "key-of-knowledge", "count": 7 },
+        { "item": "immortal-aeroblossom", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "key-of-wisdom", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "key-of-wisdom", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204004",
+    "description": "Jing Yuan: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "key-of-knowledge", "count": 7 },
+        { "item": "immortal-aeroblossom", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "key-of-wisdom", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "key-of-wisdom", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204101",
+    "description": "Jing Yuan: Battalia Crush",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204102",
+    "description": "Jing Yuan: Savant Providence",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204103",
+    "description": "Jing Yuan: War Marshal",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204201",
+    "description": "Jing Yuan: ATK Boost",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204202",
+    "description": "Jing Yuan: CRIT Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "key-of-inspiration", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204203",
+    "description": "Jing Yuan: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204204",
+    "description": "Jing Yuan: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "key-of-knowledge", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204205",
+    "description": "Jing Yuan: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "key-of-knowledge", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204206",
+    "description": "Jing Yuan: CRIT Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204207",
+    "description": "Jing Yuan: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "key-of-wisdom", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204208",
+    "description": "Jing Yuan: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204209",
+    "description": "Jing Yuan: CRIT Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.jing-yuan.1204210",
+    "description": "Jing Yuan: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "key-of-wisdom", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101001",
+    "description": "Bronya: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "silvermane-medal", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101002",
+    "description": "Bronya: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "ancestral-hymn", "count": 7 },
+        { "item": "silvermane-insignia", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "stellaris-symphony", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "silvermane-medal", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "stellaris-symphony", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101003",
+    "description": "Bronya: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "ancestral-hymn", "count": 7 },
+        { "item": "silvermane-insignia", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "stellaris-symphony", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "silvermane-medal", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "stellaris-symphony", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101004",
+    "description": "Bronya: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "ancestral-hymn", "count": 7 },
+        { "item": "silvermane-insignia", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "stellaris-symphony", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "silvermane-medal", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "stellaris-symphony", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101101",
+    "description": "Bronya: Command",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101102",
+    "description": "Bronya: Battlefield",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101103",
+    "description": "Bronya: Military Might",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101201",
+    "description": "Bronya: DMG Boost: Wind",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.bronya.1101202",
+    "description": "Bronya: CRIT DMG Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101203",
+    "description": "Bronya: DMG Boost: Wind",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101204",
+    "description": "Bronya: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101205",
+    "description": "Bronya: DMG Boost: Wind",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101206",
+    "description": "Bronya: CRIT DMG Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101207",
+    "description": "Bronya: DMG Boost: Wind",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101208",
+    "description": "Bronya: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "silvermane-medal", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101209",
+    "description": "Bronya: CRIT DMG Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "silvermane-medal", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bronya.1101210",
+    "description": "Bronya: DMG Boost: Wind",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "silvermane-medal", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202001",
+    "description": "Tingyun: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "harmonic-tune", "count": 2 },
+        { "item": "immortal-scionette", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "ancestral-hymn", "count": 2 },
+        { "item": "immortal-aeroblossom", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "ancestral-hymn", "count": 4 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "stellaris-symphony", "count": 2 },
+        { "item": "immortal-lumintwig", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "stellaris-symphony", "count": 6 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202002",
+    "description": "Tingyun: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "immortal-scionette", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "harmonic-tune", "count": 2 },
+        { "item": "immortal-scionette", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "ancestral-hymn", "count": 2 },
+        { "item": "immortal-aeroblossom", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "ancestral-hymn", "count": 4 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "ancestral-hymn", "count": 6 },
+        { "item": "immortal-aeroblossom", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "stellaris-symphony", "count": 2 },
+        { "item": "immortal-lumintwig", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "stellaris-symphony", "count": 4 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "stellaris-symphony", "count": 6 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "stellaris-symphony", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202003",
+    "description": "Tingyun: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "immortal-scionette", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "harmonic-tune", "count": 2 },
+        { "item": "immortal-scionette", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "ancestral-hymn", "count": 2 },
+        { "item": "immortal-aeroblossom", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "ancestral-hymn", "count": 4 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "ancestral-hymn", "count": 6 },
+        { "item": "immortal-aeroblossom", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "stellaris-symphony", "count": 2 },
+        { "item": "immortal-lumintwig", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "stellaris-symphony", "count": 4 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "stellaris-symphony", "count": 6 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "stellaris-symphony", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202004",
+    "description": "Tingyun: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "immortal-scionette", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "harmonic-tune", "count": 2 },
+        { "item": "immortal-scionette", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "ancestral-hymn", "count": 2 },
+        { "item": "immortal-aeroblossom", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "ancestral-hymn", "count": 4 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "ancestral-hymn", "count": 6 },
+        { "item": "immortal-aeroblossom", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "stellaris-symphony", "count": 2 },
+        { "item": "immortal-lumintwig", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "stellaris-symphony", "count": 4 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "stellaris-symphony", "count": 6 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "stellaris-symphony", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202101",
+    "description": "Tingyun: Nourished Joviality",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "harmonic-tune", "count": 2 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202102",
+    "description": "Tingyun: Knell Subdual",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "ancestral-hymn", "count": 4 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202103",
+    "description": "Tingyun: Jubilant Passage",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "stellaris-symphony", "count": 6 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202201",
+    "description": "Tingyun: ATK Boost",
+    "steps": [[{ "item": "credit", "count": 2000 }, { "item": "immortal-scionette", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.tingyun.1202202",
+    "description": "Tingyun: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "harmonic-tune", "count": 2 },
+        { "item": "immortal-scionette", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202203",
+    "description": "Tingyun: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "ancestral-hymn", "count": 2 },
+        { "item": "immortal-aeroblossom", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202204",
+    "description": "Tingyun: DMG Boost: Lightning",
+    "steps": [
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "ancestral-hymn", "count": 2 },
+        { "item": "immortal-aeroblossom", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202205",
+    "description": "Tingyun: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "ancestral-hymn", "count": 4 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202206",
+    "description": "Tingyun: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "stellaris-symphony", "count": 2 },
+        { "item": "immortal-lumintwig", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202207",
+    "description": "Tingyun: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "stellaris-symphony", "count": 2 },
+        { "item": "immortal-lumintwig", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202208",
+    "description": "Tingyun: DMG Boost: Lightning",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "stellaris-symphony", "count": 6 },
+        { "item": "immortal-lumintwig", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202209",
+    "description": "Tingyun: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "stellaris-symphony", "count": 6 },
+        { "item": "immortal-lumintwig", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.tingyun.1202210",
+    "description": "Tingyun: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "stellaris-symphony", "count": 6 },
+        { "item": "immortal-lumintwig", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303001",
+    "description": "Ruan Mei: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303002",
+    "description": "Ruan Mei: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "ancestral-hymn", "count": 7 },
+        { "item": "immortal-aeroblossom", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "stellaris-symphony", "count": 5 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "stellaris-symphony", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303003",
+    "description": "Ruan Mei: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "ancestral-hymn", "count": 7 },
+        { "item": "immortal-aeroblossom", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "stellaris-symphony", "count": 5 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "stellaris-symphony", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303004",
+    "description": "Ruan Mei: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "ancestral-hymn", "count": 7 },
+        { "item": "immortal-aeroblossom", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "stellaris-symphony", "count": 5 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 },
+        { "item": "immortal-lumintwig", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "stellaris-symphony", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303101",
+    "description": "Ruan Mei: Inert Respiration",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303102",
+    "description": "Ruan Mei: Days Wane, Thoughts Wax",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303103",
+    "description": "Ruan Mei: Candle Lights on Still Waters",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "past-evils-of-the-borehole-planet-disaster", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303201",
+    "description": "Ruan Mei: Break Boost",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "immortal-scionette", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303202",
+    "description": "Ruan Mei: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "harmonic-tune", "count": 3 },
+        { "item": "immortal-scionette", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303203",
+    "description": "Ruan Mei: Break Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303204",
+    "description": "Ruan Mei: SPD Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "ancestral-hymn", "count": 3 },
+        { "item": "immortal-aeroblossom", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303205",
+    "description": "Ruan Mei: Break Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "ancestral-hymn", "count": 5 },
+        { "item": "immortal-aeroblossom", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303206",
+    "description": "Ruan Mei: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303207",
+    "description": "Ruan Mei: Break Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "stellaris-symphony", "count": 3 },
+        { "item": "immortal-lumintwig", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303208",
+    "description": "Ruan Mei: SPD Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303209",
+    "description": "Ruan Mei: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.ruan-mei.1303210",
+    "description": "Ruan Mei: Break Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "stellaris-symphony", "count": 8 },
+        { "item": "immortal-lumintwig", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005001",
+    "description": "Kafka: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "thiefs-instinct", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "usurpers-scheme", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "conquerors-will", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005002",
+    "description": "Kafka: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "thiefs-instinct", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "thiefs-instinct", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "usurpers-scheme", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "obsidian-of-desolation", "count": 7 },
+        { "item": "usurpers-scheme", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "obsidian-of-obsession", "count": 5 },
+        { "item": "regret-of-infinite-ochema", "count": 1 },
+        { "item": "conquerors-will", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "obsidian-of-obsession", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005003",
+    "description": "Kafka: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "thiefs-instinct", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "thiefs-instinct", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "usurpers-scheme", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "obsidian-of-desolation", "count": 7 },
+        { "item": "usurpers-scheme", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "obsidian-of-obsession", "count": 5 },
+        { "item": "regret-of-infinite-ochema", "count": 1 },
+        { "item": "conquerors-will", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "obsidian-of-obsession", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005004",
+    "description": "Kafka: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "thiefs-instinct", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "thiefs-instinct", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "usurpers-scheme", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "obsidian-of-desolation", "count": 7 },
+        { "item": "usurpers-scheme", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "obsidian-of-obsession", "count": 5 },
+        { "item": "regret-of-infinite-ochema", "count": 1 },
+        { "item": "conquerors-will", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "obsidian-of-obsession", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005101",
+    "description": "Kafka: Torture",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005102",
+    "description": "Kafka: Plunder",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005103",
+    "description": "Kafka: Thorns",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "regret-of-infinite-ochema", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005201",
+    "description": "Kafka: ATK Boost",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "thiefs-instinct", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.kafka.1005202",
+    "description": "Kafka: Effect Hit Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "thiefs-instinct", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005203",
+    "description": "Kafka: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005204",
+    "description": "Kafka: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005205",
+    "description": "Kafka: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "usurpers-scheme", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005206",
+    "description": "Kafka: Effect Hit Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005207",
+    "description": "Kafka: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "conquerors-will", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005208",
+    "description": "Kafka: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "conquerors-will", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005209",
+    "description": "Kafka: Effect Hit Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "conquerors-will", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.kafka.1005210",
+    "description": "Kafka: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "conquerors-will", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006001",
+    "description": "Silver Wolf: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "ancient-part", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "ancient-spindle", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "ancient-engine", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006002",
+    "description": "Silver Wolf: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "ancient-part", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "ancient-part", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "ancient-spindle", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "obsidian-of-desolation", "count": 7 },
+        { "item": "ancient-spindle", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "obsidian-of-obsession", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "ancient-engine", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "obsidian-of-obsession", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006003",
+    "description": "Silver Wolf: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "ancient-part", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "ancient-part", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "ancient-spindle", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "obsidian-of-desolation", "count": 7 },
+        { "item": "ancient-spindle", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "obsidian-of-obsession", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "ancient-engine", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "obsidian-of-obsession", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006004",
+    "description": "Silver Wolf: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "ancient-part", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "ancient-part", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "ancient-spindle", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "obsidian-of-desolation", "count": 7 },
+        { "item": "ancient-spindle", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "obsidian-of-obsession", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "ancient-engine", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "obsidian-of-obsession", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006101",
+    "description": "Silver Wolf: Generate",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006102",
+    "description": "Silver Wolf: Inject",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006103",
+    "description": "Silver Wolf: Side Note",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006201",
+    "description": "Silver Wolf: ATK Boost",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "ancient-part", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006202",
+    "description": "Silver Wolf: Effect Hit Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "ancient-part", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006203",
+    "description": "Silver Wolf: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006204",
+    "description": "Silver Wolf: DMG Boost: Quantum",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "ancient-spindle", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006205",
+    "description": "Silver Wolf: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "ancient-spindle", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006206",
+    "description": "Silver Wolf: Effect Hit Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006207",
+    "description": "Silver Wolf: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "ancient-engine", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006208",
+    "description": "Silver Wolf: DMG Boost: Quantum",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "ancient-engine", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006209",
+    "description": "Silver Wolf: Effect Hit Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "ancient-engine", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.silver-wolf.1006210",
+    "description": "Silver Wolf: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "ancient-engine", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106001",
+    "description": "Pela: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "obsidian-of-dread", "count": 2 },
+        { "item": "extinguished-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "obsidian-of-desolation", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "obsidian-of-desolation", "count": 4 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "obsidian-of-obsession", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "obsidian-of-obsession", "count": 6 },
+        { "item": "squirming-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106002",
+    "description": "Pela: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "extinguished-core", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "obsidian-of-dread", "count": 2 },
+        { "item": "extinguished-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "obsidian-of-desolation", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "obsidian-of-desolation", "count": 4 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "obsidian-of-desolation", "count": 6 },
+        { "item": "glimmering-core", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "obsidian-of-obsession", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "obsidian-of-obsession", "count": 4 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "obsidian-of-obsession", "count": 6 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "obsidian-of-obsession", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106003",
+    "description": "Pela: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "extinguished-core", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "obsidian-of-dread", "count": 2 },
+        { "item": "extinguished-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "obsidian-of-desolation", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "obsidian-of-desolation", "count": 4 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "obsidian-of-desolation", "count": 6 },
+        { "item": "glimmering-core", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "obsidian-of-obsession", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "obsidian-of-obsession", "count": 4 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "obsidian-of-obsession", "count": 6 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "obsidian-of-obsession", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106004",
+    "description": "Pela: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "extinguished-core", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "obsidian-of-dread", "count": 2 },
+        { "item": "extinguished-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "obsidian-of-desolation", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "obsidian-of-desolation", "count": 4 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "obsidian-of-desolation", "count": 6 },
+        { "item": "glimmering-core", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "obsidian-of-obsession", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "obsidian-of-obsession", "count": 4 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "obsidian-of-obsession", "count": 6 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "obsidian-of-obsession", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106101",
+    "description": "Pela: Bash",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "obsidian-of-dread", "count": 2 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106102",
+    "description": "Pela: The Secret Strategy",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "obsidian-of-desolation", "count": 4 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106103",
+    "description": "Pela: Wipe Out",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "obsidian-of-obsession", "count": 6 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106201",
+    "description": "Pela: DMG Boost: Ice",
+    "steps": [[{ "item": "credit", "count": 2000 }, { "item": "extinguished-core", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.pela.1106202",
+    "description": "Pela: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "obsidian-of-dread", "count": 2 },
+        { "item": "extinguished-core", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106203",
+    "description": "Pela: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "obsidian-of-desolation", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106204",
+    "description": "Pela: Effect Hit Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "obsidian-of-desolation", "count": 2 },
+        { "item": "glimmering-core", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106205",
+    "description": "Pela: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "obsidian-of-desolation", "count": 4 },
+        { "item": "glimmering-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106206",
+    "description": "Pela: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "obsidian-of-obsession", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106207",
+    "description": "Pela: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "obsidian-of-obsession", "count": 2 },
+        { "item": "squirming-core", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106208",
+    "description": "Pela: Effect Hit Rate Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "obsidian-of-obsession", "count": 6 },
+        { "item": "squirming-core", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106209",
+    "description": "Pela: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "obsidian-of-obsession", "count": 6 },
+        { "item": "squirming-core", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.pela.1106210",
+    "description": "Pela: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "obsidian-of-obsession", "count": 6 },
+        { "item": "squirming-core", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004001",
+    "description": "Welt: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "silvermane-medal", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004002",
+    "description": "Welt: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "obsidian-of-desolation", "count": 7 },
+        { "item": "silvermane-insignia", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "obsidian-of-obsession", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "silvermane-medal", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "obsidian-of-obsession", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004003",
+    "description": "Welt: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "obsidian-of-desolation", "count": 7 },
+        { "item": "silvermane-insignia", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "obsidian-of-obsession", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "silvermane-medal", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "obsidian-of-obsession", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004004",
+    "description": "Welt: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "obsidian-of-desolation", "count": 7 },
+        { "item": "silvermane-insignia", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "obsidian-of-obsession", "count": 5 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "silvermane-medal", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "obsidian-of-obsession", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004101",
+    "description": "Welt: Retribution",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004102",
+    "description": "Welt: Judgment",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004103",
+    "description": "Welt: Punishment",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004201",
+    "description": "Welt: ATK Boost",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.welt.1004202",
+    "description": "Welt: DMG Boost: Imaginary",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "obsidian-of-dread", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004203",
+    "description": "Welt: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004204",
+    "description": "Welt: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "obsidian-of-desolation", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004205",
+    "description": "Welt: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "obsidian-of-desolation", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004206",
+    "description": "Welt: DMG Boost: Imaginary",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004207",
+    "description": "Welt: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "obsidian-of-obsession", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004208",
+    "description": "Welt: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "silvermane-medal", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004209",
+    "description": "Welt: DMG Boost: Imaginary",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "silvermane-medal", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.welt.1004210",
+    "description": "Welt: ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "obsidian-of-obsession", "count": 8 },
+        { "item": "silvermane-medal", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001001",
+    "description": "March 7th: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "endurance-of-bronze", "count": 2 },
+        { "item": "thiefs-instinct", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "oath-of-steel", "count": 2 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "oath-of-steel", "count": 4 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "safeguard-of-amber", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "safeguard-of-amber", "count": 6 },
+        { "item": "conquerors-will", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001002",
+    "description": "March 7th: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "thiefs-instinct", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "endurance-of-bronze", "count": 2 },
+        { "item": "thiefs-instinct", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "oath-of-steel", "count": 2 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "oath-of-steel", "count": 4 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "oath-of-steel", "count": 6 },
+        { "item": "usurpers-scheme", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "safeguard-of-amber", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "safeguard-of-amber", "count": 4 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "safeguard-of-amber", "count": 6 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "safeguard-of-amber", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001003",
+    "description": "March 7th: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "thiefs-instinct", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "endurance-of-bronze", "count": 2 },
+        { "item": "thiefs-instinct", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "oath-of-steel", "count": 2 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "oath-of-steel", "count": 4 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "oath-of-steel", "count": 6 },
+        { "item": "usurpers-scheme", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "safeguard-of-amber", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "safeguard-of-amber", "count": 4 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "safeguard-of-amber", "count": 6 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "safeguard-of-amber", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001004",
+    "description": "March 7th: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "thiefs-instinct", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "endurance-of-bronze", "count": 2 },
+        { "item": "thiefs-instinct", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "oath-of-steel", "count": 2 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "oath-of-steel", "count": 4 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "oath-of-steel", "count": 6 },
+        { "item": "usurpers-scheme", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "safeguard-of-amber", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "safeguard-of-amber", "count": 4 },
+        { "item": "destroyers-final-road", "count": 1 },
+        { "item": "conquerors-will", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "safeguard-of-amber", "count": 6 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "safeguard-of-amber", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001101",
+    "description": "March 7th: Purify",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "endurance-of-bronze", "count": 2 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001102",
+    "description": "March 7th: Reinforce",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "oath-of-steel", "count": 4 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001103",
+    "description": "March 7th: Ice Spell",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "safeguard-of-amber", "count": 6 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "destroyers-final-road", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001201",
+    "description": "March 7th: DMG Boost: Ice",
+    "steps": [[{ "item": "credit", "count": 2000 }, { "item": "thiefs-instinct", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.march-7th.1001202",
+    "description": "March 7th: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "endurance-of-bronze", "count": 2 },
+        { "item": "thiefs-instinct", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001203",
+    "description": "March 7th: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "oath-of-steel", "count": 2 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001204",
+    "description": "March 7th: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "oath-of-steel", "count": 2 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001205",
+    "description": "March 7th: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "oath-of-steel", "count": 4 },
+        { "item": "usurpers-scheme", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001206",
+    "description": "March 7th: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "safeguard-of-amber", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001207",
+    "description": "March 7th: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "safeguard-of-amber", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001208",
+    "description": "March 7th: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "safeguard-of-amber", "count": 6 },
+        { "item": "conquerors-will", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001209",
+    "description": "March 7th: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "safeguard-of-amber", "count": 6 },
+        { "item": "conquerors-will", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.march-7th.1001210",
+    "description": "March 7th: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "safeguard-of-amber", "count": 6 },
+        { "item": "conquerors-will", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104001",
+    "description": "Gepard: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "endurance-of-bronze", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "oath-of-steel", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "oath-of-steel", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "safeguard-of-amber", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "safeguard-of-amber", "count": 8 },
+        { "item": "silvermane-medal", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104002",
+    "description": "Gepard: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "endurance-of-bronze", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "oath-of-steel", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "oath-of-steel", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "oath-of-steel", "count": 7 },
+        { "item": "silvermane-insignia", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "safeguard-of-amber", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "safeguard-of-amber", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "silvermane-medal", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "safeguard-of-amber", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "safeguard-of-amber", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104003",
+    "description": "Gepard: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "endurance-of-bronze", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "oath-of-steel", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "oath-of-steel", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "oath-of-steel", "count": 7 },
+        { "item": "silvermane-insignia", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "safeguard-of-amber", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "safeguard-of-amber", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "silvermane-medal", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "safeguard-of-amber", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "safeguard-of-amber", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104004",
+    "description": "Gepard: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "endurance-of-bronze", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "oath-of-steel", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "oath-of-steel", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "oath-of-steel", "count": 7 },
+        { "item": "silvermane-insignia", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "safeguard-of-amber", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "safeguard-of-amber", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "silvermane-medal", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "safeguard-of-amber", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "safeguard-of-amber", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104101",
+    "description": "Gepard: Integrity",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "endurance-of-bronze", "count": 3 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104102",
+    "description": "Gepard: Commander",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "oath-of-steel", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104103",
+    "description": "Gepard: Grit",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "safeguard-of-amber", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104201",
+    "description": "Gepard: DMG Boost: Ice",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "silvermane-badge", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.gepard.1104202",
+    "description": "Gepard: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "endurance-of-bronze", "count": 3 },
+        { "item": "silvermane-badge", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104203",
+    "description": "Gepard: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "oath-of-steel", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104204",
+    "description": "Gepard: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "oath-of-steel", "count": 3 },
+        { "item": "silvermane-insignia", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104205",
+    "description": "Gepard: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "oath-of-steel", "count": 5 },
+        { "item": "silvermane-insignia", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104206",
+    "description": "Gepard: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "safeguard-of-amber", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104207",
+    "description": "Gepard: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "safeguard-of-amber", "count": 3 },
+        { "item": "silvermane-medal", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104208",
+    "description": "Gepard: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "safeguard-of-amber", "count": 8 },
+        { "item": "silvermane-medal", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104209",
+    "description": "Gepard: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "safeguard-of-amber", "count": 8 },
+        { "item": "silvermane-medal", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.gepard.1104210",
+    "description": "Gepard: DMG Boost: Ice",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "safeguard-of-amber", "count": 8 },
+        { "item": "silvermane-medal", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105001",
+    "description": "Natasha: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "seed-of-abundance", "count": 2 },
+        { "item": "ancient-part", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "sprout-of-life", "count": 2 },
+        { "item": "ancient-spindle", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "sprout-of-life", "count": 4 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "flower-of-eternity", "count": 2 },
+        { "item": "ancient-engine", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-eternity", "count": 6 },
+        { "item": "ancient-engine", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105002",
+    "description": "Natasha: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "ancient-part", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "seed-of-abundance", "count": 2 },
+        { "item": "ancient-part", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "sprout-of-life", "count": 2 },
+        { "item": "ancient-spindle", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "sprout-of-life", "count": 4 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "sprout-of-life", "count": 6 },
+        { "item": "ancient-spindle", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "flower-of-eternity", "count": 2 },
+        { "item": "ancient-engine", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "flower-of-eternity", "count": 4 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-eternity", "count": 6 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "flower-of-eternity", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105003",
+    "description": "Natasha: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "ancient-part", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "seed-of-abundance", "count": 2 },
+        { "item": "ancient-part", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "sprout-of-life", "count": 2 },
+        { "item": "ancient-spindle", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "sprout-of-life", "count": 4 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "sprout-of-life", "count": 6 },
+        { "item": "ancient-spindle", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "flower-of-eternity", "count": 2 },
+        { "item": "ancient-engine", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "flower-of-eternity", "count": 4 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-eternity", "count": 6 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "flower-of-eternity", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105004",
+    "description": "Natasha: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "ancient-part", "count": 2 }],
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "seed-of-abundance", "count": 2 },
+        { "item": "ancient-part", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "sprout-of-life", "count": 2 },
+        { "item": "ancient-spindle", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "sprout-of-life", "count": 4 },
+        { "item": "ancient-spindle", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 24000 },
+        { "item": "sprout-of-life", "count": 6 },
+        { "item": "ancient-spindle", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "flower-of-eternity", "count": 2 },
+        { "item": "ancient-engine", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 64000 },
+        { "item": "flower-of-eternity", "count": 4 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "ancient-engine", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-eternity", "count": 6 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 240000 },
+        { "item": "flower-of-eternity", "count": 11 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105101",
+    "description": "Natasha: Soothe",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "seed-of-abundance", "count": 2 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105102",
+    "description": "Natasha: Healer",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "sprout-of-life", "count": 4 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105103",
+    "description": "Natasha: Recuperation",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-eternity", "count": 6 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105201",
+    "description": "Natasha: HP Boost",
+    "steps": [[{ "item": "credit", "count": 2000 }, { "item": "ancient-part", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.natasha.1105202",
+    "description": "Natasha: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "seed-of-abundance", "count": 2 },
+        { "item": "ancient-part", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105203",
+    "description": "Natasha: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "sprout-of-life", "count": 2 },
+        { "item": "ancient-spindle", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105204",
+    "description": "Natasha: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 8000 },
+        { "item": "sprout-of-life", "count": 2 },
+        { "item": "ancient-spindle", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105205",
+    "description": "Natasha: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "sprout-of-life", "count": 4 },
+        { "item": "ancient-spindle", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105206",
+    "description": "Natasha: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "flower-of-eternity", "count": 2 },
+        { "item": "ancient-engine", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105207",
+    "description": "Natasha: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "flower-of-eternity", "count": 2 },
+        { "item": "ancient-engine", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105208",
+    "description": "Natasha: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-eternity", "count": 6 },
+        { "item": "ancient-engine", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105209",
+    "description": "Natasha: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-eternity", "count": 6 },
+        { "item": "ancient-engine", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.natasha.1105210",
+    "description": "Natasha: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-eternity", "count": 6 },
+        { "item": "ancient-engine", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211001",
+    "description": "Bailu: basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "seed-of-abundance", "count": 3 },
+        { "item": "extinguished-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "sprout-of-life", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "sprout-of-life", "count": 5 },
+        { "item": "glimmering-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "flower-of-eternity", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "flower-of-eternity", "count": 8 },
+        { "item": "squirming-core", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211002",
+    "description": "Bailu: skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "extinguished-core", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "seed-of-abundance", "count": 3 },
+        { "item": "extinguished-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "sprout-of-life", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "sprout-of-life", "count": 5 },
+        { "item": "glimmering-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "sprout-of-life", "count": 7 },
+        { "item": "glimmering-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "flower-of-eternity", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "flower-of-eternity", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "squirming-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "flower-of-eternity", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "flower-of-eternity", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211003",
+    "description": "Bailu: ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "extinguished-core", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "seed-of-abundance", "count": 3 },
+        { "item": "extinguished-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "sprout-of-life", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "sprout-of-life", "count": 5 },
+        { "item": "glimmering-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "sprout-of-life", "count": 7 },
+        { "item": "glimmering-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "flower-of-eternity", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "flower-of-eternity", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "squirming-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "flower-of-eternity", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "flower-of-eternity", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211004",
+    "description": "Bailu: talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2500 }, { "item": "extinguished-core", "count": 3 }],
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "seed-of-abundance", "count": 3 },
+        { "item": "extinguished-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "sprout-of-life", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "sprout-of-life", "count": 5 },
+        { "item": "glimmering-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 30000 },
+        { "item": "sprout-of-life", "count": 7 },
+        { "item": "glimmering-core", "count": 6 }
+      ],
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "flower-of-eternity", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 80000 },
+        { "item": "flower-of-eternity", "count": 5 },
+        { "item": "guardians-lament", "count": 1 },
+        { "item": "squirming-core", "count": 4 }
+      ],
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "flower-of-eternity", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 300000 },
+        { "item": "flower-of-eternity", "count": 14 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211101",
+    "description": "Bailu: Qihuang Analects",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "seed-of-abundance", "count": 3 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211102",
+    "description": "Bailu: Vidyadhara Ichor Lines",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "sprout-of-life", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211103",
+    "description": "Bailu: Aquatic Benediction",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "flower-of-eternity", "count": 8 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "guardians-lament", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211201",
+    "description": "Bailu: HP Boost",
+    "steps": [[{ "item": "credit", "count": 2500 }, { "item": "extinguished-core", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.bailu.1211202",
+    "description": "Bailu: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 5000 },
+        { "item": "seed-of-abundance", "count": 3 },
+        { "item": "extinguished-core", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211203",
+    "description": "Bailu: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "sprout-of-life", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211204",
+    "description": "Bailu: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 10000 },
+        { "item": "sprout-of-life", "count": 3 },
+        { "item": "glimmering-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211205",
+    "description": "Bailu: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "sprout-of-life", "count": 5 },
+        { "item": "glimmering-core", "count": 4 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211206",
+    "description": "Bailu: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "flower-of-eternity", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211207",
+    "description": "Bailu: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 45000 },
+        { "item": "flower-of-eternity", "count": 3 },
+        { "item": "squirming-core", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211208",
+    "description": "Bailu: Effect RES Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "flower-of-eternity", "count": 8 },
+        { "item": "squirming-core", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211209",
+    "description": "Bailu: DEF Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "flower-of-eternity", "count": 8 },
+        { "item": "squirming-core", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.bailu.1211210",
+    "description": "Bailu: HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 160000 },
+        { "item": "flower-of-eternity", "count": 8 },
+        { "item": "squirming-core", "count": 8 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008001",
+    "description": "Trailblazer (Remembrance): basic levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 2800 },
+        { "item": "b-ja-of-consciousness", "count": 1 },
+        { "item": "thiefs-instinct", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 5600 },
+        { "item": "seedling-of-manas", "count": 1 },
+        { "item": "usurpers-scheme", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 12800 },
+        { "item": "seedling-of-manas", "count": 3 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 28000 },
+        { "item": "flower-of-laya", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 112000 },
+        { "item": "flower-of-laya", "count": 5 },
+        { "item": "conquerors-will", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008002",
+    "description": "Trailblazer (Remembrance): skill levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "thiefs-instinct", "count": 2 }],
+      [
+        { "item": "credit", "count": 2800 },
+        { "item": "b-ja-of-consciousness", "count": 1 },
+        { "item": "thiefs-instinct", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 5600 },
+        { "item": "seedling-of-manas", "count": 1 },
+        { "item": "usurpers-scheme", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 12800 },
+        { "item": "seedling-of-manas", "count": 3 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "seedling-of-manas", "count": 5 },
+        { "item": "usurpers-scheme", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 28000 },
+        { "item": "flower-of-laya", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 56000 },
+        { "item": "flower-of-laya", "count": 3 },
+        { "item": "auspice-sliver", "count": 1 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 112000 },
+        { "item": "flower-of-laya", "count": 5 },
+        { "item": "auspice-sliver", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 192000 },
+        { "item": "flower-of-laya", "count": 9 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "auspice-sliver", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008003",
+    "description": "Trailblazer (Remembrance): ultimate levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "thiefs-instinct", "count": 2 }],
+      [
+        { "item": "credit", "count": 2800 },
+        { "item": "b-ja-of-consciousness", "count": 1 },
+        { "item": "thiefs-instinct", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 5600 },
+        { "item": "seedling-of-manas", "count": 1 },
+        { "item": "usurpers-scheme", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 12800 },
+        { "item": "seedling-of-manas", "count": 3 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "seedling-of-manas", "count": 5 },
+        { "item": "usurpers-scheme", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 28000 },
+        { "item": "flower-of-laya", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 56000 },
+        { "item": "flower-of-laya", "count": 3 },
+        { "item": "auspice-sliver", "count": 1 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 112000 },
+        { "item": "flower-of-laya", "count": 5 },
+        { "item": "auspice-sliver", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 192000 },
+        { "item": "flower-of-laya", "count": 9 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "auspice-sliver", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008004",
+    "description": "Trailblazer (Remembrance): talent levels 2..10",
+    "steps": [
+      [{ "item": "credit", "count": 2000 }, { "item": "thiefs-instinct", "count": 2 }],
+      [
+        { "item": "credit", "count": 2800 },
+        { "item": "b-ja-of-consciousness", "count": 1 },
+        { "item": "thiefs-instinct", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 5600 },
+        { "item": "seedling-of-manas", "count": 1 },
+        { "item": "usurpers-scheme", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 12800 },
+        { "item": "seedling-of-manas", "count": 3 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 20000 },
+        { "item": "seedling-of-manas", "count": 5 },
+        { "item": "usurpers-scheme", "count": 5 }
+      ],
+      [
+        { "item": "credit", "count": 28000 },
+        { "item": "flower-of-laya", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 56000 },
+        { "item": "flower-of-laya", "count": 3 },
+        { "item": "auspice-sliver", "count": 1 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 112000 },
+        { "item": "flower-of-laya", "count": 5 },
+        { "item": "auspice-sliver", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 192000 },
+        { "item": "flower-of-laya", "count": 9 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "auspice-sliver", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008101",
+    "description": "Trailblazer (Remembrance): Rhapsode's Scepter",
+    "steps": [
+      [
+        { "item": "credit", "count": 4000 },
+        { "item": "b-ja-of-consciousness", "count": 2 },
+        { "item": "auspice-sliver", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008102",
+    "description": "Trailblazer (Remembrance): Petite Parable",
+    "steps": [
+      [
+        { "item": "credit", "count": 16000 },
+        { "item": "seedling-of-manas", "count": 5 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "auspice-sliver", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008103",
+    "description": "Trailblazer (Remembrance): Magnets and Long Chains",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-laya", "count": 6 },
+        { "item": "tracks-of-destiny", "count": 1 },
+        { "item": "auspice-sliver", "count": 1 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008201",
+    "description": "Trailblazer (Remembrance): CRIT DMG Boost",
+    "steps": [[{ "item": "credit", "count": 2000 }, { "item": "thiefs-instinct", "count": 2 }]]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008202",
+    "description": "Trailblazer (Remembrance): ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 3200 },
+        { "item": "b-ja-of-consciousness", "count": 1 },
+        { "item": "thiefs-instinct", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008203",
+    "description": "Trailblazer (Remembrance): CRIT DMG Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 7200 },
+        { "item": "seedling-of-manas", "count": 2 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008204",
+    "description": "Trailblazer (Remembrance): ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 7200 },
+        { "item": "seedling-of-manas", "count": 2 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008205",
+    "description": "Trailblazer (Remembrance): CRIT DMG Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 15200 },
+        { "item": "seedling-of-manas", "count": 5 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008206",
+    "description": "Trailblazer (Remembrance): HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "flower-of-laya", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008207",
+    "description": "Trailblazer (Remembrance): CRIT DMG Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 36000 },
+        { "item": "flower-of-laya", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008208",
+    "description": "Trailblazer (Remembrance): ATK Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 112000 },
+        { "item": "flower-of-laya", "count": 5 },
+        { "item": "conquerors-will", "count": 3 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008209",
+    "description": "Trailblazer (Remembrance): HP Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-laya", "count": 6 },
+        { "item": "conquerors-will", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008210",
+    "description": "Trailblazer (Remembrance): CRIT DMG Boost",
+    "steps": [
+      [
+        { "item": "credit", "count": 128000 },
+        { "item": "flower-of-laya", "count": 6 },
+        { "item": "conquerors-will", "count": 6 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008301",
+    "description": "Trailblazer (Remembrance): Baddies! Trouble! levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 2800 },
+        { "item": "b-ja-of-consciousness", "count": 1 },
+        { "item": "thiefs-instinct", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 5600 },
+        { "item": "seedling-of-manas", "count": 1 },
+        { "item": "usurpers-scheme", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 12800 },
+        { "item": "seedling-of-manas", "count": 3 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 28000 },
+        { "item": "flower-of-laya", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 112000 },
+        { "item": "flower-of-laya", "count": 5 },
+        { "item": "conquerors-will", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008302",
+    "description": "Trailblazer (Remembrance): Friends! Together! levels 2..6",
+    "steps": [
+      [
+        { "item": "credit", "count": 2800 },
+        { "item": "b-ja-of-consciousness", "count": 1 },
+        { "item": "thiefs-instinct", "count": 3 }
+      ],
+      [
+        { "item": "credit", "count": 5600 },
+        { "item": "seedling-of-manas", "count": 1 },
+        { "item": "usurpers-scheme", "count": 1 }
+      ],
+      [
+        { "item": "credit", "count": 12800 },
+        { "item": "seedling-of-manas", "count": 3 },
+        { "item": "usurpers-scheme", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 28000 },
+        { "item": "flower-of-laya", "count": 2 },
+        { "item": "conquerors-will", "count": 2 }
+      ],
+      [
+        { "item": "credit", "count": 112000 },
+        { "item": "flower-of-laya", "count": 5 },
+        { "item": "conquerors-will", "count": 2 }
+      ]
+    ]
+  },
+  {
+    "id": "trace-cost.trailblazer-remembrance.8008501",
+    "description": "Trailblazer (Remembrance): Unfinished Epilogue",
+    "steps": [[]]
   }
 ]

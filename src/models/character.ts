@@ -8,9 +8,11 @@ import {
   LevelSchema,
   PathSchema,
   PresentationHooksSchema,
+  SourceSchema,
   TextSchema,
 } from './common';
-import { AbilitySchema, paramRefsOf, StatModifierSchema, TriggerSchema } from './ability';
+import { AbilitySchema, crossParamRefsIn, paramRefsIn, StatModifierSchema, TriggerSchema } from './ability';
+import { LevelScaledSchema } from './scaling';
 import { StatIdSchema } from './stats';
 import { characterTemplateProblems } from './templates';
 
@@ -68,6 +70,35 @@ export const UltimateResourceSchema = z.discriminatedUnion('kind', [
 ]);
 export type UltimateResource = z.infer<typeof UltimateResourceSchema>;
 
+/**
+ * A unit-owned counter (Himeko's and Blade's Charge, Lightning-Lord's Hits Per Action, Mem's Charge).
+ * When it reaches `max` the `onFull` action is queued as an inserted action.
+ */
+export const CustomResourceSchema = z
+  .object({
+    id: IdSchema,
+    name: TextSchema,
+    max: z.number().positive(),
+    initial: z.number().min(0).default(0),
+    /** Value restored after the unit's action (Lightning-Lord returns to its base Hits Per Action). */
+    resetAfterAction: z.number().min(0).optional(),
+    onFull: z
+      .object({
+        action: z.enum(['followUp', 'extraTurn', 'memospriteAction']),
+        ability: IdSchema.optional(),
+        /** Resource value after the action fires. */
+        resetTo: z.number().min(0).default(0),
+      })
+      .strict()
+      .optional(),
+  })
+  .strict()
+  .refine((r) => r.initial <= r.max, 'initial must not exceed max');
+export type CustomResource = z.infer<typeof CustomResourceSchema>;
+
+/** Fixed SPD or a fraction of the owner's SPD. */
+const UnitSpdSchema = z.union([z.object({ fixed: z.number().positive() }).strict(), z.object({ ownerRatio: z.number().positive() }).strict()]);
+
 /** Trace tree node: ability level-ups, Major Traces (A2/A4/A6 passives) and minor stat bonuses. */
 export const TraceNodeSchema = z
   .object({
@@ -86,6 +117,8 @@ export const TraceNodeSchema = z
         description: TextSchema,
         modifiers: z.array(StatModifierSchema).default([]),
         triggers: z.array(TriggerSchema).default([]),
+        /** Behaviour not expressible as data, handled by a documented script handler. */
+        script: z.string().optional(),
       })
       .strict()
       .optional(),
@@ -135,22 +168,45 @@ export const MemospriteSchema = z
   .object({
     id: IdSchema,
     name: TextSchema,
-    /** Memosprite Max HP = fraction of owner Max HP + flat. */
-    hpFromOwner: z.object({ ratio: z.number().positive(), flat: z.number().min(0) }).strict(),
-    /** Fixed SPD or fraction of the owner's SPD. */
-    spd: z.union([z.object({ fixed: z.number().positive() }).strict(), z.object({ ownerRatio: z.number().positive() }).strict()]),
+    /**
+     * Memosprite Max HP = ratio x owner Max HP + flat. Values are level-scaled by the owner's
+     * `levelFrom` ability (the Trailblazer's Talent sets Mem's HP).
+     */
+    hpFromOwner: z.object({ ratio: LevelScaledSchema, flat: LevelScaledSchema, levelFrom: LeveledAbilitySlotSchema.optional() }).strict(),
+    spd: UnitSpdSchema,
+    /** Base aggro (taunt). */
+    aggro: z.number().positive().optional(),
     /** What happens at 0 HP (`leaveField`: removed from the timeline, can be re-summoned). */
     onZeroHp: z.enum(['leaveField']).default('leaveField'),
+    resources: z.array(CustomResourceSchema).default([]),
     abilities: z.array(AbilitySchema).min(2),
   })
   .strict()
   .superRefine((m, ctx) => {
     for (const kind of ['memospriteSkill', 'memospriteTalent'] as const) {
-      const n = m.abilities.filter((a) => a.kind === kind).length;
-      if (n !== 1) ctx.addIssue({ code: 'custom', path: ['abilities'], message: `memosprites need exactly one ${kind} (got ${n})` });
+      if (!m.abilities.some((a) => a.kind === kind)) ctx.addIssue({ code: 'custom', path: ['abilities'], message: `memosprites need at least one ${kind}` });
     }
   });
 export type Memosprite = z.infer<typeof MemospriteSchema>;
+
+/**
+ * Non-memosprite summons (Jing Yuan's Lightning-Lord): untargetable units with their own SPD and
+ * turns, no HP, leaving with their owner. Their abilities level with the owner's `levelFrom` slot.
+ */
+export const SummonSchema = z
+  .object({
+    id: IdSchema,
+    name: TextSchema,
+    spd: UnitSpdSchema,
+    levelFrom: LeveledAbilitySlotSchema,
+    targetable: z.boolean().default(false),
+    resources: z.array(CustomResourceSchema).default([]),
+    /** Always-on modifiers, e.g. +10 SPD per Hits Per Action above 3 (`scaling.per = resource`). */
+    modifiers: z.array(StatModifierSchema).default([]),
+    abilities: z.array(AbilitySchema).min(1),
+  })
+  .strict();
+export type Summon = z.infer<typeof SummonSchema>;
 
 export const CharacterSchema = z
   .object({
@@ -174,6 +230,11 @@ export const CharacterSchema = z
       })
       .strict(),
     memosprite: MemospriteSchema.optional(),
+    summons: z.array(SummonSchema).default([]),
+    /** Custom counters owned by the character (Charge stacks). */
+    resources: z.array(CustomResourceSchema).default([]),
+    /** Where the reference numbers were verified. */
+    sources: z.array(SourceSchema).default([]),
     traces: z.array(TraceNodeSchema).min(1),
     eidolons: z.array(EidolonSchema).length(6),
     /** Ascension costs for phases 1..6 (index 0 = ascending from phase 0 to 1). */
@@ -224,15 +285,36 @@ export function validateCharacter(c: Character): string[] {
     c.abilities.technique,
     ...c.abilities.extra,
     ...(c.memosprite?.abilities ?? []),
+    ...c.summons.flatMap((s) => s.abilities),
   ];
+  const abilityIds = new Set(allAbilities.map((a) => a.id));
+  const resourceIds = new Set([...c.resources, ...(c.memosprite?.resources ?? []), ...c.summons.flatMap((s) => s.resources)].map((r) => r.id));
+  const summonIds = new Set(c.summons.map((s) => s.id));
+  for (const r of [...c.resources, ...(c.memosprite?.resources ?? []), ...c.summons.flatMap((s) => s.resources)]) {
+    if (r.onFull?.ability && !abilityIds.has(r.onFull.ability)) problems.push(`resource "${r.id}" fires unknown ability "${r.onFull.ability}"`);
+  }
+  // Cross-ability references ({ param, from }) must name a param of that slot's ability.
+  for (const a of allAbilities) {
+    for (const r of crossParamRefsIn([a.effects, a.triggers, a.modifiers])) {
+      const target = c.abilities[r.from as 'basic' | 'skill' | 'ultimate' | 'talent' | 'technique'];
+      if (!(r.param in target.params)) problems.push(`${a.id} references ${r.from}.${r.param}, which does not exist`);
+    }
+  }
+  for (const t of c.traces) for (const r of crossParamRefsIn(t.passive ?? {})) if (!(r.param in c.abilities[r.from as 'talent'].params)) problems.push(`trace "${t.id}" references ${r.from}.${r.param}, which does not exist`);
+  // Traces and Eidolons carry literal values; only abilities and Light Cones have params.
+  for (const t of c.traces) for (const ref of paramRefsIn(t.passive ?? {})) problems.push(`trace "${t.id}" references param "${ref}" but traces have no params`);
+  for (const e of c.eidolons) for (const ref of paramRefsIn([e.modifiers, e.triggers])) problems.push(`E${e.rank} references param "${ref}" but Eidolons have no params`);
   const allEffects = [
     ...allAbilities.flatMap((a) => [...a.effects, ...a.triggers.flatMap((t) => t.effects)]),
     ...c.traces.flatMap((t) => t.passive?.triggers.flatMap((tr) => tr.effects) ?? []),
     ...c.eidolons.flatMap((e) => e.triggers.flatMap((t) => t.effects)),
+
   ];
   for (const e of allEffects) {
     if (e.kind === 'summon' && e.unitType === 'memosprite' && e.unit !== c.memosprite?.id) problems.push(`summons unknown memosprite "${e.unit}"`);
-    if (e.kind === 'applyStatus' && paramRefsOf([e]).length) problems.push(`applyStatus ${e.status} uses { param } references, which only Light Cones provide`);
+    if (e.kind === 'summon' && e.unitType === 'summon' && !summonIds.has(e.unit)) problems.push(`summons unknown summon "${e.unit}"`);
+    if (e.kind === 'gainResource' && !resourceIds.has(e.resource)) problems.push(`gainResource references unknown resource "${e.resource}"`);
+    if (e.kind === 'insertAction' && e.ability && !abilityIds.has(e.ability)) problems.push(`insertAction references unknown ability "${e.ability}"`);
     if (e.kind === 'ultimatePoints' && c.ultimateResource.kind !== 'points') problems.push('"ultimatePoints" effects need ultimateResource.kind "points"');
   }
   if (!c.memosprite) {

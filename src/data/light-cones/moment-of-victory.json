@@ -1,0 +1,78 @@
+{
+  "id": "lc.moment-of-victory",
+  "name": "Moment of Victory",
+  "rarity": 5,
+  "path": "Preservation",
+  "baseStats": { "hp": 48, "atk": 21.6, "def": 27 },
+  "passive": {
+    "name": "Verdict",
+    "description": "Increases the wearer's DEF by {p2}% and Effect Hit Rate by {p4}%. Increases the chance for the wearer to be attacked by enemies. When the wearer is attacked, increase their DEF by an extra {p3}% until the end of the wearer's turn.",
+    "modifiers": [
+      { "stat": "defPct", "value": { "param": "p2" } },
+      { "stat": "effectHitRate", "value": { "param": "p4" } },
+      { "stat": "aggro", "value": { "param": "p1" } }
+    ],
+    "triggers": [
+      {
+        "on": "afterBeingHit",
+        "effects": [
+          {
+            "kind": "applyStatus",
+            "target": "self",
+            "status": "buff.def-up",
+            "duration": 1,
+            "params": { "defPct": { "param": "p3" } }
+          }
+        ]
+      }
+    ],
+    "params": {
+      "p1": [2, 2, 2, 2, 2],
+      "p2": [0.24, 0.28, 0.32, 0.36, 0.4],
+      "p3": [0.24, 0.28, 0.32, 0.36, 0.4],
+      "p4": [0.24, 0.28, 0.32, 0.36, 0.4]
+    }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 5000 }, { "item": "silvermane-badge", "count": 8 }],
+    [
+      { "item": "credit", "count": 10000 },
+      { "item": "endurance-of-bronze", "count": 4 },
+      { "item": "silvermane-badge", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 20000 },
+      { "item": "oath-of-steel", "count": 4 },
+      { "item": "silvermane-insignia", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 50000 },
+      { "item": "oath-of-steel", "count": 8 },
+      { "item": "silvermane-insignia", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 100000 },
+      { "item": "safeguard-of-amber", "count": 5 },
+      { "item": "silvermane-medal", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 200000 },
+      { "item": "safeguard-of-amber", "count": 10 },
+      { "item": "silvermane-medal", "count": 8 }
+    ]
+  ],
+  "fodderExp": 60000,
+  "lore": "\"If you want to cry after your loss, Gepard, then cry.\" \"But you need to stand back up even when you are crying, until you can defeat me... Even if it takes years.\" A few years later, the boy no longer cried or lost to his sister. Now on the battle field, the courageous Silvermane Guard captain will defend till the end no matter what — all to find the moment to completely destroy the enemy.",
+  "sources": [
+    {
+      "topic": "Moment of Victory: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Moment of Victory: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

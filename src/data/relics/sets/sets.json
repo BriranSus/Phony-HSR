@@ -1,75 +1,537 @@
 [
   {
-    "id": "relic.ember-pilgrim",
-    "name": "Pilgrim of the Ember Road",
+    "id": "relic.passerby-of-wandering-cloud",
+    "name": "Passerby of Wandering Cloud",
     "kind": "cavern",
     "pieces": {
-      "head": "Pilgrim's Soot-Stained Visor",
-      "hands": "Pilgrim's Ashen Gauntlets",
-      "body": "Pilgrim's Cinder Mantle",
-      "feet": "Pilgrim's Wayworn Boots"
+      "head": "Passerby's Rejuvenated Wooden Hairstick",
+      "hands": "Passerby's Roaming Dragon Bracer",
+      "body": "Passerby's Ragged Embroidered Coat",
+      "feet": "Passerby's Stygian Hiking Boots"
     },
-    "bonuses": [
-      { "pieces": 2, "description": "Increases Fire DMG by {0}%.", "modifiers": [{ "stat": "fireDmg", "value": 0.1 }] },
-      {
-        "pieces": 4,
-        "description": "Increases Skill DMG by {0}%. After using the Ultimate, Fire DMG increases by {fireDmg}% for 1 turn.",
-        "modifiers": [{ "stat": "skillDmg", "value": 0.12 }],
-        "triggers": [
-          {
-            "on": "afterUseUltimate",
-            "effects": [{ "kind": "applyStatus", "target": "self", "status": "buff.ember-pilgrim", "duration": 1, "params": { "fireDmg": 0.12 } }]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "relic.gale-courier",
-    "name": "Courier of the Swift Gale",
-    "kind": "cavern",
-    "pieces": {
-      "head": "Courier's Wind Goggles",
-      "hands": "Courier's Feather Gloves",
-      "body": "Courier's Streamlined Coat",
-      "feet": "Courier's Skyrunner Boots"
-    },
-    "bonuses": [
-      { "pieces": 2, "description": "Increases SPD by {0}%.", "modifiers": [{ "stat": "spdPct", "value": 0.06 }] },
-      {
-        "pieces": 4,
-        "description": "After the wearer uses their Ultimate on an ally, all allies' SPD increases by {spdPct}% for 1 turn.",
-        "triggers": [
-          {
-            "on": "afterUseUltimate",
-            "conditions": [{ "type": "abilityTargetsAlly" }],
-            "effects": [{ "kind": "applyStatus", "target": "allAllies", "status": "buff.gale-courier", "duration": 1, "params": { "spdPct": 0.12 } }]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "planar.orbital-anchor",
-    "name": "Orbital Anchor Station",
-    "kind": "planar",
-    "pieces": { "planarSphere": "Anchor Station's Core Lattice", "linkRope": "Anchor Station's Tether Cable" },
     "bonuses": [
       {
         "pieces": 2,
-        "description": "Increases ATK by 12%. When SPD is 120 or higher, ATK increases by an extra 12%.",
-        "modifiers": [
-          { "stat": "atkPct", "value": 0.12 },
-          { "stat": "atkPct", "value": 0.12, "conditions": [{ "type": "statAtLeast", "params": { "stat": "spd", "value": 120 } }] }
+        "description": "Increases Outgoing Healing by 10%.",
+        "modifiers": [{ "stat": "outgoingHealing", "value": 0.1 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "At the start of the battle, immediately regenerates 1 Skill Point.",
+        "modifiers": [],
+        "triggers": [{ "on": "battleStart", "effects": [{ "kind": "skillPoints", "amount": 1 }] }]
+      }
+    ]
+  },
+  {
+    "id": "relic.musketeer-of-wild-wheat",
+    "name": "Musketeer of Wild Wheat",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Musketeer's Wild Wheat Felt Hat",
+      "hands": "Musketeer's Coarse Leather Gloves",
+      "body": "Musketeer's Wind-Hunting Shawl",
+      "feet": "Musketeer's Rivets Riding Boots"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases ATK by 12%.",
+        "modifiers": [{ "stat": "atkPct", "value": 0.12 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "The wearer's SPD increases by 6% and DMG dealt by Basic ATK increases by 10%.",
+        "modifiers": [{ "stat": "spdPct", "value": 0.06 }, { "stat": "basicDmg", "value": 0.1 }],
+        "triggers": []
+      }
+    ]
+  },
+  {
+    "id": "relic.knight-of-purity-palace",
+    "name": "Knight of Purity Palace",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Knight's Forgiving Casque",
+      "hands": "Knight's Silent Oath Ring",
+      "body": "Knight's Solemn Breastplate",
+      "feet": "Knight's Iron Boots of Order"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases DEF by 15%.",
+        "modifiers": [{ "stat": "defPct", "value": 0.15 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "Increases the max DMG that can be absorbed by the Shield created by the wearer by 20%.",
+        "modifiers": [{ "stat": "shieldBonus", "value": 0.2 }],
+        "triggers": []
+      }
+    ]
+  },
+  {
+    "id": "relic.hunter-of-glacial-forest",
+    "name": "Hunter of Glacial Forest",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Hunter's Artaius Hood",
+      "hands": "Hunter's Lizard Gloves",
+      "body": "Hunter's Ice Dragon Cloak",
+      "feet": "Hunter's Soft Elkskin Boots"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases Ice DMG by 10%.",
+        "modifiers": [{ "stat": "iceDmg", "value": 0.1 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "After the wearer uses their Ultimate, their CRIT DMG increases by 25% for 2 turn(s).",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterUseUltimate",
+            "effects": [
+              {
+                "kind": "applyStatus",
+                "target": "self",
+                "status": "buff.crit-dmg-up",
+                "duration": 2,
+                "params": { "critDmg": 0.25 }
+              }
+            ]
+          }
         ]
       }
     ]
   },
   {
-    "id": "planar.drifting-lattice",
-    "name": "Drifting Lattice of Reverie",
+    "id": "relic.champion-of-streetwise-boxing",
+    "name": "Champion of Streetwise Boxing",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Champion's Headgear",
+      "hands": "Champion's Heavy Gloves",
+      "body": "Champion's Chest Guard",
+      "feet": "Champion's Fleetfoot Boots"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases Physical DMG by 10%.",
+        "modifiers": [{ "stat": "physicalDmg", "value": 0.1 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "After the wearer attacks or is hit, their ATK increases by 5% for the rest of the battle. This effect can stack up to 5 time(s).",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterAttack",
+            "effects": [{ "kind": "applyStatus", "target": "self", "status": "relic.champion-atk", "params": { "atkPct": 0.05 } }]
+          },
+          {
+            "on": "afterBeingHit",
+            "effects": [{ "kind": "applyStatus", "target": "self", "status": "relic.champion-atk", "params": { "atkPct": 0.05 } }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "relic.guard-of-wuthering-snow",
+    "name": "Guard of Wuthering Snow",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Guard's Cast Iron Helmet",
+      "hands": "Guard's Shining Gauntlets",
+      "body": "Guard's Uniform of Old",
+      "feet": "Guard's Silver Greaves"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Reduces DMG taken by 8%.",
+        "modifiers": [{ "stat": "dmgMitigation", "value": 0.08 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "At the beginning of the turn, if the wearer's HP percentage is equal to or less than 50%, restores HP equal to 8% of their Max HP and regenerates 5 Energy.",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "turnStart",
+            "effects": [
+              { "kind": "heal", "target": "self", "stat": "hp", "multiplier": 0.08 },
+              { "kind": "energy", "target": "self", "amount": 5 }
+            ],
+            "conditions": [{ "type": "hpBelow", "params": { "ratio": 0.5 } }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "relic.genius-of-brilliant-stars",
+    "name": "Genius of Brilliant Stars",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Genius's Ultraremote Sensing Visor",
+      "hands": "Genius's Frequency Catcher",
+      "body": "Genius's Metafield Suit",
+      "feet": "Genius's Gravity Walker"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases Quantum DMG by 10%.",
+        "modifiers": [{ "stat": "quantumDmg", "value": 0.1 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "When the wearer deals DMG to the target enemy, ignores 10% DEF. If the target enemy has Quantum Weakness, the wearer additionally ignores 10% DEF.",
+        "modifiers": [
+          { "stat": "defIgnore", "value": 0.1 },
+          {
+            "stat": "defIgnore",
+            "value": 0.1,
+            "conditions": [{ "type": "targetHasWeakness", "params": { "element": "Quantum" } }]
+          }
+        ],
+        "triggers": []
+      }
+    ]
+  },
+  {
+    "id": "relic.band-of-sizzling-thunder",
+    "name": "Band of Sizzling Thunder",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Band's Polarized Sunglasses",
+      "hands": "Band's Touring Bracelet",
+      "body": "Band's Leather Jacket With Studs",
+      "feet": "Band's Ankle Boots With Rivets"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases Lightning DMG by 10%.",
+        "modifiers": [{ "stat": "lightningDmg", "value": 0.1 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "When the wearer uses their Skill, increases the wearer's ATK by 20% for 1 turn(s).",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterUseSkill",
+            "effects": [
+              {
+                "kind": "applyStatus",
+                "target": "self",
+                "status": "buff.atk-up",
+                "duration": 1,
+                "params": { "atkPct": 0.2 }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "relic.eagle-of-twilight-line",
+    "name": "Eagle of Twilight Line",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Eagle's Beaked Helmet",
+      "hands": "Eagle's Soaring Ring",
+      "body": "Eagle's Winged Suit Harness",
+      "feet": "Eagle's Quilted Puttees"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases Wind DMG by 10%.",
+        "modifiers": [{ "stat": "windDmg", "value": 0.1 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "After the wearer uses their Ultimate, their action is Advanced Forward by 25%.",
+        "modifiers": [],
+        "triggers": [{ "on": "afterUseUltimate", "effects": [{ "kind": "actionAdvance", "target": "self", "fraction": 0.25 }] }]
+      }
+    ]
+  },
+  {
+    "id": "relic.thief-of-shooting-meteor",
+    "name": "Thief of Shooting Meteor",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Thief's Myriad-Faced Mask",
+      "hands": "Thief's Gloves With Prints",
+      "body": "Thief's Steel Grappling Hook",
+      "feet": "Thief's Meteor Boots"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases Break Effect by 16%.",
+        "modifiers": [{ "stat": "breakEffect", "value": 0.16 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "Increases the wearer's Break Effect by 16%. After the wearer inflicts Weakness Break on an enemy, regenerates 3 Energy.",
+        "modifiers": [{ "stat": "breakEffect", "value": 0.16 }],
+        "triggers": [{ "on": "onWeaknessBreak", "effects": [{ "kind": "energy", "target": "self", "amount": 3 }] }]
+      }
+    ]
+  },
+  {
+    "id": "relic.messenger-traversing-hackerspace",
+    "name": "Messenger Traversing Hackerspace",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Messenger's Holovisor",
+      "hands": "Messenger's Transformative Arm",
+      "body": "Messenger's Secret Satchel",
+      "feet": "Messenger's Par-kool Sneakers"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases SPD by 6%.",
+        "modifiers": [{ "stat": "spdPct", "value": 0.06 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "When the wearer uses their Ultimate on an ally, SPD for all allies increases by 12% for 1 turn(s). This effect cannot be stacked.",
+        "modifiers": [],
+        "triggers": [
+          {
+            "on": "afterUseUltimate",
+            "effects": [
+              {
+                "kind": "applyStatus",
+                "target": "allAllies",
+                "status": "buff.spd-up",
+                "duration": 1,
+                "params": { "spdPct": 0.12 }
+              }
+            ],
+            "conditions": [{ "type": "abilityTargetsAlly" }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "relic.prisoner-in-deep-confinement",
+    "name": "Prisoner in Deep Confinement",
+    "kind": "cavern",
+    "pieces": {
+      "head": "Prisoner's Sealed Muzzle",
+      "hands": "Prisoner's Leadstone Shackles",
+      "body": "Prisoner's Repressive Straitjacket",
+      "feet": "Prisoner's Restrictive Fetters"
+    },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases ATK by 12%.",
+        "modifiers": [{ "stat": "atkPct", "value": 0.12 }],
+        "triggers": []
+      },
+      {
+        "pieces": 4,
+        "description": "For every DoT the enemy target is afflicted with, the wearer will ignore 6% of its DEF when dealing DMG to it. This effect is valid for a max of 3 DoTs.",
+        "modifiers": [{ "stat": "defIgnore", "value": 0.06, "scaling": { "per": "targetDotCount", "max": 3 } }],
+        "triggers": []
+      }
+    ]
+  },
+  {
+    "id": "planar.space-sealing-station",
+    "name": "Space Sealing Station",
     "kind": "planar",
-    "pieces": { "planarSphere": "Reverie's Floating Prism", "linkRope": "Reverie's Silver Ribbon" },
-    "bonuses": [{ "pieces": 2, "description": "Increases Energy Regeneration Rate by 5% and Break Effect by 16%.", "modifiers": [{ "stat": "energyRegen", "value": 0.05 }, { "stat": "breakEffect", "value": 0.16 }] }]
+    "pieces": { "linkRope": "Herta's Space Station", "planarSphere": "Herta's Wandering Trek" },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases the wearer's ATK by 12%. When the wearer's SPD reaches 120 or higher, the wearer's ATK increases by an extra 12%.",
+        "modifiers": [
+          { "stat": "atkPct", "value": 0.12 },
+          {
+            "stat": "atkPct",
+            "value": 0.12,
+            "conditions": [{ "type": "statAtLeast", "params": { "stat": "spd", "value": 120 } }]
+          }
+        ],
+        "triggers": []
+      }
+    ]
+  },
+  {
+    "id": "planar.fleet-of-the-ageless",
+    "name": "Fleet of the Ageless",
+    "kind": "planar",
+    "pieces": { "linkRope": "The Xianzhou Luofu's Celestial Ark", "planarSphere": "The Xianzhou Luofu's Ambrosial Arbor Vines" },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases the wearer's Max HP by 12%. When the wearer's SPD reaches 120 or higher, all allies' ATK increases by 8%.",
+        "modifiers": [
+          { "stat": "hpPct", "value": 0.12 },
+          {
+            "stat": "atkPct",
+            "value": 0.08,
+            "scope": "team",
+            "conditions": [{ "type": "statAtLeast", "params": { "stat": "spd", "value": 120 } }]
+          }
+        ],
+        "triggers": []
+      }
+    ]
+  },
+  {
+    "id": "planar.pan-cosmic-commercial-enterprise",
+    "name": "Pan-Cosmic Commercial Enterprise",
+    "kind": "planar",
+    "pieces": { "linkRope": "The IPC's Mega HQ", "planarSphere": "The IPC's Trade Route" },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases the wearer's Effect Hit Rate by 10%. Meanwhile, the wearer's ATK increases by an amount that is equal to 25% of the current Effect Hit Rate, up to a maximum increase of 25%.",
+        "modifiers": [
+          { "stat": "effectHitRate", "value": 0.1 },
+          { "stat": "atkPct", "value": 0.25, "scaling": { "per": "stat", "id": "effectHitRate", "max": 1 } }
+        ],
+        "triggers": []
+      }
+    ]
+  },
+  {
+    "id": "planar.belobog-of-the-architects",
+    "name": "Belobog of the Architects",
+    "kind": "planar",
+    "pieces": { "linkRope": "Belobog's Fortress of Preservation", "planarSphere": "Belobog's Iron Defense" },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases the wearer's DEF by 15%. When the wearer's Effect Hit Rate is 50% or higher, the wearer gains an extra 15% DEF.",
+        "modifiers": [
+          { "stat": "defPct", "value": 0.15 },
+          {
+            "stat": "defPct",
+            "value": 0.15,
+            "conditions": [{ "type": "statAtLeast", "params": { "stat": "effectHitRate", "value": 0.5 } }]
+          }
+        ],
+        "triggers": []
+      }
+    ]
+  },
+  {
+    "id": "planar.inert-salsotto",
+    "name": "Inert Salsotto",
+    "kind": "planar",
+    "pieces": { "linkRope": "Salsotto's Moving City", "planarSphere": "Salsotto's Terminator Line" },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases the wearer's CRIT Rate by 8%. When the wearer's current CRIT Rate reaches 50% or higher, the DMG dealt by the wearer's Ultimate and Follow-Up ATK increases by 15%.",
+        "modifiers": [
+          { "stat": "critRate", "value": 0.08 },
+          {
+            "stat": "ultimateDmg",
+            "value": 0.15,
+            "conditions": [{ "type": "statAtLeast", "params": { "stat": "critRate", "value": 0.5 } }]
+          },
+          {
+            "stat": "followUpDmg",
+            "value": 0.15,
+            "conditions": [{ "type": "statAtLeast", "params": { "stat": "critRate", "value": 0.5 } }]
+          }
+        ],
+        "triggers": []
+      }
+    ]
+  },
+  {
+    "id": "planar.talia-kingdom-of-banditry",
+    "name": "Talia: Kingdom of Banditry",
+    "kind": "planar",
+    "pieces": { "linkRope": "Talia's Nailscrap Town", "planarSphere": "Talia's Exposed Electric Wire" },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases the wearer's Break Effect by 16%. When the wearer's SPD reaches 145 or higher, the wearer's Break Effect increases by an extra 20%.",
+        "modifiers": [
+          { "stat": "breakEffect", "value": 0.16 },
+          {
+            "stat": "breakEffect",
+            "value": 0.2,
+            "conditions": [{ "type": "statAtLeast", "params": { "stat": "spd", "value": 145 } }]
+          }
+        ],
+        "triggers": []
+      }
+    ]
+  },
+  {
+    "id": "planar.sprightly-vonwacq",
+    "name": "Sprightly Vonwacq",
+    "kind": "planar",
+    "pieces": { "linkRope": "Vonwacq's Island of Birth", "planarSphere": "Vonwacq's Islandic Coast" },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases the wearer's Energy Regeneration Rate by 5%. When the wearer's SPD reaches 120 or higher, the wearer's action is Advanced Forward by 40% immediately upon entering battle.",
+        "modifiers": [{ "stat": "energyRegen", "value": 0.05 }],
+        "triggers": [
+          {
+            "on": "battleStart",
+            "effects": [{ "kind": "actionAdvance", "target": "self", "fraction": 0.4 }],
+            "conditions": [{ "type": "statAtLeast", "params": { "stat": "spd", "value": 120 } }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "planar.broken-keel",
+    "name": "Broken Keel",
+    "kind": "planar",
+    "pieces": { "linkRope": "Insumousu's Whalefall Ship", "planarSphere": "Insumousu's Frayed Hawser" },
+    "bonuses": [
+      {
+        "pieces": 2,
+        "description": "Increases the wearer's Effect RES by 10%. When the wearer's Effect RES is at 30% or higher, all allies' CRIT DMG increases by 10%.",
+        "modifiers": [
+          { "stat": "effectRes", "value": 0.1 },
+          {
+            "stat": "critDmg",
+            "value": 0.1,
+            "scope": "team",
+            "conditions": [{ "type": "statAtLeast", "params": { "stat": "effectRes", "value": 0.3 } }]
+          }
+        ],
+        "triggers": []
+      }
+    ]
   }
 ]

@@ -1,0 +1,85 @@
+{
+  "id": "enemy.silvermane-lieutenant",
+  "name": "Silvermane Lieutenant",
+  "rank": "elite",
+  "faction": "Jarilo-VI",
+  "baseStats": { "hp": 930, "atk": 18, "spd": 120, "effectRes": 0.2 },
+  "toughness": 80,
+  "weaknesses": ["Physical", "Ice", "Quantum"],
+  "resistances": { "Fire": 0.2, "Lightning": 0.2, "Wind": 0.2, "Imaginary": 0.2 },
+  "debuffRes": {},
+  "abilities": [
+    {
+      "id": "silvermane-lieutenant.assault",
+      "name": "Assault",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals Physical DMG to a single target.",
+      "effects": [{ "kind": "damage", "target": "primary", "stat": "atk", "multiplier": 3, "element": "Physical", "toughness": 0 }],
+      "triggers": [],
+      "energyToTarget": 10,
+      "aiWeight": 1
+    },
+    {
+      "id": "silvermane-lieutenant.pierce",
+      "name": "Pierce",
+      "kind": "enemy",
+      "tags": ["singleTarget"],
+      "targeting": "enemySingle",
+      "maxLevel": 1,
+      "description": "Deals massive Physical DMG to a single target.",
+      "effects": [
+        {
+          "kind": "damage",
+          "target": "primary",
+          "stat": "atk",
+          "multiplier": 6.5,
+          "element": "Physical",
+          "toughness": 0
+        }
+      ],
+      "triggers": [],
+      "energyToTarget": 20,
+      "aiWeight": 1
+    },
+    {
+      "id": "silvermane-lieutenant.shield-reflect",
+      "name": "Shield Reflect",
+      "kind": "enemy",
+      "tags": ["defense"],
+      "targeting": "self",
+      "maxLevel": 1,
+      "description": "Enters the Counter state. When attacked by a single character, acts immediately and casts \"Pierce\" on the attacker.",
+      "effects": [{ "kind": "applyStatus", "target": "self", "status": "enemy.counter-stance" }],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    },
+    {
+      "id": "silvermane-lieutenant.reinforcement",
+      "name": "Reinforcement",
+      "kind": "enemy",
+      "tags": ["summon"],
+      "targeting": "none",
+      "maxLevel": 1,
+      "description": "Summons Silvermane Soldiers or Silvermane Gunners",
+      "effects": [{ "kind": "summon", "unit": "enemy.silvermane-soldier", "unitType": "enemy" }],
+      "triggers": [],
+      "energyToTarget": 0,
+      "aiWeight": 1
+    }
+  ],
+  "ai": { "pattern": "weighted" },
+  "phases": [],
+  "description": "The leader of a squad of Belobog's Silvermane Guards. Silvermane Lieutenants can raise a giant shield during combat and Enhance themselves. Attacking a Silvermane Lieutenant with their shield raised will immediately result in a fierce Counter.",
+  "presentation": { "model": "proc.enemy.silvermane-lieutenant", "scale": 1.5, "bossBar": false },
+  "sources": [
+    {
+      "topic": "Silvermane Lieutenant: MonsterConfig 1003010, MonsterTemplateConfig 1003010, MonsterSkillConfig, EliteGroup 1",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

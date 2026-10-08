@@ -1,0 +1,80 @@
+{
+  "id": "lc.in-the-night",
+  "name": "In the Night",
+  "rarity": 5,
+  "path": "Hunt",
+  "baseStats": { "hp": 48, "atk": 26.4, "def": 21 },
+  "passive": {
+    "name": "Flowers and Butterflies",
+    "description": "Increases the wearer's CRIT Rate by {p1}%. While the wearer is in battle, for every {p2} SPD that exceeds 100, increases DMG dealt by Basic ATK and Skill by {p3}%. At the same time, increases the CRIT DMG of Ultimate by {p4}%. This effect can stack up to {p5} time(s).",
+    "modifiers": [
+      { "stat": "critRate", "value": { "param": "p1" } },
+      {
+        "stat": "basicDmg",
+        "value": { "param": "p3" },
+        "scaling": { "per": "stat", "id": "spd", "step": 10, "offset": 100, "max": 6, "whole": true }
+      },
+      {
+        "stat": "skillDmg",
+        "value": { "param": "p3" },
+        "scaling": { "per": "stat", "id": "spd", "step": 10, "offset": 100, "max": 6, "whole": true }
+      },
+      {
+        "stat": "critDmg",
+        "value": { "param": "p4" },
+        "conditions": [{ "type": "attackType", "params": { "is": "ultimate" } }],
+        "scaling": { "per": "stat", "id": "spd", "step": 10, "offset": 100, "max": 6, "whole": true }
+      }
+    ],
+    "triggers": [],
+    "params": {
+      "p1": [0.18, 0.21, 0.24, 0.27, 0.3],
+      "p2": [10, 10, 10, 10, 10],
+      "p3": [0.06, 0.07, 0.08, 0.09, 0.1],
+      "p4": [0.12, 0.14, 0.16, 0.18, 0.2],
+      "p5": [6, 6, 6, 6, 6]
+    }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 5000 }, { "item": "thiefs-instinct", "count": 8 }],
+    [
+      { "item": "credit", "count": 10000 },
+      { "item": "arrow-of-the-beast-hunter", "count": 4 },
+      { "item": "thiefs-instinct", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 20000 },
+      { "item": "arrow-of-the-demon-slayer", "count": 4 },
+      { "item": "usurpers-scheme", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 50000 },
+      { "item": "arrow-of-the-demon-slayer", "count": 8 },
+      { "item": "usurpers-scheme", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 100000 },
+      { "item": "arrow-of-the-starchaser", "count": 5 },
+      { "item": "conquerors-will", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 200000 },
+      { "item": "arrow-of-the-starchaser", "count": 10 },
+      { "item": "conquerors-will", "count": 8 }
+    ]
+  ],
+  "fodderExp": 60000,
+  "lore": "A young girl smiles subtly. \"How?\" \"Right here, right now, I am alone...\" \"But it feels... very lively.\"",
+  "sources": [
+    {
+      "topic": "In the Night: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "In the Night: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

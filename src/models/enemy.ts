@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { ElementSchema, IdSchema, PresentationHooksSchema, TextSchema } from './common';
-import { AbilitySchema, ConditionSchema, EffectSchema } from './ability';
-import { CcTypeSchema } from './status';
+import { ElementSchema, IdSchema, PresentationHooksSchema, SourceSchema, TextSchema } from './common';
+import { AbilityBaseSchema, checkAbilityParams, ConditionSchema, EffectSchema } from './ability';
+import { CC_TYPES } from './status';
 import { abilityTemplateSlots, templateProblems } from './templates';
 
 export const ENEMY_RANKS = ['normal', 'elite', 'boss', 'weeklyBoss', 'storyBoss', 'event'] as const;
@@ -11,7 +11,7 @@ export type EnemyRank = z.infer<typeof EnemyRankSchema>;
 /** Ranks that count as "Elite or higher" for break formulas (Bleed HP%, Wind Shear stacks). */
 export const ELITE_OR_HIGHER: ReadonlySet<EnemyRank> = new Set<EnemyRank>(['elite', 'boss', 'weeklyBoss', 'storyBoss']);
 
-export const EnemyAbilitySchema = AbilitySchema.extend({
+export const EnemyAbilitySchema = AbilityBaseSchema.extend({
   kind: z.literal('enemy'),
   /** Energy the hit character regenerates (before ERR), e.g. 10 for a single-target hit. */
   energyToTarget: z.number().min(0).default(10),
@@ -21,14 +21,25 @@ export const EnemyAbilitySchema = AbilitySchema.extend({
   cooldown: z.number().int().min(0).default(0),
   /** Multi-turn charge-ups: telegraph for N turns before release (boss mechanics). */
   chargeTurns: z.number().int().min(0).default(0),
-}).strict();
+})
+  .strict()
+  .superRefine(checkAbilityParams);
 export type EnemyAbility = z.infer<typeof EnemyAbilitySchema>;
+
+/** Debuffs an enemy can resist: Crowd Control types plus the break DoTs (Flamespawn resists Burn). */
+export const DEBUFF_RES_KEYS = [...CC_TYPES, 'burn', 'shock', 'bleed', 'windShear'] as const;
+export const DebuffResKeySchema = z.enum(DEBUFF_RES_KEYS);
 
 export const EnemyPhaseSchema = z
   .object({
     id: IdSchema,
-    /** Phase starts when HP fraction drops to or below this value (1 = initial phase). */
+    /**
+     * Phase starts when HP fraction drops to or below this value (1 = initial phase). With
+     * `restoresHp`, 0 means "when the previous phase's HP bar is depleted" (multi-bar bosses).
+     */
     hpThreshold: z.number().min(0).max(1),
+    /** The boss refills its HP when this phase starts (separate HP bars per phase). */
+    restoresHp: z.boolean().default(false),
     /** Overrides for the phase (bosses can change weaknesses / toughness between phases). */
     toughness: z.number().positive().optional(),
     weaknesses: z.array(ElementSchema).optional(),
@@ -45,7 +56,11 @@ export const EnemySchema = z
     name: TextSchema,
     rank: EnemyRankSchema,
     faction: TextSchema,
-    /** Stats at Lv.1; per-level multipliers come from `rules/progression.json -> enemyGrowth`. */
+    /**
+     * Template stats before level scaling (reference-game `HPBase x HPModifyRatio x EliteGroup` etc.).
+     * Stat at level L = base x the level curve in `rules/progression/default.json -> enemy.levels[L]`.
+     * DEF comes from combat rules (200 + 10 x level).
+     */
     baseStats: z
       .object({
         hp: z.number().positive(),
@@ -55,7 +70,7 @@ export const EnemySchema = z
         effectRes: z.number().min(0).default(0),
       })
       .strict(),
-    /** Max Toughness (Basic ATK of a matching element reduces 10). */
+    /** Max Toughness (Basic ATK of a matching element reduces 10; reference stance / 3). */
     toughness: z.number().positive(),
     weaknesses: z.array(ElementSchema).min(1),
     /**
@@ -63,7 +78,7 @@ export const EnemySchema = z
      */
     resistances: z.partialRecord(ElementSchema, z.number().min(-1).max(1)).default({}),
     /** Resistance against specific crowd control (e.g. bosses resist Freeze). */
-    debuffRes: z.partialRecord(CcTypeSchema, z.number().min(0).max(1)).default({}),
+    debuffRes: z.partialRecord(DebuffResKeySchema, z.number().min(0).max(1)).default({}),
     abilities: z.array(EnemyAbilitySchema).min(1),
     ai: z
       .object({
@@ -76,6 +91,10 @@ export const EnemySchema = z
       .strict(),
     phases: z.array(EnemyPhaseSchema).default([]),
     lootTable: IdSchema.optional(),
+    /** Short in-game description. */
+    description: TextSchema.optional(),
+    /** Where the reference numbers were verified (datamine ids). */
+    sources: z.array(SourceSchema).default([]),
     presentation: z
       .object({
         model: z.string(),

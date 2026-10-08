@@ -13,6 +13,6 @@
       ]
     },
     { "id": "l3", "speaker": "npc.conductor", "text": "Splendid. Mind the outer platform. Something has been nesting there.", "next": null },
-    { "id": "l4", "speaker": "npc.conductor", "text": "A choir of hollow things. They sing until the lights go out. Please, be careful.", "next": "l3" }
+    { "id": "l4", "speaker": "npc.conductor", "text": "Voidrangers. The Antimatter Legion's footsoldiers have been prowling the outer platform. Please, be careful.", "next": "l3" }
   ]
 }

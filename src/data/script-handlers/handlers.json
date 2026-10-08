@@ -1,0 +1,315 @@
+[
+  { "id": "bailu.a2", "phase": 5, "description": "Overhealing raises the target's Max HP by 10% for 2 turns." },
+  { "id": "bailu.a4", "phase": 5, "description": "Invigoration can trigger 1 more time." },
+  {
+    "id": "bailu.e1",
+    "phase": 5,
+    "description": "If the ally is at full HP when Invigoration ends, they regenerate 8 Energy."
+  },
+  {
+    "id": "bailu.e4",
+    "phase": 5,
+    "description": "Every heal from the Skill grants the target +10% DMG for 2 turns (stacks 3)."
+  },
+  { "id": "bailu.e6", "phase": 5, "description": "Bailu can revive allies 1 more time per battle." },
+  {
+    "id": "bailu.invigoration",
+    "phase": 5,
+    "description": "After an ally with Invigoration is hit, heals them by `multiplier` x Bailu's Max HP + `flat` (up to `triggers` times)."
+  },
+  {
+    "id": "blade.e1",
+    "phase": 5,
+    "description": "The Ultimate deals extra DMG to the primary target equal to 150% of the HP-loss tally."
+  },
+  { "id": "blade.e4", "phase": 5, "description": "When HP drops to 50% or lower, Max HP +20% (stacks up to 2)." },
+  {
+    "id": "blade.e6",
+    "phase": 5,
+    "description": "Charge max becomes 4; the Talent's Follow-Up ATK deals extra DMG equal to 50% of Max HP."
+  },
+  {
+    "id": "blade.hp-loss-tally",
+    "phase": 5,
+    "description": "Tracks HP Blade lost this battle (capped at `cap` x Max HP); the Ultimate adds `primary` / `adjacent` x tally to its DMG, then resets the tally."
+  },
+  { "id": "bronya.e2", "phase": 5, "description": "After the Skill target acts, its SPD +30% for 1 turn." },
+  {
+    "id": "bronya.e4",
+    "phase": 5,
+    "description": "After another ally's Basic ATK on a Wind-weak enemy, Bronya launches a Follow-Up ATK (80% of her Basic ATK DMG), once per turn."
+  },
+  { "id": "bronya.e6", "phase": 5, "description": "The Skill's DMG Boost lasts 1 extra turn." },
+  { "id": "clara.e1", "phase": 5, "description": "Using the Skill does not remove Marks of Counter." },
+  {
+    "id": "clara.e6",
+    "phase": 5,
+    "description": "After other allies are attacked, Svarog has a 50% fixed chance to Counter and mark the attacker. The Ultimate grants 1 extra Enhanced Counter."
+  },
+  {
+    "id": "clara.enhanced-counter",
+    "phase": 5,
+    "description": "While Promise, Not Command is active, Svarog Counters whenever any ally is attacked (up to `counters` times), with the DMG multiplier increased by `counterBonus`; enemies adjacent to the target take 50% of the DMG."
+  },
+  { "id": "dan-heng.e2", "phase": 5, "description": "Reduces the Talent's cooldown by 1 turn." },
+  { "id": "dan-heng.e6", "phase": 5, "description": "The Skill's Slow reduces SPD by an extra 8%." },
+  {
+    "id": "dan-heng.ultimate-slowed-bonus",
+    "phase": 5,
+    "description": "If the target is Slowed, the Ultimate DMG multiplier increases by `bonus`."
+  },
+  {
+    "id": "enemy.automaton-spider.chains-of-destruction",
+    "phase": 5,
+    "description": "On a killing blow, deals Fire DMG equal to `hpRatio` x the Spider's Max HP and `toughness` Toughness Reduction to adjacent units."
+  },
+  { "id": "enemy.barrier", "phase": 5, "description": "Nullifies all DMG except DoT until the unit is attacked." },
+  {
+    "id": "enemy.cocolia.harbingers-resolve",
+    "phase": 5,
+    "description": "Uses Soulrend Coldstream on a single target, with a high chance to Freeze it."
+  },
+  {
+    "id": "enemy.lance.subzero-pursuit",
+    "phase": 5,
+    "description": "Locks on to a target; some of Cocolia's abilities are cast one more time on it until the Lance is Weakness Broken or defeated."
+  },
+  { "id": "enemy.self-destruct", "phase": 5, "description": "The unit is defeated after the attack." },
+  { "id": "gepard.a4", "phase": 5, "description": "When Unyielding Will triggers, Energy is restored to 100%." },
+  { "id": "gepard.e1", "phase": 5, "description": "The Skill's base chance to Freeze +35%." },
+  {
+    "id": "gepard.e2",
+    "phase": 5,
+    "description": "After an enemy Frozen by the Skill is unfrozen, its SPD -20% for 1 turn."
+  },
+  {
+    "id": "gepard.e6",
+    "phase": 5,
+    "description": "When the Talent triggers, Gepard immediately takes action and restores an extra 50% Max HP."
+  },
+  {
+    "id": "himeko.e4",
+    "phase": 5,
+    "description": "When her Skill Weakness Breaks an enemy, Himeko gains 1 extra Charge."
+  },
+  {
+    "id": "himeko.e6",
+    "phase": 5,
+    "description": "The Ultimate deals 2 extra instances of Fire DMG (40% of the original DMG) to random enemies."
+  },
+  {
+    "id": "jing-yuan.e1",
+    "phase": 5,
+    "description": "Lightning-Lord's adjacent DMG multiplier increases by 25% of the primary multiplier."
+  },
+  {
+    "id": "jing-yuan.e2",
+    "phase": 5,
+    "description": "After Lightning-Lord acts, Jing Yuan's Basic ATK, Skill and Ultimate DMG +20% for 2 turns."
+  },
+  { "id": "jing-yuan.e4", "phase": 5, "description": "Jing Yuan regenerates 2 Energy per Lightning-Lord hit." },
+  {
+    "id": "jing-yuan.e6",
+    "phase": 5,
+    "description": "Each Lightning-Lord hit makes the target Vulnerable (+12% DMG taken, stacks 3) until the end of its turn."
+  },
+  {
+    "id": "jing-yuan.lightning-lord-splash",
+    "phase": 5,
+    "description": "Enemies adjacent to each Lightning-Lord hit take `adjacentRatio` of that hit's DMG."
+  },
+  { "id": "kafka.a2", "phase": 5, "description": "The Ultimate detonates all DoTs on the targets, not just Shock." },
+  {
+    "id": "kafka.a6",
+    "phase": 5,
+    "description": "Base chance to Shock from the Ultimate, Technique and Talent Follow-Up ATK +30%."
+  },
+  {
+    "id": "kafka.e4",
+    "phase": 5,
+    "description": "When an enemy takes DMG from Shock applied by Kafka, she regenerates 2 Energy."
+  },
+  {
+    "id": "kafka.e6",
+    "phase": 5,
+    "description": "Shock from the Ultimate, Technique and Talent has its DMG multiplier +156% and lasts 1 extra turn."
+  },
+  {
+    "id": "lc.but-the-battle-every-second-ultimate",
+    "phase": 5,
+    "description": "The Skill Point refund triggers once every 2 uses of the Ultimate."
+  },
+  {
+    "id": "lc.but-the-battle-next-ally",
+    "phase": 5,
+    "description": "After the wearer uses the Skill, the next ally to act (not the wearer) deals `allDmg` more DMG for `duration` turn."
+  },
+  {
+    "id": "lc.consume-on-follow-up",
+    "phase": 5,
+    "description": "The status is consumed by the owner's next Follow-Up ATK."
+  },
+  { "id": "lc.remove-after-attack", "phase": 5, "description": "The status is removed after the owner attacks." },
+  {
+    "id": "lc.time-waits-for-no-one",
+    "phase": 5,
+    "description": "Records Outgoing Healing; when an ally attacks, a random hit enemy takes Additional DMG (wearer's Type) equal to `ratio` of the recorded value, once per turn."
+  },
+  {
+    "id": "lc.victory-in-a-blink",
+    "phase": 5,
+    "description": "When the wearer's memosprite uses an ability on an ally, all allies deal `allDmg` more DMG for `duration` turns."
+  },
+  { "id": "march-7th.a4", "phase": 5, "description": "The Skill's Shield lasts 1 extra turn." },
+  { "id": "march-7th.a6", "phase": 5, "description": "The Ultimate's base chance to Freeze +15%." },
+  {
+    "id": "march-7th.e1",
+    "phase": 5,
+    "description": "Each enemy Frozen by the Ultimate regenerates 6 Energy for March 7th."
+  },
+  {
+    "id": "march-7th.e4",
+    "phase": 5,
+    "description": "The Talent's Counter can trigger 1 more time per turn and deals extra DMG equal to 30% of March 7th's DEF."
+  },
+  {
+    "id": "march-7th.e6",
+    "phase": 5,
+    "description": "Allies with the Skill's Shield restore 4% Max HP + 106 at the start of each turn."
+  },
+  {
+    "id": "mem.support-true-damage",
+    "phase": 5,
+    "description": "Each instance of DMG dealt by the ally with Mem's Support also deals True DMG equal to `trueDmg` of the original DMG."
+  },
+  { "id": "natasha.a6", "phase": 5, "description": "The Skill's continuous healing lasts 1 extra turn." },
+  {
+    "id": "natasha.e2",
+    "phase": 5,
+    "description": "The Ultimate grants allies at 30% HP or lower continuous healing (6% of Natasha's Max HP + 160) for 1 turn."
+  },
+  {
+    "id": "natasha.e6",
+    "phase": 5,
+    "description": "Natasha's Basic ATK deals extra Physical DMG equal to 40% of her Max HP."
+  },
+  { "id": "pela.a6", "phase": 5, "description": "After the Skill dispels a buff, the next attack deals 20% more DMG." },
+  { "id": "pela.e2", "phase": 5, "description": "Dispelling a buff with the Skill grants +10% SPD for 2 turns." },
+  {
+    "id": "ruan-mei.a6",
+    "phase": 5,
+    "description": "For every 10% Break Effect above 120%, the Skill's DMG bonus increases by 6% (max 36%)."
+  },
+  {
+    "id": "ruan-mei.e1",
+    "phase": 5,
+    "description": "While the Ultimate's Zone is active, allies' DMG ignores 20% DEF."
+  },
+  {
+    "id": "ruan-mei.e6",
+    "phase": 5,
+    "description": "The Zone lasts 1 extra turn; the Talent's Break DMG multiplier +200%."
+  },
+  {
+    "id": "ruan-mei.rebloom-delay",
+    "phase": 5,
+    "description": "Thanatoplum Rebloom: when the enemy would recover from Weakness Break, the Break is extended and its action is delayed by `delayRatio` x Ruan Mei's Break Effect + `delayBase`; can't be re-applied until the enemy recovers."
+  },
+  { "id": "seele.e2", "phase": 5, "description": "The Skill's SPD Boost can stack up to 2 times." },
+  {
+    "id": "seele.e6",
+    "phase": 5,
+    "description": "After the Ultimate, the target gets Butterfly Flurry for 1 turn: whenever it is attacked it takes Quantum Additional DMG equal to 15% of Seele's Ultimate DMG."
+  },
+  {
+    "id": "seele.resurgence-no-chain",
+    "phase": 5,
+    "description": "Enemies defeated during the extra turn granted by Resurgence do not grant another extra turn."
+  },
+  { "id": "silver-wolf.a2-bug-duration", "phase": 5, "description": "Bug durations are extended by 1 turn." },
+  { "id": "silver-wolf.a4", "phase": 5, "description": "Weaknesses implanted by the Skill last 1 extra turn." },
+  {
+    "id": "silver-wolf.a6",
+    "phase": 5,
+    "description": "If the target has 3 or more debuffs when the Skill is used, the Skill reduces All-Type RES by an extra 3%."
+  },
+  {
+    "id": "silver-wolf.e1",
+    "phase": 5,
+    "description": "After the Ultimate, regenerates 7 Energy per debuff on the target (max 5 times)."
+  },
+  {
+    "id": "silver-wolf.e4",
+    "phase": 5,
+    "description": "After the Ultimate, deals Quantum Additional DMG equal to 20% ATK per debuff on the target (max 5 times)."
+  },
+  {
+    "id": "tingyun.benediction-atk-cap",
+    "phase": 5,
+    "description": "Benediction's ATK bonus is capped at `atkCap` x Tingyun's current ATK; only the most recent Skill target keeps Benediction."
+  },
+  {
+    "id": "tingyun.e1",
+    "phase": 5,
+    "description": "After using their Ultimate, the ally with Benediction gains +20% SPD for 1 turn."
+  },
+  {
+    "id": "tingyun.e2",
+    "phase": 5,
+    "description": "The ally with Benediction regenerates 5 Energy after defeating an enemy (once per turn)."
+  },
+  { "id": "tingyun.e4", "phase": 5, "description": "Benediction's DMG multiplier increases by 20%." },
+  { "id": "tingyun.e6", "phase": 5, "description": "The Ultimate regenerates 10 more Energy for the target." },
+  {
+    "id": "tingyun.violet-sparknado",
+    "phase": 5,
+    "description": "When Tingyun attacks an enemy, the ally with Benediction deals Lightning Additional DMG equal to `ratio` x that ally's ATK to it."
+  },
+  {
+    "id": "trailblazer-remembrance.a4",
+    "phase": 5,
+    "description": "When Mem uses \"Baddies! Trouble!\", it gains 5% Charge."
+  },
+  {
+    "id": "trailblazer-remembrance.a6",
+    "phase": 5,
+    "description": "Mem's Support True DMG multiplier +2% per 10 Max Energy above 100 on the target (max +20%)."
+  },
+  {
+    "id": "trailblazer-remembrance.e1",
+    "phase": 5,
+    "description": "Allies with Mem's Support gain +10% CRIT Rate, and the Support also applies to their memosprite/memomaster."
+  },
+  {
+    "id": "trailblazer-remembrance.e2",
+    "phase": 5,
+    "description": "When other memosprites act, the Trailblazer regenerates 8 Energy (once per turn)."
+  },
+  {
+    "id": "trailblazer-remembrance.e4",
+    "phase": 5,
+    "description": "Allies with 0 Max Energy also grant Mem 3% Charge when using abilities; their Mem's Support multiplier +6%."
+  },
+  {
+    "id": "trailblazer-remembrance.energy-to-charge",
+    "phase": 5,
+    "description": "For every `energyPerCharge` Energy regenerated by all allies, Mem gains 1% Charge."
+  },
+  {
+    "id": "trailblazer-remembrance.epic-enhanced-basic",
+    "phase": 5,
+    "description": "While the Trailblazer has Epic and Mem is on the field, the Basic ATK becomes \"Together, We Script Tomorrow!\"."
+  },
+  {
+    "id": "trailblazer-remembrance.skill-restore-mem",
+    "phase": 5,
+    "description": "If Mem is already on the field, the Skill restores Mem's HP by `hpRatio` of Mem's Max HP."
+  },
+  {
+    "id": "welt.e1",
+    "phase": 5,
+    "description": "After the Ultimate, the next 2 Basic ATKs / Skills deal extra Additional DMG (50% of the Basic ATK / 80% of the Skill multiplier)."
+  },
+  { "id": "welt.e4", "phase": 5, "description": "The Skill's base chance to Slow +35%." },
+  { "id": "welt.e6", "phase": 5, "description": "The Skill hits 1 extra time on a random enemy." }
+]

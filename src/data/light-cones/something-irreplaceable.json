@@ -1,0 +1,85 @@
+{
+  "id": "lc.something-irreplaceable",
+  "name": "Something Irreplaceable",
+  "rarity": 5,
+  "path": "Destruction",
+  "baseStats": { "hp": 52.8, "atk": 26.4, "def": 18 },
+  "passive": {
+    "name": "Kinship",
+    "description": "Increases the wearer's ATK by {p1}%. When the wearer defeats an enemy or is hit, immediately restores HP equal to {p2}% of the wearer's ATK. At the same time, the wearer's DMG is increased by {p3}% until the end of their next turn. This effect cannot stack and can only trigger 1 time per turn.",
+    "modifiers": [{ "stat": "atkPct", "value": { "param": "p1" } }],
+    "triggers": [
+      {
+        "on": "onKill",
+        "effects": [
+          { "kind": "heal", "target": "self", "stat": "atk", "multiplier": { "param": "p2" } },
+          {
+            "kind": "applyStatus",
+            "target": "self",
+            "status": "buff.dmg-up",
+            "duration": 1,
+            "params": { "allDmg": { "param": "p3" } }
+          }
+        ],
+        "limitPerTurn": 1
+      },
+      {
+        "on": "afterBeingHit",
+        "effects": [
+          { "kind": "heal", "target": "self", "stat": "atk", "multiplier": { "param": "p2" } },
+          {
+            "kind": "applyStatus",
+            "target": "self",
+            "status": "buff.dmg-up",
+            "duration": 1,
+            "params": { "allDmg": { "param": "p3" } }
+          }
+        ],
+        "limitPerTurn": 1
+      }
+    ],
+    "params": { "p1": [0.24, 0.28, 0.32, 0.36, 0.4], "p2": [0.08, 0.09, 0.1, 0.11, 0.12], "p3": [0.24, 0.28, 0.32, 0.36, 0.4] }
+  },
+  "ascensionCosts": [
+    [{ "item": "credit", "count": 5000 }, { "item": "ancient-part", "count": 8 }],
+    [
+      { "item": "credit", "count": 10000 },
+      { "item": "shattered-blade", "count": 4 },
+      { "item": "ancient-part", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 20000 },
+      { "item": "lifeless-blade", "count": 4 },
+      { "item": "ancient-spindle", "count": 8 }
+    ],
+    [
+      { "item": "credit", "count": 50000 },
+      { "item": "lifeless-blade", "count": 8 },
+      { "item": "ancient-spindle", "count": 12 }
+    ],
+    [
+      { "item": "credit", "count": 100000 },
+      { "item": "worldbreaker-blade", "count": 5 },
+      { "item": "ancient-engine", "count": 6 }
+    ],
+    [
+      { "item": "credit", "count": 200000 },
+      { "item": "worldbreaker-blade", "count": 10 },
+      { "item": "ancient-engine", "count": 8 }
+    ]
+  ],
+  "fodderExp": 60000,
+  "lore": "\"Should a day come when even I'm not here anymore, please look after this database, Svarog.\" (Who is this... Why is this message in my records...) \"Do you have something that's irreplaceable, Svarog?\" (Irreplaceable... broken parts... can simply be replaced...) \"You'll definitely find it one day, Svarog.\" (Such things... will only cause trouble...) \"When that time comes... You should leave this place behind.\"",
+  "sources": [
+    {
+      "topic": "Something Irreplaceable: stats, promotions, Superimposition parameters and passive text",
+      "url": "https://github.com/Mar-7th/StarRailRes/tree/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/index_new/en",
+      "retrieved": "2026-10-08"
+    },
+    {
+      "topic": "Something Irreplaceable: fodder EXP (EquipmentConfig.ExpProvide)",
+      "url": "https://github.com/DimbreathBot/TurnBasedGameData/tree/724b139d8c9c32d12552eb95745a4fee72bfe48b/ExcelOutput",
+      "retrieved": "2026-10-08"
+    }
+  ]
+}

@@ -40,7 +40,7 @@ export function defineCollection<TSchema extends z.ZodType<{ id: string }>>(def:
 
 /** Abstract file source: Vite glob in the browser, in-memory maps in tests, fs in tooling. */
 export interface DataSource {
-  /** Paths relative to the data root, using "/" separators, e.g. "characters/ignatius.json". */
+  /** Paths relative to the data root, using "/" separators, e.g. "characters/seele.json". */
   list(): string[];
   read(path: string): Promise<unknown>;
 }
