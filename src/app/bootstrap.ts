@@ -28,6 +28,8 @@ export interface DebugHandle {
   readonly ctx: AppContext;
   stack(): string[];
   readonly logs: MemorySink;
+  /** State-specific probes for tooling (e.g. `exploration` while the test level is active). */
+  readonly probes: Record<string, unknown>;
 }
 
 declare global {
@@ -168,7 +170,7 @@ export function bootstrap(host: HTMLElement): AppContext | null {
   const debugLoop = window.setInterval(refreshDebug, 250);
 
   if (config.get().debug.exposeGlobal) {
-    window.__ASTRAL__ = { ctx, stack: () => states.stackIds, logs: memory };
+    window.__ASTRAL__ = { ctx, stack: () => states.stackIds, logs: memory, probes: {} };
   }
   window.addEventListener('beforeunload', () => {
     window.clearInterval(debugLoop);

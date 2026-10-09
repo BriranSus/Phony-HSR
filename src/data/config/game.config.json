@@ -42,6 +42,7 @@
     "fov": 50,
     "orbitSensitivity": 0.005,
     "zoomSensitivity": 0.0015,
-    "invertY": false
+    "invertY": false,
+    "follow": { "distance": 5.5, "minDistance": 2.5, "maxDistance": 9, "height": 1.35, "pitch": 0.3, "minPitch": -0.15, "maxPitch": 1.1, "smoothing": 12, "rotateSpeed": 2.6 }
   }
 }

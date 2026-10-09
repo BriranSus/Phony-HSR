@@ -63,6 +63,7 @@ export class InputManager {
   /** Accumulated wheel delta this frame (positive = scroll down / zoom out). */
   wheelDelta = 0;
   private lastPadButtons: boolean[] = [];
+  private padAxes: number[] = [];
 
   setBindings(bindings: InputBindings): void {
     this.bindings = bindings;
@@ -167,16 +168,34 @@ export class InputManager {
     for (const code of [...this.down]) this.release(code);
   }
 
-  /** Poll connected gamepads (call once per frame). Buttons map to codes "Pad<index>". */
-  pollGamepads(pads: ReadonlyArray<{ buttons: ReadonlyArray<{ pressed: boolean }> } | null> | undefined): void {
+  /**
+   * Poll connected gamepads (call once per frame). Buttons map to codes "Pad<index>"; analog axes
+   * are kept for `stick()` (standard mapping: axes 0/1 = left stick, 2/3 = right stick).
+   */
+  pollGamepads(pads: ReadonlyArray<{ buttons: ReadonlyArray<{ pressed: boolean }>; axes?: ReadonlyArray<number> } | null> | undefined): void {
     const pad = pads?.find((p) => p !== null) ?? null;
-    if (!pad) return;
+    if (!pad) {
+      this.padAxes = [];
+      return;
+    }
+    this.padAxes = [...(pad.axes ?? [])];
     pad.buttons.forEach((b, i) => {
       const was = this.lastPadButtons[i] ?? false;
       if (b.pressed && !was) this.press(`Pad${i}`);
       if (!b.pressed && was) this.release(`Pad${i}`);
       this.lastPadButtons[i] = b.pressed;
     });
+  }
+
+  /**
+   * Analog stick as (x right, y up), each in [-1, 1]; values inside `deadzone` read as 0. Gamepad
+   * Y axes point down, so they are inverted here.
+   */
+  stick(which: 'left' | 'right', deadzone = 0.15): { x: number; y: number } {
+    const i = which === 'left' ? 0 : 2;
+    const x = this.enabled ? (this.padAxes[i] ?? 0) : 0;
+    const y = this.enabled ? -(this.padAxes[i + 1] ?? 0) : 0;
+    return Math.hypot(x, y) < deadzone ? { x: 0, y: 0 } : { x, y };
   }
 
   endFrame(): void {

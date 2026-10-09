@@ -8,7 +8,7 @@ import { StateIds } from '../AppContext';
  * phases are shown disabled with their phase badge, so the roadmap is visible in-game.
  */
 const ITEMS: readonly MenuItemView[] = [
-  { id: 'test-scene', title: 'Enter Test Scene', description: 'Phase 1 sandbox: renderer, scene switching and input' },
+  { id: 'test-scene', title: 'Explore Test Level', description: 'Phase 2: movement, party switching and interaction' },
   { id: 'archive', title: 'Data Archive', description: 'Browse validated characters, light cones, enemies and rules' },
   { id: 'continue', title: 'Continue Voyage', description: 'Resume from your latest save', disabled: true, badge: 'Phase 21' },
   { id: 'warp', title: 'Warp', description: 'Character and Light Cone banners', disabled: true, badge: 'Phase 17' },

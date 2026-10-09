@@ -1035,119 +1035,9 @@
   margin-top: 0.2em;
 }
 
-/*
- * Area-entry banner: sits in the sky band above the platform (clear of the crystals) on a soft
- * horizontal scrim, and fades out after a few seconds.
- */
-.hud__banner {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 13vh;
-  padding: 0.7em 0 0.8em;
-  text-align: center;
-  pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgba(3, 6, 16, 0.55) 30%, rgba(3, 6, 16, 0.55) 70%, transparent);
-  animation: banner 3.6s var(--ease-out) 300ms both;
-}
 
-@keyframes banner {
-  0% {
-    opacity: 0;
-    letter-spacing: 0.9em;
-  }
-  18% {
-    opacity: 1;
-    letter-spacing: 0.5em;
-  }
-  78% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 
-.hud__banner-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.3em, 3vw, 2.1em);
-  letter-spacing: 0.5em;
-  padding-left: 0.5em;
-  color: var(--c-white);
-  text-shadow: 0 0 22px rgba(143, 214, 255, 0.5);
-}
 
-.hud__banner-sub {
-  margin-top: 0.6em;
-  font-size: 0.9em;
-  letter-spacing: 0.3em;
-  color: var(--c-gold-bright);
-}
-
-.hud__input {
-  position: absolute;
-  left: max(16px, 2.4vw);
-  bottom: 3.2vh;
-  padding: 1em 1.1em;
-  background: var(--c-panel);
-  border: 1px solid var(--c-line);
-  --chamfer: 14px;
-  clip-path: var(--chamfer-tl-br);
-  backdrop-filter: blur(8px);
-  min-width: min(300px, calc(100vw - 32px));
-}
-
-/* Highlight and the action text change in the same frame (no fade lag on release). */
-.hud__input .keycap {
-  transition: none;
-}
-
-.hud__input-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 2.2em);
-  grid-template-rows: auto auto;
-  gap: 0.35em;
-  justify-content: start;
-  margin: 0.8em 0 0.6em;
-}
-
-/* Children are W, A, S, D: lay them out as an inverted T. */
-.hud__input-grid .keycap:nth-child(1) {
-  grid-area: 1 / 2;
-}
-
-.hud__input-grid .keycap:nth-child(2) {
-  grid-area: 2 / 1;
-}
-
-.hud__input-grid .keycap:nth-child(3) {
-  grid-area: 2 / 2;
-}
-
-.hud__input-grid .keycap:nth-child(4) {
-  grid-area: 2 / 3;
-}
-
-.hud__input-row {
-  display: flex;
-  gap: 0.35em;
-  flex-wrap: wrap;
-  margin-top: 0.4em;
-}
-
-.hud__input-actions {
-  margin-top: 0.7em;
-  font-size: 0.78em;
-  color: var(--c-text-dim);
-  min-height: 1.3em;
-  letter-spacing: 0.04em;
-}
-
-.hud__input-actions b {
-  color: var(--c-gold-bright);
-  font-weight: 600;
-}
 
 .hud__hints {
   position: absolute;
@@ -1397,9 +1287,6 @@
   .hud__back .pill-button__label {
     display: none;
   }
-  .hud__banner {
-    top: 18vh;
-  }
   /* Keyboard hints are redundant with the input monitor on a phone-sized screen. */
   .hud__hints {
     display: none;
@@ -1420,4 +1307,232 @@
 
 .relic-card--planar {
   border-left: 3px solid var(--c-cyan);
+}
+
+/* ============================ EXPLORATION HUD ============================ */
+/* Party list (right side, slot keys 1-4), as in the reference game's exploration HUD. */
+.party {
+  position: absolute;
+  right: max(16px, 2.4vw);
+  top: calc(3vh + 70px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 210px;
+}
+
+.party__slot {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.45em 0.7em 0.45em 0.5em;
+  background: linear-gradient(90deg, rgba(9, 13, 28, 0.25), rgba(9, 13, 28, 0.72));
+  border-right: 3px solid transparent;
+  --chamfer: 10px;
+  clip-path: var(--chamfer-tl-br);
+  color: var(--c-text-dim);
+  transition:
+    background 160ms,
+    color 160ms,
+    transform 200ms var(--ease-out);
+}
+
+.party__slot.is-active {
+  color: var(--c-white);
+  border-right-color: var(--el);
+  background: linear-gradient(90deg, rgba(9, 13, 28, 0.2), color-mix(in srgb, var(--el) 28%, rgba(9, 13, 28, 0.8)));
+  transform: translateX(-8px);
+}
+
+.party__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05em;
+  letter-spacing: 0.05em;
+}
+
+.party__el {
+  width: 1.3em;
+  height: 1.3em;
+  color: var(--el);
+}
+
+.party__el svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Interaction prompt list: right of centre, F on the selected row, scrolls past maxVisible. */
+.prompts {
+  position: absolute;
+  left: 58%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 260px;
+  opacity: 0;
+  transition: opacity 160ms;
+}
+
+.prompts.is-open {
+  opacity: 1;
+}
+
+.prompt {
+  display: grid;
+  grid-template-columns: 1.9em 1.4em 1fr;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.5em 1.1em 0.5em 0.5em;
+  background: linear-gradient(90deg, rgba(9, 13, 28, 0.85), rgba(9, 13, 28, 0.45));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  color: var(--c-text);
+  font-size: 0.95em;
+}
+
+.prompt .prompt__key {
+  visibility: hidden;
+}
+
+.prompt.is-selected {
+  background: linear-gradient(90deg, rgba(244, 223, 176, 0.92), rgba(244, 223, 176, 0.62));
+  color: var(--c-ink);
+  border-color: var(--c-gold-bright);
+}
+
+.prompt.is-selected .prompt__key {
+  visibility: visible;
+  background: var(--c-ink);
+  color: var(--c-gold-bright);
+  border-color: var(--c-ink);
+}
+
+.prompt__icon {
+  width: 1.3em;
+  height: 1.3em;
+}
+
+.prompt__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.prompts__more,
+.prompts__hint {
+  text-align: center;
+  font-size: 0.7em;
+  color: var(--c-text-dim);
+  letter-spacing: 0.2em;
+}
+
+/* Gait readout (bottom-left). */
+.gait {
+  position: absolute;
+  left: max(16px, 2.4vw);
+  bottom: 3.2vh;
+  padding: 0.4em 1.1em;
+  border-radius: 999px;
+  border: 1px solid var(--c-line);
+  background: var(--c-panel);
+  font-family: var(--font-display);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  color: var(--c-text-dim);
+}
+
+.gait.is-moving {
+  color: var(--c-white);
+}
+
+.gait[data-gait='sprint'].is-moving {
+  color: var(--c-ink);
+  background: var(--c-gold-bright);
+  border-color: var(--c-gold-bright);
+}
+
+/* Event toast (top centre) and interaction message box (bottom centre). */
+.xtoast {
+  position: absolute;
+  left: 50%;
+  top: 14vh;
+  transform: translate(-50%, -6px);
+  padding: 0.55em 1.6em;
+  background: linear-gradient(90deg, transparent, rgba(3, 6, 16, 0.75) 20%, rgba(3, 6, 16, 0.75) 80%, transparent);
+  color: var(--c-gold-bright);
+  font-family: var(--font-display);
+  letter-spacing: 0.18em;
+  opacity: 0;
+  transition:
+    opacity 180ms,
+    transform 220ms var(--ease-out);
+  white-space: nowrap;
+}
+
+.xtoast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.message {
+  position: absolute;
+  left: 50%;
+  bottom: 12vh;
+  width: min(720px, calc(100vw - 32px));
+  transform: translate(-50%, 8px);
+  padding: 1em 1.6em 1.1em;
+  background: linear-gradient(180deg, rgba(3, 6, 16, 0.55), rgba(3, 6, 16, 0.88));
+  border-top: 1px solid rgba(244, 223, 176, 0.4);
+  opacity: 0;
+  transition:
+    opacity 200ms,
+    transform 240ms var(--ease-out);
+}
+
+.message.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.message__speaker {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--c-gold-bright);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.35em;
+}
+
+.message__text {
+  color: var(--c-text);
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .party {
+    width: 168px;
+    top: 120px;
+    font-size: 0.85em;
+  }
+  .prompts {
+    left: 16px;
+    right: 16px;
+    top: auto;
+    bottom: 76px;
+    transform: none;
+    min-width: 0;
+  }
+  .gait {
+    left: 16px;
+    bottom: 16px;
+  }
+  .xtoast {
+    top: 22vh;
+  }
 }

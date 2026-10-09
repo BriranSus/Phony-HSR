@@ -9,6 +9,7 @@ import { CostTableSchema, ItemSchema, ScriptHandlerSchema } from './item';
 import { StatusEffectSchema } from './status';
 import { ScalingCurvesSchema } from './scaling';
 import { BannerSchema } from './gacha';
+import { LevelSchema, LocomotionRulesSchema, PartySchema } from './locomotion';
 import { DialogueSchema, QuestSchema } from './quest';
 import {
   CombatRulesSchema,
@@ -191,6 +192,15 @@ export const Collections = {
       return problems;
     },
   }),
+  locomotionRules: defineCollection({ name: 'locomotionRules', dir: 'rules/locomotion', format: 'item', schema: LocomotionRulesSchema }),
+  parties: defineCollection({
+    name: 'parties',
+    dir: 'parties',
+    format: 'item',
+    schema: PartySchema,
+    references: (p) => p.members.map((id, i) => ({ collection: 'characters', id, at: `members[${i}]` })),
+  }),
+  levels: defineCollection({ name: 'levels', dir: 'levels', format: 'item', schema: LevelSchema }),
   dialogues: defineCollection({ name: 'dialogues', dir: 'dialogues', format: 'item', schema: DialogueSchema }),
 } as const;
 

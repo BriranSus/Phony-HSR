@@ -61,7 +61,7 @@ Analysing its 39 sections gives these architectural requirements:
 flowchart TB
   subgraph App["src/app: composition root"]
     boot[bootstrap.ts] --> states[Game states: Loading, Title, MainMenu, DataArchive, TestScene]
-    states --> scenes[Scenes: TitleBackdrop, TestSandbox]
+    states --> scenes[Scenes: TitleBackdrop, TestLevelScene, FollowCamera, PlaceholderCharacter]
   end
   subgraph Modules["src/modules: gameplay & presentation systems (GameModule)"]
     ui[ui] & vfx[vfx] & audio[audio]
@@ -107,6 +107,7 @@ Each module folder exports a **public interface** (its system contract), a **DI 
 Key design decisions per area:
 
 - **Combat** is presentation-free. It consumes `UnitFactory` implementations registered by `characters` and `enemies` (built from a `UnitBuildSpec`: the player's `CharacterInstance` with its Light Cone and relics, an enemy id and level, or an owned memosprite/summon) and emits `combat:*` events. Its runtime model already distinguishes characters, memosprites, enemies and summons, and queues inserted actions (follow-ups, counters, extra turns) separately from player Ultimates. UI, camera, VFX and audio react to those events, so a new character never touches the engine.
+- **Player (Phase 2)** is a pure, deterministic simulation (`modules/player`): movement math, a static collision world (capsule footprint vs axis-aligned boxes and ramps, step-up, slope limit, ground snap, gravity), a data-driven animation state machine, the party roster and the interaction prompt list, combined in `OverworldController.step(dt, ControlInput)`. The app state turns the action map (keys, mouse, gamepad sticks) into `ControlInput`, runs the controller in fixed 1/60 s sub-steps, renders the result and forwards its hook events (`player:footstep`, `player:interact`, `player:technique`, `player:overworldAttack`, `player:leaderChanged`, `player:animationState`) to the bus.
 - **Skills** interprets data-defined abilities (an ordered list of `effects`, plus `triggers` from a fixed event vocabulary and `conditions` from a closed type list). The escape hatch for unique kits is `{ "kind": "script", "handler": "<id>" }`, resolved from a handler registry. Every description is a template filled from the same data (`models/templates.ts`), validated at load.
 - **Status** owns buffs, debuffs, DoTs, CC and shields. The seven Weakness Break effects are ordinary data-defined statuses.
 - **Economy** is the single ledger for currencies and stackable items (spec §20, "keep economy calculations centralized"). Inventory, shops, gacha and progression all spend and grant through it.
@@ -151,7 +152,7 @@ HSR/
 │  │  ├─ AppContext.ts      Typed bundle passed to states; state ids
 │  │  ├─ dataSource.ts      Vite glob → lazy per-file data chunks
 │  │  ├─ states/            LoadingState, TitleState, MainMenuState, DataArchiveState, TestSceneState
-│  │  └─ scenes/            TitleBackdrop (procedural express), TestSandbox, DebugOrbitCamera
+│  │  └─ scenes/            TitleBackdrop (procedural express), TestLevelScene, FollowCamera, PlaceholderCharacter
 │  ├─ core/                 Engine shell (game-agnostic)
 │  │  ├─ bus/ config/ data/ di/ input/ log/ loop/ modules/ render/ state/
 │  │  ├─ events.ts          GameEvents map (extended by modules)
@@ -200,7 +201,7 @@ To add content, drop a JSON file into the right folder. To add a new **kind** of
 
 - **No hardcoded tunables.** SP limits, energy values, AV numerator, cycle lengths, RES defaults, DEF constants, toughness multipliers, break multipliers and delays, the full break level-multiplier table (with its cited source), growth curves, relic stat tables, gacha rates, key bindings, loading tips and engine settings all live in `src/data`.
 - **No duplicate implementations.** Each formula exists once in `models/formulas` and is reused by the Data Archive UI, the tests and (later) the combat engine. The starfield and nebula are shared by the title and test scenes.
-- **No temporary hacks.** Every Phase-1 stub implements the real public interface its phase will fill in. The debug orbit camera is clearly scoped to the sandbox and does not stand in for the Phase-3 camera system.
+- **No temporary hacks.** Every stub implements the real public interface its phase will fill in. The Phase-2 `FollowCamera` implements the `ExplorationCamera` contract from `modules/camera`, which the Phase-3 rig replaces without touching the player controller.
 - **Events** are named `domain:verb` (`state:changed`, `combat:weaknessBreak`).
 - **Ids** are lower-case dotted (`char.seele`, `break.wind-shear`) and validated by schema.
 - **Percent values** are fractions (`0.12` = 12%).

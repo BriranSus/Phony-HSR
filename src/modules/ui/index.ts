@@ -17,6 +17,6 @@ export { LoadingScreen } from './screens/LoadingScreen';
 export { TitleScreen } from './screens/TitleScreen';
 export { MainMenuScreen, type MenuItemView } from './screens/MainMenuScreen';
 export { DataArchiveScreen, type ArchiveViewModel } from './screens/DataArchiveScreen';
-export { TestSceneHud } from './screens/TestSceneHud';
+export { ExplorationHud, type PartySlotView, type PromptView } from './screens/ExplorationHud';
 export { DebugOverlay, type DebugSection } from './screens/DebugOverlay';
 export { createFatalScreen } from './screens/FatalScreen';

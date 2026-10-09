@@ -2,7 +2,7 @@
 
 **Project:** Astral Rail, an original fan project inspired by the gameplay structure of *Honkai: Star Rail*
 **Scope:** spec §39 "FIRST ACTION" (analysis, engine, stack, architecture, folders, data models, dependencies, roadmap) and **Phase 1** of §37
-**Status:** complete. **Revision 1** (validator feedback on the 7.5/10 review, see [§7](#7-revision-1-changelog)) was validated at 8.5/10. **Revision 2** (real Honkai: Star Rail content, see [§8](#8-revision-2-changelog-real-hsr-data)) is applied and awaiting validation. No Phase 2+ gameplay was implemented (interfaces, data models and stubs only).
+**Status:** Phase 1 complete: Revision 1 (§7) and Revision 2, real Honkai: Star Rail content (§8), were each validated at 8.5/10. **Phase 2 (Player controller) is complete** and awaiting validation, see [§9](#9-phase-2-player-controller). Phase 3+ is not started.
 
 ---
 
@@ -161,9 +161,80 @@ Phase 1 passed validation at **8.5/10** after Revision 1. Before Phase 2, the us
 | UI | The Data Archive shows the real roster: floored Lv80 stats as in game, Taunt, memosprite/summon in the kit, a new **Relic Sets** tab, enemies sorted by rank with Lv80 HP/SPD, RES and debuff RES, and constant Light Cone values printed once. Visuals stay procedural/CSS. |
 | Tests | `tests/data/reference.test.ts` pins real values. The template, kit-model, schema and content tests were moved to the real data. |
 
-## 9. What Phase 2 will add (Player controller)
+## 9. Phase 2: Player controller
 
-- A third-person procedural placeholder character with walk / run / sprint, acceleration and turn smoothing, ground snapping, slope limits and capsule collision against a greybox collision world.
-- The `PlayerController` service behind `PlayerToken`, driven only by input **actions**, with locomotion tuning in `src/data/rules/locomotion.json`.
-- An interaction-prompt query (`interact`), overworld attack and Technique hooks (encounter advantage flags emitted on the bus for Phase 5), and party-leader switching.
-- Unit tests for movement integration, collision resolution and the state machine. An E2E walk test with screenshots of a greybox test area. Phase-1 systems must keep passing.
+Validator fixes first (Revision 2 scored 8.5/10, with 0 data mismatches):
+- Cocolia's phase 2 now begins at **75% HP** (`restoreHpTo: 0.75`; the wiki says her Max HP is reduced by 25%).
+- Welt's Skill Slow is rolled **on every hit** (new `damage.onHit`); his Skill is 1 hit on the target plus 2 random hits.
+- The stale lyra/aria/brann ids in `formulas.test.ts` are renamed.
+
+### 9.1 Architecture (spec §38)
+| Piece | Where | Role |
+|---|---|---|
+| Data | `rules/locomotion/default.json`, `parties/default.json`, `levels/test-level.json`, `config/game.config.json -> camera.follow`, `input/default.json` | Gait speeds and strides, acceleration, turn rate, deadzone, capsule (radius, height, step, max slope, snap), gravity, interaction radius, the animation states, the party (March 7th, Dan Heng, Himeko, Welt), level colliders / interactables / spawn, follow-camera tuning, key and gamepad bindings |
+| Schemas | `models/locomotion.ts` (+ 3 collections) | Validated at load: gait order, unique party members that must exist as characters, collider bounds, unique interactables |
+| Simulation | `modules/player/` (`movement`, `collision`, `animation`, `party`, `interaction`, `controller`) | Pure and deterministic, no THREE or DOM. Unit-tested on the real level |
+| Camera contract | `modules/camera -> ExplorationCamera` | The controller only needs `yaw`. The Phase-2 `FollowCamera` implements this contract; Phase 3 replaces it |
+| Presentation | `app/scenes/TestLevelScene`, `PlaceholderCharacter`, `FollowCamera`; `modules/ui/screens/ExplorationHud` | Level meshes are generated from the collider data. A procedural low-poly figure is tinted by the leader's element. The HUD shows the party list, the right-side prompt list, the gait readout, toasts and a message box |
+| Wiring | `app/states/TestSceneState` | Action map → `ControlInput` (keys, mouse, left/right stick). Fixed 1/60 s sub-steps. Events go to the bus and the HUD. The `window.__ASTRAL__.probes.exploration` probe serves the E2E test |
+
+**Dependencies:** `player` depends only on core and data (input actions, data registry, event bus). `camera` (Phase 3) depends on `player`. Combat (Phase 5) will consume `player:overworldAttack` / `player:technique`, and audio (Phase 22) will consume `player:footstep`. Existing systems are unchanged apart from three things: the InputManager gained analog sticks (`stick()`), the debug handle gained `probes`, and the Phase-1 sandbox (orbit camera, input monitor) was replaced by the level.
+
+### 9.2 What was built
+- **Movement:** camera-relative WASD or left stick, with diagonals normalised and partial stick tilt kept. Running is the default (5 m/s). **Ctrl** toggles walking (2 m/s) and holding **Shift** sprints (7.5 m/s). Acceleration is 28 m/s² and deceleration 36 m/s². The character turns toward the move direction at up to 12.5 rad/s. There is no jump.
+- **Collision:** a capsule (r 0.35 m, h 1.7 m) against axis-aligned boxes and ramps. It covers walls with sliding, a 0.35 m step-up (the stairs), slopes up to 46° (the east ramp at 18° is walkable, the 49° west ramp blocks), ground snapping within 0.45 m when walking down, gravity off ledges, and a respawn below the kill height. The 1.4 m corridor fits the capsule.
+- **Party switching:** keys **1–4** switch between March 7th, Dan Heng, Himeko and Welt. Position, facing and momentum are kept, and the model re-tints to the new element with a pop.
+- **Interaction:** **F** interacts with the selected prompt. The prompt list sits right of centre in the reference game's style: F on the selected row, nearest first, at most 3 visible, scrolled with the wheel or d-pad. The wheel zooms the camera only when no prompts are open. Interactables include signs, a chest placeholder and an NPC placeholder (Pom-Pom).
+- **Hooks:** **E** fires the Technique hook (the toast shows the leader's real Technique name) and **Q** or left click fires the overworld attack hook. Both are stubs that emit events, with a 0.45 s cooldown. Footstep events alternate left/right at each gait's stride and carry the surface material.
+- **Animation:** a data-driven state machine (idle / walk / run / sprint, with `clip` ids and blend times) drives a procedural bob, lean and arm/leg swing. Real clips can plug in by `clip` id.
+- **Test level** "Calibration Grounds": a ramp and platform with a chest, 6-step stairs to a landing with an NPC, a too-steep ramp, perimeter walls, a narrow corridor, pillars, a crate and two signs.
+- **Camera:** a basic follow camera. Hold the right mouse button to rotate, use Z/C or the right stick to turn, and the wheel or +/- to zoom. It follows with smoothing.
+
+**Controls:**
+
+| Action | Keyboard / mouse | Gamepad |
+|---|---|---|
+| Move | WASD / arrow keys | left stick |
+| Sprint (hold) | Shift | RT |
+| Walk / run toggle | Ctrl | L3 |
+| Interact | F | A |
+| Technique | E | Y |
+| Attack | Q or left click | X |
+| Switch character | 1–4 | — |
+| Camera | hold right mouse, Z/C, wheel, +/− | right stick |
+| Debug overlay | F3 | — |
+| Back | Esc | B |
+
+### 9.3 Tests and verification
+- `tests/player/player.test.ts` (20 tests):
+  - movement math: camera-relative input, deadzone, gait selection, acceleration and deceleration, turn rate
+  - collision: ramp surfaces and slopes, wall push-out, steep-slope blocking, step-up vs platform
+  - the data-driven animation selection and cross-fade
+  - party switching rules and prompt list ordering / scrolling
+  - the controller on the real level: run 5 / sprint 7.5 / walk 2 m/s, turning, ramp climb, stair climb, steep slope and wall blocking, corridor fit, falling off a ledge and landing, alternating footsteps with material, switching without moving, prompt + F, and Technique / attack hooks with cooldown
+- **Playwright walkthrough** (`npm run screenshots`) at **1600×900** and **1280×720**:
+  - walk up to the sign and check that the prompt row is shown and selected
+  - press F and check that the message box opens
+  - run and check 5 m/s in the run state; sprint and check 7.5 m/s in the sprint state
+  - press 3 and check that Himeko leads, the slot is highlighted and the position is unchanged
+  - press E and Q, and check that footstep, technique, overworld-attack, leader-changed and interact events reached the bus
+  - layout checks at 1024×768 and 390×844
+- **Results:** `npm run build` has 0 type errors. `npm test` passes **165/165** in 14 files. `npm run lint` reports 0 problems. `npm run screenshots` produces **33 screenshots** with 0 console errors and 0 layout problems.
+- **Screenshots:**
+  - `08-explore-01-spawn` … `08-explore-06-switch`, and `09-explore-debug`
+  - `vp-1280x720-explore-01-spawn` … `-06-switch`
+  - `vp-1024x768-explore` and `vp-390x844-explore`
+
+### 9.4 Known gaps (by design or deferred)
+- **Movement speeds are tuned to feel**, not verified against reference data. The datamine doesn't expose overworld speeds. They live in data and are easy to retune.
+- **Collision is limited:** only axis-aligned boxes and ramps, with no rotated or mesh colliders. The capsule is treated as a vertical cylinder footprint, and there are no ceilings. That is enough for greybox levels; Phase 15 (world) brings authored geometry.
+- **The follow camera** has no collision, auto-recentering or lock-on. Those come with the Phase-3 camera rig.
+- **The overworld attack and Technique only emit events.** Encounter advantage, Technique Points and enemy ambushes arrive in Phase 5.
+- **Party switching has no cooldown**, and the exploration model is a placeholder figure, not character art.
+- **Touch controls are not implemented.** On phones the HUD lays out correctly, but movement needs a keyboard or gamepad.
+
+## 10. What Phase 3 will add (Camera)
+
+- One camera rig behind the `CameraSystem` / `ExplorationCamera` interfaces, with modes for exploration (orbit with collision against the level colliders, auto-recentering behind the character, zoom limits), combat, skill / ultimate shots, boss, dialogue and cinematic, plus smooth blends between modes.
+- Data-driven camera shots referenced by ability `presentation.camera` ids, and camera shake.
+- Tests for the orbit and collision math and mode blending, plus an E2E check that the camera never clips through the test level's walls.

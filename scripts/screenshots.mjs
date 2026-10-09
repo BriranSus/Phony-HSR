@@ -97,13 +97,79 @@ async function layoutProblems(page, label, pairs) {
           if (ix > 1 && iy > 1) out.push(`${label}: "${a}" overlaps "${b}"`);
         }
       }
-      for (const sel of ['.menu-item', '.menu__footer', '.archive__tabs', '.hud__area', '.hud__hints', '.hud__back']) {
+      for (const sel of ['.menu-item', '.menu__footer', '.archive__tabs', '.hud__area', '.hud__hints', '.hud__back', '.party', '.gait']) {
         for (const r of box(sel)) if (r.bottom > window.innerHeight + 1 || r.right > window.innerWidth + 1) out.push(`${label}: ${sel} is cut off by the viewport`);
       }
       return out;
     },
     { label, pairs },
   );
+}
+
+/**
+ * Phase-2 exploration walkthrough: approach the sign (prompt list + F), run, sprint, switch
+ * characters, fire the Technique / attack hooks; asserts the controller state through the
+ * `window.__ASTRAL__.probes.exploration` probe and the hook events on the bus.
+ */
+async function exploreWalkthrough(page, prefix, shot, errors, check, pairs) {
+  const probe = () => page.evaluate(() => window.__ASTRAL__.probes.exploration());
+  const fail = (m) => errors.push(`[${prefix}] ${m}`);
+  await page.evaluate(() => {
+    const w = window;
+    w.__hooks = { footstep: 0, technique: 0, overworldAttack: 0, leaderChanged: 0, interact: 0 };
+    for (const k of Object.keys(w.__hooks)) w.__ASTRAL__.ctx.bus.on(`player:${k}`, () => w.__hooks[k]++);
+  });
+  const spawn = await probe();
+  await shot(`${prefix}-01-spawn`);
+
+  // Approach the notice sign: a short run forward brings it into the prompt radius.
+  await page.keyboard.down('KeyW');
+  await sleep(380);
+  await page.keyboard.up('KeyW');
+  await sleep(500);
+  let p = await probe();
+  if (!p.prompts.includes('sign.welcome')) fail(`expected the sign prompt, got [${p.prompts}] at ${p.x.toFixed(2)},${p.z.toFixed(2)}`);
+  const row = await page.$('.prompt.is-selected[data-prompt="sign.welcome"]');
+  if (!row) fail('the sign prompt row is not shown / selected');
+  await check('exploration prompt', pairs);
+  await shot(`${prefix}-02-prompt`);
+  await page.keyboard.press('KeyF');
+  await page.waitForSelector('.message.is-visible', { timeout: 3000 }).catch(() => fail('interaction message did not open'));
+  await sleep(300);
+  await shot(`${prefix}-03-interact`);
+
+  // Run (default gait) then sprint (Shift held).
+  await page.keyboard.down('KeyW');
+  await sleep(1000);
+  p = await probe();
+  if (p.state !== 'run' || Math.abs(p.speed - 5) > 0.2) fail(`expected run at 5 m/s, got ${p.state} ${p.speed.toFixed(2)}`);
+  if (!(p.z < spawn.z - 2)) fail('the character did not move forward');
+  await shot(`${prefix}-04-run`);
+  await page.keyboard.down('ShiftLeft');
+  await sleep(700);
+  p = await probe();
+  if (p.state !== 'sprint' || Math.abs(p.speed - 7.5) > 0.3) fail(`expected sprint at 7.5 m/s, got ${p.state} ${p.speed.toFixed(2)}`);
+  await shot(`${prefix}-05-sprint`);
+  await page.keyboard.up('ShiftLeft');
+  await page.keyboard.up('KeyW');
+  await sleep(500);
+
+  // Switch to party slot 3 (position kept), then use the Technique and the overworld attack.
+  const before = await probe();
+  await page.keyboard.press('Digit3');
+  await sleep(250);
+  p = await probe();
+  if (p.leader !== 'char.himeko') fail(`expected Himeko after pressing 3, got ${p.leader}`);
+  if (Math.hypot(p.x - before.x, p.z - before.z) > 0.3) fail('switching moved the character');
+  if (!(await page.$('.party__slot.is-active[data-slot="3"]'))) fail('party slot 3 is not highlighted');
+  await shot(`${prefix}-06-switch`);
+  await page.keyboard.press('KeyE');
+  await sleep(600);
+  await page.keyboard.press('KeyQ');
+  await sleep(300);
+  const hooks = await page.evaluate(() => window.__hooks);
+  for (const k of ['footstep', 'technique', 'overworldAttack', 'leaderChanged', 'interact']) if (!hooks[k]) fail(`no player:${k} event`);
+  console.log(`  [${prefix}] hooks: ${JSON.stringify(hooks)}`);
 }
 
 async function captureViewport(browser, url, vp, shot, errors) {
@@ -160,23 +226,21 @@ async function captureViewport(browser, url, vp, shot, errors) {
 
   await page.click('[data-id="test-scene"]');
   await stackIs(['test-scene']);
-  // Area-entry banner (visible for ~3 s after the scene opens).
-  await page.waitForFunction(() => Number(getComputedStyle(document.querySelector('.hud__banner')).opacity) > 0.95, null, { timeout: 15000, polling: 50 });
-  await check('test scene banner', [
-    ['.hud__banner', '.hud__area'],
-    ['.hud__banner', '.hud__back'],
-  ]);
-  await shot(page, `vp-${vp.name}-test-scene-banner`);
   await settled();
-  await sleep(1800);
-  await check('test scene', [
-    ['.hud__area', '.debug'],
-    ['.hud__area', '.hud__input'],
-    ['.hud__banner', '.hud__input'],
-    ['.hud__back', '.hud__hints'],
-    ['.hud__hints', '.hud__input'],
-  ]);
-  await shot(page, `vp-${vp.name}-test-scene`);
+  await sleep(1200);
+  const explorePairs = [
+    ['.hud__area', '.party'],
+    ['.hud__back', '.party'],
+    ['.party', '.prompts.is-open'],
+    ['.hud__hints', '.gait'],
+    ['.prompts.is-open', '.hud__hints'],
+  ];
+  if (vp.width >= 1200) {
+    await exploreWalkthrough(page, `vp-${vp.name}-explore`, (n) => shot(page, n), errors, check, explorePairs);
+  } else {
+    await check('exploration', explorePairs);
+    await shot(page, `vp-${vp.name}-explore`);
+  }
   await page.close();
 }
 
@@ -291,36 +355,16 @@ async function main() {
     await stackIs(['test-scene']);
     await transitionIdle();
     await page.evaluate((ms) => window.__ASTRAL__.ctx.transition.setDuration(ms), transitionMs);
-    await sleep(2200);
-    await shot('08-test-scene');
-
+    await sleep(1200);
+    await exploreWalkthrough(page, '08-explore', (n) => shot(n), errors, (label, pairs) => layoutProblems(page, label, pairs).then((p) => errors.push(...p)), [
+      ['.hud__area', '.party'],
+      ['.party', '.prompts.is-open'],
+    ]);
     // The debug overlay is off by default; F3 (action "toggleDebug") shows it.
     await page.keyboard.press('F3');
     await page.waitForSelector('.debug:not(.is-hidden)', { timeout: 5000 });
-
-    // Exercise input: hold W + D + Shift, orbit by dragging, zoom with the wheel.
-    await page.keyboard.down('KeyW');
-    await page.keyboard.down('KeyD');
-    await page.keyboard.down('ShiftLeft');
-    await page.mouse.move(WIDTH / 2, HEIGHT / 2);
-    await page.mouse.down();
-    for (let i = 1; i <= 20; i++) {
-      await page.mouse.move(WIDTH / 2 + i * 14, HEIGHT / 2 + i * 2);
-      await sleep(16);
-    }
-    await page.mouse.wheel(0, -150);
-    await sleep(300);
-    const held = await page.evaluate(() => window.__ASTRAL__?.ctx.input.activeActions() ?? []);
-    console.log(`  input actions held: ${held.join(', ')}`);
-    for (const a of ['moveForward', 'moveRight', 'sprint', 'cameraDrag']) {
-      if (!held.includes(a)) errors.push(`input: expected action "${a}" to be held`);
-    }
-    await shot('09-test-scene-input');
-    await page.mouse.up();
-    await page.keyboard.up('KeyW');
-    await page.keyboard.up('KeyD');
-    await page.keyboard.up('ShiftLeft');
-
+    await sleep(400);
+    await shot('09-explore-debug');
     await page.keyboard.press('Escape');
     await stackIs(['title', 'main-menu']);
     await transitionIdle();

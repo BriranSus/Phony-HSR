@@ -9,7 +9,7 @@ Legend: ✅ done · 🟡 partially present (framework or stub) · ⬜ not starte
 | # | Phase | Main modules | Depends on phases | Status |
 |---|---|---|---|---|
 | 1 | Project architecture | core, models, all module stubs, ui (framework), vfx (backdrop) | — | ✅ |
-| 2 | Player controller | player | 1 | 🟡 interface |
+| 2 | Player controller | player | 1 | ✅ done (exploration test level) |
 | 3 | Camera | camera | 2 | 🟡 interface |
 | 4 | World exploration | world | 2, 3 | 🟡 interface |
 | 5 | Combat engine | combat, skills, status | 1 | 🟡 interfaces + formulas |
@@ -45,7 +45,8 @@ Legend: ✅ done · 🟡 partially present (framework or stub) · ⬜ not starte
 ### Phase 2: Player controller
 - Third-person character (procedural placeholder rig) with **walk / run / sprint**, acceleration curves, ground snapping, slope limits, and capsule collision against a simple collision world.
 - Interaction prompt system (`interact` action, nearest-interactable query), **overworld attack** (enemy hit = advantage, enemy ambush = disadvantage), **Technique** use and Technique Points, and **party-leader switching** (1–4 keys).
-- Data: locomotion tuning in `rules/locomotion.json`. Tests: movement integration, collision resolution, input-to-state transitions.
+- Data: locomotion tuning in `rules/locomotion/default.json`, party in `parties/`, levels in `levels/`. Tests: movement integration, collision resolution, input-to-state transitions.
+- **Status: done.** Encounter advantage from the overworld attack and Technique Point spending are emitted as hooks (`player:overworldAttack`, `player:technique`) and resolved in Phase 5.
 
 ### Phase 3: Camera
 - One camera rig with modes **exploration** (orbit + collision + auto-recenter), **combat**, **skill**, **ultimate**, **boss**, **dialogue** and **cinematic**, and smooth blends between them.

@@ -5,11 +5,11 @@
     "moveBack": { "label": "Move Back", "codes": ["KeyS", "ArrowDown"], "category": "movement" },
     "moveLeft": { "label": "Move Left", "codes": ["KeyA", "ArrowLeft"], "category": "movement" },
     "moveRight": { "label": "Move Right", "codes": ["KeyD", "ArrowRight"], "category": "movement" },
-    "sprint": { "label": "Sprint", "codes": ["ShiftLeft", "ShiftRight"], "category": "movement" },
-    "interact": { "label": "Interact", "codes": ["KeyF"], "category": "movement" },
-    "cameraDrag": { "label": "Rotate Camera (hold)", "codes": ["Mouse0", "Mouse2"], "category": "camera" },
-    "cameraRotateLeft": { "label": "Rotate Camera Left", "codes": ["KeyQ"], "category": "camera" },
-    "cameraRotateRight": { "label": "Rotate Camera Right", "codes": ["KeyE"], "category": "camera" },
+    "sprint": { "label": "Sprint", "codes": ["ShiftLeft", "ShiftRight", "Pad7"], "category": "movement" },
+    "interact": { "label": "Interact", "codes": ["KeyF", "Pad0"], "category": "movement" },
+    "cameraDrag": { "label": "Rotate Camera (hold right mouse)", "codes": ["Mouse2"], "category": "camera" },
+    "cameraRotateLeft": { "label": "Rotate Camera Left", "codes": ["KeyZ"], "category": "camera" },
+    "cameraRotateRight": { "label": "Rotate Camera Right", "codes": ["KeyC"], "category": "camera" },
     "cameraZoomIn": { "label": "Zoom In", "codes": ["Equal", "NumpadAdd"], "category": "camera" },
     "cameraZoomOut": { "label": "Zoom Out", "codes": ["Minus", "NumpadSubtract"], "category": "camera" },
     "confirm": { "label": "Confirm", "codes": ["Enter", "Space", "Pad0"], "category": "ui" },
@@ -24,6 +24,15 @@
     "ultimate2": { "label": "Ultimate (Slot 2)", "codes": ["Digit2"], "category": "combat" },
     "ultimate3": { "label": "Ultimate (Slot 3)", "codes": ["Digit3"], "category": "combat" },
     "ultimate4": { "label": "Ultimate (Slot 4)", "codes": ["Digit4"], "category": "combat" },
-    "toggleDebug": { "label": "Toggle Debug Overlay", "codes": ["F3", "Backquote"], "category": "debug" }
+    "toggleDebug": { "label": "Toggle Debug Overlay", "codes": ["F3", "Backquote"], "category": "debug" },
+    "walkToggle": { "label": "Walk / Run Toggle", "codes": ["ControlLeft", "Pad10"], "category": "movement" },
+    "technique": { "label": "Technique", "codes": ["KeyE", "Pad3"], "category": "movement" },
+    "overworldAttack": { "label": "Attack (overworld)", "codes": ["KeyQ", "Mouse0", "Pad2"], "category": "movement" },
+    "partySlot1": { "label": "Switch to Character 1", "codes": ["Digit1"], "category": "movement" },
+    "partySlot2": { "label": "Switch to Character 2", "codes": ["Digit2"], "category": "movement" },
+    "partySlot3": { "label": "Switch to Character 3", "codes": ["Digit3"], "category": "movement" },
+    "partySlot4": { "label": "Switch to Character 4", "codes": ["Digit4"], "category": "movement" },
+    "promptPrev": { "label": "Previous Prompt", "codes": ["Pad12"], "category": "movement" },
+    "promptNext": { "label": "Next Prompt", "codes": ["Pad13"], "category": "movement" }
   }
 }

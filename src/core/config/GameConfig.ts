@@ -52,6 +52,18 @@ export const GameConfigSchema = z.object({
     orbitSensitivity: z.number().positive(),
     zoomSensitivity: z.number().positive(),
     invertY: z.boolean(),
+    /** Phase-2 follow camera (exploration): distance / height behind the character, pitch (rad), zoom limits, follow smoothing (1/s), keyboard and stick rotation speed (rad/s). */
+    follow: z.object({
+      distance: z.number().positive(),
+      minDistance: z.number().positive(),
+      maxDistance: z.number().positive(),
+      height: z.number(),
+      pitch: z.number(),
+      minPitch: z.number(),
+      maxPitch: z.number(),
+      smoothing: z.number().positive(),
+      rotateSpeed: z.number().positive(),
+    }),
   }),
 });
 
