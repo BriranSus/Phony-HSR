@@ -170,7 +170,8 @@ export const ENEMIES = [
       {
         id: 'phase-2',
         hpThreshold: 0,
-        restoresHp: true,
+        // Wiki: in phase 2 Cocolia's Max HP is reduced by 25%, so the new bar starts at 75%.
+        restoreHpTo: 0.75,
         // Phase-2 toughness from the wiki infobox ("180 (Phase 1) / 160 (Phase 2)").
         toughness: 160,
         abilities: abilityIdsByPhase(2),
@@ -255,7 +256,7 @@ export function buildEnemies(src, campName) {
       presentation: { model: `proc.enemy.${spec.slug}`, scale: rank === 'normal' ? 1 : rank === 'elite' ? 1.5 : 2.4, bossBar: rank !== 'normal' && rank !== 'elite' },
       sources: [source(`${text(m.MonsterName)}: MonsterConfig ${spec.id}, MonsterTemplateConfig ${m.MonsterTemplateID}, MonsterSkillConfig, EliteGroup ${m.EliteGroup}`, `${SOURCES.datamine.repo}/tree/${SOURCES.datamine.commit}/ExcelOutput`)],
     };
-    if (spec.slug.startsWith('cocolia')) enemy.sources.push(source('Cocolia, Mother of Deception: phase-2 toughness 160, skill parameter meanings', 'https://honkai-star-rail.fandom.com/wiki/Cocolia,_Mother_of_Deception'));
+    if (spec.slug.startsWith('cocolia')) enemy.sources.push(source('Cocolia, Mother of Deception: phase-2 toughness 160, phase-2 HP at 75% (Max HP -25%), skill parameter meanings', 'https://honkai-star-rail.fandom.com/wiki/Cocolia,_Mother_of_Deception'));
     if (enemy.phases.length) for (const ph of enemy.phases) for (const st of JSON.stringify(ph).match(/"status":"[^"]+"/g) ?? []) statuses.add(st.slice(10, -1));
     return { slug: spec.slug, enemy };
   });

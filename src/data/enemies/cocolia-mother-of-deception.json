@@ -205,7 +205,7 @@
     {
       "id": "phase-2",
       "hpThreshold": 0,
-      "restoresHp": true,
+      "restoreHpTo": 0.75,
       "toughness": 160,
       "abilities": [
         "cocolia-mother-of-deception.icy-rain-of-annihilation",
@@ -228,7 +228,7 @@
       "retrieved": "2026-10-08"
     },
     {
-      "topic": "Cocolia, Mother of Deception: phase-2 toughness 160, skill parameter meanings",
+      "topic": "Cocolia, Mother of Deception: phase-2 toughness 160, phase-2 HP at 75% (Max HP -25%), skill parameter meanings",
       "url": "https://honkai-star-rail.fandom.com/wiki/Cocolia,_Mother_of_Deception",
       "retrieved": "2026-10-08"
     }

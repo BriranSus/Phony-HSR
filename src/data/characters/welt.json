@@ -39,22 +39,40 @@
       "spCost": 1,
       "energyGain": 10,
       "effects": [
-        { "kind": "damage", "target": "primary", "stat": "atk", "multiplier": { "param": "p1" }, "toughness": 10 },
+        {
+          "kind": "damage",
+          "target": "primary",
+          "stat": "atk",
+          "multiplier": { "param": "p1" },
+          "onHit": [
+            {
+              "kind": "applyStatus",
+              "target": "primary",
+              "status": "debuff.spd-down",
+              "baseChance": { "param": "p2" },
+              "duration": { "param": "p4" },
+              "params": { "spdDown": { "param": "p3" } }
+            }
+          ],
+          "toughness": 10
+        },
         {
           "kind": "damage",
           "target": "randomEnemy",
           "stat": "atk",
           "multiplier": { "param": "p1" },
           "bounces": 1,
+          "onHit": [
+            {
+              "kind": "applyStatus",
+              "target": "primary",
+              "status": "debuff.spd-down",
+              "baseChance": { "param": "p2" },
+              "duration": { "param": "p4" },
+              "params": { "spdDown": { "param": "p3" } }
+            }
+          ],
           "toughness": 10
-        },
-        {
-          "kind": "applyStatus",
-          "target": "primary",
-          "status": "debuff.spd-down",
-          "baseChance": { "param": "p2" },
-          "duration": { "param": "p4" },
-          "params": { "spdDown": { "param": "p3" } }
         }
       ],
       "triggers": [],

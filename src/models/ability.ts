@@ -130,6 +130,11 @@ const DamageEffectSchema = z
     repeat: z.object({ resource: IdSchema }).strict().optional(),
     /** Overrides the ability's attack type (e.g. a Skill that deals Follow-up DMG). */
     attackType: AttackTypeSchema.optional(),
+    /**
+     * Status rolled separately on every hit of this effect (incl. bounces) against the hit target,
+     * e.g. Welt's Skill Slow. `target` is ignored: each roll targets the unit that was hit.
+     */
+    onHit: z.array(z.lazy(() => ApplyStatusEffectSchema)).optional(),
     /** Only hits targets meeting these conditions (Clara's Skill: enemies with a Mark of Counter). */
     targetConditions: z.array(z.lazy(() => ConditionSchema)).optional(),
   })

@@ -339,21 +339,21 @@ describe('Unit lifecycle (memosprites leave the field at 0 HP)', () => {
   });
 
   it('a memosprite at 0 HP leaves the field; its owner stays', () => {
-    const units = [unit('lyra', 'character'), unit('aria', 'memosprite', 'lyra')];
-    const changed = resolveZeroHp(units, 'aria');
-    expect(changed.map((u) => [u.uid, u.presence])).toEqual([['aria', 'leftField']]);
+    const units = [unit('trailblazer', 'character'), unit('mem', 'memosprite', 'trailblazer')];
+    const changed = resolveZeroHp(units, 'mem');
+    expect(changed.map((u) => [u.uid, u.presence])).toEqual([['mem', 'leftField']]);
     expect(units[0]!.presence).toBe('active');
     expect(isOnTimeline(units[1]!)).toBe(false);
   });
 
   it('a downed owner takes its memosprite off the field', () => {
-    const units = [unit('lyra', 'character'), unit('aria', 'memosprite', 'lyra'), unit('brann', 'character')];
-    const changed = resolveZeroHp(units, 'lyra');
+    const units = [unit('trailblazer', 'character'), unit('mem', 'memosprite', 'trailblazer'), unit('march-7th', 'character')];
+    const changed = resolveZeroHp(units, 'trailblazer');
     expect(changed.map((u) => [u.uid, u.presence])).toEqual([
-      ['lyra', 'downed'],
-      ['aria', 'leftField'],
+      ['trailblazer', 'downed'],
+      ['mem', 'leftField'],
     ]);
     expect(units[2]!.presence).toBe('active');
-    expect(resolveZeroHp(units, 'lyra')).toEqual([]);
+    expect(resolveZeroHp(units, 'trailblazer')).toEqual([]);
   });
 });

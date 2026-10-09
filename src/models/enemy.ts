@@ -35,11 +35,11 @@ export const EnemyPhaseSchema = z
     id: IdSchema,
     /**
      * Phase starts when HP fraction drops to or below this value (1 = initial phase). With
-     * `restoresHp`, 0 means "when the previous phase's HP bar is depleted" (multi-bar bosses).
+     * `restoreHpTo`, 0 means "when the previous phase's HP bar is depleted" (multi-bar bosses).
      */
     hpThreshold: z.number().min(0).max(1),
-    /** The boss refills its HP when this phase starts (separate HP bars per phase). */
-    restoresHp: z.boolean().default(false),
+    /** HP set to this fraction of Max HP when the phase starts (Cocolia phase 2: 0.75, i.e. Max HP reduced by 25%). */
+    restoreHpTo: z.number().min(0).max(1).optional(),
     /** Overrides for the phase (bosses can change weaknesses / toughness between phases). */
     toughness: z.number().positive().optional(),
     weaknesses: z.array(ElementSchema).optional(),

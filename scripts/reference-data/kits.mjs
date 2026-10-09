@@ -785,7 +785,7 @@ export const KITS = [
   {
     srrId: '1004',
     slug: 'welt',
-    kit: (a, s) => ({
+    kit: (a, s, slow = () => status('primary', 'debuff.spd-down', { baseChance: P(2), duration: P(4), params: { spdDown: P(3) } })) => ({
       statuses: [
         base('debuff', 'cc', `${s}.imprisonment`, 'Imprisoned', 'Action delayed and SPD reduced.', {
           duration: { turns: 1, tickOn: 'ownerTurnStart' },
@@ -800,10 +800,10 @@ export const KITS = [
           kind: 'skill',
           targeting: 'enemyBounce',
           tags: ['bounce', 'impair'],
+          // 1 hit on the target + 2 on random enemies; the Slow is rolled on every hit.
           effects: [
-            dmg('primary', P(1)),
-            dmg('randomEnemy', P(1), { bounces: 1 }),
-            status('primary', 'debuff.spd-down', { baseChance: P(2), duration: P(4), params: { spdDown: P(3) } }),
+            dmg('primary', P(1), { onHit: [slow()] }),
+            dmg('randomEnemy', P(1), { bounces: 1, onHit: [slow()] }),
           ],
         }),
         ultimate: a('100403', {

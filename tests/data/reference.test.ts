@@ -155,3 +155,12 @@ describe('enemies', () => {
     expect(p.enemy.levels['80']!.def * 210).toBeCloseTo(1000, 3);
   });
 });
+
+describe('validator fixes after Revision 2', () => {
+  it('Cocolia phase 2 starts at 75% HP; Welt rolls the Skill Slow on every hit', () => {
+    expect(enemy('cocolia-mother-of-deception').phases[1]).toMatchObject({ hpThreshold: 0, restoreHpTo: 0.75 });
+    const dmgs = char('welt').abilities.skill.effects.filter((e) => e.kind === 'damage');
+    expect(dmgs).toHaveLength(2);
+    for (const d of dmgs) expect(d.kind === 'damage' && d.onHit?.[0]).toMatchObject({ kind: 'applyStatus', status: 'debuff.spd-down' });
+  });
+});

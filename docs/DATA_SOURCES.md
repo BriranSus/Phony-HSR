@@ -37,7 +37,7 @@ These are either not in the sources or need interpretation. They are listed here
 
 | Field | Status |
 |---|---|
-| Cocolia's phase transition (`hpThreshold: 0`, `restoresHp: true`) | **Interpretation.** The datamine lists skills per phase but no transition rule. Modelled as separate HP bars (phase 2 starts when the phase-1 bar is depleted). Phase-2 toughness **160** is from the wiki infobox, not the datamine. |
+| Cocolia's phase transition (`hpThreshold: 0`, `restoreHpTo: 0.75`) | The datamine lists skills per phase but no transition rule. Per the wiki, phase 2 begins when the phase-1 bar is depleted, with Max HP reduced by 25% (HP 75%). Phase-2 toughness **160** is from the wiki infobox, not the datamine. |
 | Lance of the Eternal Freeze toughness | The datamine Echo-of-War variants (1002017/1002018) give **40**. The wiki infobox page for "Lance (1)" shows 30, which is a different variant. The datamine value is used. |
 | Silvermane Soldier DEF reduction base chance (100%) | From the wiki text. The datamine `ParamList` only holds multiplier, amount and turns. |
 | Automaton Grizzly *Enrage Order* (50% base chance, 2 turns) | Chance from the wiki. The turn count is read from `ParamList[1]` (interpretation). |
@@ -48,7 +48,7 @@ These are either not in the sources or need interpretation. They are listed here
 | Banners | 5★ featured units and rates/pity are reference values. The 4★ featured lists are **real-style**: Seele's real banner also featured Hook, who is not in the roster. Pools are limited to the shipped roster. |
 | "Greatly increased chance of being attacked" (Clara Ultimate `p1` = 5, March 7th Skill `p5` = 5, Gepard A2 = 3, Moment of Victory `p1` = 2) | Encoded as fractional `aggro` bonuses equal to the reference parameter. The aggro formula itself arrives in Phase 5. |
 | Mem's *Baddies! Trouble!* | "4 instances" is encoded as 1 hit + `bounces: 3`. |
-| Welt's Skill Slow | Applied to the primary target. The reference rolls it on every hit. |
+| Welt's Skill Slow | Rolled on every hit via `damage.onHit` (Phase 2 fix). |
 | Ability Trace levels | The cost tables are real per node and per level, but the per-level ascension gates of ability nodes are not modelled. Major and stat nodes carry their real ascension/level requirements. |
 | Character `lore.title` | The sources have no title field, so the character's faction is used. `bio` is the first sentence of the first story entry. |
 | Kit versions | The base kits are used. The datamine also contains later "enhanced" variants (8-digit ids such as `11102xx`), which are not imported. |
