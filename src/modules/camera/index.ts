@@ -1,40 +1,47 @@
 import { createToken } from '@core/di/ServiceRegistry';
 import { defineStubModule } from '@core/modules/GameModule';
+import type { CameraModeId } from '@models/camera';
 
 /**
- * CAMERA (Phase 3). One rig with named modes and smooth blends between them: exploration
- * (third-person orbit with collision), combat (wide arena view), skill / ultimate (data-driven
- * shots referenced by ability `presentation.camera`), boss, dialogue and cinematic cameras.
+ * CAMERA (Phase 3). A data-driven camera director that owns the single scene camera and switches
+ * between modes on a priority stack with blends (curve + duration) or cuts:
+ * - exploration: third-person orbit (mouse / Z-C / right stick, pitch clamps, smooth zoom,
+ *   look-ahead, damping, auto-recenter) with sphere-cast collision against the level colliders;
+ * - combat, skill, ultimate, boss, dialogue, cinematic: data-defined shots (`camera/shots`) with
+ *   anchors, keyframes / splines, easing, FOV punch, trauma shake profiles and letterbox.
+ * Scripted shots gate the player's input. Tuning is data (`camera/rules`); player preferences
+ * (sensitivity, invert Y, auto-recenter, shake intensity, FOV) are config.
+ *
+ * The module is pure TypeScript (no THREE): the app applies `CameraPose`s to the scene camera.
  */
-export type CameraMode = 'exploration' | 'combat' | 'skill' | 'ultimate' | 'boss' | 'dialogue' | 'cinematic';
-
-export interface CameraShot {
-  readonly id: string;
-  readonly mode: CameraMode;
-  readonly durationMs: number;
-}
+export type CameraMode = CameraModeId;
 
 export interface CameraSystem {
-  readonly mode: CameraMode;
-  setMode(mode: CameraMode, blendMs?: number): void;
+  readonly mode: CameraMode | null;
+  /** True while a scripted shot is active (player movement input must be ignored). */
+  readonly inputGated: boolean;
+  /** Play a shot by id from `camera/shots`; resolves when the shot ends. */
   playShot(shotId: string): Promise<void>;
-  shake(intensity: number, durationMs: number): void;
+  stopShots(): void;
+  shake(profileId: string): void;
 }
 
 /**
- * The exploration camera contract the player controller relies on (Phase 2 ships a basic follow
- * camera that implements it; the Phase-3 rig replaces it without touching the controller).
- * Movement is camera-relative, so the controller only reads `yaw`.
+ * The exploration camera contract the player controller relies on. Movement is camera-relative,
+ * so the controller only reads `yaw`.
  */
 export interface ExplorationCamera {
   /** Horizontal look direction (same yaw convention as the player: 0 faces +Z). */
   readonly yaw: number;
-  /** Follow `target` (character feet position); `dt` in seconds. */
-  update(dt: number, target: { readonly x: number; readonly y: number; readonly z: number }): void;
-  /** Snap behind the target immediately (spawn, respawn). */
-  reset(target: { readonly x: number; readonly y: number; readonly z: number }, yaw: number): void;
 }
 
 export const CameraToken = createToken<CameraSystem>('CameraSystem');
 
 export const cameraModule = defineStubModule({ id: 'camera', name: 'Camera System', phase: 3, dependsOn: ['player'] });
+
+export * from './math';
+export * from './occlusion';
+export * from './shake';
+export * from './shots';
+export * from './exploration';
+export * from './director';

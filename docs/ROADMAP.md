@@ -10,7 +10,7 @@ Legend: ✅ done · 🟡 partially present (framework or stub) · ⬜ not starte
 |---|---|---|---|---|
 | 1 | Project architecture | core, models, all module stubs, ui (framework), vfx (backdrop) | — | ✅ |
 | 2 | Player controller | player | 1 | ✅ done (exploration test level) |
-| 3 | Camera | camera | 2 | 🟡 interface |
+| 3 | Camera | camera | 2 | ✅ done (director, exploration rig, shots, Camera Gallery) |
 | 4 | World exploration | world | 2, 3 | 🟡 interface |
 | 5 | Combat engine | combat, skills, status | 1 | 🟡 interfaces + formulas |
 | 6 | Character framework | characters | 5 | 🟡 interface + data |
@@ -51,6 +51,7 @@ Legend: ✅ done · 🟡 partially present (framework or stub) · ⬜ not starte
 ### Phase 3: Camera
 - One camera rig with modes **exploration** (orbit + collision + auto-recenter), **combat**, **skill**, **ultimate**, **boss**, **dialogue** and **cinematic**, and smooth blends between them.
 - Data-driven shots referenced from ability `presentation.camera`. Camera shake. Settings (sensitivity, invert) from config.
+- **Status: done.** `camera/shots` presets are previewed in the Camera Gallery (F4). Phases 5 (combat), 14 (dialogue) and 17+ play the same shots by id.
 
 ### Phase 4: World exploration
 - Area loading from data (region → area), spawn points, procedural/authored greybox environments, **interactables** (chests, puzzles, teleport anchors, area transitions, hidden areas), and **enemy patrols** that start encounters.

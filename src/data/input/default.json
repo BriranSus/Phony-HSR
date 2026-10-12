@@ -27,12 +27,20 @@
     "toggleDebug": { "label": "Toggle Debug Overlay", "codes": ["F3", "Backquote"], "category": "debug" },
     "walkToggle": { "label": "Walk / Run Toggle", "codes": ["ControlLeft", "Pad10"], "category": "movement" },
     "technique": { "label": "Technique", "codes": ["KeyE", "Pad3"], "category": "movement" },
-    "overworldAttack": { "label": "Attack (overworld)", "codes": ["KeyQ", "Mouse0", "Pad2"], "category": "movement" },
+    "overworldAttack": { "label": "Attack (overworld)", "codes": ["Mouse0", "Pad2"], "category": "movement" },
     "partySlot1": { "label": "Switch to Character 1", "codes": ["Digit1"], "category": "movement" },
     "partySlot2": { "label": "Switch to Character 2", "codes": ["Digit2"], "category": "movement" },
     "partySlot3": { "label": "Switch to Character 3", "codes": ["Digit3"], "category": "movement" },
     "partySlot4": { "label": "Switch to Character 4", "codes": ["Digit4"], "category": "movement" },
     "promptPrev": { "label": "Previous Prompt", "codes": ["Pad12"], "category": "movement" },
-    "promptNext": { "label": "Next Prompt", "codes": ["Pad13"], "category": "movement" }
+    "promptNext": { "label": "Next Prompt", "codes": ["Pad13"], "category": "movement" },
+    "cameraGallery": { "label": "Camera Gallery (debug)", "codes": ["F4"], "category": "debug" },
+    "cameraRecenter": { "label": "Recenter Camera", "codes": ["KeyX", "Pad11"], "category": "camera" },
+    "cameraShot1": { "label": "Gallery Shot 1", "codes": ["Digit1"], "category": "debug" },
+    "cameraShot2": { "label": "Gallery Shot 2", "codes": ["Digit2"], "category": "debug" },
+    "cameraShot3": { "label": "Gallery Shot 3", "codes": ["Digit3"], "category": "debug" },
+    "cameraShot4": { "label": "Gallery Shot 4", "codes": ["Digit4"], "category": "debug" },
+    "cameraShot5": { "label": "Gallery Shot 5", "codes": ["Digit5"], "category": "debug" },
+    "cameraShot6": { "label": "Gallery Shot 6", "codes": ["Digit6"], "category": "debug" }
   }
 }

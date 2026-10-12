@@ -1040,6 +1040,10 @@
 
 
 .hud__hints {
+  max-width: calc(100% - 220px);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  row-gap: 0.4em;
   position: absolute;
   right: 2.4vw;
   bottom: 3.2vh;
@@ -1534,5 +1538,121 @@
   }
   .xtoast {
     top: 22vh;
+  }
+}
+
+/* ============================ CAMERA (PHASE 3) ============================ */
+.letterbox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: #000;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.letterbox--top {
+  top: 0;
+}
+
+.letterbox--bottom {
+  bottom: 0;
+}
+
+/* During scripted shots the exploration chrome steps aside, as in the reference game. */
+.exploration .party,
+.exploration .prompts,
+.exploration .gait,
+.exploration .hud__hints,
+.exploration .hud__area,
+.exploration .hud__back {
+  transition: opacity 250ms;
+}
+
+.exploration.is-cinematic .party,
+.exploration.is-cinematic .prompts,
+.exploration.is-cinematic .gait,
+.exploration.is-cinematic .hud__hints,
+.exploration.is-cinematic .hud__area,
+.exploration.is-cinematic .hud__back {
+  opacity: 0;
+}
+
+.exploration.is-gallery .prompts,
+.exploration.is-gallery .gait {
+  opacity: 0;
+}
+
+.gallery {
+  position: absolute;
+  left: max(16px, 2.4vw);
+  top: 50%;
+  transform: translate(-12px, -50%);
+  width: 300px;
+  padding: 0.9em 1em;
+  background: var(--c-panel);
+  border: 1px solid var(--c-line);
+  --chamfer: 14px;
+  clip-path: var(--chamfer-tl-br);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 200ms,
+    transform 240ms var(--ease-out);
+  z-index: 4;
+}
+
+.gallery.is-open {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.gallery__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.7em;
+  margin-top: 0.45em;
+  padding: 0.4em 0.5em;
+  border-radius: 0.35em;
+  color: var(--c-text);
+}
+
+.gallery__row.is-playing {
+  background: rgba(244, 223, 176, 0.18);
+  color: var(--c-white);
+}
+
+.gallery__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.gallery__mode {
+  font-size: 0.72em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+}
+
+.gallery__hint {
+  margin-top: 0.8em;
+  font-size: 0.78em;
+  color: var(--c-text-dim);
+}
+
+@media (max-width: 700px) {
+  .gallery {
+    width: auto;
+    right: 16px;
+    top: auto;
+    bottom: 70px;
+    transform: none;
+  }
+  .gallery.is-open {
+    transform: none;
   }
 }

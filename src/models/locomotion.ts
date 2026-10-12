@@ -152,6 +152,10 @@ export const LevelSchema = z
     spawn: z.object({ position: Vec3, yaw: z.number() }).strict(),
     colliders: z.array(ColliderSchema).min(1),
     interactables: z.array(InteractableSchema).default([]),
+    /** Named placeholder units for camera shots (dummy enemies, boss, speaker) - Phase 3 Camera Gallery. */
+    markers: z.array(z.object({ id: IdSchema, kind: z.enum(['enemy', 'boss', 'npc']), position: Vec3, yaw: z.number() }).strict()).default([]),
+    /** Where the Camera Gallery stages the player. */
+    galleryStage: z.object({ position: Vec3, yaw: z.number() }).strict().optional(),
     /** Falling below this height respawns the player at `spawn`. */
     killHeight: z.number(),
   })

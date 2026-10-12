@@ -31,6 +31,14 @@
     { "shape": "box", "id": "pillar-2", "min": [6, 0, 6], "max": [7.2, 3, 7.2], "material": "pillar" },
     { "shape": "box", "id": "crate", "min": [-6, 0, 8], "max": [-4.6, 0.8, 9.4], "material": "crate" }
   ],
+  "galleryStage": { "position": [0, 0, -3], "yaw": 3.14159 },
+  "markers": [
+    { "id": "dummy.enemy-1", "kind": "enemy", "position": [-3.2, 0, -8.5], "yaw": 0 },
+    { "id": "dummy.enemy-2", "kind": "enemy", "position": [0, 0, -9.5], "yaw": 0 },
+    { "id": "dummy.enemy-3", "kind": "enemy", "position": [3.2, 0, -8.5], "yaw": 0 },
+    { "id": "dummy.boss", "kind": "boss", "position": [1, 0, -17], "yaw": 0 },
+    { "id": "dummy.npc", "kind": "npc", "position": [2.6, 0, -4.6], "yaw": 3.6 }
+  ],
   "interactables": [
     { "id": "sign.welcome", "kind": "sign", "label": "Read: Calibration Notice", "position": [-1.6, 0, 3.2], "message": "Calibration Grounds — ramps east, stairs west, corridor south. Mind the steep slope." },
     { "id": "chest.platform", "kind": "chest", "label": "Open: Basic Treasure", "position": [13, 2, -3], "message": "Treasure placeholder opened. Loot arrives with the economy module." },

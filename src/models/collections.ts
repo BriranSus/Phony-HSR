@@ -10,6 +10,7 @@ import { StatusEffectSchema } from './status';
 import { ScalingCurvesSchema } from './scaling';
 import { BannerSchema } from './gacha';
 import { LevelSchema, LocomotionRulesSchema, PartySchema } from './locomotion';
+import { CameraRulesSchema, CameraShotSchema } from './camera';
 import { DialogueSchema, QuestSchema } from './quest';
 import {
   CombatRulesSchema,
@@ -201,6 +202,13 @@ export const Collections = {
     references: (p) => p.members.map((id, i) => ({ collection: 'characters', id, at: `members[${i}]` })),
   }),
   levels: defineCollection({ name: 'levels', dir: 'levels', format: 'item', schema: LevelSchema }),
+  cameraRules: defineCollection({ name: 'cameraRules', dir: 'camera/rules', format: 'item', schema: CameraRulesSchema }),
+  cameraShots: defineCollection({
+    name: 'cameraShots',
+    dir: 'camera/shots',
+    format: 'list',
+    schema: CameraShotSchema,
+  }),
   dialogues: defineCollection({ name: 'dialogues', dir: 'dialogues', format: 'item', schema: DialogueSchema }),
 } as const;
 

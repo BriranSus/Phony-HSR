@@ -2,7 +2,7 @@
 
 **Project:** Astral Rail, an original fan project inspired by the gameplay structure of *Honkai: Star Rail*
 **Scope:** spec §39 "FIRST ACTION" (analysis, engine, stack, architecture, folders, data models, dependencies, roadmap) and **Phase 1** of §37
-**Status:** Phase 1 complete: Revision 1 (§7) and Revision 2, real Honkai: Star Rail content (§8), were each validated at 8.5/10. **Phase 2 (Player controller) is complete** and awaiting validation, see [§9](#9-phase-2-player-controller). Phase 3+ is not started.
+**Status:** Phase 1 complete (Revisions 1 and 2 each validated at 8.5/10) and Phase 2 validated at 8.5/10. **Phase 3 (Camera) is complete** and awaiting validation, see [§10](#10-phase-3-camera). Phase 4+ is not started.
 
 ---
 
@@ -174,8 +174,8 @@ Validator fixes first (Revision 2 scored 8.5/10, with 0 data mismatches):
 | Data | `rules/locomotion/default.json`, `parties/default.json`, `levels/test-level.json`, `config/game.config.json -> camera.follow`, `input/default.json` | Gait speeds and strides, acceleration, turn rate, deadzone, capsule (radius, height, step, max slope, snap), gravity, interaction radius, the animation states, the party (March 7th, Dan Heng, Himeko, Welt), level colliders / interactables / spawn, follow-camera tuning, key and gamepad bindings |
 | Schemas | `models/locomotion.ts` (+ 3 collections) | Validated at load: gait order, unique party members that must exist as characters, collider bounds, unique interactables |
 | Simulation | `modules/player/` (`movement`, `collision`, `animation`, `party`, `interaction`, `controller`) | Pure and deterministic, no THREE or DOM. Unit-tested on the real level |
-| Camera contract | `modules/camera -> ExplorationCamera` | The controller only needs `yaw`. The Phase-2 `FollowCamera` implements this contract; Phase 3 replaces it |
-| Presentation | `app/scenes/TestLevelScene`, `PlaceholderCharacter`, `FollowCamera`; `modules/ui/screens/ExplorationHud` | Level meshes are generated from the collider data. A procedural low-poly figure is tinted by the leader's element. The HUD shows the party list, the right-side prompt list, the gait readout, toasts and a message box |
+| Camera contract | `modules/camera -> ExplorationCamera` | The controller only needs `yaw`. The Phase-2 follow camera implemented this contract; Phase 3 replaced it with the camera module |
+| Presentation | `app/scenes/TestLevelScene`, `PlaceholderCharacter`; `modules/ui/screens/ExplorationHud` | Level meshes are generated from the collider data. A procedural low-poly figure is tinted by the leader's element. The HUD shows the party list, the right-side prompt list, the gait readout, toasts and a message box |
 | Wiring | `app/states/TestSceneState` | Action map → `ControlInput` (keys, mouse, left/right stick). Fixed 1/60 s sub-steps. Events go to the bus and the HUD. The `window.__ASTRAL__.probes.exploration` probe serves the E2E test |
 
 **Dependencies:** `player` depends only on core and data (input actions, data registry, event bus). `camera` (Phase 3) depends on `player`. Combat (Phase 5) will consume `player:overworldAttack` / `player:technique`, and audio (Phase 22) will consume `player:footstep`. Existing systems are unchanged apart from three things: the InputManager gained analog sticks (`stick()`), the debug handle gained `probes`, and the Phase-1 sandbox (orbit camera, input monitor) was replaced by the level.
@@ -199,7 +199,7 @@ Validator fixes first (Revision 2 scored 8.5/10, with 0 data mismatches):
 | Walk / run toggle | Ctrl | L3 |
 | Interact | F | A |
 | Technique | E | Y |
-| Attack | Q or left click | X |
+| Attack | left click (Q removed in Phase 3, as on PC) | X |
 | Switch character | 1–4 | — |
 | Camera | hold right mouse, Z/C, wheel, +/− | right stick |
 | Debug overlay | F3 | — |
@@ -233,8 +233,89 @@ Validator fixes first (Revision 2 scored 8.5/10, with 0 data mismatches):
 - **Party switching has no cooldown**, and the exploration model is a placeholder figure, not character art.
 - **Touch controls are not implemented.** On phones the HUD lays out correctly, but movement needs a keyboard or gamepad.
 
-## 10. What Phase 3 will add (Camera)
+## 10. Phase 3: Camera
 
-- One camera rig behind the `CameraSystem` / `ExplorationCamera` interfaces, with modes for exploration (orbit with collision against the level colliders, auto-recentering behind the character, zoom limits), combat, skill / ultimate shots, boss, dialogue and cinematic, plus smooth blends between modes.
-- Data-driven camera shots referenced by ability `presentation.camera` ids, and camera shake.
-- Tests for the orbit and collision math and mode blending, plus an E2E check that the camera never clips through the test level's walls.
+Two validator fixes came first (Phase 2 scored 8.5/10):
+1. **The overworld attack is left click only**, as on HSR PC. Q no longer attacks (input data, HUD hint, docs). The walkthrough asserts that Q does nothing and a left click attacks once.
+2. **The camera can no longer end up behind the perimeter wall.** Validator screenshot p2-12 showed a black frame; this is solved by the exploration camera's collision (§10.2).
+
+### 10.1 Architecture (spec §29, §38)
+| Piece | Where | Role |
+|---|---|---|
+| Data | `camera/rules/default.json`, `camera/shots/gallery.json`, `levels/test-level.json -> markers, galleryStage` | Exploration tuning, per-mode blends and priorities, shake profiles and letterbox height. Six shot presets. Dummy units for the gallery |
+| Settings | `config -> camera` (fov, orbitSensitivity, zoomSensitivity, invertY, autoRecenter, shakeIntensity, pointerLock) | Player preferences, shared with the future settings screen |
+| Schemas | `models/camera.ts` (+ 2 collections) | Modes, easings, blends, shake profiles, anchors (unit / point / centroid / unit-toward-unit), keyframes and shots, all validated at load |
+| Module | `modules/camera/`: `math`, `occlusion`, `exploration`, `shots`, `shake`, `director` | Pure and unit-tested. The app applies the output `CameraPose` to the scene camera |
+| Wiring | `app/states/TestSceneState` | Builds `CameraInput` from the action map (right-mouse drag or pointer lock, Z/C, right stick, wheel, +/-). Runs the director every frame. Hosts the Camera Gallery (F4) and gates player input. Exposes a camera probe for E2E |
+
+**Dependencies:** `camera` depends on `player` (turn math, collider surfaces, and the controller as follow target) and on data. Combat (Phase 5), dialogue (Phase 14) and cinematics play shots by id through `CameraDirector.playShot` and call `shake(profile)`. The player controller was not changed: `ExplorationProvider` implements the existing `ExplorationCamera` contract.
+
+### 10.2 What was built
+- **Director:** a priority stack, where the highest priority wins and the latest pushed wins ties.
+  - Blends use the provider's `blendIn`, or its `blendOut` when it pops, otherwise the mode default from data. A blend is a curve plus a duration, or a cut.
+  - Finished shots pop automatically and `playShot` resolves when they end.
+  - It adds trauma shake (data profiles; strength = trauma², linear decay, scaled by `shakeIntensity`) and an animated letterbox.
+  - `inputGated` is true while a scripted shot plays.
+- **Exploration camera (HSR feel):** an orbit around the player's head.
+  - **Controls:** yaw and pitch from right-mouse drag (or pointer lock), Z/C or the right stick. Pitch is clamped to -0.2…1.15 rad, zoom ranges 2.2–9 m and is smoothed, X recenters manually.
+  - **Follow:** damping, plus a look-ahead in the direction of travel that only shifts the look target and fades out when the camera is pulled in.
+  - **Auto-recenter:** after 2 s without camera input while the player moves, the camera gently swings behind them (toggle: `autoRecenter`).
+- **Collision and occlusion:** every frame a sphere (r 0.3 m) is cast from the player's head toward the desired position against the level colliders.
+  - The camera **pulls in instantly** and **eases back out** at 3 m/s.
+  - If even 0.6 m is blocked (the player hugging a wall or corner), the camera **lifts over the player** by raising the pitch until there is room, then eases back down.
+  - The player is never hidden by level geometry. This is unit-tested at 6 wall and corner spots × 16 yaws on the real level, and checked live in E2E.
+- **Shots (data):** anchors resolve each frame to the player, level markers or interactables. Shots use keyframes with per-key easing, Catmull-Rom splines, FOV punch (60 ms attack, quadratic release), shake triggers, letterbox and blend overrides. The HUD chrome fades during letterboxed shots.
+- **Camera Gallery (F4):**
+  - **Staging:** it places the player in front of three dummy enemies, a boss dummy and a speaker dummy.
+  - **Shots** (keys 1–6):
+    1. Combat Overview
+    2. Skill Close-up
+    3. Ultimate (cut, FOV punch, shake, letterbox)
+    4. Boss Intro (spline sweep, roar shake)
+    5. Dialogue Two-shot (over-the-shoulder)
+    6. Cinematic Flyover (spline path)
+  - **Gating:** player input is gated while the gallery is open. Esc or F4 closes it and blends back to exploration.
+
+**Controls:**
+
+| Action | Keyboard / mouse | Gamepad |
+|---|---|---|
+| Rotate camera | hold right mouse (or move the mouse with `camera.pointerLock`), Z / C | right stick |
+| Zoom | wheel (when no prompt list is open), + / − | — |
+| Recenter | X | R3 |
+| Camera Gallery | F4, then 1–6 to play shots, Esc / F4 to close | — |
+| Attack (overworld) | **left click** | X |
+
+All other controls are unchanged from Phase 2.
+
+### 10.3 Tests and verification
+- `tests/camera/camera.test.ts` has 15 tests:
+  - orbit math, pitch/zoom clamps and zoom smoothing, sensitivity and invert Y
+  - sphere cast vs the perimeter wall
+  - no clipping behind or into the perimeter wall at 96 wall/corner poses, with line of sight checked
+  - instant pull-in and eased recovery
+  - recenter timing (no swing before the 2 s delay, a full swing after it, none with the setting off or the player still)
+  - easing and blend interpolation, shake decay and intensity, shot evaluation with anchors and FOV punch
+  - director priority, tie-breaking, popping, blend timing, cuts, letterbox, playing shots with gating and the return to exploration, and shake-intensity 0
+- **Playwright walkthrough** at **1600×900** and **1280×720**. Besides the Phase-2 steps it checks:
+  - **Attack:** Q doesn't attack and a left click attacks once.
+  - **Walls:** the player stays visible while running along the east wall with the camera forced toward it and in the north-east corner. Visibility is sampled every 200 ms: the player's head projects on screen, the camera-to-head line isn't occluded, and the camera is inside the walls.
+  - **Camera controls:** Z rotates, the wheel zooms out and X recenters.
+  - **Gallery:** each of the 6 shots is captured, the mode is correct and player input is gated. The ultimate shows shake and letterbox. Esc returns to exploration.
+- **Results:** `npm run build` has 0 type errors. `npm test` passes **180/180** in 15 files. `npm run lint` reports 0 problems. `npm run screenshots` produces **51 screenshots** with 0 console errors and 0 layout problems.
+- **Screenshots** (in `docs/screenshots/`):
+  - `08-explore-07-wall`, `-08-corner`, `-09-rotate-zoom`, `08-explore-gallery-1-combat` … `-6-cinematic`
+  - the same set as `vp-1280x720-explore-*`
+  - `vp-1024x768-explore`, `vp-390x844-explore`
+
+### 10.4 Known gaps
+- **Near-camera geometry fading is not implemented.** Pull-in and lift already keep the player visible. Close to walls the camera sits tight behind or above the player instead of fading the wall.
+- **Collision is a marched sphere cast** against the axis-aligned colliders (boxes and ramps). Arbitrary meshes arrive with authored geometry in Phase 15.
+- **Shots are previewed against dummies only.** Real combat, dialogue and cinematic triggers come in Phases 5, 14 and later. Ability `presentation.camera` ids are not mapped to shots yet.
+- **No camera settings UI yet.** The settings live in config and the settings screen is Phase 21. Pointer lock is off by default.
+- **E2E visibility is geometric**, not pixel-based: it uses projection plus a line-of-sight test, because the WebGL buffer isn't preserved for readback.
+
+## 11. What Phase 4 will add (World exploration)
+
+- Area loading from data (region → area), spawn points, greybox environments, interactables (chests, puzzles, teleport anchors, area transitions), and enemy patrols that start encounters through the Phase-2 `player:overworldAttack` hook.
+- The camera system and player controller are reused as-is.

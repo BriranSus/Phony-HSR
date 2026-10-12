@@ -123,8 +123,12 @@ async function exploreWalkthrough(page, prefix, shot, errors, check, pairs) {
   await shot(`${prefix}-01-spawn`);
 
   // Approach the notice sign: a short run forward brings it into the prompt radius.
+  // Hold W until the sign enters the prompt radius (bounded), then stop.
   await page.keyboard.down('KeyW');
-  await sleep(380);
+  for (let t = 0; t < 40; t++) {
+    await sleep(50);
+    if ((await probe()).prompts.includes('sign.welcome')) break;
+  }
   await page.keyboard.up('KeyW');
   await sleep(500);
   let p = await probe();
@@ -144,11 +148,16 @@ async function exploreWalkthrough(page, prefix, shot, errors, check, pairs) {
   p = await probe();
   if (p.state !== 'run' || Math.abs(p.speed - 5) > 0.2) fail(`expected run at 5 m/s, got ${p.state} ${p.speed.toFixed(2)}`);
   if (!(p.z < spawn.z - 2)) fail('the character did not move forward');
+  await page.keyboard.up('KeyW');
   await shot(`${prefix}-04-run`);
+  // Sprint from the spawn so slow captures cannot run the character into the north wall.
+  await page.evaluate(() => window.__ASTRAL__.probes.explorationTeleport(0, 6, Math.PI));
+  await sleep(200);
+  await page.keyboard.down('KeyW');
   await page.keyboard.down('ShiftLeft');
   await sleep(700);
   p = await probe();
-  if (p.state !== 'sprint' || Math.abs(p.speed - 7.5) > 0.3) fail(`expected sprint at 7.5 m/s, got ${p.state} ${p.speed.toFixed(2)}`);
+  if (p.state !== 'sprint' || Math.abs(p.speed - 7.5) > 0.3) fail(`expected sprint at 7.5 m/s, got ${p.state} ${p.speed.toFixed(2)} at ${p.x.toFixed(2)},${p.z.toFixed(2)} gated=${p.camera.gated} held=${await page.evaluate(() => window.__ASTRAL__.ctx.input.activeActions().join("+"))}`);
   await shot(`${prefix}-05-sprint`);
   await page.keyboard.up('ShiftLeft');
   await page.keyboard.up('KeyW');
@@ -165,11 +174,112 @@ async function exploreWalkthrough(page, prefix, shot, errors, check, pairs) {
   await shot(`${prefix}-06-switch`);
   await page.keyboard.press('KeyE');
   await sleep(600);
+  // Overworld attack is left click only (as on PC); Q does nothing in the overworld.
   await page.keyboard.press('KeyQ');
+  await sleep(300);
+  if ((await page.evaluate(() => window.__hooks.overworldAttack)) !== 0) fail('Q must not trigger the overworld attack');
+  const vw = page.viewportSize();
+  await page.mouse.click(vw.width / 2, vw.height / 2);
   await sleep(300);
   const hooks = await page.evaluate(() => window.__hooks);
   for (const k of ['footstep', 'technique', 'overworldAttack', 'leaderChanged', 'interact']) if (!hooks[k]) fail(`no player:${k} event`);
+  if (hooks.overworldAttack !== 1) fail(`left click should attack once, got ${hooks.overworldAttack}`);
   console.log(`  [${prefix}] hooks: ${JSON.stringify(hooks)}`);
+
+  await cameraWalkthrough(page, prefix, shot, fail, probe);
+}
+
+/**
+ * Phase-3 camera checks: the player stays visible while running along the perimeter wall and in a
+ * corner with the camera forced toward the wall (projected on screen and not occluded by level
+ * geometry); rotate / zoom / recenter; then the Camera Gallery shots and input gating.
+ */
+async function cameraWalkthrough(page, prefix, shot, fail, probe) {
+  const teleport = (x, z, yaw) => page.evaluate(([a, b, c]) => window.__ASTRAL__.probes.explorationTeleport(a, b, c), [x, z, yaw]);
+  const visible = async (label) => {
+    const p = await probe();
+    const c = p.camera;
+    const outside = Math.abs(c.position[0]) >= 23.4 || Math.abs(c.position[2]) >= 23.4;
+    if (!c.playerOnScreen || c.playerOccluded || outside) fail(`${label}: player hidden (onScreen=${c.playerOnScreen} occluded=${c.playerOccluded} cam=${c.position.map((v) => v.toFixed(2))})`);
+    return p;
+  };
+
+  // East wall, camera yaw pointing the camera into the wall (camera wants to sit on the +X side).
+  await teleport(22.6, 16, -Math.PI / 2);
+  await sleep(300);
+  await visible('east wall start');
+  await shot(`${prefix}-07-wall`);
+  await page.keyboard.down('KeyD');
+  for (let t = 0; t < 12; t++) {
+    await sleep(200);
+    await visible(`east wall run ${t}`);
+  }
+  await page.keyboard.up('KeyD');
+  // North-east corner, camera pushed into the corner.
+  await teleport(22.6, -22.6, -Math.PI * 0.75);
+  await sleep(400);
+  await visible('north-east corner');
+  await shot(`${prefix}-08-corner`);
+  await page.keyboard.down('KeyW');
+  await page.keyboard.down('KeyA');
+  for (let t = 0; t < 6; t++) {
+    await sleep(200);
+    await visible(`corner run ${t}`);
+  }
+  await page.keyboard.up('KeyA');
+  await page.keyboard.up('KeyW');
+
+  // Rotate (Z), zoom (wheel), recenter (X).
+  await teleport(0, 6, Math.PI);
+  await sleep(300);
+  const before = (await probe()).camera;
+  await page.keyboard.down('KeyZ');
+  await sleep(500);
+  await page.keyboard.up('KeyZ');
+  const vw = page.viewportSize();
+  await page.mouse.move(vw.width / 2, vw.height / 2);
+  await page.mouse.wheel(0, 400);
+  await sleep(600);
+  let cam = (await probe()).camera;
+  if (Math.abs(cam.yaw - before.yaw) < 0.5) fail(`Z should rotate the camera (yaw ${before.yaw.toFixed(2)} -> ${cam.yaw.toFixed(2)})`);
+  if (!(cam.zoom > before.zoom)) fail('the wheel should zoom out');
+  await shot(`${prefix}-09-rotate-zoom`);
+  await page.keyboard.press('KeyX');
+  await sleep(1200);
+  let p = await probe();
+  if (Math.abs(Math.atan2(Math.sin(p.camera.yaw - p.yaw), Math.cos(p.camera.yaw - p.yaw))) > 0.05) fail(`X should recenter behind the player (cam ${p.camera.yaw.toFixed(2)} vs player ${p.yaw.toFixed(2)})`);
+
+  // Camera Gallery: every mode, with input gating.
+  await page.keyboard.press('F4', { delay: 90 });
+  await page.waitForSelector('.gallery.is-open', { timeout: 3000 }).catch(() => fail('gallery did not open'));
+  const captures = [
+    ['shot.combat-overview', 'combat', 2.0],
+    ['shot.skill-close-up', 'skill', 1.2],
+    ['shot.ultimate', 'ultimate', 1.05],
+    ['shot.boss-intro', 'boss', 2.5],
+    ['shot.dialogue-two-shot', 'dialogue', 2.0],
+    ['shot.cinematic-flyover', 'cinematic', 4.5],
+  ];
+  for (const [n, [id, mode, at]] of captures.entries()) {
+    const start = (await probe()).x;
+    await page.keyboard.press(`Digit${n + 1}`, { delay: 90 });
+    await page.keyboard.down('KeyW');
+    // Wait on the shot's own clock (frames can be slower than wall time in headless capture).
+    for (let w = 0; w < 200; w++) {
+      p = await probe();
+      if ((p.camera.shotTime ?? 0) >= at) break;
+      await sleep(50);
+    }
+    await page.keyboard.up('KeyW');
+    if (p.camera.playing !== id || p.camera.mode !== mode) fail(`gallery ${id}: mode ${p.camera.mode}, playing ${p.camera.playing}`);
+    if (!p.camera.gated || Math.abs(p.x - start) > 0.01) fail(`gallery ${id}: player input not gated`);
+    if (id === 'shot.ultimate' && !(p.camera.trauma > 0 && p.camera.letterbox > 0.5)) fail('ultimate: expected shake + letterbox');
+    await shot(`${prefix}-gallery-${n + 1}-${mode}`);
+  }
+  await page.keyboard.press('Escape');
+  await sleep(900);
+  p = await probe();
+  if (p.camera.gallery || p.camera.mode !== 'exploration' || p.camera.gated) fail('closing the gallery should return to exploration');
 }
 
 async function captureViewport(browser, url, vp, shot, errors) {

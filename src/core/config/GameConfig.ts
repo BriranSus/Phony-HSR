@@ -47,23 +47,23 @@ export const GameConfigSchema = z.object({
     sfx: z.number().min(0).max(1),
     voice: z.number().min(0).max(1),
   }),
+  /**
+   * Player camera settings (shared with the future settings screen). Tuning that is not a player
+   * preference (distances, damping, collision) is data: `camera/rules`.
+   */
   camera: z.object({
     fov: z.number().min(30).max(110),
+    /** Mouse / stick look sensitivity multiplier (1 = default). */
     orbitSensitivity: z.number().positive(),
+    /** Wheel zoom sensitivity multiplier. */
     zoomSensitivity: z.number().positive(),
     invertY: z.boolean(),
-    /** Phase-2 follow camera (exploration): distance / height behind the character, pitch (rad), zoom limits, follow smoothing (1/s), keyboard and stick rotation speed (rad/s). */
-    follow: z.object({
-      distance: z.number().positive(),
-      minDistance: z.number().positive(),
-      maxDistance: z.number().positive(),
-      height: z.number(),
-      pitch: z.number(),
-      minPitch: z.number(),
-      maxPitch: z.number(),
-      smoothing: z.number().positive(),
-      rotateSpeed: z.number().positive(),
-    }),
+    /** Auto-recenter behind the player while moving. */
+    autoRecenter: z.boolean(),
+    /** Camera shake strength (accessibility; 0 disables shake). */
+    shakeIntensity: z.number().min(0).max(1),
+    /** Lock the pointer: the mouse rotates the camera without holding the right button. */
+    pointerLock: z.boolean(),
   }),
 });
 

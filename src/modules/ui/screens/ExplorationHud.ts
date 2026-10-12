@@ -36,6 +36,9 @@ export class ExplorationHud {
   private readonly messageEl: HTMLElement;
   private readonly messageText: HTMLElement;
   private readonly messageSpeaker: HTMLElement;
+  private readonly barTop: HTMLElement;
+  private readonly barBottom: HTMLElement;
+  private readonly galleryEl: HTMLElement;
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
   private messageTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -64,13 +67,16 @@ export class ExplorationHud {
     this.messageSpeaker = h('div', { class: 'message__speaker' });
     this.messageText = h('div', { class: 'message__text' });
     this.messageEl = h('div', { class: 'message' }, this.messageSpeaker, this.messageText);
+    this.barTop = h('div', { class: 'letterbox letterbox--top' });
+    this.barBottom = h('div', { class: 'letterbox letterbox--bottom' });
+    this.galleryEl = h('aside', { class: 'gallery interactive', attrs: { 'aria-label': 'Camera Gallery' } });
     this.el = h(
       'section',
       { class: 'screen screen--passthrough hud exploration', attrs: { 'data-screen': 'exploration' } },
       h(
         'div',
         { class: 'hud__area' },
-        h('div', { class: 'eyebrow' }, h('span', { class: 'diamond' }), 'Phase 2 · Exploration'),
+        h('div', { class: 'eyebrow' }, h('span', { class: 'diamond' }), 'Exploration'),
         h('div', { class: 'hud__area-name', text: area.name }),
         h('div', { class: 'hud__area-sub', text: area.subtitle }),
       ),
@@ -89,6 +95,9 @@ export class ExplorationHud {
       this.gaitEl,
       this.toastEl,
       this.messageEl,
+      this.barTop,
+      this.barBottom,
+      this.galleryEl,
       h('div', { class: 'hud__hints' }, ...hints.map(([k, label]) => h('span', {}, h('span', { class: 'keycap', text: k }), label))),
     );
   }
@@ -123,6 +132,37 @@ export class ExplorationHud {
       ),
       ...(start + this.maxVisible < n ? [h('div', { class: 'prompts__more', text: '▼' })] : []),
       ...(n > 1 ? [h('div', { class: 'prompts__hint', text: 'Scroll to select' })] : []),
+    );
+  }
+
+  /** Cinematic letterbox bars (amount 0..1, bar height as a viewport fraction); hides HUD chrome. */
+  setLetterbox(amount: number, height: number): void {
+    const px = `${(amount * height * 100).toFixed(2)}vh`;
+    this.barTop.style.height = px;
+    this.barBottom.style.height = px;
+    this.el.classList.toggle('is-cinematic', amount > 0.01);
+  }
+
+  /** Camera Gallery panel: shots (key, name, mode) with the playing one highlighted; null hides it. */
+  setGallery(items: ReadonlyArray<{ key: string; name: string; mode: string; id: string }> | null, playing: string | null): void {
+    this.galleryEl.classList.toggle('is-open', items !== null);
+    this.el.classList.toggle('is-gallery', items !== null);
+    if (!items) {
+      this.galleryEl.replaceChildren();
+      return;
+    }
+    this.galleryEl.replaceChildren(
+      h('div', { class: 'eyebrow' }, h('span', { class: 'diamond' }), 'Camera Gallery'),
+      ...items.map((it) =>
+        h(
+          'div',
+          { class: `gallery__row${it.id === playing ? ' is-playing' : ''}`, dataset: { shot: it.id } },
+          h('span', { class: 'keycap', text: it.key }),
+          h('span', { class: 'gallery__name', text: it.name }),
+          h('span', { class: 'gallery__mode', text: it.mode }),
+        ),
+      ),
+      h('div', { class: 'gallery__hint' }, h('span', { class: 'keycap', text: 'F4' }), ' / ', h('span', { class: 'keycap', text: 'Esc' }), ' Close'),
     );
   }
 

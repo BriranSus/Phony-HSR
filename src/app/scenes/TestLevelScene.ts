@@ -51,6 +51,7 @@ export class TestLevelScene {
     for (const c of level.colliders) this.scene.add(this.colliderMesh(c));
     this.addFloorGrid(level.colliders.find((c) => c.id === 'floor'));
     for (const it of level.interactables) this.scene.add(this.prop(it));
+    for (const m of level.markers) this.scene.add(this.dummy(m));
 
     // Element crystals along the north wall (decoration, colours from data).
     elements.forEach((el, i) => {
@@ -141,6 +142,26 @@ export class TestLevelScene {
     grid.position.y = floor.max[1] + 0.005;
     this.track(grid.geometry);
     this.scene.add(grid);
+  }
+
+  /** Placeholder units for camera shots: hostile dummies (boss scaled up) and a speaker figure. */
+  private dummy(m: Level['markers'][number]): THREE.Object3D {
+    const g = new THREE.Group();
+    g.position.set(...m.position);
+    g.rotation.y = m.yaw;
+    const hostile = m.kind !== 'npc';
+    const bodyMat = this.track(new THREE.MeshStandardMaterial({ color: hostile ? '#2a1838' : '#d8d1bf', metalness: 0.4, roughness: 0.5, flatShading: true }));
+    const coreColor = new THREE.Color(hostile ? '#ff3d6e' : '#9fdcff');
+    const core = this.track(new THREE.MeshStandardMaterial({ color: coreColor, emissive: coreColor, emissiveIntensity: 1.2, flatShading: true }));
+    const body = new THREE.Mesh(this.track(new THREE.CylinderGeometry(0.22, 0.4, 1.2, 6)), bodyMat);
+    body.position.y = 0.6;
+    const head = new THREE.Mesh(this.track(new THREE.OctahedronGeometry(0.28, 0)), core);
+    head.position.y = 1.5;
+    const shoulders = new THREE.Mesh(this.track(new THREE.BoxGeometry(0.9, 0.16, 0.3)), bodyMat);
+    shoulders.position.y = 1.15;
+    g.add(body, head, shoulders);
+    if (m.kind === 'boss') g.scale.setScalar(2.2);
+    return g;
   }
 
   private prop(it: Interactable): THREE.Object3D {
