@@ -19,6 +19,8 @@ export class PlaceholderCharacter {
   private readonly hair: THREE.MeshStandardMaterial;
   private readonly ring: THREE.Mesh;
   private readonly ringMat: THREE.MeshBasicMaterial;
+  private readonly bodyMaterials: THREE.MeshStandardMaterial[];
+  private fade = 1;
   private readonly disposables: Array<{ dispose(): void }> = [];
   private pop = 0;
 
@@ -30,6 +32,7 @@ export class PlaceholderCharacter {
     this.accent = this.track(new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.6, roughness: 0.4, flatShading: true }));
     this.hair = this.track(new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.55, flatShading: true }));
 
+    this.bodyMaterials = [coat, skin, dark, this.accent, this.hair];
     const mesh = (g: THREE.BufferGeometry, m: THREE.Material): THREE.Mesh => {
       this.track(g);
       const o = new THREE.Mesh(g, m);
@@ -112,6 +115,25 @@ export class PlaceholderCharacter {
     this.body.scale.setScalar(k);
     this.ring.scale.setScalar(1 + this.pop * 1.6);
     this.ringMat.opacity = 0.35 + this.pop * 0.5;
+  }
+
+  /**
+   * Fades the figure as the camera closes in (wall hugs): fully opaque beyond 1.1 m, mostly
+   * transparent at 0.5 m, so a squeezed camera never looks through the inside of the mesh.
+   */
+  setFade(cameraDistance: number): void {
+    const alpha = Math.min(1, Math.max(0.15, (cameraDistance - 0.5) / 0.6));
+    if (Math.abs(alpha - this.fade) < 1e-3) return;
+    this.fade = alpha;
+    for (const m of this.bodyMaterials) {
+      // Recompile only when the blend mode flips, not on every opacity change.
+      if (m.transparent !== alpha < 1) {
+        m.transparent = alpha < 1;
+        m.depthWrite = alpha >= 1;
+        m.needsUpdate = true;
+      }
+      m.opacity = alpha;
+    }
   }
 
   dispose(): void {

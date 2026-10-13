@@ -1,11 +1,13 @@
 import type { CameraRules } from '@models/camera';
 import type { Collider } from '@models/locomotion';
-import { turnToward } from '@modules/player';
+import { turnToward, wrapAngle } from '@modules/player';
 import { add, clamp, len, orbitDirection, scale, smoothing, v3, type CameraPose, type Vec3 } from './math';
-import { sphereCast } from './occlusion';
+import { lineOfSightBlocked, sphereCast } from './occlusion';
 
-/** Highest pitch the collision lift may use (camera almost straight above the player). */
-const LIFT_PITCH_LIMIT = 1.45;
+/** Max pivot lag behind the head (m). */
+const PIVOT_MAX_LAG = 0.12;
+/** Easing rate of the collision yaw / lift offsets (1/s). */
+const AVOID_SMOOTHING = 7;
 
 /** Raw camera input for one frame (the rig applies tuning and the player's settings). */
 export interface CameraInput {
@@ -65,8 +67,9 @@ export class ExplorationRig {
   private focus: Vec3 | null = null;
   private ahead: Vec3 = v3(0, 0, 0);
   private lastPose: CameraPose | null = null;
-  /** Effective pitch after the wall-squeeze lift (>= pitch). */
-  private liftPitch = -Infinity;
+  /** Collision avoidance currently applied: yaw offset (rad) and pitch lift (rad). */
+  yawOffset = 0;
+  liftOffset = 0;
 
   constructor(
     private readonly rules: CameraRules['exploration'],
@@ -99,6 +102,8 @@ export class ExplorationRig {
     this.focus = null;
     this.ahead = v3(0, 0, 0);
     this.distance = this.zoomSmoothed;
+    this.yawOffset = 0;
+    this.liftOffset = 0;
     this.idle = 0;
     this.update(0, target, NO_CAMERA_INPUT);
   }
@@ -133,42 +138,77 @@ export class ExplorationRig {
       this.pitch += (r.pitch.default - this.pitch) * smoothing(r.recenter.speed * 0.5, dt);
     }
 
-    // Pivot: the player's head, damped. The camera orbits and collides around the pivot; the
-    // look-ahead only shifts the look target, so the camera always stays behind the player.
+    // Pivot: the player's head with a small damped lag (smooths stairs and landings). The lag is
+    // capped so the pivot never strays from the point that must stay visible.
     const head = v3(target.x, target.y + r.focusHeight, target.z);
     this.focus = this.focus === null || dt === 0 ? head : add(this.focus, scale(add(head, scale(this.focus, -1)), smoothing(r.followSmoothing, dt)));
     const lag = add(this.focus, scale(head, -1));
-    if (len(lag) > 0.75) this.focus = add(head, scale(lag, 0.75 / len(lag)));
+    if (len(lag) > PIVOT_MAX_LAG) this.focus = add(head, scale(lag, PIVOT_MAX_LAG / len(lag)));
     const aheadGoal = v3(vel.x * r.lookAhead, 0, vel.z * r.lookAhead);
     this.ahead = dt === 0 ? aheadGoal : add(this.ahead, scale(add(aheadGoal, scale(this.ahead, -1)), smoothing(r.lookAheadSmoothing, dt)));
 
-    // Collision: pull in instantly, ease back out. If even the minimum distance is blocked (the
-    // player hugging a wall or corner), lift the camera over the player by raising the pitch until
-    // there is room, so it never ends up inside or behind the wall.
-    const castFrom = this.focus;
-    let pitch = this.pitch;
-    let free = sphereCast(this.colliders, castFrom, orbitDirection(this.yaw, pitch), this.zoomSmoothed, r.collision.radius);
-    while (free < r.collision.minDistance && pitch < LIFT_PITCH_LIMIT) {
-      pitch = Math.min(LIFT_PITCH_LIMIT, pitch + 0.05);
-      free = sphereCast(this.colliders, castFrom, orbitDirection(this.yaw, pitch), this.zoomSmoothed, r.collision.radius);
+    // Collision. Cast from the pivot toward the requested direction; if less than a comfortable
+    // distance is free (wall hug, corner), search yaw offsets (15 deg steps, small ones preferred)
+    // and a capped pitch lift for the freest direction, like the reference game's camera sliding
+    // along walls. The effective offset eases in and out so the view never snaps.
+    const c = r.collision;
+    const pivot = this.focus;
+    const comfort = Math.min(this.zoomSmoothed, c.comfortDistance);
+    const maxPitch = Math.max(this.pitch, c.maxLiftPitch);
+    const cast = (yawOff: number, lift: number, reach = this.zoomSmoothed, step = 0.05): number =>
+      sphereCast(this.colliders, pivot, orbitDirection(this.yaw + yawOff, Math.min(maxPitch, this.pitch + lift)), reach, c.radius, step);
+    let goal = { off: 0, lift: 0, free: cast(0, 0) };
+    if (goal.free < comfort) {
+      let bestScore = goal.free;
+      const step = (15 * Math.PI) / 180;
+      const limit = (c.yawSearchDeg * Math.PI) / 180;
+      for (let k = 1; k * step <= limit + 1e-9; k++) {
+        for (const sign of [1, -1]) {
+          for (const lift of [0, 0.2, 0.4]) {
+            const off = sign * k * step;
+            // Probe only up to the comfort distance (coarser steps) to keep the search cheap.
+            const free = cast(off, lift, comfort, 0.1);
+            const score = Math.min(free, comfort) - 0.25 * Math.abs(off) - 0.3 * lift;
+            if (score > bestScore + 1e-6) {
+              bestScore = score;
+              goal = { off, lift, free };
+            }
+          }
+        }
+      }
     }
-    this.liftPitch = pitch > this.liftPitch || dt === 0 ? pitch : this.liftPitch + (pitch - this.liftPitch) * smoothing(6, dt);
-    if (this.liftPitch > pitch) {
-      // Easing back down: only accept the eased pitch if it is still free at the current distance.
-      const eased = sphereCast(this.colliders, castFrom, orbitDirection(this.yaw, this.liftPitch), this.zoomSmoothed, r.collision.radius);
-      if (eased >= Math.min(free, this.distance)) {
-        pitch = this.liftPitch;
-        free = eased;
-      } else this.liftPitch = pitch;
+    if (goal.off !== 0 || goal.lift !== 0) goal = { ...goal, free: cast(goal.off, goal.lift) };
+    if (dt === 0) {
+      this.yawOffset = goal.off;
+      this.liftOffset = goal.lift;
+    } else {
+      const k = smoothing(AVOID_SMOOTHING, dt);
+      this.yawOffset += wrapAngle(goal.off - this.yawOffset) * k;
+      this.liftOffset += (goal.lift - this.liftOffset) * k;
     }
-    const dir = orbitDirection(this.yaw, pitch);
-    this.distance = free < this.distance || dt === 0 ? free : Math.min(free, this.distance + r.collision.recoverSpeed * dt);
+    let free = cast(this.yawOffset, this.liftOffset);
+    if (free < Math.min(goal.free, c.minDistance) - 1e-6) {
+      // The eased direction is still squeezed below the minimum: jump to the free one.
+      this.yawOffset = goal.off;
+      this.liftOffset = goal.lift;
+      free = goal.free;
+    }
+    const dir = orbitDirection(this.yaw + this.yawOffset, Math.min(maxPitch, this.pitch + this.liftOffset));
+    this.distance = free < this.distance || dt === 0 ? free : Math.min(free, this.distance + c.recoverSpeed * dt);
 
     const right = v3(-Math.cos(this.yaw), 0, Math.sin(this.yaw));
-    const position = add(add(castFrom, scale(dir, this.distance)), scale(right, r.shoulderOffset));
+    let position = add(add(pivot, scale(dir, this.distance)), scale(right, r.shoulderOffset));
+    // Final guard: the line from the camera to the player's actual head must be clear.
+    if (lineOfSightBlocked(this.colliders, position, head)) {
+      const toCam = add(position, scale(head, -1));
+      const l = len(toCam);
+      const clear = sphereCast(this.colliders, head, scale(toCam, 1 / l), l, 0.05);
+      position = add(head, scale(toCam, Math.max(0.3, clear) / l));
+      this.distance = Math.min(this.distance, len(add(position, scale(pivot, -1))));
+    }
     // Look-ahead fades out as walls pull the camera in, keeping the player framed.
-    const aheadScale = clamp((this.distance - r.collision.minDistance) / 2, 0, 1);
-    const lookAt = add(castFrom, scale(this.ahead, aheadScale));
+    const aheadScale = clamp((this.distance - c.minDistance) / 2, 0, 1);
+    const lookAt = add(pivot, scale(this.ahead, aheadScale));
     this.lastPose = { position, target: lookAt, fov: s.fov, roll: 0 };
     return this.lastPose;
   }

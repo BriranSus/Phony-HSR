@@ -111,7 +111,7 @@ async function layoutProblems(page, label, pairs) {
  * characters, fire the Technique / attack hooks; asserts the controller state through the
  * `window.__ASTRAL__.probes.exploration` probe and the hook events on the bus.
  */
-async function exploreWalkthrough(page, prefix, shot, errors, check, pairs) {
+async function exploreWalkthrough(page, prefix, shot, errors, check, pairs, full = true) {
   const probe = () => page.evaluate(() => window.__ASTRAL__.probes.exploration());
   const fail = (m) => errors.push(`[${prefix}] ${m}`);
   await page.evaluate(() => {
@@ -186,7 +186,7 @@ async function exploreWalkthrough(page, prefix, shot, errors, check, pairs) {
   if (hooks.overworldAttack !== 1) fail(`left click should attack once, got ${hooks.overworldAttack}`);
   console.log(`  [${prefix}] hooks: ${JSON.stringify(hooks)}`);
 
-  await cameraWalkthrough(page, prefix, shot, fail, probe);
+  await cameraWalkthrough(page, prefix, shot, fail, probe, full);
 }
 
 /**
@@ -194,7 +194,8 @@ async function exploreWalkthrough(page, prefix, shot, errors, check, pairs) {
  * corner with the camera forced toward the wall (projected on screen and not occluded by level
  * geometry); rotate / zoom / recenter; then the Camera Gallery shots and input gating.
  */
-async function cameraWalkthrough(page, prefix, shot, fail, probe) {
+/** `full` adds the 360-degree wall/corner spin sweep (run once, at the primary viewport). */
+async function cameraWalkthrough(page, prefix, shot, fail, probe, full = true) {
   const teleport = (x, z, yaw) => page.evaluate(([a, b, c]) => window.__ASTRAL__.probes.explorationTeleport(a, b, c), [x, z, yaw]);
   const visible = async (label) => {
     const p = await probe();
@@ -204,8 +205,19 @@ async function cameraWalkthrough(page, prefix, shot, fail, probe) {
     return p;
   };
 
+  // Wait until rendered frames have caught up with a teleport (the camera is back near the player),
+  // so a stalled headless frame is never sampled as a stale pose.
+  const settle = () =>
+    page
+      .waitForFunction(() => {
+        const p = window.__ASTRAL__.probes.exploration();
+        return Math.hypot(p.camera.position[0] - p.x, p.camera.position[2] - p.z) < 10;
+      }, null, { timeout: 10000, polling: 50 })
+      .catch(() => fail("camera did not settle after teleport"));
+
   // East wall, camera yaw pointing the camera into the wall (camera wants to sit on the +X side).
   await teleport(22.6, 16, -Math.PI / 2);
+  await settle();
   await sleep(300);
   await visible('east wall start');
   await shot(`${prefix}-07-wall`);
@@ -217,6 +229,7 @@ async function cameraWalkthrough(page, prefix, shot, fail, probe) {
   await page.keyboard.up('KeyD');
   // North-east corner, camera pushed into the corner.
   await teleport(22.6, -22.6, -Math.PI * 0.75);
+  await settle();
   await sleep(400);
   await visible('north-east corner');
   await shot(`${prefix}-08-corner`);
@@ -228,6 +241,54 @@ async function cameraWalkthrough(page, prefix, shot, fail, probe) {
   }
   await page.keyboard.up('KeyA');
   await page.keyboard.up('KeyW');
+
+  // Hug every wall and corner (plus the validator's failing samples) and spin 360 degrees with Z,
+  // checking visibility on every sample.
+  const spinSpots = [
+    ['east wall', 23.05, 0], ['west wall', -23.05, 0], ['north wall', 0, -23.05], ['south wall', 0, 23.05],
+    ['NE corner', 23.05, -23.05], ['NW corner', -23.05, -23.05], ['SE corner', 23.05, 23.05], ['SW corner', -23.05, 23.05],
+    ['regression (23.05, 17.79)', 23.05, 17.79], ['regression (23.05, 1.59)', 23.05, 1.59], ['regression (-23.03, -12.95)', -23.03, -12.95],
+    ['regression (-22.95, 1.21)', -22.95, 1.21], ['regression ramp (-19.14, 6.41)', -19.14, 6.41],
+  ];
+  let spinSamples = 0;
+  for (const [label, x, z] of full ? spinSpots : []) {
+    await teleport(x, z, 0);
+    await settle();
+    await sleep(250);
+    let last = (await probe()).camera.yaw;
+    let turned = 0;
+    let lastPos = "";
+    await page.keyboard.down('KeyZ');
+    for (let k = 0; k < 80 && turned < Math.PI * 2; k++) {
+      await sleep(80);
+      // Only judge new frames: an unchanged pose means the page has not rendered since the last sample.
+      const peek = (await probe()).camera.position.join();
+      if (peek === lastPos) continue;
+      lastPos = peek;
+      const p = await visible(`${label} spin ${(turned * 57.3).toFixed(0)}deg`);
+      if (p.camera.distance < 0.75) fail(`${label}: camera collapsed to ${p.camera.distance.toFixed(2)} m`);
+      turned += Math.abs(Math.atan2(Math.sin(p.camera.yaw - last), Math.cos(p.camera.yaw - last)));
+      last = p.camera.yaw;
+      spinSamples++;
+    }
+    await page.keyboard.up('KeyZ');
+    if (turned < Math.PI * 2 - 0.2) fail(`${label}: spin only covered ${(turned * 57.3).toFixed(0)} deg`);
+  }
+  console.log(`  wall/corner spins: ${spinSpots.length} spots, ${spinSamples} samples`);
+  await teleport(23.05, 17.79, -Math.PI / 2);
+  await sleep(400);
+  await shot(`${prefix}-07b-wall-hug`);
+  // West landing at full zoom (regression: occluded at distance 9).
+  await teleport(-4.9, -7.25, Math.PI * 0.8);
+  const vw0 = page.viewportSize();
+  await page.mouse.move(vw0.width / 2, vw0.height / 2);
+  for (let k = 0; k < 6; k++) await page.mouse.wheel(0, 600);
+  for (let k = 0; k < 10; k++) {
+    await sleep(150);
+    await visible(`west landing full zoom ${k}`);
+  }
+  await shot(`${prefix}-08b-landing-zoom`);
+  for (let k = 0; k < 6; k++) await page.mouse.wheel(0, -600);
 
   // Rotate (Z), zoom (wheel), recenter (X).
   await teleport(0, 6, Math.PI);
@@ -273,7 +334,17 @@ async function cameraWalkthrough(page, prefix, shot, fail, probe) {
     await page.keyboard.up('KeyW');
     if (p.camera.playing !== id || p.camera.mode !== mode) fail(`gallery ${id}: mode ${p.camera.mode}, playing ${p.camera.playing}`);
     if (!p.camera.gated || Math.abs(p.x - start) > 0.01) fail(`gallery ${id}: player input not gated`);
-    if (id === 'shot.ultimate' && !(p.camera.trauma > 0 && p.camera.letterbox > 0.5)) fail('ultimate: expected shake + letterbox');
+    if (id === 'shot.ultimate' && !(p.camera.trauma > 0 && p.camera.letterbox > 0.5)) fail(`ultimate: expected shake + letterbox (trauma ${p.camera.trauma})`);
+    if (!(await page.$('.gallery.is-open.is-playing'))) fail(`gallery ${id}: panel should hide while the shot plays`);
+    if (id === 'shot.ultimate' || id === 'shot.boss-intro') {
+      // Sample the shake over the following second: trauma and roll must both be observable.
+      for (let k = 0; k < 6; k++) {
+        await sleep(150);
+        p = await probe();
+      }
+      if (!(p.camera.shakePeak > 0.5 && p.camera.rollPeak > 0.002)) fail(`${id}: shake not observable (peak trauma ${p.camera.shakePeak}, roll ${p.camera.rollPeak})`);
+      else console.log(`  ${id}: peak trauma ${p.camera.shakePeak.toFixed(2)}, peak roll ${p.camera.rollPeak.toFixed(4)} rad`);
+    }
     await shot(`${prefix}-gallery-${n + 1}-${mode}`);
   }
   await page.keyboard.press('Escape');
@@ -346,7 +417,7 @@ async function captureViewport(browser, url, vp, shot, errors) {
     ['.prompts.is-open', '.hud__hints'],
   ];
   if (vp.width >= 1200) {
-    await exploreWalkthrough(page, `vp-${vp.name}-explore`, (n) => shot(page, n), errors, check, explorePairs);
+    await exploreWalkthrough(page, `vp-${vp.name}-explore`, (n) => shot(page, n), errors, check, explorePairs, false);
   } else {
     await check('exploration', explorePairs);
     await shot(page, `vp-${vp.name}-explore`);

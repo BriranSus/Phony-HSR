@@ -33,6 +33,10 @@ export class TestSceneState implements GameState {
   private levelDef: Level | null = null;
   private galleryOpen = false;
   private playing: string | null = null;
+  /** Highest shake trauma and |roll| seen since the current shot started (probe observability). */
+  private shakePeak = 0;
+  private rollPeak = 0;
+  private lastRoll = 0;
   private lastFov = 0;
   private model: PlaceholderCharacter | null = null;
   private controller: OverworldController | null = null;
@@ -167,7 +171,13 @@ export class TestSceneState implements GameState {
     this.explore.follow(c);
     const pose = director.update(frame);
     if (pose) this.applyPose(pose);
+    this.shakePeak = Math.max(this.shakePeak, director.trauma);
+    this.rollPeak = Math.max(this.rollPeak, Math.abs(this.lastRoll));
     this.model.apply(c.frame, c.x, c.y, c.z, c.yaw, frame);
+    // Fade the character out when the camera is squeezed into it (wall hugs).
+    const cp = this.level.camera.position;
+    // Only in exploration: authored shots (e.g. over-the-shoulder) frame the body on purpose.
+    this.model.setFade(director.mode !== 'exploration' ? Infinity : Math.hypot(cp.x - c.x, cp.y - (c.y + 1.35), cp.z - c.z));
     this.hud?.setGait(c.gait, c.speed > 0.25);
     this.hud?.setLetterbox(director.letterbox, this.cameraRules?.letterboxHeight ?? 0);
     this.level.update(dt);
@@ -194,6 +204,7 @@ export class TestSceneState implements GameState {
     cam.position.set(p.position.x, p.position.y, p.position.z);
     cam.up.set(0, 1, 0);
     cam.lookAt(p.target.x, p.target.y, p.target.z);
+    this.lastRoll = p.roll;
     if (p.roll !== 0) cam.rotateZ(p.roll);
     if (Math.abs(p.fov - this.lastFov) > 1e-4) {
       cam.fov = p.fov;
@@ -230,6 +241,8 @@ export class TestSceneState implements GameState {
   private playShot(shot: CameraShot): void {
     this.director!.stopShots();
     this.playing = shot.id;
+    this.shakePeak = 0;
+    this.rollPeak = 0;
     this.refreshGallery();
     void this.director!.playShot(shot, this.units).then(() => {
       if (this.playing === shot.id) {
@@ -340,6 +353,9 @@ export class TestSceneState implements GameState {
       fov: cam.fov,
       letterbox: this.director?.letterbox ?? 0,
       trauma: this.director?.trauma ?? 0,
+      shakePeak: this.shakePeak,
+      roll: this.lastRoll,
+      rollPeak: this.rollPeak,
       position: [cam.position.x, cam.position.y, cam.position.z],
       playerNdc: [ndc.x, ndc.y, ndc.z],
       playerOnScreen: Math.abs(ndc.x) <= 1 && Math.abs(ndc.y) <= 1 && ndc.z < 1,

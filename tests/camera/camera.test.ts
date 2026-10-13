@@ -144,9 +144,10 @@ describe('blends, shake and shots', () => {
   it('shake trauma decays linearly and scales with trauma^2 and intensity', () => {
     const s = new CameraShake();
     s.add(rules.shakeProfiles.ultimate!);
-    expect(s.trauma).toBeCloseTo(0.9);
+    const ult = rules.shakeProfiles.ultimate!;
+    expect(s.trauma).toBeCloseTo(ult.trauma);
     s.update(0.25);
-    expect(s.trauma).toBeCloseTo(0.9 - 1.4 * 0.25);
+    expect(s.trauma).toBeCloseTo(ult.trauma - ult.decay * 0.25);
     expect(s.sample(0)).toEqual({ offset: v3(0, 0, 0), roll: 0 });
     s.update(5);
     expect(s.trauma).toBe(0);
@@ -252,5 +253,102 @@ describe('director stack and priority', () => {
     for (let t = 0; t < 1.2; t += DT) maxRoll = Math.max(maxRoll, Math.abs(d.update(DT)!.roll));
     expect(d.trauma).toBeGreaterThan(0);
     expect(maxRoll).toBe(0);
+  });
+});
+
+/** Player head inside the view frustum (aspect 16:9, near 0.1) for a pose. */
+function inFrustum(p: CameraPose, head: { x: number; y: number; z: number }, aspect = 16 / 9): boolean {
+  const f = { x: p.target.x - p.position.x, y: p.target.y - p.position.y, z: p.target.z - p.position.z };
+  const fl = Math.hypot(f.x, f.y, f.z);
+  const fw = { x: f.x / fl, y: f.y / fl, z: f.z / fl };
+  const rx = fw.z, rz = -fw.x;
+  const rl = Math.hypot(rx, rz) || 1;
+  const right = { x: rx / rl, y: 0, z: rz / rl };
+  const up = { x: right.y * fw.z - right.z * fw.y, y: right.z * fw.x - right.x * fw.z, z: right.x * fw.y - right.y * fw.x };
+  const d = { x: head.x - p.position.x, y: head.y - p.position.y, z: head.z - p.position.z };
+  const depth = d.x * fw.x + d.y * fw.y + d.z * fw.z;
+  if (depth < 0.25) return false;
+  const t = Math.tan(((p.fov / 2) * Math.PI) / 180);
+  const sx = (d.x * right.x + d.z * right.z) / depth;
+  const sy = (d.x * up.x + d.y * up.y + d.z * up.z) / depth;
+  return Math.abs(sy) <= t && Math.abs(sx) <= t * aspect;
+}
+
+describe('Revision 1: readable wall-hug / corner camera (regressions from validation)', () => {
+  const spots: Array<[number, number, string]> = [
+    // Wall midpoints and all four corners (hugging: 0.35 m capsule against the wall).
+    [23.05, 0, 'east wall'],
+    [-23.05, 0, 'west wall'],
+    [0, 23.05, 'south wall'],
+    [0, -23.05, 'north wall'],
+    [23.05, 23.05, 'SE corner'],
+    [23.05, -23.05, 'NE corner'],
+    [-23.05, 23.05, 'SW corner'],
+    [-23.05, -23.05, 'NW corner'],
+    // Validator failures (p3-BAD-1..5).
+    [23.05, 17.79, 'BAD-1'],
+    [23.05, 1.59, 'BAD-2'],
+    [-23.03, -12.95, 'BAD-3'],
+    [-22.95, 1.21, 'BAD-4'],
+    [-19.14, 6.41, 'BAD-5 steep ramp'],
+  ];
+  it.each(spots)('player at %f, %f (%s) stays framed and unoccluded through a full 360 spin', (x, z) => {
+    const r = rig(0);
+    const target = { x, y: 0, z };
+    const head = v3(x, rules.exploration.focusHeight, z);
+    r.reset(target, 0);
+    const frames = Math.ceil((2 * Math.PI) / rules.exploration.rotateSpeed / DT) + 30;
+    for (let i = 0; i < frames; i++) {
+      const p = r.update(DT, target, input({ yawAxis: 1 }));
+      const tag = `${x},${z} frame ${i} yaw ${r.yaw.toFixed(2)}`;
+      expect(inFrustum(p, head), tag).toBe(true);
+      expect(lineOfSightBlocked(level.colliders, p.position, head), tag).toBe(false);
+      expect(Math.abs(p.position.x) < 23.4 && Math.abs(p.position.z) < 23.4, tag).toBe(true);
+      expect(Math.hypot(p.position.x - head.x, p.position.y - head.y, p.position.z - head.z), tag).toBeGreaterThanOrEqual(rules.exploration.collision.minDistance - 0.15);
+    }
+  });
+
+  it('keeps a usable distance (>= 1.2 m) when hugging walls, by sliding the yaw', () => {
+    const r = rig(-Math.PI / 2); // camera wants to sit inside the east wall
+    const target = { x: 23.05, y: 0, z: 0 };
+    r.reset(target, -Math.PI / 2);
+    for (let i = 0; i < 60; i++) r.update(DT, target, NO_CAMERA_INPUT);
+    expect(r.distance).toBeGreaterThanOrEqual(1.2);
+    expect(Math.abs(r.yawOffset)).toBeGreaterThan(0.2);
+    expect(r.pitch + r.liftOffset).toBeLessThanOrEqual(rules.exploration.collision.maxLiftPitch + 1e-9);
+  });
+
+  it('never loses line of sight beside the west landing at full zoom (validator case)', () => {
+    const r = rig(0.726);
+    const target = { x: -4.9, y: 0, z: -7.25 };
+    const head = v3(-4.9, rules.exploration.focusHeight, -7.25);
+    r.zoom = r.zoomSmoothed = rules.exploration.distance.max;
+    r.reset(target, 0.726);
+    r.pitch = 0.538;
+    for (let i = 0; i < 90; i++) {
+      // Also walk along the landing's edge so the damped pivot lags.
+      const t = { x: -4.9 + Math.sin(i / 10) * 0.4, y: 0, z: -7.25 + Math.abs(Math.sin(i / 7)) * 0.4 };
+      const p = r.update(DT, t, NO_CAMERA_INPUT);
+      expect(lineOfSightBlocked(level.colliders, p.position, v3(t.x, head.y, t.z))).toBe(false);
+    }
+  });
+
+  it('makes the Ultimate shake observable for most of its follow-through', () => {
+    const d = new CameraDirector(rules, () => 1);
+    const ult = shots.find((s) => s.id === 'shot.ultimate')!;
+    void d.playShot(ult, () => ({ position: v3(0, 0, 0), yaw: 0 }));
+    let shaking = 0;
+    let frames = 0;
+    let maxRoll = 0;
+    for (let t = 0; t < ult.duration; t += DT) {
+      const p = d.update(DT)!;
+      if (t >= ult.shake!.at) {
+        frames++;
+        if (d.trauma > 0.05) shaking++;
+        maxRoll = Math.max(maxRoll, Math.abs(p.roll));
+      }
+    }
+    expect(shaking / frames).toBeGreaterThan(0.6);
+    expect(maxRoll).toBeGreaterThan(0.005);
   });
 });

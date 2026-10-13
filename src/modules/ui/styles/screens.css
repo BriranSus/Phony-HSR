@@ -1656,3 +1656,8 @@
     transform: none;
   }
 }
+
+.gallery.is-open.is-playing {
+  opacity: 0;
+  pointer-events: none;
+}

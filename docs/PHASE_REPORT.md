@@ -2,7 +2,7 @@
 
 **Project:** Astral Rail, an original fan project inspired by the gameplay structure of *Honkai: Star Rail*
 **Scope:** spec §39 "FIRST ACTION" (analysis, engine, stack, architecture, folders, data models, dependencies, roadmap) and **Phase 1** of §37
-**Status:** Phase 1 complete (Revisions 1 and 2 each validated at 8.5/10) and Phase 2 validated at 8.5/10. **Phase 3 (Camera) is complete** and awaiting validation, see [§10](#10-phase-3-camera). Phase 4+ is not started.
+**Status:** Phase 1 complete (Revisions 1 and 2 each validated at 8.5/10) and Phase 2 validated at 8.5/10. **Phase 3 (Camera) is complete**, scored 7.5/10, and **Revision 1** (see [§10.5](#105-phase-3--revision-1-changelog)) is awaiting validation. Phase 4+ is not started.
 
 ---
 
@@ -262,8 +262,8 @@ Two validator fixes came first (Phase 2 scored 8.5/10):
   - **Auto-recenter:** after 2 s without camera input while the player moves, the camera gently swings behind them (toggle: `autoRecenter`).
 - **Collision and occlusion:** every frame a sphere (r 0.3 m) is cast from the player's head toward the desired position against the level colliders.
   - The camera **pulls in instantly** and **eases back out** at 3 m/s.
-  - If even 0.6 m is blocked (the player hugging a wall or corner), the camera **lifts over the player** by raising the pitch until there is room, then eases back down.
-  - The player is never hidden by level geometry. This is unit-tested at 6 wall and corner spots × 16 yaws on the real level, and checked live in E2E.
+  - If less than `comfortDistance` (1.5 m) is free (wall hug, corner), the camera **slides sideways**: it searches yaw offsets in 15° steps up to `yawSearchDeg` with a small pitch lift capped at `maxLiftPitch` (0.9 rad, well below vertical), and eases into the freest direction. It never goes closer than `minDistance` (0.9 m) unless the final line-of-sight guard has to pull it in.
+  - The player is never hidden by level geometry. This is unit-tested with 360° spins at every wall, every corner and the validator's failing samples, and checked live in E2E (Revision 1).
 - **Shots (data):** anchors resolve each frame to the player, level markers or interactables. Shots use keyframes with per-key easing, Catmull-Rom splines, FOV punch (60 ms attack, quadratic release), shake triggers, letterbox and blend overrides. The HUD chrome fades during letterboxed shots.
 - **Camera Gallery (F4):**
   - **Staging:** it places the player in front of three dummy enemies, a boss dummy and a speaker dummy.
@@ -309,11 +309,35 @@ All other controls are unchanged from Phase 2.
   - `vp-1024x768-explore`, `vp-390x844-explore`
 
 ### 10.4 Known gaps
-- **Near-camera geometry fading is not implemented.** Pull-in and lift already keep the player visible. Close to walls the camera sits tight behind or above the player instead of fading the wall.
+- **Walls are not faded**; the camera slides around them instead. The character mesh fades when the camera is closer than about 1.1 m (Revision 1).
 - **Collision is a marched sphere cast** against the axis-aligned colliders (boxes and ramps). Arbitrary meshes arrive with authored geometry in Phase 15.
 - **Shots are previewed against dummies only.** Real combat, dialogue and cinematic triggers come in Phases 5, 14 and later. Ability `presentation.camera` ids are not mapped to shots yet.
 - **No camera settings UI yet.** The settings live in config and the settings screen is Phase 21. Pointer lock is off by default.
 - **E2E visibility is geometric**, not pixel-based: it uses projection plus a line-of-sight test, because the WebGL buffer isn't preserved for readback.
+
+### 10.5 Phase 3 – Revision 1 changelog
+The validator scored Phase 3 at 7.5/10. Fixes:
+
+1. **Wall-hug and corner collapse.**
+   - The old pitch lift could reach almost vertical and collapse the camera to about 0.2 m. It is replaced with a yaw-offset search (15° steps, both directions, up to 150°) combined with a lift capped at 0.9 rad. Offsets ease in at 7/s and snap only if the eased direction would be squeezed below the minimum.
+   - New collision rules in `camera/rules/default.json`: `minDistance` 0.9, `comfortDistance` 1.5, `yawSearchDeg` 150, `maxLiftPitch` 0.9 (schema-validated).
+   - The pivot lag behind the head is capped at 0.12 m, and the look-ahead fades out as the camera pulls in, so the focus stays in frame.
+   - New tests: 360° spins at 4 walls, 4 corners and the 5 reported samples ((23.05, 17.79), (23.05, 1.59), (-23.03, -12.95), (-22.95, 1.21), and the ramp at (-19.14, 6.41)). Every frame asserts the head is in the frustum, the line of sight is clear, the camera is inside the walls and the distance is at least the minimum. A separate test checks for at least 1.2 m of usable distance at the east wall.
+2. **Occluded at full zoom beside the west landing.** The cast now starts from the tightly lagged pivot. A final guard checks the line from the camera to the **actual head** (the same point the probe validates) and pulls in along that ray if it is blocked. There is a regression test at (-4.9, -7.25) at 9 m.
+3. **Dialogue two-shot and shake.**
+   - The speaker dummy now renders as the Pom-Pom-style NPC (capsule body, head with a simple face, ears) and faces the listener.
+   - The shot is a tight over-the-shoulder mid-shot (FOV 30→28) on the speaker's face, with the listener's shoulder as a thin frame edge.
+   - Shake profiles now decay more slowly (ultimate: trauma 1.0, decay 0.75; boss roar: 0.8, 0.7), so the shake is visible for about 1.3 s instead of about 0.6 s.
+   - The probe exposes `shakePeak`, `roll` and `rollPeak`. The unit test asserts shake on more than 60% of the frames after the trigger. E2E asserts peak trauma > 0.5 and roll > 0.002 rad for both the Ultimate and Boss Intro shots.
+4. **Nice-to-haves.**
+   - The gallery panel hides while a shot plays (asserted in E2E).
+   - The character fades when the exploration camera is closer than about 1.1 m (opacity floor 0.15). Shaders recompile only when the blend mode flips.
+5. **E2E additions.**
+   - 13 spots (walls, corners and the regression samples), each spun 360° with Z. Every sample asserts the player is on screen, not occluded, the camera is inside the walls and the distance is at least 0.75 m.
+   - The west landing at full zoom.
+   - New screenshots: `08-explore-07b-wall-hug` and `-08b-landing-zoom`. The spin sweep runs once at 1600×900 and only samples freshly rendered frames after a teleport has settled.
+6. **Results:** `npm run build` has 0 errors. `npm test` passes **196/196** in 15 files. `npm run lint` reports 0 problems. `npm run screenshots` passes with **55 screenshots**, 0 console errors, 310 spin samples and peak trauma 0.99 (Ultimate) and 0.79 (Boss).
+7. **Known gap:** in the dialogue shot the listener's shoulder takes about 25% of the frame at the right edge, slightly more than the 15–20% target.
 
 ## 11. What Phase 4 will add (World exploration)
 

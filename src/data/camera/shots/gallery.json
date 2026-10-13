@@ -55,12 +55,12 @@
     "id": "shot.dialogue-two-shot",
     "name": "Dialogue Two-shot",
     "mode": "dialogue",
-    "description": "Over-the-shoulder framing from behind the player toward the speaker.",
+    "description": "Over-the-shoulder mid-shot on the speaker's face; the listener's shoulder is a thin edge of frame.",
     "duration": 4,
     "letterbox": true,
     "keys": [
-      { "t": 0, "position": { "unit": "player", "toward": "dummy.npc", "offset": [0.65, 1.65, -1.3] }, "lookAt": { "unit": "dummy.npc", "offset": [0, 1.35, 0] }, "fov": 40 },
-      { "t": 4, "position": { "unit": "player", "toward": "dummy.npc", "offset": [0.55, 1.6, -1.1] }, "lookAt": { "unit": "dummy.npc", "offset": [0, 1.35, 0] }, "fov": 38 }
+      { "t": 0, "position": { "unit": "player", "toward": "dummy.npc", "offset": [0.85, 1.5, -0.8] }, "lookAt": { "unit": "dummy.npc", "offset": [-0.15, 1.25, 0] }, "fov": 30 },
+      { "t": 4, "position": { "unit": "player", "toward": "dummy.npc", "offset": [0.82, 1.5, -0.75] }, "lookAt": { "unit": "dummy.npc", "offset": [-0.15, 1.25, 0] }, "fov": 28 }
     ]
   },
   {

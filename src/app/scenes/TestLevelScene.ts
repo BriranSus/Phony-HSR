@@ -146,12 +146,17 @@ export class TestLevelScene {
 
   /** Placeholder units for camera shots: hostile dummies (boss scaled up) and a speaker figure. */
   private dummy(m: Level['markers'][number]): THREE.Object3D {
+    if (m.kind === 'npc') {
+      // The speaker uses the NPC prop (Pom-Pom-style figure), facing along the marker yaw.
+      const npc = this.prop({ id: m.id, kind: 'npc', label: m.id, position: m.position, message: m.id });
+      npc.rotation.y = m.yaw;
+      return npc;
+    }
     const g = new THREE.Group();
     g.position.set(...m.position);
     g.rotation.y = m.yaw;
-    const hostile = m.kind !== 'npc';
-    const bodyMat = this.track(new THREE.MeshStandardMaterial({ color: hostile ? '#2a1838' : '#d8d1bf', metalness: 0.4, roughness: 0.5, flatShading: true }));
-    const coreColor = new THREE.Color(hostile ? '#ff3d6e' : '#9fdcff');
+    const bodyMat = this.track(new THREE.MeshStandardMaterial({ color: '#2a1838', metalness: 0.4, roughness: 0.5, flatShading: true }));
+    const coreColor = new THREE.Color('#ff3d6e');
     const core = this.track(new THREE.MeshStandardMaterial({ color: coreColor, emissive: coreColor, emissiveIntensity: 1.2, flatShading: true }));
     const body = new THREE.Mesh(this.track(new THREE.CylinderGeometry(0.22, 0.4, 1.2, 6)), bodyMat);
     body.position.y = 0.6;
@@ -198,7 +203,13 @@ export class TestLevelScene {
       ears.position.set(0.16, 1.52, 0);
       const ears2 = ears.clone();
       ears2.position.x = -0.16;
-      g.add(body, head, ears, ears2);
+      // Simple face (eyes on the +Z side) so dialogue shots have something to frame.
+      const eyeMat = this.track(new THREE.MeshBasicMaterial({ color: '#1b1430' }));
+      const eye = new THREE.Mesh(this.track(new THREE.SphereGeometry(0.035, 8, 6)), eyeMat);
+      eye.position.set(0.085, 1.34, 0.215);
+      const eye2 = eye.clone();
+      eye2.position.x = -0.085;
+      g.add(body, head, ears, ears2, eye, eye2);
     }
     const marker = new THREE.Mesh(this.track(new THREE.OctahedronGeometry(0.11)), glow);
     marker.userData.baseY = it.kind === 'npc' ? 1.95 : it.kind === 'sign' ? 1.8 : 1.0;

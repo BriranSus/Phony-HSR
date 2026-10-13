@@ -147,6 +147,8 @@ export class ExplorationHud {
   setGallery(items: ReadonlyArray<{ key: string; name: string; mode: string; id: string }> | null, playing: string | null): void {
     this.galleryEl.classList.toggle('is-open', items !== null);
     this.el.classList.toggle('is-gallery', items !== null);
+    // The panel steps aside while a shot plays so the framing is unobstructed.
+    this.galleryEl.classList.toggle('is-playing', items !== null && playing !== null);
     if (!items) {
       this.galleryEl.replaceChildren();
       return;

@@ -58,8 +58,21 @@ export const CameraRulesSchema = z
         mouseRadiansPerPixel: z.number().positive(),
         /** Auto-recenter behind the player while moving, after `delay` s without camera input. */
         recenter: z.object({ delay: z.number().min(0), speed: z.number().positive(), minPlayerSpeed: z.number().min(0) }).strict(),
-        /** Collision: probe sphere radius (m), closest allowed distance (m), ease-out speed (m/s). */
-        collision: z.object({ radius: z.number().positive(), minDistance: z.number().positive(), recoverSpeed: z.number().positive() }).strict(),
+        /**
+         * Collision: probe sphere radius (m), closest allowed distance (m), ease-out speed (m/s), the
+         * distance below which the camera searches other yaws (m), the yaw search range (deg) and
+         * the highest pitch the avoidance lift may reach (rad, well below vertical).
+         */
+        collision: z
+          .object({
+            radius: z.number().positive(),
+            minDistance: z.number().positive(),
+            recoverSpeed: z.number().positive(),
+            comfortDistance: z.number().positive(),
+            yawSearchDeg: z.number().min(0).max(180),
+            maxLiftPitch: z.number().min(0).max(1.3),
+          })
+          .strict(),
       })
       .strict()
       .refine((e) => e.distance.min <= e.distance.default && e.distance.default <= e.distance.max, 'default distance must lie in [min, max]')

@@ -11,7 +11,7 @@
     "rotateSpeed": 2.6,
     "mouseRadiansPerPixel": 0.005,
     "recenter": { "delay": 2.0, "speed": 1.4, "minPlayerSpeed": 1.0 },
-    "collision": { "radius": 0.3, "minDistance": 0.6, "recoverSpeed": 3 }
+    "collision": { "radius": 0.3, "minDistance": 0.9, "recoverSpeed": 3, "comfortDistance": 1.5, "yawSearchDeg": 150, "maxLiftPitch": 0.9 }
   },
   "blends": {
     "exploration": { "duration": 0.6, "ease": "easeInOutCubic" },
@@ -25,8 +25,8 @@
   "priorities": { "exploration": 0, "combat": 10, "dialogue": 20, "skill": 30, "boss": 35, "ultimate": 40, "cinematic": 50 },
   "shakeProfiles": {
     "hit": { "trauma": 0.4, "decay": 2.5, "maxOffset": 0.12, "maxRoll": 0.02, "frequency": 25 },
-    "ultimate": { "trauma": 0.9, "decay": 1.4, "maxOffset": 0.35, "maxRoll": 0.05, "frequency": 18 },
-    "boss-roar": { "trauma": 0.75, "decay": 1.1, "maxOffset": 0.25, "maxRoll": 0.04, "frequency": 12 }
+    "ultimate": { "trauma": 1, "decay": 0.75, "maxOffset": 0.35, "maxRoll": 0.05, "frequency": 18 },
+    "boss-roar": { "trauma": 0.8, "decay": 0.7, "maxOffset": 0.25, "maxRoll": 0.04, "frequency": 12 }
   },
   "letterboxHeight": 0.11
 }
