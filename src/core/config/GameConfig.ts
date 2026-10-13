@@ -47,6 +47,8 @@ export const GameConfigSchema = z.object({
     sfx: z.number().min(0).max(1),
     voice: z.number().min(0).max(1),
   }),
+  /** Exploration (Phase 4): which world definition the exploration scene loads. */
+  world: z.object({ startWorld: z.string().min(1) }),
   /**
    * Player camera settings (shared with the future settings screen). Tuning that is not a player
    * preference (distances, damping, collision) is data: `camera/rules`.

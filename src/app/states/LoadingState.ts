@@ -2,6 +2,7 @@ import type { GameState } from '@core/state/StateManager';
 import { DataValidationError } from '@core/data/DataRegistry';
 import { Collections } from '@models/collections';
 import { LoadingScreen, createFatalScreen } from '@modules/ui';
+import { WorldGraphError, validateWorldGraph } from '@modules/world';
 import type { AppContext } from '../AppContext';
 import { StateIds } from '../AppContext';
 
@@ -70,6 +71,13 @@ export class LoadingState implements GameState {
       for (const issue of report.issues) log.warn(`[data:${issue.kind}] ${issue.file}: ${issue.message}`);
       bus.emit('data:loaded', report);
       log.info(`data loaded: ${report.files} files`, report.counts);
+
+      // Cross-file world checks (portal targets, arrival spawns) fail here, not mid-game.
+      const levels = new Map(data.all(Collections.levels).map((l) => [l.id, l]));
+      for (const world of data.all(Collections.worlds)) {
+        const problems = validateWorldGraph(world, levels);
+        if (problems.length) throw new WorldGraphError(problems);
+      }
 
       this.label = 'Initialising systems';
       bus.emit('boot:phase', { phase: 'modules' });

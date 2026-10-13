@@ -6,5 +6,13 @@
     "rarity": 4,
     "description": "The waystation's emergency beacon. Its light has gone out.",
     "maxStack": 1
+  },
+  {
+    "id": "quest.camp-pass",
+    "name": "Camp Pass",
+    "category": "quest",
+    "rarity": 3,
+    "description": "A stamped pass that opens the gate to the Snowfield Camp on Jarilo-VI.",
+    "maxStack": 1
   }
 ]

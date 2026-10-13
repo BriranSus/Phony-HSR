@@ -61,7 +61,7 @@ Analysing its 39 sections gives these architectural requirements:
 flowchart TB
   subgraph App["src/app: composition root"]
     boot[bootstrap.ts] --> states[Game states: Loading, Title, MainMenu, DataArchive, TestScene]
-    states --> scenes[Scenes: TitleBackdrop, TestLevelScene, PlaceholderCharacter]
+    states --> scenes[Scenes: TitleBackdrop, AreaScene, WorldObjects, PlaceholderCharacter]
   end
   subgraph Modules["src/modules: gameplay & presentation systems (GameModule)"]
     ui[ui] & vfx[vfx] & audio[audio]
@@ -109,6 +109,7 @@ Key design decisions per area:
 - **Combat** is presentation-free. It consumes `UnitFactory` implementations registered by `characters` and `enemies` (built from a `UnitBuildSpec`: the player's `CharacterInstance` with its Light Cone and relics, an enemy id and level, or an owned memosprite/summon) and emits `combat:*` events. Its runtime model already distinguishes characters, memosprites, enemies and summons, and queues inserted actions (follow-ups, counters, extra turns) separately from player Ultimates. UI, camera, VFX and audio react to those events, so a new character never touches the engine.
 - **Player (Phase 2)** is a pure, deterministic simulation (`modules/player`): movement math, a static collision world (capsule footprint vs axis-aligned boxes and ramps, step-up, slope limit, ground snap, gravity), a data-driven animation state machine, the party roster and the interaction prompt list, combined in `OverworldController.step(dt, ControlInput)`. The app state turns the action map (keys, mouse, gamepad sticks) into `ControlInput`, runs the controller in fixed 1/60 s sub-steps, renders the result and forwards its hook events (`player:footstep`, `player:interact`, `player:technique`, `player:overworldAttack`, `player:leaderChanged`, `player:animationState`) to the bus.
 - **Camera (Phase 3)** is pure TypeScript (`modules/camera`). A `CameraDirector` keeps a priority stack of providers (the exploration rig at the bottom, data-defined shots above it), picks the highest priority (the latest wins ties), and blends with data curves and durations or cuts. It layers trauma shake and the letterbox on top, and outputs a `CameraPose` that the app applies to the single THREE camera. Scripted providers gate the player's input. The exploration rig sphere-casts from the player's head against the level colliders, so the camera is pulled in, or lifted over the player, before any wall can hide them.
+- **World (Phase 4)** is pure TypeScript (`modules/world`). `WorldRuntime` loads one area at a time from JSON (live collider list, typed objects, puzzles, hidden areas, enemy spawns) and owns the interactable state machines, requirements, rewards, enemy AI and encounter advantage. Persistent facts live in an id-keyed, versioned `WorldState`; transient ones (enemy positions, plate occupancy) stay in the runtime. It publishes typed `world:*` events for the quest layer and never renders. The app state feeds it the player pose and the F / attack / Technique actions, renders it through `AreaScene` and `WorldObjectsView`, and rebuilds the area behind the transition overlay. The world graph (World -> Region -> Area) is validated at load.
 - **Skills** interprets data-defined abilities (an ordered list of `effects`, plus `triggers` from a fixed event vocabulary and `conditions` from a closed type list). The escape hatch for unique kits is `{ "kind": "script", "handler": "<id>" }`, resolved from a handler registry. Every description is a template filled from the same data (`models/templates.ts`), validated at load.
 - **Status** owns buffs, debuffs, DoTs, CC and shields. The seven Weakness Break effects are ordinary data-defined statuses.
 - **Economy** is the single ledger for currencies and stackable items (spec §20, "keep economy calculations centralized"). Inventory, shops, gacha and progression all spend and grant through it.
@@ -153,14 +154,14 @@ HSR/
 │  │  ├─ AppContext.ts      Typed bundle passed to states; state ids
 │  │  ├─ dataSource.ts      Vite glob → lazy per-file data chunks
 │  │  ├─ states/            LoadingState, TitleState, MainMenuState, DataArchiveState, TestSceneState
-│  │  └─ scenes/            TitleBackdrop (procedural express), TestLevelScene, PlaceholderCharacter
+│  │  └─ scenes/            TitleBackdrop (procedural express), AreaScene, WorldObjects, PlaceholderCharacter
 │  ├─ core/                 Engine shell (game-agnostic)
 │  │  ├─ bus/ config/ data/ di/ input/ log/ loop/ modules/ render/ state/
 │  │  ├─ events.ts          GameEvents map (extended by modules)
 │  │  └─ tokens.ts          DI tokens for core services
 │  ├─ models/               Zod schemas, TS types, pure formulas
 │  │  ├─ common, stats, scaling, ability, status, character, enemy, lightcone,
-│  │  │  relic, item, gacha, quest, rules, combat (runtime), save
+│  │  │  relic, item, gacha, quest, rules, combat (runtime), save, locomotion, camera, world
 │  │  ├─ collections.ts     Collection catalog (dir, schema, refs, validators)
 │  │  └─ formulas/          actionValue, damage, toughness, resources, stats
 │  ├─ modules/              One folder per system (public interface + token + GameModule)
@@ -176,7 +177,8 @@ HSR/
 │     ├─ elements/ paths/ status-effects/ characters/ enemies/ loot-tables/
 │     ├─ light-cones/ relics/{sets,stat-tables}/ items/ cost-tables/
 │     ├─ banners/ quests/ dialogues/ input/ ui/tips/ script-handlers/
-└─ tests/                   core/, models/, data/ (Vitest)
+│     ├─ worlds/ levels/ parties/ camera/ rules/world/      (Phase 2 to 4 world content)
+└─ tests/                   core/, models/, data/, player/, camera/, world/ (Vitest)
 ```
 
 ## 6. Data-driven pipeline

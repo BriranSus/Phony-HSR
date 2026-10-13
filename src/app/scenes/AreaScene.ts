@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { Nebula, Starfield } from '@modules/vfx';
-import type { Collider, Interactable, Level } from '@models/locomotion';
+import type { Collider, Level } from '@models/locomotion';
 import { surfaceHeight } from '@modules/player';
+import { PropKit, createNpcFigure } from './WorldObjects';
 
 export interface LevelElementColor {
   readonly name: string;
@@ -17,20 +18,24 @@ const MATERIALS: Record<string, { color: string; metalness: number; roughness: n
   stone: { color: '#7c86a8', metalness: 0.3, roughness: 0.55 },
   pillar: { color: '#d8d1bf', metalness: 0.55, roughness: 0.3 },
   crate: { color: '#6b4e2e', metalness: 0.1, roughness: 0.8 },
+  gate: { color: '#3b3470', metalness: 0.5, roughness: 0.4, emissive: '#1a1440' },
 };
 
 /**
- * Phase-2 walkable test level, built entirely from `levels/test-level.json`: every collider
- * becomes a mesh (ramps as wedges), interactables get placeholder props (sign, chest, NPC), and the
- * Phase-1 sky (procedural nebula + starfield) and element crystals frame the scene.
+ * One loaded area, built entirely from level JSON: every collider becomes a mesh (ramps as
+ * wedges) and the Phase-1 sky (procedural nebula + starfield) and element crystals frame the
+ * scene. Interactables, enemies and hidden-area veils are drawn by `WorldObjectsView` from the
+ * world runtime's state; this scene only hides collider meshes the runtime has removed (opened
+ * gates, broken walls). A new scene is built per area and disposed on a transition.
  */
-export class TestLevelScene {
+export class AreaScene {
   readonly scene = new THREE.Scene();
   readonly camera = new THREE.PerspectiveCamera(50, 16 / 9, 0.1, 5000);
   private readonly starfield: Starfield;
   private readonly nebula: Nebula;
   private readonly crystals: THREE.Mesh[] = [];
-  private readonly markers: THREE.Object3D[] = [];
+  private readonly colliderMeshes = new Map<string, THREE.Object3D>();
+  private readonly kit = new PropKit();
   private readonly disposables: Array<{ dispose(): void }> = [];
   private readonly mats = new Map<string, THREE.MeshStandardMaterial>();
   private time = 0;
@@ -48,12 +53,18 @@ export class TestLevelScene {
     fill.position.set(-14, 8, -12);
     this.scene.add(fill);
 
-    for (const c of level.colliders) this.scene.add(this.colliderMesh(c));
+    for (const c of level.colliders) {
+      const mesh = this.colliderMesh(c);
+      if (c.id) this.colliderMeshes.set(c.id, mesh);
+      this.scene.add(mesh);
+    }
     this.addFloorGrid(level.colliders.find((c) => c.id === 'floor'));
-    for (const it of level.interactables) this.scene.add(this.prop(it));
     for (const m of level.markers) this.scene.add(this.dummy(m));
 
     // Element crystals along the north wall (decoration, colours from data).
+    const floor = level.colliders.find((c) => c.id === 'floor');
+    const northZ = level.colliders.find((c) => c.id === 'wall-n')?.max[2] ?? -23.4;
+    const spacing = floor ? Math.min(5, (floor.max[0] - floor.min[0] - 6) / Math.max(1, elements.length - 1)) : 5;
     elements.forEach((el, i) => {
       const color = new THREE.Color(el.color);
       const crystal = new THREE.Mesh(
@@ -61,12 +72,12 @@ export class TestLevelScene {
         this.track(new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.8, roughness: 0.15, flatShading: true })),
       );
       crystal.scale.set(0.8, 1.6, 0.8);
-      const x = -15 + i * 5;
-      crystal.position.set(x, 3.8, -21.5);
+      const x = (i - (elements.length - 1) / 2) * spacing;
+      crystal.position.set(x, 3.8, northZ + 1.9);
       crystal.userData.phase = i;
       this.crystals.push(crystal);
       const light = new THREE.PointLight(color, 5, 8, 2);
-      light.position.set(x, 3, -20.5);
+      light.position.set(x, 3, northZ + 2.9);
       this.scene.add(crystal, light);
     });
   }
@@ -81,16 +92,19 @@ export class TestLevelScene {
       c.rotation.y = t * 0.8 + p;
       c.position.y = 3.8 + Math.sin(t * 1.4 + p) * 0.2;
     }
-    for (const m of this.markers) {
-      m.rotation.y = t * 2;
-      m.position.y = (m.userData.baseY as number) + Math.sin(t * 3) * 0.08;
-    }
   }
 
   dispose(): void {
     this.starfield.dispose();
     this.nebula.dispose();
     for (const d of this.disposables) d.dispose();
+    this.kit.dispose();
+  }
+
+  /** Hides the meshes of colliders the world runtime removed (opened gates, broken walls). */
+  syncColliders(live: readonly Collider[]): void {
+    const ids = new Set(live.map((c) => c.id));
+    for (const [id, mesh] of this.colliderMeshes) mesh.visible = ids.has(id);
   }
 
   private material(name: string): THREE.MeshStandardMaterial {
@@ -147,8 +161,9 @@ export class TestLevelScene {
   /** Placeholder units for camera shots: hostile dummies (boss scaled up) and a speaker figure. */
   private dummy(m: Level['markers'][number]): THREE.Object3D {
     if (m.kind === 'npc') {
-      // The speaker uses the NPC prop (Pom-Pom-style figure), facing along the marker yaw.
-      const npc = this.prop({ id: m.id, kind: 'npc', label: m.id, position: m.position, message: m.id });
+      // The speaker is the same Pom-Pom-style figure the NPC objects use, facing along the marker yaw.
+      const npc = createNpcFigure(this.kit);
+      npc.position.set(...m.position);
       npc.rotation.y = m.yaw;
       return npc;
     }
@@ -166,56 +181,6 @@ export class TestLevelScene {
     shoulders.position.y = 1.15;
     g.add(body, head, shoulders);
     if (m.kind === 'boss') g.scale.setScalar(2.2);
-    return g;
-  }
-
-  private prop(it: Interactable): THREE.Object3D {
-    const g = new THREE.Group();
-    g.position.set(...it.position);
-    g.rotation.y = Math.atan2(-it.position[0], 6 - it.position[2]) * 0.5;
-    const gold = this.track(new THREE.MeshStandardMaterial({ color: '#d9b475', metalness: 0.7, roughness: 0.3, emissive: '#5a4012', flatShading: true }));
-    const glow = this.track(new THREE.MeshBasicMaterial({ color: new THREE.Color('#f4dfb0').multiplyScalar(2), toneMapped: false }));
-    if (it.kind === 'sign') {
-      const post = new THREE.Mesh(this.track(new THREE.CylinderGeometry(0.05, 0.06, 1.3, 6)), this.material('pillar'));
-      post.position.y = 0.65;
-      const board = new THREE.Mesh(this.track(new THREE.BoxGeometry(0.9, 0.5, 0.06)), this.material('wall'));
-      board.position.y = 1.25;
-      const plate = new THREE.Mesh(this.track(new THREE.PlaneGeometry(0.75, 0.35)), this.track(new THREE.MeshBasicMaterial({ color: new THREE.Color('#9fdcff').multiplyScalar(1.3), toneMapped: false, transparent: true, opacity: 0.75 })));
-      plate.position.set(0, 1.25, 0.035);
-      g.add(post, board, plate);
-    } else if (it.kind === 'chest') {
-      const box = new THREE.Mesh(this.track(new THREE.BoxGeometry(0.9, 0.5, 0.6)), this.material('crate'));
-      box.position.y = 0.25;
-      const lid = new THREE.Mesh(this.track(new THREE.CylinderGeometry(0.3, 0.3, 0.9, 8, 1, false, 0, Math.PI)), this.material('crate'));
-      lid.rotation.z = Math.PI / 2;
-      lid.position.y = 0.5;
-      const band = new THREE.Mesh(this.track(new THREE.BoxGeometry(0.94, 0.08, 0.64)), gold);
-      band.position.y = 0.42;
-      const lock = new THREE.Mesh(this.track(new THREE.BoxGeometry(0.12, 0.14, 0.05)), gold);
-      lock.position.set(0, 0.42, 0.32);
-      g.add(box, lid, band, lock);
-    } else {
-      const body = new THREE.Mesh(this.track(new THREE.CapsuleGeometry(0.28, 0.6, 4, 12)), this.material('pillar'));
-      body.position.y = 0.6;
-      const head = new THREE.Mesh(this.track(new THREE.SphereGeometry(0.24, 16, 10)), this.material('pillar'));
-      head.position.y = 1.3;
-      const ears = new THREE.Mesh(this.track(new THREE.ConeGeometry(0.08, 0.25, 6)), gold);
-      ears.position.set(0.16, 1.52, 0);
-      const ears2 = ears.clone();
-      ears2.position.x = -0.16;
-      // Simple face (eyes on the +Z side) so dialogue shots have something to frame.
-      const eyeMat = this.track(new THREE.MeshBasicMaterial({ color: '#1b1430' }));
-      const eye = new THREE.Mesh(this.track(new THREE.SphereGeometry(0.035, 8, 6)), eyeMat);
-      eye.position.set(0.085, 1.34, 0.215);
-      const eye2 = eye.clone();
-      eye2.position.x = -0.085;
-      g.add(body, head, ears, ears2, eye, eye2);
-    }
-    const marker = new THREE.Mesh(this.track(new THREE.OctahedronGeometry(0.11)), glow);
-    marker.userData.baseY = it.kind === 'npc' ? 1.95 : it.kind === 'sign' ? 1.8 : 1.0;
-    marker.position.y = marker.userData.baseY as number;
-    this.markers.push(marker);
-    g.add(marker);
     return g;
   }
 

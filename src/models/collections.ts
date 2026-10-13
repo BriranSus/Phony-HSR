@@ -11,6 +11,7 @@ import { ScalingCurvesSchema } from './scaling';
 import { BannerSchema } from './gacha';
 import { LevelSchema, LocomotionRulesSchema, PartySchema } from './locomotion';
 import { CameraRulesSchema, CameraShotSchema } from './camera';
+import { WorldRulesSchema, WorldSchema } from './world';
 import { DialogueSchema, QuestSchema } from './quest';
 import {
   CombatRulesSchema,
@@ -201,7 +202,36 @@ export const Collections = {
     schema: PartySchema,
     references: (p) => p.members.map((id, i) => ({ collection: 'characters', id, at: `members[${i}]` })),
   }),
-  levels: defineCollection({ name: 'levels', dir: 'levels', format: 'item', schema: LevelSchema }),
+  levels: defineCollection({
+    name: 'levels',
+    dir: 'levels',
+    format: 'item',
+    schema: LevelSchema,
+    references: (l) => [
+      ...l.interactables.flatMap((o) => {
+        const at = `interactables.${o.id}`;
+        const items: DataRef[] = [];
+        if (o.kind === 'chest' || o.kind === 'breakable') o.rewards.forEach((r, i) => items.push({ collection: 'items', id: r.item, at: `${at}.rewards[${i}]` }));
+        if (o.kind === 'collectible') items.push({ collection: 'items', id: o.reward.item, at: `${at}.reward` });
+        for (const r of o.requires) if (r.kind === 'item') items.push({ collection: 'items', id: r.id, at: `${at}.requires` });
+        if (o.kind === 'portal') items.push({ collection: 'levels', id: o.toArea, at: `${at}.toArea` });
+        return items;
+      }),
+      ...l.puzzles.flatMap((p) => p.rewards.map((r, i) => ({ collection: 'items', id: r.item, at: `puzzles.${p.id}.rewards[${i}]` }))),
+      ...l.enemySpawns.flatMap((e) => e.enemies.map((id) => ({ collection: 'enemies', id, at: `enemySpawns.${e.id}` }))),
+    ],
+  }),
+  worlds: defineCollection({
+    name: 'worlds',
+    dir: 'worlds',
+    format: 'item',
+    schema: WorldSchema,
+    references: (w) => [
+      { collection: 'levels', id: w.startArea, at: 'startArea' },
+      ...w.regions.flatMap((r) => r.areas.map((a) => ({ collection: 'levels', id: a, at: `regions.${r.id}.areas` }))),
+    ],
+  }),
+  worldRules: defineCollection({ name: 'worldRules', dir: 'rules/world', format: 'item', schema: WorldRulesSchema }),
   cameraRules: defineCollection({ name: 'cameraRules', dir: 'camera/rules', format: 'item', schema: CameraRulesSchema }),
   cameraShots: defineCollection({
     name: 'cameraShots',

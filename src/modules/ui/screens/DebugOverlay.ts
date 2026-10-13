@@ -9,6 +9,7 @@ export interface DebugSection {
 export class DebugOverlay {
   readonly el: HTMLElement;
   private visible: boolean;
+  private readonly providers = new Map<string, () => readonly DebugSection[]>();
 
   constructor(visible: boolean) {
     this.visible = visible;
@@ -24,8 +25,15 @@ export class DebugOverlay {
     this.el.classList.toggle('is-hidden', !this.visible);
   }
 
-  render(sections: readonly DebugSection[]): void {
+  /** Lets a running state add its own sections (the world layer shows progress and its event log). */
+  setProvider(key: string, provider: (() => readonly DebugSection[]) | null): void {
+    if (provider) this.providers.set(key, provider);
+    else this.providers.delete(key);
+  }
+
+  render(base: readonly DebugSection[]): void {
     if (!this.visible) return;
+    const sections = [...base, ...[...this.providers.values()].flatMap((p) => p())];
     this.el.replaceChildren(
       ...sections.flatMap((s) => [h('h4', { text: s.title }), ...s.rows.map(([k, v]) => h('div', { class: 'debug__row' }, h('span', { text: k }), h('span', { text: v })))]),
     );

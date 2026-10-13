@@ -38,6 +38,9 @@
     "sfx": 0.8,
     "voice": 0.8
   },
+  "world": {
+    "startWorld": "world.astral-demo"
+  },
   "camera": {
     "fov": 50,
     "orbitSensitivity": 1,

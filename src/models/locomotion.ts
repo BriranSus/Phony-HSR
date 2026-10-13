@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { IdSchema, TextSchema } from './common';
+import { AreaExtrasSchema, WorldObjectSchema } from './world';
 
 /**
  * Phase 2 data: overworld locomotion tuning, the animation state machine, parties and walkable
@@ -131,17 +132,12 @@ export const ColliderSchema = z.discriminatedUnion('shape', [
 ]);
 export type Collider = z.infer<typeof ColliderSchema>;
 
-export const InteractableSchema = z
-  .object({
-    id: IdSchema,
-    kind: z.enum(['sign', 'chest', 'npc']),
-    /** Prompt label shown in the right-side list. */
-    label: TextSchema,
-    position: Vec3,
-    /** Text shown when interacted with (sign / NPC line / chest result). */
-    message: TextSchema,
-  })
-  .strict();
+/**
+ * Interactables are the typed world objects of Phase 4 (signs, NPCs, chests, collectibles,
+ * breakables, switches, plates, crates, gates, anchors, portals). The Phase 2 prompt list and
+ * controller only read the shared fields (id, kind, label, position, message).
+ */
+export const InteractableSchema = WorldObjectSchema;
 export type Interactable = z.infer<typeof InteractableSchema>;
 
 export const LevelSchema = z
@@ -158,16 +154,53 @@ export const LevelSchema = z
     galleryStage: z.object({ position: Vec3, yaw: z.number() }).strict().optional(),
     /** Falling below this height respawns the player at `spawn`. */
     killHeight: z.number(),
+    /** Named arrival points (portals and anchors reference them; 'default' is `spawn`), puzzles, secret rooms and enemies (Phase 4). */
+    ...AreaExtrasSchema,
   })
   .strict()
   .superRefine((l, ctx) => {
+    const issue = (message: string, path: Array<string | number> = []): void => ctx.addIssue({ code: "custom", path, message });
     l.colliders.forEach((c, i) => {
-      for (let k = 0; k < 3; k++) if ((c.min[k] ?? 0) >= (c.max[k] ?? 0)) ctx.addIssue({ code: 'custom', path: ['colliders', i], message: 'min must be < max on every axis' });
+      for (let k = 0; k < 3; k++) if ((c.min[k] ?? 0) >= (c.max[k] ?? 0)) issue("min must be < max on every axis", ["colliders", i]);
     });
-    const ids = new Set<string>();
-    for (const it of l.interactables) {
-      if (ids.has(it.id)) ctx.addIssue({ code: 'custom', message: `duplicate interactable "${it.id}"` });
-      ids.add(it.id);
+    const unique = (label: string, ids: readonly string[]): void => {
+      const seen = new Set<string>();
+      for (const id of ids) {
+        if (seen.has(id)) issue(`duplicate ${label} "${id}"`);
+        seen.add(id);
+      }
+    };
+    unique("interactable", l.interactables.map((o) => o.id));
+    unique("puzzle", l.puzzles.map((p) => p.id));
+    unique("hidden area", l.hiddenAreas.map((h) => h.id));
+    unique("enemy spawn", l.enemySpawns.map((e) => e.id));
+    unique("collider", l.colliders.flatMap((c) => (c.id ? [c.id] : [])));
+    if ("default" in l.spawns) issue("spawn name 'default' is reserved for `spawn`");
+
+    const objects = new Map(l.interactables.map((o) => [o.id, o]));
+    const colliderIds = new Set(l.colliders.flatMap((c) => (c.id ? [c.id] : [])));
+    const hiddenIds = new Set(l.hiddenAreas.map((h) => h.id));
+    const puzzleIds = new Set(l.puzzles.map((p) => p.id));
+    const spawnExists = (name: string): boolean => name === "default" || name in l.spawns;
+    for (const o of l.interactables) {
+      const at = ["interactables", o.id];
+      if (o.hiddenIn && !hiddenIds.has(o.hiddenIn)) issue(`"${o.id}" is hidden in unknown hidden area "${o.hiddenIn}"`, at);
+      for (const r of o.requires) {
+        if (r.kind === "puzzle" && !puzzleIds.has(r.id)) issue(`"${o.id}" requires unknown puzzle "${r.id}"`, at);
+        if (r.kind === "object" && !objects.has(r.id)) issue(`"${o.id}" requires unknown object "${r.id}"`, at);
+        if (r.kind === "hidden" && !hiddenIds.has(r.id)) issue(`"${o.id}" requires unknown hidden area "${r.id}"`, at);
+      }
+      if ((o.kind === "gate" || (o.kind === "breakable" && o.collider)) && !colliderIds.has(o.kind === "gate" ? o.collider : (o.collider as string))) issue(`"${o.id}" references unknown collider`, at);
+      if (o.kind === "anchor" && !spawnExists(o.spawn)) issue(`anchor "${o.id}" uses unknown spawn "${o.spawn}"`, at);
+    }
+    for (const p of l.puzzles) {
+      const ids = p.type === "sequence" ? p.switches : p.plates;
+      const want = p.type === "sequence" ? "switch" : "plate";
+      for (const id of ids) if (objects.get(id)?.kind !== want) issue(`puzzle "${p.id}" needs a ${want} "${id}"`, ["puzzles", p.id]);
+    }
+    for (const h of l.hiddenAreas) {
+      if (h.bounds.min[0] >= h.bounds.max[0] || h.bounds.min[1] >= h.bounds.max[1]) issue(`hidden area "${h.id}": min must be < max`, ["hiddenAreas", h.id]);
+      if (h.discover.by === "object" && !objects.has(h.discover.object)) issue(`hidden area "${h.id}" is discovered by unknown object "${h.discover.object}"`, ["hiddenAreas", h.id]);
     }
   });
 export type Level = z.infer<typeof LevelSchema>;

@@ -1016,7 +1016,8 @@
   position: absolute;
   left: 2.4vw;
   top: 3vh;
-  animation: rise-in 600ms var(--ease-out) both;
+  /* "backwards" (not "both"): a forwards fill would pin opacity at 1 and defeat the cinematic fade. */
+  animation: rise-in 600ms var(--ease-out) backwards;
 }
 
 .hud__area-name {
@@ -1463,17 +1464,26 @@
 }
 
 /* Event toast (top centre) and interaction message box (bottom centre). */
-.xtoast {
+.xtoasts {
   position: absolute;
   left: 50%;
   top: 14vh;
-  transform: translate(-50%, -6px);
-  padding: 0.55em 1.6em;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25em;
+  pointer-events: none;
+}
+
+.xtoast {
+  padding: 0.5em 1.6em;
   background: linear-gradient(90deg, transparent, rgba(3, 6, 16, 0.75) 20%, rgba(3, 6, 16, 0.75) 80%, transparent);
   color: var(--c-gold-bright);
   font-family: var(--font-display);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   opacity: 0;
+  transform: translateY(-6px);
   transition:
     opacity 180ms,
     transform 220ms var(--ease-out);
@@ -1482,7 +1492,7 @@
 
 .xtoast.is-visible {
   opacity: 1;
-  transform: translate(-50%, 0);
+  transform: translateY(0);
 }
 
 .message {
@@ -1660,4 +1670,189 @@
 .gallery.is-open.is-playing {
   opacity: 0;
   pointer-events: none;
+}
+
+/* Phase 4: world layer HUD. */
+.hud__progress {
+  margin-top: 0.55em;
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  font-size: 0.78em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-text-dim);
+}
+
+.hud__progress-bar {
+  position: relative;
+  width: 84px;
+  height: 4px;
+  background: rgba(244, 223, 176, 0.18);
+}
+
+.hud__progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: var(--c-gold-bright);
+  transition: width 400ms var(--ease-out);
+}
+
+.area-banner {
+  position: absolute;
+  left: 50%;
+  top: 22vh;
+  transform: translate(-50%, 8px);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 450ms,
+    transform 600ms var(--ease-out);
+}
+
+.area-banner.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.area-banner__rule {
+  width: min(520px, 70vw);
+  height: 1px;
+  margin: 0 auto 0.8em;
+  background: linear-gradient(90deg, transparent, var(--c-gold-bright), transparent);
+}
+
+.area-banner__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 2.2em;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
+}
+
+.area-banner__sub {
+  margin-top: 0.4em;
+  letter-spacing: 0.2em;
+  color: var(--c-gold);
+}
+
+.anchors,
+.encounter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -46%);
+  min-width: min(440px, calc(100vw - 32px));
+  padding: 1.1em 1.3em;
+  background: var(--c-panel);
+  border: 1px solid var(--c-line);
+  --chamfer: 14px;
+  clip-path: var(--chamfer-tl-br);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 200ms,
+    transform 240ms var(--ease-out);
+  z-index: 5;
+}
+
+.anchors.is-open,
+.encounter.is-open {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.anchors__row {
+  display: grid;
+  gap: 0.15em;
+  width: 100%;
+  margin-top: 0.5em;
+  padding: 0.55em 0.8em;
+  text-align: left;
+  color: var(--c-text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.35em;
+  cursor: pointer;
+}
+
+.anchors__row.is-selected {
+  background: rgba(244, 223, 176, 0.18);
+  border-color: rgba(244, 223, 176, 0.5);
+  color: var(--c-white);
+}
+
+.anchors__row.is-current .anchors__where {
+  color: var(--c-gold);
+}
+
+.anchors__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.anchors__where,
+.anchors__hint {
+  font-size: 0.78em;
+  color: var(--c-text-dim);
+  letter-spacing: 0.08em;
+}
+
+.anchors__hint {
+  margin-top: 0.9em;
+}
+
+.encounter {
+  text-align: center;
+}
+
+.encounter__eyebrow {
+  font-family: var(--font-display);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+}
+
+.encounter__advantage {
+  margin-top: 0.4em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.9em;
+  letter-spacing: 0.12em;
+}
+
+.encounter__advantage[data-advantage='playerStrike'] {
+  color: #8be9a8;
+}
+
+.encounter__advantage[data-advantage='ambush'] {
+  color: #ff7c8e;
+}
+
+.encounter__detail,
+.encounter__note {
+  margin-top: 0.4em;
+  color: var(--c-text-dim);
+}
+
+.encounter__enemies {
+  list-style: none;
+  margin: 0.8em 0 0;
+  padding: 0;
+  color: var(--c-text);
+}
+
+.encounter .pill-button {
+  margin-top: 1em;
+}
+
+.exploration.is-cinematic .hud__progress,
+.exploration.is-cinematic .area-banner {
+  opacity: 0;
 }

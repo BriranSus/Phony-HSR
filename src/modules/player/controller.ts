@@ -77,10 +77,10 @@ export class OverworldController {
   constructor(
     readonly rules: LocomotionRules,
     colliders: ConstructorParameters<typeof CollisionWorld>[0],
-    readonly interactables: readonly Interactable[],
+    public interactables: readonly Interactable[],
     members: readonly string[],
-    private readonly spawn: { position: readonly [number, number, number]; yaw: number },
-    private readonly killHeight: number,
+    private spawn: { position: readonly [number, number, number]; yaw: number },
+    private killHeight: number,
     private readonly emit: (e: ControllerEvent) => void,
   ) {
     this.world = new CollisionWorld(colliders, rules.capsule);
@@ -99,6 +99,17 @@ export class OverworldController {
 
   get leader(): string {
     return this.party.leader;
+  }
+
+  /** Replaces the promptable objects (the world layer owns their state; Phase 4). */
+  setInteractables(list: readonly Interactable[]): void {
+    this.interactables = list;
+  }
+
+  /** Respawn point and kill height of the loaded area (an area transition changes them). */
+  setSpawn(spawn: { position: readonly [number, number, number]; yaw: number }, killHeight: number): void {
+    this.spawn = spawn;
+    this.killHeight = killHeight;
   }
 
   teleport(x: number, y: number, z: number, yaw = this.yaw): void {

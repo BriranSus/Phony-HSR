@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import rulesJson from '@data/camera/rules/default.json';
 import shotsJson from '@data/camera/shots/gallery.json';
 import levelJson from '@data/levels/test-level.json';
+import * as THREE from 'three';
+import { PlaceholderCharacter } from '@app/scenes/PlaceholderCharacter';
 import { CameraRulesSchema, CameraShotSchema } from '@models/camera';
 import { LevelSchema } from '@models/locomotion';
 import {
@@ -350,5 +352,60 @@ describe('Revision 1: readable wall-hug / corner camera (regressions from valida
     }
     expect(shaking / frames).toBeGreaterThan(0.6);
     expect(maxRoll).toBeGreaterThan(0.005);
+  });
+});
+
+/**
+ * Visible horizontal coverage (fraction of the frame width, 0..1) of the real placeholder figure
+ * for a pose: every mesh vertex is projected with a THREE camera and the ones inside the visible
+ * frame (below the letterbox bars) give the left and right edge. Also returns the NDC x of a world point (the speaker's face).
+ */
+function frameMetrics(p: CameraPose, figure: { x: number; z: number; yaw: number }, face: { x: number; y: number; z: number }): { coverage: number; faceX: number } {
+  const cam = new THREE.PerspectiveCamera(p.fov, 16 / 9, 0.1, 100);
+  cam.position.set(p.position.x, p.position.y, p.position.z);
+  cam.lookAt(p.target.x, p.target.y, p.target.z);
+  cam.updateMatrixWorld(true);
+  const model = new PlaceholderCharacter(1.7);
+  model.root.position.set(figure.x, 0, figure.z);
+  model.root.rotation.y = figure.yaw;
+  model.root.updateMatrixWorld(true);
+  let lo = Infinity;
+  let hi = -Infinity;
+  const v = new THREE.Vector3();
+  model.root.traverse((o) => {
+    const mesh = o as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    const pos = mesh.geometry.attributes.position as THREE.BufferAttribute;
+    for (let i = 0; i < pos.count; i++) {
+      v.fromBufferAttribute(pos, i).applyMatrix4(mesh.matrixWorld).project(cam);
+      // The letterbox bars (a fraction of the height each) hide the top and bottom of the frame.
+      if (v.z > 1 || Math.abs(v.y) > 1 - 2 * rules.letterboxHeight) continue;
+      lo = Math.min(lo, v.x);
+      hi = Math.max(hi, v.x);
+    }
+  });
+  const f = new THREE.Vector3(face.x, face.y, face.z).project(cam);
+  return { coverage: hi < lo ? 0 : Math.max(0, Math.min(1, hi) - Math.max(-1, lo)) / 2, faceX: f.x };
+}
+
+describe('Phase 4 fixes: dialogue two-shot framing', () => {
+  const stage = level.galleryStage!;
+  const npc = level.markers.find((m) => m.id === 'dummy.npc')!;
+  const units = (id: string) => {
+    if (id === 'player') return { position: v3(...stage.position), yaw: stage.yaw };
+    if (id === 'dummy.npc') return { position: v3(...npc.position), yaw: npc.yaw };
+    return undefined;
+  };
+
+  it("keeps the listener's shoulder to a thin 15-20% edge of the frame and the speaker's face centred", () => {
+    const shot = shots.find((s) => s.id === 'shot.dialogue-two-shot')!;
+    for (const t of [0, 1, 2, 3, 4]) {
+      const p = evaluateShot(shot, t, units);
+      const m = frameMetrics(p, { x: stage.position[0], z: stage.position[2], yaw: stage.yaw }, { x: npc.position[0], y: npc.position[1] + 1.3, z: npc.position[2] });
+      expect(m.coverage, `t=${t} coverage`).toBeGreaterThanOrEqual(0.15);
+      expect(m.coverage, `t=${t} coverage`).toBeLessThanOrEqual(0.2);
+      // The speaker's face (head height above the dummy) sits in the middle of the frame.
+      expect(Math.abs(m.faceX), `t=${t} face`).toBeLessThan(0.35);
+    }
   });
 });

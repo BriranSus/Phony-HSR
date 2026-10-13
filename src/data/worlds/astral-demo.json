@@ -1,0 +1,11 @@
+{
+  "id": "world.astral-demo",
+  "name": "Astral Demo Route",
+  "description": "A small vertical slice: the Calibration Grounds and Observation Deck aboard the Astral Express, and a Snowfield Camp on Jarilo-VI.",
+  "startArea": "level.test-grounds",
+  "startSpawn": "default",
+  "regions": [
+    {"id":"region.astral-express","name":"Astral Express","areas":["level.test-grounds","level.observation-deck"]},
+    {"id":"region.jarilo-vi","name":"Jarilo-VI","areas":["level.snowfield-camp"]}
+  ]
+}

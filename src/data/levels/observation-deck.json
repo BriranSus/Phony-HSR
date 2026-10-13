@@ -1,0 +1,48 @@
+{
+  "id": "level.observation-deck",
+  "name": "Observation Deck",
+  "subtitle": "Astral Express · Annex",
+  "spawn": {"position":[0,0,7],"yaw":3.14159},
+  "spawns": {
+    "from-grounds": {"position":[0,0,7],"yaw":3.14159},
+    "anchor-deck": {"position":[6,0,4.2],"yaw":3.14159}
+  },
+  "killHeight": -20,
+  "colliders": [
+    {"shape":"box","id":"floor","min":[-10,-1,-10],"max":[10,0,10],"material":"floor"},
+    {"shape":"box","id":"annex-floor","min":[10,-1,-3],"max":[15,0,3],"material":"floor"},
+    {"shape":"box","id":"wall-n","min":[-10,0,-10],"max":[10,3,-9.6],"material":"wall"},
+    {"shape":"box","id":"wall-s","min":[-10,0,9.6],"max":[10,3,10],"material":"wall"},
+    {"shape":"box","id":"wall-w","min":[-10,0,-10],"max":[-9.6,3,10],"material":"wall"},
+    {"shape":"box","id":"wall-e-a","min":[9.6,0,-10],"max":[10,3,-1.2],"material":"wall"},
+    {"shape":"box","id":"wall-e-b","min":[9.6,0,1.2],"max":[10,3,10],"material":"wall"},
+    {"shape":"box","id":"cracked-wall","min":[9.6,0,-1.2],"max":[10,3,1.2],"material":"wall"},
+    {"shape":"box","id":"annex-n","min":[10,0,-3.4],"max":[15,3,-3],"material":"wall"},
+    {"shape":"box","id":"annex-s","min":[10,0,3],"max":[15,3,3.4],"material":"wall"},
+    {"shape":"box","id":"annex-e","min":[14.6,0,-3.4],"max":[15,3,3.4],"material":"wall"},
+    {"shape":"box","id":"vault-wall-w","min":[-4,0,-7.2],"max":[-1.2,3,-6.8],"material":"wall"},
+    {"shape":"box","id":"vault-wall-e","min":[1.2,0,-7.2],"max":[4,3,-6.8],"material":"wall"},
+    {"shape":"box","id":"vault-side-w","min":[-4.4,0,-9.6],"max":[-4,3,-6.8],"material":"wall"},
+    {"shape":"box","id":"vault-side-e","min":[4,0,-9.6],"max":[4.4,3,-6.8],"material":"wall"},
+    {"shape":"box","id":"gate-vault","min":[-1.2,0,-7.2],"max":[1.2,3,-6.8],"material":"gate"},
+    {"shape":"box","id":"console","min":[-2,0,1],"max":[2,1,2.2],"material":"platform"}
+  ],
+  "interactables": [
+    {"id":"sign.deck","kind":"sign","label":"Read: Observation Notes","position":[3,0,7.5],"message":"Two pressure plates guard the vault. A crate can hold one down while you hold the other."},
+    {"id":"crate.weight","kind":"crate","label":"Push: Weighted Crate","position":[-5,0,3],"step":2,"size":1.4},
+    {"id":"plate.west","kind":"plate","label":"Pressure Plate","position":[-5,0,-3],"radius":1},
+    {"id":"plate.east","kind":"plate","label":"Pressure Plate","position":[5,0,-3],"radius":1},
+    {"id":"gate.vault","kind":"gate","label":"Vault Door","position":[0,0,-6.4],"collider":"gate-vault","requires":[{"kind":"puzzle","id":"puzzle.weights"}],"lockedMessage":"The vault door will not move. Both plates are wired to it."},
+    {"id":"chest.vault","kind":"chest","label":"Open: Vault Treasure","position":[0,0,-8.8],"rewards":[{"item":"silvermane-medal","count":1},{"item":"credit","count":2000}],"message":"The vault holds a Silvermane Medal and a purse of Credits."},
+    {"id":"breakable.cracked-wall","kind":"breakable","label":"Strike: Cracked Wall","position":[9.3,0,0],"hits":3,"collider":"cracked-wall","message":"The wall is cracked. A few good strikes should break it.","progress":false},
+    {"id":"collect.deck-secret","kind":"collectible","label":"Pick up: Silvermane Badge","position":[13,0,0],"reward":{"item":"silvermane-badge","count":1},"hiddenIn":"hidden.annex"},
+    {"id":"anchor.deck","kind":"anchor","label":"Space Anchor: Observation Deck","position":[7,0,6],"spawn":"anchor-deck"},
+    {"id":"portal.to-grounds","kind":"portal","label":"Return: Calibration Grounds","position":[0,0,9],"toArea":"level.test-grounds","toSpawn":"from-deck"}
+  ],
+  "puzzles": [
+    {"id":"puzzle.weights","name":"Twin Plates","type":"plates","plates":["plate.west","plate.east"],"rewards":[{"item":"credit","count":400}],"hint":"Crate on one plate, you on the other."}
+  ],
+  "hiddenAreas": [
+    {"id":"hidden.annex","name":"Annex Nook","bounds":{"min":[10.4,-2.6],"max":[14.6,2.6]},"discover":{"by":"object","object":"breakable.cracked-wall"}}
+  ]
+}

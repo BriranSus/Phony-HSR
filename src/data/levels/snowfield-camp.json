@@ -1,0 +1,36 @@
+{
+  "id": "level.snowfield-camp",
+  "name": "Snowfield Camp",
+  "subtitle": "Jarilo-VI · Outer camp",
+  "spawn": {"position":[-16,0,16],"yaw":2.356},
+  "spawns": {
+    "from-grounds": {"position":[-16,0,16],"yaw":2.356},
+    "anchor-snowfield": {"position":[-14,0,10.2],"yaw":2.356}
+  },
+  "killHeight": -20,
+  "colliders": [
+    {"shape":"box","id":"floor","min":[-20,-1,-20],"max":[20,0,20],"material":"floor"},
+    {"shape":"box","id":"wall-n","min":[-20,0,-20],"max":[20,3,-19.6],"material":"wall"},
+    {"shape":"box","id":"wall-s","min":[-20,0,19.6],"max":[20,3,20],"material":"wall"},
+    {"shape":"box","id":"wall-w","min":[-20,0,-20],"max":[-19.6,3,20],"material":"wall"},
+    {"shape":"box","id":"wall-e","min":[19.6,0,-20],"max":[20,3,20],"material":"wall"},
+    {"shape":"box","id":"tent-1","min":[-9,0,6],"max":[-5.5,2.2,9.5],"material":"crate"},
+    {"shape":"box","id":"tent-2","min":[6,0,8],"max":[9.5,2.2,11.5],"material":"crate"},
+    {"shape":"box","id":"ice-pillar-1","min":[8,0,-4],"max":[9.2,3,-2.8],"material":"pillar"},
+    {"shape":"box","id":"ice-pillar-2","min":[-3,0,-10],"max":[-1.8,3,-8.8],"material":"pillar"},
+    {"shape":"box","id":"barrier","min":[-12,0,-3],"max":[-8,1,-2.4],"material":"step"}
+  ],
+  "interactables": [
+    {"id":"sign.camp","kind":"sign","label":"Read: Camp Board","position":[-13,0,15.5],"message":"Silvermane patrols sweep the camp. Strike first, or use your Technique to stun them."},
+    {"id":"anchor.snowfield","kind":"anchor","label":"Space Anchor: Snowfield Camp","position":[-14,0,12.5],"spawn":"anchor-snowfield"},
+    {"id":"chest.camp","kind":"chest","label":"Open: Supply Cache","position":[15,0,15],"rewards":[{"item":"gelid-chitin","count":2},{"item":"credit","count":900}],"message":"A supply cache with Gelid Chitin and Credits."},
+    {"id":"collect.camp-1","kind":"collectible","label":"Pick up: Ancient Spindle","position":[14,0,-4],"reward":{"item":"ancient-spindle","count":1}},
+    {"id":"collect.camp-2","kind":"collectible","label":"Pick up: Ancient Part","position":[-15,0,-14],"reward":{"item":"ancient-part","count":1}},
+    {"id":"portal.to-grounds","kind":"portal","label":"Return: Calibration Grounds","position":[-18,0,18],"toArea":"level.test-grounds","toSpawn":"from-snowfield"}
+  ],
+  "enemySpawns": [
+    {"id":"spawn.patrol","enemies":["enemy.silvermane-soldier","enemy.silvermane-soldier"],"position":[-4,0,2],"yaw":0,"patrol":[[-4,2],[6,2],[6,-5],[-4,-5]],"detectionRadius":7,"respawn":{"mode":"timer","seconds":40}},
+    {"id":"spawn.frost","enemies":["enemy.frostspawn"],"position":[10,0,-12],"yaw":3.14159,"patrol":[],"respawn":{"mode":"reenter"}},
+    {"id":"spawn.beetle","enemies":["enemy.automaton-beetle","enemy.frostspawn"],"position":[-10,0,-9],"yaw":0,"patrol":[[-10,-9],[-10,-15]],"respawn":{"mode":"timer","seconds":30}}
+  ]
+}

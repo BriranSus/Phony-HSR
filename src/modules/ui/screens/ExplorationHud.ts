@@ -1,4 +1,5 @@
 import type { Element as GameElement } from '@models/common';
+import type { WorldObjectKind } from '@models/world';
 import { h } from '../dom';
 import { ELEMENT_ICONS, UI_ICONS } from '../icons';
 
@@ -11,14 +12,23 @@ export interface PartySlotView {
 
 export interface PromptView {
   readonly id: string;
-  readonly kind: 'sign' | 'chest' | 'npc';
+  readonly kind: WorldObjectKind;
   readonly label: string;
 }
 
+const icon = (inner: string): string => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">${inner}</svg>`;
 const KIND_ICON: Record<PromptView['kind'], string> = {
-  sign: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M5 4h14v9H5zM12 13v7M9 20h6"/><path d="M8 7.5h8M8 10h5"/></svg>`,
-  chest: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 10h16v9H4zM4 10a8 5 0 0 1 16 0"/><path d="M11 12h2v3h-2z"/></svg>`,
-  npc: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg>`,
+  sign: icon('<path d="M5 4h14v9H5zM12 13v7M9 20h6"/><path d="M8 7.5h8M8 10h5"/>'),
+  chest: icon('<path d="M4 10h16v9H4zM4 10a8 5 0 0 1 16 0"/><path d="M11 12h2v3h-2z"/>'),
+  npc: icon('<circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/>'),
+  collectible: icon('<path d="M12 3l3 6 6 1-4.5 4.2L17.7 21 12 17.8 6.3 21l1.2-6.8L3 10l6-1z"/>'),
+  breakable: icon('<path d="M5 5l5 5-3 2 6 3-2 4M19 4l-4 5M19 14l-3 1"/>'),
+  switch: icon('<rect x="8" y="3" width="8" height="18" rx="4"/><circle cx="12" cy="9" r="2"/>'),
+  plate: icon('<ellipse cx="12" cy="15" rx="8" ry="3"/><path d="M4 15v-2"/><path d="M20 15v-2"/><ellipse cx="12" cy="13" rx="8" ry="3"/>'),
+  crate: icon('<path d="M4 7l8-4 8 4v10l-8 4-8-4z"/><path d="M4 7l8 4 8-4M12 11v10"/>'),
+  gate: icon('<path d="M4 21V8a8 8 0 0 1 16 0v13"/><path d="M12 8v13M4 14h16"/>'),
+  anchor: icon('<path d="M12 3l3 6-3 3-3-3zM12 12v9M7 21h10"/><circle cx="12" cy="17" r="0.8"/>'),
+  portal: icon('<ellipse cx="12" cy="12" rx="6" ry="9"/><ellipse cx="12" cy="12" rx="2.5" ry="5"/>'),
 };
 
 /**
@@ -27,6 +37,32 @@ const KIND_ICON: Record<PromptView['kind'], string> = {
  * selected row, scrollable when more prompts than `maxVisible` are in range), the gait readout,
  * a toast line for hook events and a message box for interactions.
  */
+export interface AnchorRowView {
+  readonly key: string;
+  readonly label: string;
+  readonly area: string;
+  readonly region: string;
+  readonly current: boolean;
+}
+
+export interface EncounterView {
+  readonly enemies: readonly string[];
+  readonly advantage: 'playerStrike' | 'neutral' | 'ambush';
+  readonly trigger: 'attack' | 'contact';
+}
+
+export interface ExplorationHandlers {
+  anchorChosen?: (key: string) => void;
+  anchorsClosed?: () => void;
+  encounterReturn?: () => void;
+}
+
+const ADVANTAGE_TEXT: Record<EncounterView['advantage'], { title: string; detail: string }> = {
+  playerStrike: { title: 'Player Strike', detail: 'You attack first.' },
+  neutral: { title: 'Neutral', detail: 'Both sides start evenly.' },
+  ambush: { title: 'Ambush', detail: 'The enemy attacks first.' },
+};
+
 export class ExplorationHud {
   readonly el: HTMLElement;
   private readonly partyEl: HTMLElement;
@@ -39,7 +75,16 @@ export class ExplorationHud {
   private readonly barTop: HTMLElement;
   private readonly barBottom: HTMLElement;
   private readonly galleryEl: HTMLElement;
-  private toastTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly progressEl: HTMLElement;
+  private readonly progressLabel: HTMLElement;
+  private readonly progressBar: HTMLElement;
+  private readonly areaNameEl: HTMLElement;
+  private readonly areaSubEl: HTMLElement;
+  private readonly bannerEl: HTMLElement;
+  private readonly anchorsEl: HTMLElement;
+  private readonly encounterEl: HTMLElement;
+  private bannerTimer: ReturnType<typeof setTimeout> | null = null;
+  private handlers: ExplorationHandlers = {};
   private messageTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
@@ -63,13 +108,21 @@ export class ExplorationHud {
     );
     this.promptsEl = h('div', { class: 'prompts', attrs: { 'aria-live': 'polite' } });
     this.gaitEl = h('div', { class: 'gait', dataset: { gait: 'run' } }, h('span', { class: 'gait__label', text: 'Run' }));
-    this.toastEl = h('div', { class: 'xtoast' });
+    this.toastEl = h('div', { class: 'xtoasts', attrs: { 'aria-live': 'polite' } });
     this.messageSpeaker = h('div', { class: 'message__speaker' });
     this.messageText = h('div', { class: 'message__text' });
     this.messageEl = h('div', { class: 'message' }, this.messageSpeaker, this.messageText);
     this.barTop = h('div', { class: 'letterbox letterbox--top' });
     this.barBottom = h('div', { class: 'letterbox letterbox--bottom' });
     this.galleryEl = h('aside', { class: 'gallery interactive', attrs: { 'aria-label': 'Camera Gallery' } });
+    this.areaNameEl = h('div', { class: 'hud__area-name', text: area.name });
+    this.areaSubEl = h('div', { class: 'hud__area-sub', text: area.subtitle });
+    this.progressLabel = h('span', { class: 'hud__progress-label', text: 'Exploration 0%' });
+    this.progressBar = h('span', { class: 'hud__progress-bar' }, h('span', { class: 'hud__progress-fill' }));
+    this.progressEl = h('div', { class: 'hud__progress', attrs: { 'data-id': 'exploration-progress' } }, this.progressLabel, this.progressBar);
+    this.bannerEl = h('div', { class: 'area-banner', attrs: { 'aria-live': 'polite' } });
+    this.anchorsEl = h('aside', { class: 'anchors interactive', attrs: { 'aria-label': 'Space Anchors' } });
+    this.encounterEl = h('aside', { class: 'encounter interactive', attrs: { 'aria-label': 'Encounter' } });
     this.el = h(
       'section',
       { class: 'screen screen--passthrough hud exploration', attrs: { 'data-screen': 'exploration' } },
@@ -77,8 +130,9 @@ export class ExplorationHud {
         'div',
         { class: 'hud__area' },
         h('div', { class: 'eyebrow' }, h('span', { class: 'diamond' }), 'Exploration'),
-        h('div', { class: 'hud__area-name', text: area.name }),
-        h('div', { class: 'hud__area-sub', text: area.subtitle }),
+        this.areaNameEl,
+        this.areaSubEl,
+        this.progressEl,
       ),
       h(
         'div',
@@ -98,6 +152,9 @@ export class ExplorationHud {
       this.barTop,
       this.barBottom,
       this.galleryEl,
+      this.bannerEl,
+      this.anchorsEl,
+      this.encounterEl,
       h('div', { class: 'hud__hints' }, ...hints.map(([k, label]) => h('span', {}, h('span', { class: 'keycap', text: k }), label))),
     );
   }
@@ -140,7 +197,7 @@ export class ExplorationHud {
     const px = `${(amount * height * 100).toFixed(2)}vh`;
     this.barTop.style.height = px;
     this.barBottom.style.height = px;
-    this.el.classList.toggle('is-cinematic', amount > 0.01);
+    this.el.classList.toggle("is-cinematic", amount > 0.001);
   }
 
   /** Camera Gallery panel: shots (key, name, mode) with the playing one highlighted; null hides it. */
@@ -168,11 +225,92 @@ export class ExplorationHud {
     );
   }
 
+  /** Adds a line to the toast stack (pickups, discoveries, progress); each fades on its own. */
   toast(text: string): void {
-    this.toastEl.textContent = text;
-    this.toastEl.classList.add('is-visible');
-    if (this.toastTimer) clearTimeout(this.toastTimer);
-    this.toastTimer = setTimeout(() => this.toastEl.classList.remove('is-visible'), 1800);
+    const item = h('div', { class: 'xtoast', text });
+    this.toastEl.append(item);
+    while (this.toastEl.children.length > 4) this.toastEl.firstElementChild?.remove();
+    requestAnimationFrame(() => item.classList.add('is-visible'));
+    setTimeout(() => {
+      item.classList.remove('is-visible');
+      setTimeout(() => item.remove(), 260);
+    }, 2200);
+  }
+
+  setHandlers(handlers: ExplorationHandlers): void {
+    this.handlers = handlers;
+  }
+
+  /** The area title block (updated on an area transition). */
+  setArea(name: string, subtitle: string): void {
+    this.areaNameEl.textContent = name;
+    this.areaSubEl.textContent = subtitle;
+  }
+
+  /** Exploration progress of the current area. */
+  setProgress(percent: number, found: number, total: number): void {
+    this.progressLabel.textContent = `Exploration ${percent}%`;
+    this.progressEl.title = `${found} of ${total} found`;
+    this.progressEl.dataset.percent = String(percent);
+    (this.progressBar.firstElementChild as HTMLElement).style.width = `${percent}%`;
+  }
+
+  /** Big area-name banner shown on entering an area. */
+  showBanner(title: string, subtitle: string): void {
+    this.bannerEl.replaceChildren(h('div', { class: 'area-banner__rule' }), h('div', { class: 'area-banner__title', text: title }), h('div', { class: 'area-banner__sub', text: subtitle }));
+    this.bannerEl.classList.remove('is-visible');
+    void this.bannerEl.offsetWidth;
+    this.bannerEl.classList.add('is-visible');
+    if (this.bannerTimer) clearTimeout(this.bannerTimer);
+    this.bannerTimer = setTimeout(() => this.bannerEl.classList.remove('is-visible'), 2600);
+  }
+
+  /** The Space Anchor travel list (null closes it). Rows are clickable; the selection also follows W / S. */
+  showAnchors(rows: readonly AnchorRowView[] | null, selected: number): void {
+    this.anchorsEl.classList.toggle('is-open', rows !== null);
+    if (!rows) {
+      this.anchorsEl.replaceChildren();
+      return;
+    }
+    this.anchorsEl.replaceChildren(
+      h('div', { class: 'eyebrow' }, h('span', { class: 'diamond' }), 'Space Anchors'),
+      ...rows.map((row, i) =>
+        h(
+          'button',
+          {
+            class: `anchors__row${i === selected ? ' is-selected' : ''}${row.current ? ' is-current' : ''}`,
+            attrs: { type: 'button', 'data-anchor': row.key },
+            on: { click: () => this.handlers.anchorChosen?.(row.key) },
+          },
+          h('span', { class: 'anchors__name', text: row.label }),
+          h('span', { class: 'anchors__where', text: `${row.region} · ${row.area}${row.current ? ' · here' : ''}` }),
+        ),
+      ),
+      h('div', { class: 'anchors__hint' }, h('span', { class: 'keycap', text: 'W' }), h('span', { class: 'keycap', text: 'S' }), ' Select ', h('span', { class: 'keycap', text: 'F' }), ' Travel ', h('span', { class: 'keycap', text: 'Esc' }), ' Close'),
+    );
+  }
+
+  /** The placeholder "Encounter started" overlay (combat arrives in Phase 5). */
+  showEncounter(info: EncounterView | null, names: (id: string) => string = (id) => id): void {
+    this.encounterEl.classList.toggle('is-open', info !== null);
+    if (!info) {
+      this.encounterEl.replaceChildren();
+      return;
+    }
+    const adv = ADVANTAGE_TEXT[info.advantage];
+    this.encounterEl.dataset.advantage = info.advantage;
+    this.encounterEl.replaceChildren(
+      h('div', { class: 'encounter__eyebrow', text: 'Encounter started' }),
+      h('div', { class: 'encounter__advantage', text: adv.title, dataset: { advantage: info.advantage } }),
+      h('div', { class: 'encounter__detail', text: `${adv.detail} (${info.trigger === 'attack' ? 'overworld attack' : 'enemy contact'})` }),
+      h('ul', { class: 'encounter__enemies' }, ...info.enemies.map((e) => h('li', { text: names(e) }))),
+      h('div', { class: 'encounter__note', text: 'Combat arrives in Phase 5. This placeholder returns you to exploration.' }),
+      h(
+        'button',
+        { class: 'pill-button', attrs: { type: 'button', 'data-id': 'encounter-return' }, on: { click: () => this.handlers.encounterReturn?.() } },
+        h('span', { class: 'pill-button__label', text: 'Return to exploration (Enter)' }),
+      ),
+    );
   }
 
   message(speaker: string, text: string): void {
@@ -184,7 +322,7 @@ export class ExplorationHud {
   }
 
   dispose(): void {
-    if (this.toastTimer) clearTimeout(this.toastTimer);
+    if (this.bannerTimer) clearTimeout(this.bannerTimer);
     if (this.messageTimer) clearTimeout(this.messageTimer);
   }
 }

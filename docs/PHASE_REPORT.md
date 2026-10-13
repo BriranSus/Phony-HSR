@@ -2,7 +2,7 @@
 
 **Project:** Astral Rail, an original fan project inspired by the gameplay structure of *Honkai: Star Rail*
 **Scope:** spec §39 "FIRST ACTION" (analysis, engine, stack, architecture, folders, data models, dependencies, roadmap) and **Phase 1** of §37
-**Status:** Phase 1 complete (Revisions 1 and 2 each validated at 8.5/10) and Phase 2 validated at 8.5/10. **Phase 3 (Camera) is complete**, scored 7.5/10, and **Revision 1** (see [§10.5](#105-phase-3--revision-1-changelog)) is awaiting validation. Phase 4+ is not started.
+**Status:** Phase 1 complete (Revisions 1 and 2 each validated at 8.5/10) and Phase 2 validated at 8.5/10. **Phase 3 (Camera)** scored 7.5/10 and, after Revision 1, 8.5/10. **Phase 4 (World exploration) is complete** and awaiting validation, see [§11](#11-phase-4-world-exploration). Phase 5+ is not started.
 
 ---
 
@@ -175,7 +175,7 @@ Validator fixes first (Revision 2 scored 8.5/10, with 0 data mismatches):
 | Schemas | `models/locomotion.ts` (+ 3 collections) | Validated at load: gait order, unique party members that must exist as characters, collider bounds, unique interactables |
 | Simulation | `modules/player/` (`movement`, `collision`, `animation`, `party`, `interaction`, `controller`) | Pure and deterministic, no THREE or DOM. Unit-tested on the real level |
 | Camera contract | `modules/camera -> ExplorationCamera` | The controller only needs `yaw`. The Phase-2 follow camera implemented this contract; Phase 3 replaced it with the camera module |
-| Presentation | `app/scenes/TestLevelScene`, `PlaceholderCharacter`; `modules/ui/screens/ExplorationHud` | Level meshes are generated from the collider data. A procedural low-poly figure is tinted by the leader's element. The HUD shows the party list, the right-side prompt list, the gait readout, toasts and a message box |
+| Presentation | `app/scenes/AreaScene` (was TestLevelScene), `PlaceholderCharacter`; `modules/ui/screens/ExplorationHud` | Level meshes are generated from the collider data. A procedural low-poly figure is tinted by the leader's element. The HUD shows the party list, the right-side prompt list, the gait readout, toasts and a message box |
 | Wiring | `app/states/TestSceneState` | Action map → `ControlInput` (keys, mouse, left/right stick). Fixed 1/60 s sub-steps. Events go to the bus and the HUD. The `window.__ASTRAL__.probes.exploration` probe serves the E2E test |
 
 **Dependencies:** `player` depends only on core and data (input actions, data registry, event bus). `camera` (Phase 3) depends on `player`. Combat (Phase 5) will consume `player:overworldAttack` / `player:technique`, and audio (Phase 22) will consume `player:footstep`. Existing systems are unchanged apart from three things: the InputManager gained analog sticks (`stick()`), the debug handle gained `probes`, and the Phase-1 sandbox (orbit camera, input monitor) was replaced by the level.
@@ -339,7 +339,77 @@ The validator scored Phase 3 at 7.5/10. Fixes:
 6. **Results:** `npm run build` has 0 errors. `npm test` passes **196/196** in 15 files. `npm run lint` reports 0 problems. `npm run screenshots` passes with **55 screenshots**, 0 console errors, 310 spin samples and peak trauma 0.99 (Ultimate) and 0.79 (Boss).
 7. **Known gap:** in the dialogue shot the listener's shoulder takes about 25% of the frame at the right edge, slightly more than the 15–20% target.
 
-## 11. What Phase 4 will add (World exploration)
+## 11. Phase 4: World exploration
 
-- Area loading from data (region → area), spawn points, greybox environments, interactables (chests, puzzles, teleport anchors, area transitions), and enemy patrols that start encounters through the Phase-2 `player:overworldAttack` hook.
-- The camera system and player controller are reused as-is.
+Two validator fixes came first (Phase 3 scored 8.5/10):
+1. **The area title is hidden with the rest of the HUD during letterboxed shots.** Root cause: the title's entrance animation used `fill-mode: both`, whose forwards fill pinned `opacity: 1` over the cinematic rule. It now uses `backwards`, and the cinematic class is applied as soon as the letterbox starts.
+2. **The dialogue two-shot is tightened** so the listener's shoulder is a thin edge. The speaker marker moved so the background is clean (the ramp behind it had been read as part of the shoulder), and the shot is a mid-shot on the speaker's face. A unit test projects the vertices of the real placeholder figure with a THREE camera, ignores what the letterbox bars cover, and asserts that the listener takes 15–20% of the frame width at five times across the shot with the speaker's face inside the middle of the frame.
+
+### 11.1 Architecture (spec §13, §14, §38)
+| Piece | Where | Role |
+|---|---|---|
+| Data | `worlds/*.json`, `levels/*.json`, `rules/world/default.json`, `config -> world.startWorld` | World -> regions -> areas; per-area geometry, spawns, objects, puzzles, hidden areas, enemy spawns; overworld tuning |
+| Schemas | `models/world.ts` (+ `worlds`, `worldRules` collections; `levels` extended) | Object kinds (discriminated union), requirements, puzzles, hidden areas, enemy spawns, world rules, serialisable `WorldStateData`. Local references are checked per file, item / enemy / area references by the registry |
+| Module | `modules/world/`: `objects`, `puzzles`, `enemies`, `encounter`, `state`, `graph`, `progress`, `runtime`, `events`, `session` | Pure TypeScript, no rendering or DOM. `WorldRuntime` is the one object the app drives |
+| Rendering | `app/scenes/AreaScene.ts`, `app/scenes/WorldObjects.ts` | One `AreaScene` per loaded area (colliders, sky). `WorldObjectsView` draws objects, enemies and hidden-area veils from the runtime's state; props fade near the camera |
+| Wiring | `app/states/TestSceneState.ts` | Feeds the runtime the player pose and the F / attack / Technique actions, rebuilds the area behind the transition overlay, owns the anchor list and encounter overlay, exposes a `world` probe and a debug-overlay section |
+| HUD | `modules/ui/screens/ExplorationHud.ts`, `DebugOverlay.ts` | Area name banner, exploration percentage, toast stack, Space Anchor list, encounter overlay, event log |
+
+**Dependencies:** `world` depends on `player` (controller, collision world, prompt list) and `camera` (line of sight for enemy detection). The controller gained only `setInteractables` and `setSpawn`; the camera rig shares the runtime's live collider list, so opened gates and moved crates change what it avoids. Quest (Phase 13), inventory (Phase 12) and the map (Phase 15) consume the `world:*` events and `WorldState` without any change to world code.
+
+**Spec §38:** there is one interactable implementation (the Phase 2 `interactables` field is now the typed object list, so the prompt list, controller and world share it), one collider list, and one place for each rule. Nothing about content is in code: a new area, object kind combination, puzzle or world is JSON.
+
+### 11.2 What was built
+- **Interactable framework.** Generic typed objects with `requires` clauses (puzzle solved, object state, key item, hidden area found) and state machines, plugged into the F prompt list. Kinds:
+  - `sign`, `npc` (emits `world:npcTalked`, shows the message box; the dialogue system is Phase 14)
+  - `chest` (opens once, rewards from data), `collectible` (pickups, counted)
+  - `breakable` (left click; can remove a wall collider and reveal a hidden area)
+  - `switch`, `plate`, `crate` (pushed on a grid; plates are held by the player or a crate), `gate` (opens when its requirements hold, or by F for key doors and the one-way shortcut)
+  - `anchor`, `portal`
+- **Puzzles (2).** *Elemental Sequence* (3 switches in order; a wrong press resets them and emits `puzzleFailed`) opens a gate to a chest with the Camp Pass. *Twin Plates* (crate on one plate, the player on the other) opens a vault. Both grant rewards and unlock through the generic requirement system.
+- **Hidden areas (2).** The Starlit Alcove is found by walking into it (discovered on enter, veil fades in over `hiddenFadeSeconds`). The Annex Nook is found by breaking a cracked wall. Objects inside only exist once discovered.
+- **Space Anchors and portals.** Interacting activates an anchor and opens a travel list of every activated anchor in the world (W/S, F or click, Esc). Portals and anchor travel run the transition overlay, load the target area from data and keep the party and world state. A key-gated portal needs the Camp Pass.
+- **World graph.** `world.astral-demo`: 2 regions (Astral Express, Jarilo-VI) and 3 areas (Calibration Grounds, Observation Deck, Snowfield Camp). `validateWorldGraph` checks portal targets and arrival spawns at load (the loading screen shows a fatal screen on failure).
+- **Exploration progress.** Per area: chests, collectibles, puzzles and anchors found; percent = found / total, floored. Regions and the world aggregate by counts. Shown in the HUD and the debug overlay; `world:progressChanged` fires on change.
+- **Enemies.** Spawns from data using the real roster (Silvermane Soldier, Frostspawn, Automaton Beetle). AI states: idle / patrol / alert / chase / return / stunned, with a detection radius and FOV cone plus a close radius, line of sight, lose-radius timer and home return. Contact or the overworld attack starts an encounter carrying the group and the advantage: player strike (attack on an unaware or stunned enemy), neutral (attack on an aware enemy, frontal contact), ambush (contact from behind the player's facing). A placeholder "Encounter started" overlay returns to exploration, counting the group as defeated. The Technique (E) stuns enemies in range. Respawn per spawn or default: `timer`, `reenter` or `never`.
+- **Events.** 17 typed `world:*` events (area-entered, npc-talked, chest-opened, item-collected, puzzle-solved / failed, hidden-area-discovered, anchor-activated, teleported, enemy-detected, encounter-started / ended, enemy-defeated, technique-used, progress-changed, object-changed, locked). The runtime keeps a ring-buffer log that the debug overlay (F3) shows.
+- **World state.** `WorldState` is plain, id-keyed JSON with `version`; `toJSON` / `fromJSON` validate with Zod, reject unknown versions and have a migration table. An in-memory session keeps it while the scene is left and re-entered, until the Phase 21 save system.
+- **Level loading.** `enterArea` streams area JSON into the live colliders, objects, enemies and spawns and unloads the previous area (persisted states re-applied: open gates, broken walls, moved crates).
+
+**Controls** (additions; the rest is unchanged):
+
+| Action | Keyboard / mouse | Gamepad |
+|---|---|---|
+| Interact (chests, switches, crates, anchors, portals, signs, NPCs) | F | A |
+| Break objects / start an encounter | left click | X |
+| Technique (stun nearby enemies) | E | Y |
+| Anchor list: select / travel / close | W, S / F or Enter / Esc | n/a |
+| Return from the encounter placeholder | Enter, F or Esc | n/a |
+| Debug overlay (world progress, event log) | F3 or ` | n/a |
+
+### 11.3 Tests and verification
+- `tests/world/world.test.ts` has 42 tests:
+  - state machines for every object kind, requirement clauses and which objects leave the prompt list
+  - puzzle logic (order, wrong-press reset, plates held together)
+  - world-graph validation: broken area, portal and spawn references fail; level files reject unknown puzzle, collider, hidden-area and spawn references and duplicate ids
+  - exploration percentage math, aggregation and the empty-area case
+  - WorldState JSON round-trip, version and schema rejection, restore into a new runtime
+  - encounter advantage rules and the attack cone
+  - enemy AI transitions: detection cone, close radius, line of sight, alert -> chase -> contact, lose and return, patrol pauses, stun
+  - runtime flows: chest once, collectibles, order puzzle -> gate -> key item -> portal, one-way shortcut, hidden-area discovery with fade, cracked wall, plate / crate puzzle, anchors across areas, state kept across transitions, NPC event, encounters (strike, ambush, neutral, Technique stun), respawn by timer / re-entry / never
+- **Playwright walkthrough** at **1600x900** and **1280x720** (`scripts/worldWalkthrough.mjs`, real keys and mouse): opens a chest and checks the reward and that it cannot reopen; fails then solves the order puzzle; discovers the alcove and watches the veil fade; activates an anchor; takes a portal with state kept (items, party leader, visited); solves the plate / crate puzzle; breaks the cracked wall with left clicks; teleports between anchors; enters the Snowfield with the Camp Pass; gets detected, is ambushed from behind, then stuns with E and strikes with left click (checking group and advantage in the overlay); and asserts the exploration percentage rises after each step.
+- **Results:** `npm run build` has 0 type errors. `npm test` passes **239/239** in 16 files. `npm run lint` reports 0 problems. `npm run screenshots` produces **71 screenshots** with 0 console errors and 0 layout problems. Phases 1 to 3 are unchanged: their unit tests and walkthrough steps (including the 13-spot camera spin sweep on the extended level) pass.
+- **Screenshots** (in `docs/screenshots/`): `08-explore-10-chest`, `-11-puzzle`, `-12-hidden`, `-13-anchors`, `-14-deck`, `-15-plates`, `-16-snowfield`, `-17-encounter`, the same set as `vp-1280x720-explore-*`, and `08-explore-gallery-5-dialogue` for the tightened two-shot.
+
+### 11.4 Known gaps
+- **Combat is a placeholder.** An encounter returns to exploration and counts as a victory. Real combat, results and loot arrive in Phase 5 and 7; the encounter event already carries the group and advantage.
+- **Items are only granted to `WorldState.items`.** The inventory and economy (Phase 12) take over from `world:itemCollected`. There is no inventory UI yet.
+- **Dialogue is a message box.** NPCs emit `world:npcTalked`; branching dialogue and quests are Phases 13 and 14.
+- **The anchor list is a simple list.** The real map with markers, filters and regional views is Phase 15.
+- **Collision and enemies use axis-aligned geometry.** Enemies avoid walls by sliding, with no navmesh; arbitrary meshes arrive with authored geometry (Phase 15).
+- **No autosave.** World progress persists in memory while the app runs; the save system (Phase 21) persists the same JSON.
+- **Props have no colliders.** Chests, anchors and crates (other than the pushable crate) do not block the player or camera; the camera fades them when it is close.
+
+## 12. What Phase 5 will add (Combat engine)
+
+- `BattleState`, the action-value timeline, Skill Points, Ultimates, inserted actions and the effect interpreter, fed by the `world:encounterStarted` event (enemy group and advantage), and returning the result that replaces the placeholder overlay.

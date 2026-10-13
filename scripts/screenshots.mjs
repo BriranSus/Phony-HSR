@@ -14,6 +14,7 @@
 import { build, createServer, preview } from 'vite';
 import { chromium } from 'playwright';
 import { mkdir } from 'node:fs/promises';
+import { worldWalkthrough } from './worldWalkthrough.mjs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -187,6 +188,7 @@ async function exploreWalkthrough(page, prefix, shot, errors, check, pairs, full
   console.log(`  [${prefix}] hooks: ${JSON.stringify(hooks)}`);
 
   await cameraWalkthrough(page, prefix, shot, fail, probe, full);
+  await worldWalkthrough(page, prefix, shot, fail, probe);
 }
 
 /**
