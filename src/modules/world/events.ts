@@ -18,7 +18,7 @@ export interface WorldEvents {
   'world:teleported': { anchorId: string; fromArea: string; toArea: string };
   'world:enemyDetected': { spawnId: string; enemies: readonly string[]; areaId: string };
   'world:encounterStarted': { spawnId: string; enemies: readonly string[]; advantage: Advantage; trigger: 'attack' | 'contact'; areaId: string };
-  'world:encounterEnded': { spawnId: string; areaId: string; result: 'placeholder-victory' };
+  'world:encounterEnded': { spawnId: string; areaId: string; result: 'victory' | 'defeat' };
   'world:enemyDefeated': { spawnId: string; enemyId: string; areaId: string };
   'world:techniqueUsed': { affected: number; areaId: string };
   'world:progressChanged': { areaId: string; percent: number; found: number; total: number };

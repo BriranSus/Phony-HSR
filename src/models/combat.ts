@@ -55,8 +55,17 @@ export interface Combatant {
   readonly level: number;
   readonly element: Element | null;
   readonly rank: EnemyRank | null;
-  /** Stats before temporary buffs (base + light cone + relics + traces + eidolons). */
+  /**
+   * Base stats before any bonus: HP / ATK / DEF / SPD are the character + Light Cone base values (the
+   * `base` of `aggregateStat`); CRIT, aggro and the like are absolute values.
+   */
   readonly baseStats: Readonly<StatBlock>;
+  /** Permanent bonuses on top of `baseStats` (Trace stat nodes, equipment): percent and flat stats. */
+  readonly bonuses: Readonly<StatBlock>;
+  /** Custom resource counters (Himeko / Blade Charge ...), by resource id. */
+  resources: Record<string, number>;
+  /** Enemy phase index (0-based; bosses change abilities and toughness between phases). */
+  phase: number;
   /** Effective ability levels after traces and Eidolon bonuses, by slot. */
   readonly abilityLevels: Readonly<Record<string, number>>;
   hp: number;

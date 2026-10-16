@@ -15,6 +15,7 @@ import { build, createServer, preview } from 'vite';
 import { chromium } from 'playwright';
 import { mkdir } from 'node:fs/promises';
 import { worldWalkthrough } from './worldWalkthrough.mjs';
+import { sandboxWalkthrough } from './battleWalkthrough.mjs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -310,6 +311,11 @@ async function cameraWalkthrough(page, prefix, shot, fail, probe, full = true) {
   await page.keyboard.press('KeyX');
   await sleep(1200);
   let p = await probe();
+  // Under load the recentring can take longer than 1.2 s of wall time; give it a few more seconds.
+  for (let k = 0; k < 20 && Math.abs(Math.atan2(Math.sin(p.camera.yaw - p.yaw), Math.cos(p.camera.yaw - p.yaw))) > 0.05; k++) {
+    await sleep(200);
+    p = await probe();
+  }
   if (Math.abs(Math.atan2(Math.sin(p.camera.yaw - p.yaw), Math.cos(p.camera.yaw - p.yaw))) > 0.05) fail(`X should recenter behind the player (cam ${p.camera.yaw.toFixed(2)} vs player ${p.yaw.toFixed(2)})`);
 
   // Camera Gallery: every mode, with input gating.
@@ -375,7 +381,7 @@ async function captureViewport(browser, url, vp, shot, errors) {
     );
   const check = async (label, pairs) => errors.push(...(await layoutProblems(page, `[${vp.name}] ${label}`, pairs)));
 
-  await page.goto(`${url}?cfg.ui.minLoadingMs=0`);
+  await page.goto(`${url}?cfg.ui.minLoadingMs=0&cfg.combat.animationSpeed=3`);
   await stackIs(['title']);
   await settled();
   await sleep(1500);
@@ -423,6 +429,16 @@ async function captureViewport(browser, url, vp, shot, errors) {
   } else {
     await check('exploration', explorePairs);
     await shot(page, `vp-${vp.name}-explore`);
+  }
+  if (vp.width >= 1200) {
+    for (let attempt = 0; attempt < 5; attempt++) {
+      await sleep(1200);
+      await page.keyboard.press('Escape');
+      const ok = await page.waitForFunction(() => window.__ASTRAL__?.stack().join('>') === 'title>main-menu', null, { timeout: 4000, polling: 100 }).then(() => true, () => false);
+      if (ok) break;
+    }
+    await stackIs(['title', 'main-menu']);
+    await sandboxWalkthrough(page, `vp-${vp.name}`, (n) => shot(page, n), (m) => errors.push(m));
   }
   await page.close();
 }
@@ -475,7 +491,7 @@ async function main() {
 
     // Hold the loading screen longer than the default 1.6 s so it can be captured mid-progress
     // (uses the runtime config override system: ?cfg.<section>.<key>=<value>).
-    await page.goto(`${server.url}?cfg.ui.minLoadingMs=6000`);
+    await page.goto(`${server.url}?cfg.ui.minLoadingMs=6000&cfg.combat.animationSpeed=3`);
     await page.waitForSelector('[data-screen="loading"]', { timeout: 30000 });
     await page.waitForFunction(() => {
       const n = Number(document.querySelector('[data-screen="loading"]')?.getAttribute('aria-valuenow') ?? 0);
@@ -552,9 +568,12 @@ async function main() {
     await stackIs(['title', 'main-menu']);
     await transitionIdle();
     console.log('  returned to title > main-menu');
+    await sandboxWalkthrough(page, 'sandbox', (n) => shot(n), (m) => errors.push(m));
     await page.close();
 
     for (const vp of VIEWPORTS) await captureViewport(browser, server.url, vp, shot0(shots), errors);
+  } catch (e) {
+    errors.push(`crash: ${e instanceof Error ? e.message : e}`);
   } finally {
     await browser.close();
     await server.close();

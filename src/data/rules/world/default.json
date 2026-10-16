@@ -1,10 +1,49 @@
 {
   "id": "default",
-  "enemy": {"detectionRadius":8,"detectionFovDeg":140,"closeRadius":2.5,"loseRadius":14,"loseSeconds":2.5,"alertSeconds":0.6,"patrolSpeed":1.6,"chaseSpeed":4.2,"returnSpeed":3.2,"contactRadius":1,"patrolPause":1.2,"stunSeconds":4,"radius":0.4},
-  "encounter": {"ambushAngleDeg":100,"playerAttack":{"unaware":"playerStrike","aware":"neutral","stunned":"playerStrike"},"enemyContact":{"behind":"ambush","front":"neutral"},"attackRange":2.6,"attackArcDeg":140},
-  "technique": {"radius":7,"effect":"stun"},
-  "respawn": {"mode":"timer","seconds":45},
-  "breakable": {"reach":2.6,"arcDeg":150},
-  "plates": {"crateRadius":0.9},
+  "enemy": {
+    "detectionRadius": 8,
+    "detectionFovDeg": 140,
+    "closeRadius": 2.5,
+    "loseRadius": 14,
+    "loseSeconds": 2.5,
+    "alertSeconds": 0.6,
+    "patrolSpeed": 1.6,
+    "chaseSpeed": 4.2,
+    "returnSpeed": 3.2,
+    "contactRadius": 1,
+    "patrolPause": 1.2,
+    "stunSeconds": 4,
+    "radius": 0.4
+  },
+  "encounter": {
+    "ambushAngleDeg": 100,
+    "playerAttack": {
+      "unaware": "playerStrike",
+      "aware": "neutral",
+      "stunned": "playerStrike"
+    },
+    "enemyContact": {
+      "behind": "ambush",
+      "front": "neutral"
+    },
+    "attackRange": 2.6,
+    "attackArcDeg": 140,
+    "enemyLevel": 30
+  },
+  "technique": {
+    "radius": 7,
+    "effect": "stun"
+  },
+  "respawn": {
+    "mode": "timer",
+    "seconds": 45
+  },
+  "breakable": {
+    "reach": 2.6,
+    "arcDeg": 150
+  },
+  "plates": {
+    "crateRadius": 0.9
+  },
   "hiddenFadeSeconds": 1.4
 }

@@ -102,6 +102,9 @@ export const PartySchema = z
   .object({
     id: IdSchema,
     members: z.array(IdSchema).min(1).max(4),
+    /** Level and ascension the party fights at until the player-progress systems exist (Phase 9). */
+    level: z.number().int().min(1).max(80).default(80),
+    ascension: z.number().int().min(0).max(6).default(6),
   })
   .strict()
   .refine((p) => new Set(p.members).size === p.members.length, 'party members must be unique');

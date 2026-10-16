@@ -31,6 +31,6 @@
   "enemySpawns": [
     {"id":"spawn.patrol","enemies":["enemy.silvermane-soldier","enemy.silvermane-soldier"],"position":[-4,0,2],"yaw":0,"patrol":[[-4,2],[6,2],[6,-5],[-4,-5]],"detectionRadius":7,"respawn":{"mode":"timer","seconds":40}},
     {"id":"spawn.frost","enemies":["enemy.frostspawn"],"position":[10,0,-12],"yaw":3.14159,"patrol":[],"respawn":{"mode":"reenter"}},
-    {"id":"spawn.beetle","enemies":["enemy.automaton-beetle","enemy.frostspawn"],"position":[-10,0,-9],"yaw":0,"patrol":[[-10,-9],[-10,-15]],"respawn":{"mode":"timer","seconds":30}}
+    {"id":"spawn.beetle","enemies":["enemy.automaton-beetle","enemy.frostspawn"],"position":[-10,0,-9],"yaw":0,"patrol":[[-10,-9],[-10,-15]],"level":70,"respawn":{"mode":"timer","seconds":30}}
   ]
 }

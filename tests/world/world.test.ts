@@ -573,7 +573,7 @@ describe('world runtime: enemies and encounters', () => {
     rt.endEncounter();
     expect(rt.encounter).toBeNull();
     expect(count('world:enemyDefeated')).toBe(1);
-    expect(events.find((e) => e.name === 'world:encounterEnded')?.payload).toMatchObject({ result: 'placeholder-victory' });
+    expect(events.find((e) => e.name === 'world:encounterEnded')?.payload).toMatchObject({ result: 'victory' });
     expect(rt.enemies().some((x) => x.spawnId === 'spawn.frost')).toBe(false);
   });
 
@@ -605,6 +605,38 @@ describe('world runtime: enemies and encounters', () => {
     expect(rt.enemies().find((e) => e.spawnId === 'spawn.frost')!.state).toBe('stunned');
     const close = at(FROST.x, FROST.z - 1.5, 0);
     expect(rt.attack(close)).toMatchObject({ type: 'enemy', advantage: 'playerStrike' });
+  });
+
+  it('makes a close attack from directly behind a strike even though the enemy noticed the player first', () => {
+    const { rt } = make({ levelMap: frostOnly });
+    rt.enterArea(SNOW);
+    // The Frostspawn faces -z. The player stands 1 m behind it (z + 1), facing it.
+    const behind = at(FROST.x, FROST.z + 1, Math.PI);
+    rt.update(0.05, behind); // its close radius notices the player: alert
+    expect(rt.enemies()[0]!.state).toBe('alert');
+    expect(rt.attack(behind)).toEqual({ type: 'enemy', spawnId: 'spawn.frost', advantage: 'playerStrike' });
+    // The same attack from the front, on an enemy that already noticed the player, is neutral.
+    const { rt: rt2 } = make({ levelMap: frostOnly });
+    rt2.enterArea(SNOW);
+    const front = at(FROST.x, FROST.z - 1.5, 0);
+    rt2.update(0.05, front);
+    expect(rt2.enemies()[0]!.state).toBe('alert');
+    expect(rt2.attack(front)).toMatchObject({ type: 'enemy', advantage: 'neutral' });
+  });
+
+  it('leaves the group standing after a defeat (calm, at its post) and carries the battle level', () => {
+    const { rt, events } = make({ levelMap: frostOnly });
+    rt.enterArea(SNOW);
+    rt.attack(at(FROST.x, FROST.z + 1.6, Math.PI));
+    expect(rt.encounter?.level).toBe(30);
+    rt.endEncounter('defeat');
+    expect(rt.encounter).toBeNull();
+    expect(rt.enemies().map((e) => e.spawnId)).toEqual(['spawn.frost']);
+    expect(rt.enemies()[0]!.state).toBe('idle');
+    expect(events.find((e) => e.name === 'world:encounterEnded')?.payload).toMatchObject({ result: 'defeat' });
+    expect(events.some((e) => e.name === 'world:enemyDefeated')).toBe(false);
+    rt.grantRewards([{ item: 'credit', count: 25 }], 'battle');
+    expect(rt.state.itemCount('credit')).toBe(25);
   });
 
   it('respawns defeated enemies by rule: on re-entry, after a timer, or never', () => {

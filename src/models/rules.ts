@@ -124,6 +124,23 @@ export const CombatRulesSchema = z
      * nothing is interpolated.
      */
     levelMultiplier: z.record(z.string().regex(/^\d+$/), z.number().positive()),
+    /**
+     * Opening advantage after an overworld encounter. A player strike advances every ally by
+     * `playerStrikeAdvance` of its base action value; an ambush advances every enemy by
+     * `ambushEnemyAdvance` (1 = acts before anyone).
+     */
+    advantage: z
+      .object({ playerStrikeAdvance: z.number().min(0).max(1), ambushEnemyAdvance: z.number().min(0).max(1) })
+      .strict()
+      .default({ playerStrikeAdvance: 0.25, ambushEnemyAdvance: 1 }),
+    /**
+     * Battle rewards: enemies without their own loot table roll the table of their rank (placeholder
+     * rates; every item id is a real item).
+     */
+    rewards: z
+      .object({ fallbackLoot: z.partialRecord(z.enum(['normal', 'elite', 'boss', 'weeklyBoss', 'storyBoss', 'event']), IdSchema) })
+      .strict()
+      .default({ fallbackLoot: {} }),
     /** Where reference-game numbers in this file were verified. */
     sources: z.array(SourceSchema).default([]),
   })

@@ -104,6 +104,8 @@ export const StatusEffectSchema = z
     dot: DotSchema.optional(),
     hot: HotSchema.optional(),
     cc: CrowdControlSchema.optional(),
+    /** The status is removed after its owner's next attack (Dan Heng's Superiority of Reach). */
+    expiresAfterAttack: z.boolean().optional(),
     /** Toughness cannot be reduced (boss Weakness Protection), always or while the owner's summons are on the field. */
     toughnessProtection: z.enum(['always', 'whileSummonsOnField']).optional(),
     /** While active, the owner's Basic ATK / Skill is replaced by another of its abilities (Blade's Hellscape). */

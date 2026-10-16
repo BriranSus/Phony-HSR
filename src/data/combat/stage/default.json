@@ -1,0 +1,42 @@
+{
+  "id": "default",
+  "allies": {
+    "x": -3.3,
+    "spacing": 2.2,
+    "z": 3
+  },
+  "enemies": {
+    "spacing": 2.4,
+    "z": -4
+  },
+  "enemyScale": {
+    "normal": 1,
+    "elite": 1.35,
+    "boss": 1.9
+  },
+  "camera": {
+    "distance": 9.5,
+    "height": 4.4,
+    "lookHeight": 1.2,
+    "fov": 46,
+    "sway": 0.25
+  },
+  "shots": {
+    "skill": "shot.battle-skill",
+    "ultimate": "shot.battle-ultimate",
+    "enemy": "shot.battle-enemy"
+  },
+  "timing": {
+    "actionLead": 0.25,
+    "lunge": 0.5,
+    "hitGap": 0.26,
+    "breakPause": 0.55,
+    "dotPause": 0.35,
+    "downPause": 0.6,
+    "statusPause": 0.12,
+    "turnGap": 0.2,
+    "banner": 1.1,
+    "floatSeconds": 1.1
+  },
+  "turnOrderCount": 8
+}

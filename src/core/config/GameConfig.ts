@@ -47,6 +47,11 @@ export const GameConfigSchema = z.object({
     sfx: z.number().min(0).max(1),
     voice: z.number().min(0).max(1),
   }),
+  /** Combat presentation (Phase 5). */
+  combat: z.object({
+    /** Multiplier on the battle animation speed (1 = normal; tests use more). */
+    animationSpeed: z.number().min(0.25).max(20),
+  }),
   /** Exploration (Phase 4): which world definition the exploration scene loads. */
   world: z.object({ startWorld: z.string().min(1) }),
   /**

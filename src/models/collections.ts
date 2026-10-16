@@ -12,6 +12,7 @@ import { BannerSchema } from './gacha';
 import { LevelSchema, LocomotionRulesSchema, PartySchema } from './locomotion';
 import { CameraRulesSchema, CameraShotSchema } from './camera';
 import { WorldRulesSchema, WorldSchema } from './world';
+import { BattleStageSchema } from './battle';
 import { DialogueSchema, QuestSchema } from './quest';
 import {
   CombatRulesSchema,
@@ -71,12 +72,10 @@ export const Collections = {
   loadingTips: defineCollection({ name: 'loadingTips', dir: 'ui/tips', format: 'list', schema: LoadingTipSchema }),
   inputBindings: defineCollection({ name: 'inputBindings', dir: 'input', format: 'item', schema: InputBindingsSchema }),
   combatRules: defineCollection({ name: 'combatRules', dir: 'rules/combat', format: 'item', schema: CombatRulesSchema,
-    references: (r) =>
-      Object.entries(r.weaknessBreak.elements).map(([el, b]) => ({
-        collection: 'statusEffects',
-        id: b.status,
-        at: `weaknessBreak.elements.${el}.status`,
-      })),
+    references: (r) => [
+      ...Object.entries(r.weaknessBreak.elements).map(([el, b]) => ({ collection: 'statusEffects', id: b.status, at: `weaknessBreak.elements.${el}.status` })),
+      ...Object.entries(r.rewards.fallbackLoot).map(([rank, id]) => ({ collection: 'lootTables', id, at: `rewards.fallbackLoot.${rank}` })),
+    ],
   }),
   progressionRules: defineCollection({ name: 'progressionRules', dir: 'rules/progression', format: 'item', schema: ProgressionRulesSchema }),
   scalingCurves: defineCollection({ name: 'scalingCurves', dir: 'rules/scaling', format: 'item', schema: ScalingCurvesSchema }),
@@ -230,6 +229,13 @@ export const Collections = {
       { collection: 'levels', id: w.startArea, at: 'startArea' },
       ...w.regions.flatMap((r) => r.areas.map((a) => ({ collection: 'levels', id: a, at: `regions.${r.id}.areas` }))),
     ],
+  }),
+  battleStage: defineCollection({
+    name: 'battleStage',
+    dir: 'combat/stage',
+    format: 'item',
+    schema: BattleStageSchema,
+    references: (s) => Object.entries(s.shots).map(([k, id]) => ({ collection: 'cameraShots', id, at: `shots.${k}` })),
   }),
   worldRules: defineCollection({ name: 'worldRules', dir: 'rules/world', format: 'item', schema: WorldRulesSchema }),
   cameraRules: defineCollection({ name: 'cameraRules', dir: 'camera/rules', format: 'item', schema: CameraRulesSchema }),

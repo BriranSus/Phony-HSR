@@ -6,8 +6,9 @@
  *   hidden area (discovery + fade-in) -> Space Anchor -> area transition with state kept ->
  *   plate / crate puzzle -> cracked wall -> anchor teleport -> key-gated portal -> enemies:
  *   detection, Technique stun, left click with the right advantage, contact ambush, encounter
- *   overlay and return -> exploration percentage rising throughout.
+ *   battle and return -> exploration percentage rising throughout.
  */
+import { battleProbe, battleWalkthrough, fightToEnd } from './battleWalkthrough.mjs';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export async function worldWalkthrough(page, prefix, shot, fail, probe) {
@@ -38,7 +39,22 @@ export async function worldWalkthrough(page, prefix, shot, fail, probe) {
   const objectState = async (id) => (await world()).objects[id]?.state;
   const percent = async () => (await world()).progress.percent;
   const inLog = async (name) => (await world()).log.some((l) => l.startsWith(name));
-  const encounterReady = () => waitFor('the encounter overlay', async () => (await world()).overlay === 'encounter', 15000);
+  const stackTop = () => page.evaluate(() => window.__ASTRAL__.stack().at(-1));
+  /** Waits for the encounter's battle, returns its first probe, plays it out and returns to the overworld. */
+  const battleFlow = async (expectAdvantage) => {
+    const ok = await waitFor('the battle', async () => (await stackTop()) === 'battle' && (await battleProbe(page))?.accepting, 25000);
+    if (!ok) return false;
+    const b = await battleProbe(page);
+    if (b.source !== 'world' || b.advantage !== expectAdvantage) fail(`expected a ${expectAdvantage} world battle, got ${b.source}/${b.advantage}`);
+    return b;
+  };
+  const finishBattle = async () => {
+    const end = await fightToEnd(page, fail, { maxMs: 90000 });
+    if (end?.outcome !== 'victory') fail(`world battle should be won, got ${end?.outcome}`);
+    await sleep(900);
+    await press('Enter');
+    await waitFor('return to exploration', async () => (await stackTop()) === 'test-scene' && (await world()).overlay === 'none', 25000);
+  };
 
   const start = await world();
   if (start.area !== 'level.test-grounds') fail(`world: expected to start in the Calibration Grounds, got ${start.area}`);
@@ -134,9 +150,11 @@ export async function worldWalkthrough(page, prefix, shot, fail, probe) {
   // 7. Cracked wall (left click) reveals the annex.
   await teleport(8.3, 0, Math.PI / 2);
   const vw = page.viewportSize();
-  for (let n = 0; n < 3; n++) {
+  // Three hits break the wall; a click that lands inside an action cooldown is ignored (slow frames), so keep going.
+  for (let n = 0; n < 8; n++) {
+    if ((await world()).hidden.find((h) => h.id === 'hidden.annex')?.discovered) break;
     await page.mouse.click(vw.width / 2, vw.height / 2);
-    await sleep(650);
+    await sleep(n < 3 ? 650 : 900);
   }
   await waitFor('the annex to be discovered', async () => (await world()).hidden.find((h) => h.id === 'hidden.annex')?.discovered);
   await use('anchor.deck', 7, 4.7, Math.PI);
@@ -167,63 +185,35 @@ export async function worldWalkthrough(page, prefix, shot, fail, probe) {
   await shot(`${prefix}-16-snowfield`);
 
   // 10a. Contact from behind: the idle Frostspawn notices the player (detected), catches them
-  // facing away and an ambush encounter starts; the overlay returns to exploration.
+  // facing away and an ambush battle starts (enemies act first).
   await teleport(10, -16.5, Math.PI);
   await waitFor('the Frostspawn to notice the player', async () => (await world()).enemies.find((e) => e.spawnId === 'spawn.frost')?.state !== 'idle');
   if (!(await inLog('enemyDetected'))) fail('no enemyDetected event');
-  if (!(await encounterReady())) return;
-  w = await world();
-  if (w.encounter.advantage !== 'ambush' || w.encounter.trigger !== 'contact') fail(`expected a contact ambush, got ${JSON.stringify(w.encounter)}`);
-  if (!(await page.$('.encounter.is-open .encounter__advantage[data-advantage="ambush"]'))) fail('encounter overlay does not show the ambush');
+  const amb = await battleFlow('ambush');
+  if (!amb) return;
+  if (amb.turnOrder[0] === 'Dan Heng') fail('an ambush should let the enemies act first');
   await sleep(500);
   await shot(`${prefix}-17-encounter`);
-  await press('Enter');
-  await waitFor('return to exploration', async () => (await world()).overlay === 'none');
+  await finishBattle();
   w = await world();
   if (w.enemies.some((e) => e.spawnId === 'spawn.frost')) fail('defeated enemy is still in the world');
   if (!(await inLog('enemyDefeated'))) fail('no enemyDefeated event');
 
-  // 10b. Technique stuns the beetle group; a left click then lands a player strike.
-  await teleport(-10, -18, 0);
-  const noticed = await waitFor('the beetle group to notice the player', async () => {
-    const e = (await world()).enemies.find((x) => x.spawnId === 'spawn.beetle');
-    return e && (e.state === 'alert' || e.state === 'chase') ? e : null;
-  }, 15000);
-  if (noticed) {
-    // It noticed the player from beyond the Technique radius; close in to 4 m, then stun it.
-    await teleport(noticed.x, noticed.z - 4, 0);
-    await press('KeyE');
-    await waitFor('the beetle group to be stunned', async () => (await world()).enemies.find((x) => x.spawnId === 'spawn.beetle')?.state === 'stunned');
-    const b = (await world()).enemies.find((x) => x.spawnId === 'spawn.beetle');
-    await teleport(b.x, b.z - 1.6, 0);
-    // The Technique and the attack share an action cooldown (0.45 s); a click inside it is ignored.
-    await sleep(700);
-    await page.mouse.click(vw.width / 2, vw.height / 2);
-    if (await encounterReady()) {
-      w = await world();
-      if (w.encounter.advantage !== 'playerStrike' || w.encounter.trigger !== 'attack') fail(`expected an attack strike, got ${JSON.stringify(w.encounter)}`);
-      if (w.encounter.enemies.join() !== 'enemy.automaton-beetle,enemy.frostspawn') fail(`encounter group wrong: ${w.encounter.enemies}`);
-      await page.keyboard.press('Enter', { delay: 90 });
-      await waitFor('return to exploration', async () => (await world()).overlay === 'none');
-    }
-  }
+  // 10b. Technique stun + left click = player strike; Basic / Skill / Ultimate / Break / victory.
+  await battleWalkthrough(page, prefix, shot, fail, probe);
 
-  // 10c. Attacking an enemy that already noticed the player is a neutral encounter.
+  // 10c. Attacking an enemy that already noticed the player is a neutral battle.
   const patrol = (await world()).enemies.find((x) => x.spawnId === 'spawn.patrol');
   if (patrol) {
-    await teleport(patrol.x, patrol.z + 2, Math.PI);
-    // Wait until it has noticed the player (alert / chase), then strike: an aware enemy is neutral.
+    // Stand 2 m in front of the patrol (the way it faces), looking at it: it notices a visible player.
+    await teleport(patrol.x + Math.sin(patrol.yaw) * 2, patrol.z + Math.cos(patrol.yaw) * 2, patrol.yaw + Math.PI);
     await waitFor('the patrol to notice the player', async () => {
       const e = (await world()).enemies.find((x) => x.spawnId === 'spawn.patrol');
-      return !e || e.state === 'alert' || e.state === 'chase' || (await world()).overlay === 'encounter';
+      return !e || e.state === 'alert' || e.state === 'chase' || (await stackTop()) === 'battle';
     });
-    if ((await world()).overlay !== 'encounter') await page.mouse.click(vw.width / 2, vw.height / 2);
-    if (await encounterReady()) {
-      w = await world();
-      if (w.encounter.advantage !== 'neutral') fail(`expected a neutral encounter, got ${JSON.stringify(w.encounter)}`);
-      await press('Enter');
-      await waitFor('return to exploration', async () => (await world()).overlay === 'none');
-    }
+    if ((await stackTop()) !== 'battle') await page.mouse.click(vw.width / 2, vw.height / 2);
+    const neutral = await battleFlow('neutral');
+    if (neutral) await finishBattle();
   } else fail('the patrol group is missing');
 
   // The percentage rose all the way: chests, puzzles, anchors and pickups are all counted.

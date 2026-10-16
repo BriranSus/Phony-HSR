@@ -52,6 +52,7 @@
     {"id":"chest.platform","kind":"chest","label":"Open: Basic Treasure","position":[13,2,-3],"message":"The treasure holds a stack of Credits and some Ancient Parts.","rewards":[{"item":"credit","count":1200},{"item":"ancient-part","count":3}]},
     {"id":"npc.conductor","kind":"npc","label":"Talk: Pom-Pom","position":[-8.5,1.8,-10],"message":"Pom-Pom: Mind your step on the Express, Trailblazer!"},
     {"id":"sign.corridor","kind":"sign","label":"Read: Corridor Clearance","position":[3.7,0,8.2],"message":"Corridor width 1.4 m. Capsule radius 0.35 m fits."},
+    {"id":"sign.alcove","kind":"sign","label":"Read: Scratched Marking","position":[-15.4,0,-19.4],"message":"A cold draught seeps from a veiled gap in the wall to the west."},
     {"id":"sign.puzzle-hint","kind":"sign","label":"Read: Faded Inscription","position":[11,0,9.5],"message":"Ignite the ember, let the frost follow, then loose the wind: Ember, Frost, Gale."},
     {"id":"switch.ember","kind":"switch","label":"Press: Ember Switch","tint":"#ff7a45","position":[10.5,0,12.5],"mode":"press"},
     {"id":"switch.frost","kind":"switch","label":"Press: Frost Switch","tint":"#7fd8ff","position":[13.5,0,14.5],"mode":"press"},

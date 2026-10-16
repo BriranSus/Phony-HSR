@@ -17,6 +17,7 @@ export { LoadingScreen } from './screens/LoadingScreen';
 export { TitleScreen } from './screens/TitleScreen';
 export { MainMenuScreen, type MenuItemView } from './screens/MainMenuScreen';
 export { DataArchiveScreen, type ArchiveViewModel } from './screens/DataArchiveScreen';
-export { ExplorationHud, type AnchorRowView, type EncounterView, type ExplorationHandlers, type PartySlotView, type PromptView } from './screens/ExplorationHud';
+export { BattleHud, type ActionButton, type FloatKind, type HudHandlers, type HudUnit, type Projected, type ResultView, type TurnEntry } from './screens/BattleHud';
+export { ExplorationHud, type AnchorRowView, type ExplorationHandlers, type PartySlotView, type PromptView } from './screens/ExplorationHud';
 export { DebugOverlay, type DebugSection } from './screens/DebugOverlay';
 export { createFatalScreen } from './screens/FatalScreen';

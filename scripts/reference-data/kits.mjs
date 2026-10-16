@@ -279,7 +279,7 @@ export const KITS = [
     srrId: '1002',
     slug: 'dan-heng',
     kit: (a, s) => ({
-      statuses: [buff(`${s}.superiority-of-reach`, 'Superiority of Reach', "The next attack's Wind RES PEN is increased.", [fromParam('resPen', 'resPen')], { duration: { turns: 0, tickOn: 'ownerTurnEnd' }, dispellable: false })],
+      statuses: [buff(`${s}.superiority-of-reach`, 'Superiority of Reach', "The next attack's Wind RES PEN is increased.", [fromParam('resPen', 'resPen')], { duration: { turns: 0, tickOn: 'ownerTurnEnd' }, dispellable: false, expiresAfterAttack: true })],
       abilities: {
         basic: a('100201', { id: 'basic', kind: 'basic', targeting: 'enemySingle', tags: ['singleTarget'], effects: [dmg('primary', P(1))] }),
         skill: a('100202', {

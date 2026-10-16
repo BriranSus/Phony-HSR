@@ -40,6 +40,8 @@ export class EnemyAI {
   private lost = 0;
   private pause = 0;
   private waypoint = 0;
+  /** The player first entered its awareness from outside its view cone (a backstab during the alert). */
+  noticedFromBehind = false;
 
   constructor(
     readonly home: { readonly x: number; readonly z: number },
@@ -92,6 +94,7 @@ export class EnemyAI {
     let detected = false;
     let contact = false;
     const alert = (): void => {
+      this.noticedFromBehind = Math.abs(wrapAngle(Math.atan2(ctx.px - this.x, ctx.pz - this.z) - this.yaw)) > (this.params.detectionFovDeg * Math.PI) / 360;
       this.state = 'alert';
       this.timer = this.params.alertSeconds;
       this.face(ctx.px, ctx.pz);

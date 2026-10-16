@@ -132,6 +132,8 @@ export const CameraShotSchema = z
     /** FOV punch: degrees added at `at`, decaying over `duration`. */
     fovPunch: z.object({ degrees: z.number(), at: z.number().min(0), duration: z.number().positive() }).strict().optional(),
     letterbox: z.boolean().default(false),
+    /** Listed in the Camera Gallery (F4). Battle shots are played by the battle scene, not browsed. */
+    gallery: z.boolean().default(true),
   })
   .strict()
   .superRefine((s, ctx) => {

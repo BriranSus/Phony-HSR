@@ -2,7 +2,7 @@
 
 **Project:** Astral Rail, an original fan project inspired by the gameplay structure of *Honkai: Star Rail*
 **Scope:** spec §39 "FIRST ACTION" (analysis, engine, stack, architecture, folders, data models, dependencies, roadmap) and **Phase 1** of §37
-**Status:** Phase 1 complete (Revisions 1 and 2 each validated at 8.5/10) and Phase 2 validated at 8.5/10. **Phase 3 (Camera)** scored 7.5/10 and, after Revision 1, 8.5/10. **Phase 4 (World exploration) is complete** and awaiting validation, see [§11](#11-phase-4-world-exploration). Phase 5+ is not started.
+**Status:** Phase 1 complete (Revisions 1 and 2 each validated at 8.5/10) and Phase 2 validated at 8.5/10. **Phase 3 (Camera)** scored 7.5/10 and, after Revision 1, 8.5/10. **Phase 4 (World exploration) is complete** and awaiting validation, see [§11](#11-phase-4-world-exploration). **Phase 5 Stage 5A (combat engine core and a playable battle) is complete** and awaiting validation, see [§12](#12-phase-5-stage-5a-combat-engine-core-and-a-playable-battle). Stage 5B and Phase 6+ are not started.
 
 ---
 
@@ -410,6 +410,50 @@ Two validator fixes came first (Phase 3 scored 8.5/10):
 - **No autosave.** World progress persists in memory while the app runs; the save system (Phase 21) persists the same JSON.
 - **Props have no colliders.** Chests, anchors and crates (other than the pushable crate) do not block the player or camera; the camera fades them when it is close.
 
-## 12. What Phase 5 will add (Combat engine)
+## 12. Phase 5 Stage 5A: combat engine core and a playable battle
 
-- `BattleState`, the action-value timeline, Skill Points, Ultimates, inserted actions and the effect interpreter, fed by the `world:encounterStarted` event (enemy group and advantage), and returning the result that replaces the placeholder overlay.
+### 12.1 What was built
+- **Engine (`modules/combat`, pure TypeScript, no THREE or DOM).** `Battle` is built from a party, a wave list, an enemy level and a seed. Everything random (crits, status chances, AI weights, loot) comes from one seeded mulberry32 stream, so a battle is a pure function of its inputs. `step()` resolves, in this order: queued Ultimates (castable at any time), inserted actions, then the next regular turn. It returns `ultimate | insert | turn | awaiting | ended`.
+- **Timeline.** AV = 10000 / SPD; the first cycle is 150 AV and later ones 100; SPD changes rescale remaining AV; advance and delay (`shiftAction`); turn start / end hooks; a cycle counter.
+- **Resources.** Shared Skill Points (start 3, max 5; Basic +1, Skill -1). Energy with ERR (Basic +20, Skill +30, being hit, kills). Technique Points are session state: casting a Technique on the overworld spends one and arms its battle-start effect; a Space Anchor refills them.
+- **Abilities.** Basic, Skill and Ultimate run from the real ability data: every generic effect is executed. Triggers are dispatched for battleStart, waveStart, turnStart / End, afterAttack, afterUse*, afterBeingHit, afterAllyHit, afterAllyAttack, afterAllyUsesUltimate, onTargetedByAlly, onKill, onEnemyDefeated, onWeaknessBreak, afterAllyWeaknessBreak and onFollowUp.
+- **Targeting.** Single, blast (adjacent), AoE, bounce, self / ally, and aggro-weighted enemy targeting (final aggro = base x (1 + aggro modifiers)).
+- **Damage pipeline** (`formulas/damage.ts`, reused from Phase 1): base, DMG%, DEF (level-based), RES and RES PEN, vulnerability, broken / unbroken, crit with seeded rolls, enemy level scaling.
+- **Toughness and Weakness Break.** Toughness damage only on a matching weakness; break damage; the seven element statuses (Bleed, Burn, Freeze, Shock, Wind Shear, Entanglement, Imprisonment) with DoT ticks; AV delay including the Quantum and Imaginary extras; toughness recovery on the enemy's turn. Multi-phase bosses (HP threshold, or a depleted bar with restored HP) work for Cocolia.
+- **Enemy AI.** Data-driven (weighted choices plus conditions); abilities whose effects are all stubs are skipped and a stub event is logged.
+- **Flow.** Win / loss, waves, a revive stub, a typed `BattleEvent` stream (`describeEvent` renders the log) and a `BattleResult` with loot (real items from `loot-tables/field.json`, placeholder rates).
+- **Status runtime.** Modifiers, DoT, CC (skips turn, delay on apply, advance on expire), durations by tick point, stacks, shields (`builtin.shield`) and `expiresAfterAttack`.
+
+### 12.2 The playable battle
+- **Overworld to battle.** An encounter now pushes `BattleState` over the exploration scene, which pauses and hides its HUD. A player strike gives the allies a 25% action advance, an ambush lets the enemies act first, a neutral start has neither. On a victory the defeated group leaves through `WorldState` and the rewards go to the world's item ledger; on a defeat the party returns to the area's entrance and the group stays.
+- **HUD** (`BattleHud`): party panel with HP, Energy and statuses, SP pips, turn-order bar, enemy plates with HP, toughness and weakness icons, action buttons, target selection, floating damage numbers (crit and break styled), a combat log (L toggles) and a victory / defeat screen with rewards, Retry and return.
+- **Presentation.** `BattleScene` and `BattleActor` use procedural models and animations (lunge, hit flash, shake, knockdown). The Phase 3 camera director plays the overview and the skill / Ultimate shots from `camera/shots/battle.json` (letterbox and shake on Ultimates). Timings live in `combat/stage/default.json`; `config.combat.animationSpeed` scales them.
+- **Battle Sandbox** (Main Menu): pick 4 of the 18 characters and their levels, up to two waves of enemies (Cocolia preset included), enemy level, a seed, the advantage and whether to cast Techniques.
+- **Controls.** Q Basic ATK, E Skill, 1-4 Ultimate of that party member, A / D (or click an enemy plate) to change target, L combat log, Enter to leave the result screen.
+
+### 12.3 Carry-overs from the Phase 4 validator
+- The Technique stun is a true 7 m radius (it was a cone).
+- An attack from directly behind an enemy at 1 m is a player strike (`isBehindEnemy`; while alerted, where it noticed the player from).
+- The alcove entrance has a signpost (`sign.alcove`).
+- The debug event log is longer (80 lines) and scrollable.
+- Alerted enemies show a "!" marker.
+- The portal glow dims while its locked message shows.
+
+### 12.4 Tests and results
+- **Engine tests** (`tests/combat`, 60 tests in 6 files): pinned real HSR numbers for AV order (advance, delay, the 150 first cycle), SP and energy flow, hand-checked damage with fixed seeds, toughness and break (including Quantum / Imaginary delay and recovery), element break status damage, advantage rules, blast adjacency and targeting, win / loss and waves, determinism, and a headless 60-battle simulation with invariants.
+- **World tests** updated for the battle result and the backstab rule (44).
+- **Playwright** at **1600x900** and **1280x720** (`scripts/battleWalkthrough.mjs`, run from `worldWalkthrough.mjs` and the main menu): an ambush battle from the overworld; a Technique stun then a left click for a player strike; Basic (+1 SP), Skill (-1 SP), target cycling, an Ultimate (letterbox and shake asserted), a Weakness Break, victory and the return with the group removed and the rewards in the item ledger; a neutral battle; and the Sandbox with Cocolia ending in the defeat screen and the Sandbox's last-result line. The run uses `cfg.combat.animationSpeed=3` to keep it short.
+- **Results:** `npm run build` has 0 errors. `npm test` passes **301/301** in 22 files. `npm run lint` reports 0 problems. `npm run screenshots` passes with **85 screenshots**, 0 console errors and 0 layout problems.
+- **Screenshots** (`docs/screenshots/`): `08-explore-18-battle`, `-19-battle-ultimate`, `-20-battle-break`, `-21-battle-victory`, `sandbox-sandbox`, `sandbox-sandbox-cocolia`, `sandbox-22-battle-defeat`, and the `vp-1280x720-*` copies.
+
+### 12.5 Stubbed in 5A (declared and logged visibly as "not yet implemented"; delivered in 5B)
+- **Effects:** `summon`, `script`, `applyRandomStatus`, `detonateDot`, `implantWeakness`, `breakDamage`, `revive`, `ultimatePoints`, `heal.repeats`.
+- **Script handlers and status scripts:** `dan-heng.ultimate-slowed-bonus`, March 7th `a4`, `a6`, `e1`, `e4`, `e6`, all other trace and Eidolon scripts, and status scripts such as `enemy.barrier`, `enemy.cocolia.harbingers-resolve`, `enemy.self-destruct`, `enemy.lance.subzero-pursuit`.
+- **Triggers:** inert events (`beforeKnockedDown`, `onDebuffApplied`, and the rest outside the list in 12.1), reported once as a `triggers` stub.
+- **Targets:** memosprite and summon targets. **Other:** `extraTurn` inserted actions, scripted enemy AI, Light Cones and relics.
+- **The 4 starter kits** run on generic effects. Stubbed parts: Dan Heng's slowed-target Ultimate bonus; March 7th's A4, A6, E1, E4 and E6 scripts; the trace and Eidolon scripts of all four.
+
+### 12.6 Known gaps
+- Cosmetic: the action banner and the enemy-turn camera were only lightly tuned; the 3D models are placeholders.
+- No audio (Phase 22). Loot rates are placeholders. Light Cones, relics, summons and memosprites arrive with 5B and Phases 6 and 7.
+

@@ -6,8 +6,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkPct" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "atkPct",
+        "value": {
+          "param": "atkPct"
+        }
+      }
+    ]
   },
   {
     "id": "buff.def-up",
@@ -16,8 +26,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "defPct", "value": { "param": "defPct" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "defPct",
+        "value": {
+          "param": "defPct"
+        }
+      }
+    ]
   },
   {
     "id": "buff.spd-up",
@@ -26,8 +46,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdPct" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "spdPct",
+        "value": {
+          "param": "spdPct"
+        }
+      }
+    ]
   },
   {
     "id": "buff.dmg-up",
@@ -36,8 +66,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "allDmg",
+        "value": {
+          "param": "allDmg"
+        }
+      }
+    ]
   },
   {
     "id": "buff.crit-rate-up",
@@ -46,8 +86,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "critRate", "value": { "param": "critRate" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "critRate",
+        "value": {
+          "param": "critRate"
+        }
+      }
+    ]
   },
   {
     "id": "buff.crit-dmg-up",
@@ -56,8 +106,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "critDmg", "value": { "param": "critDmg" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "critDmg",
+        "value": {
+          "param": "critDmg"
+        }
+      }
+    ]
   },
   {
     "id": "buff.break-effect-up",
@@ -66,8 +126,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "breakEffect", "value": { "param": "breakEffect" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "breakEffect",
+        "value": {
+          "param": "breakEffect"
+        }
+      }
+    ]
   },
   {
     "id": "buff.healing-up",
@@ -76,8 +146,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "outgoingHealing", "value": { "param": "outgoingHealing" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "outgoingHealing",
+        "value": {
+          "param": "outgoingHealing"
+        }
+      }
+    ]
   },
   {
     "id": "buff.ehr-up",
@@ -86,8 +166,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "effectHitRate", "value": { "param": "effectHitRate" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "effectHitRate",
+        "value": {
+          "param": "effectHitRate"
+        }
+      }
+    ]
   },
   {
     "id": "buff.dmg-reduction",
@@ -96,8 +186,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "dmgMitigation", "value": { "param": "dmgMitigation" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "dmgMitigation",
+        "value": {
+          "param": "dmgMitigation"
+        }
+      }
+    ]
   },
   {
     "id": "debuff.def-down",
@@ -106,8 +206,18 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "defReduction", "value": { "param": "defDown" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "defReduction",
+        "value": {
+          "param": "defDown"
+        }
+      }
+    ]
   },
   {
     "id": "debuff.spd-down",
@@ -116,8 +226,19 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdDown" }, "negate": true }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "spdPct",
+        "value": {
+          "param": "spdDown"
+        },
+        "negate": true
+      }
+    ]
   },
   {
     "id": "debuff.atk-down",
@@ -126,8 +247,19 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkDown" }, "negate": true }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "atkPct",
+        "value": {
+          "param": "atkDown"
+        },
+        "negate": true
+      }
+    ]
   },
   {
     "id": "debuff.vulnerability",
@@ -136,8 +268,18 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "vulnerability", "value": { "param": "vuln" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "vulnerability",
+        "value": {
+          "param": "vuln"
+        }
+      }
+    ]
   },
   {
     "id": "debuff.all-res-down",
@@ -146,8 +288,19 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "allRes", "value": { "param": "resDown" }, "negate": true }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "allRes",
+        "value": {
+          "param": "resDown"
+        },
+        "negate": true
+      }
+    ]
   },
   {
     "id": "debuff.ice-res-down",
@@ -156,8 +309,19 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "iceRes", "value": { "param": "resDown" }, "negate": true }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "iceRes",
+        "value": {
+          "param": "resDown"
+        },
+        "negate": true
+      }
+    ]
   },
   {
     "id": "cc.reference-taunt",
@@ -166,8 +330,14 @@
     "kind": "debuff",
     "category": "cc",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "cc": { "type": "taunt", "skipsTurn": false }
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "cc": {
+      "type": "taunt",
+      "skipsTurn": false
+    }
   },
   {
     "id": "clara.mark-of-counter",
@@ -176,7 +346,10 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnEnd"
+    },
     "modifiers": []
   },
   {
@@ -186,10 +359,23 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
     "modifiers": [
-      { "stat": "dmgMitigation", "value": { "param": "dmgMitigation" } },
-      { "stat": "aggro", "value": { "param": "aggro" } }
+      {
+        "stat": "dmgMitigation",
+        "value": {
+          "param": "dmgMitigation"
+        }
+      },
+      {
+        "stat": "aggro",
+        "value": {
+          "param": "aggro"
+        }
+      }
     ],
     "maxStacks": 1,
     "script": "clara.enhanced-counter"
@@ -201,8 +387,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "aggro", "value": { "param": "aggro" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "aggro",
+        "value": {
+          "param": "aggro"
+        }
+      }
+    ]
   },
   {
     "id": "blade.hellscape",
@@ -211,10 +407,25 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": false,
-    "duration": { "turns": 3, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }],
-    "replacesAbility": { "slot": "basic", "ability": "blade.forest-of-swords" },
-    "blocksAbilities": ["skill"]
+    "duration": {
+      "turns": 3,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "allDmg",
+        "value": {
+          "param": "allDmg"
+        }
+      }
+    ],
+    "replacesAbility": {
+      "slot": "basic",
+      "ability": "blade.forest-of-swords"
+    },
+    "blocksAbilities": [
+      "skill"
+    ]
   },
   {
     "id": "seele.sheathed-blade",
@@ -223,8 +434,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdPct" } }]
+    "duration": {
+      "turns": 2,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "spdPct",
+        "value": {
+          "param": "spdPct"
+        }
+      }
+    ]
   },
   {
     "id": "seele.amplification",
@@ -233,8 +454,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": false,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "allDmg",
+        "value": {
+          "param": "allDmg"
+        }
+      }
+    ]
   },
   {
     "id": "dan-heng.superiority-of-reach",
@@ -243,8 +474,19 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": false,
-    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "resPen", "value": { "param": "resPen" } }]
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "resPen",
+        "value": {
+          "param": "resPen"
+        }
+      }
+    ],
+    "expiresAfterAttack": true
   },
   {
     "id": "himeko.burn",
@@ -253,8 +495,18 @@
     "kind": "debuff",
     "category": "dot",
     "dispellable": true,
-    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
-    "dot": { "element": "Fire", "formula": "attackerScaled", "stat": "atk", "multiplier": { "param": "multiplier" } }
+    "duration": {
+      "turns": 2,
+      "tickOn": "ownerTurnStart"
+    },
+    "dot": {
+      "element": "Fire",
+      "formula": "attackerScaled",
+      "stat": "atk",
+      "multiplier": {
+        "param": "multiplier"
+      }
+    }
   },
   {
     "id": "himeko.fire-vulnerability",
@@ -263,12 +515,24 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
     "modifiers": [
       {
         "stat": "vulnerability",
-        "value": { "param": "vuln" },
-        "conditions": [{ "type": "damageElement", "params": { "is": "Fire" } }]
+        "value": {
+          "param": "vuln"
+        },
+        "conditions": [
+          {
+            "type": "damageElement",
+            "params": {
+              "is": "Fire"
+            }
+          }
+        ]
       }
     ]
   },
@@ -279,8 +543,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "allDmg",
+        "value": {
+          "param": "allDmg"
+        }
+      }
+    ]
   },
   {
     "id": "bronya.belobog-march",
@@ -289,11 +563,33 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 2,
+      "tickOn": "ownerTurnEnd"
+    },
     "modifiers": [
-      { "stat": "atkPct", "value": { "param": "atkPct" } },
-      { "stat": "critDmg", "value": { "param": "critDmgFlat" } },
-      { "stat": "critDmg", "value": { "param": "critDmgRatio" }, "scaling": { "per": "sourceStat", "id": "critDmg" } }
+      {
+        "stat": "atkPct",
+        "value": {
+          "param": "atkPct"
+        }
+      },
+      {
+        "stat": "critDmg",
+        "value": {
+          "param": "critDmgFlat"
+        }
+      },
+      {
+        "stat": "critDmg",
+        "value": {
+          "param": "critDmgRatio"
+        },
+        "scaling": {
+          "per": "sourceStat",
+          "id": "critDmg"
+        }
+      }
     ]
   },
   {
@@ -303,8 +599,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 3, "tickOn": "casterTurnStart" },
-    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkPct" } }],
+    "duration": {
+      "turns": 3,
+      "tickOn": "casterTurnStart"
+    },
+    "modifiers": [
+      {
+        "stat": "atkPct",
+        "value": {
+          "param": "atkPct"
+        }
+      }
+    ],
     "triggers": [
       {
         "on": "afterAttack",
@@ -313,7 +619,9 @@
             "kind": "damage",
             "target": "primary",
             "stat": "atk",
-            "multiplier": { "param": "additional" },
+            "multiplier": {
+              "param": "additional"
+            },
             "element": "Lightning",
             "attackType": "additional",
             "toughness": 0
@@ -330,10 +638,25 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": false,
-    "duration": { "turns": 3, "tickOn": "ownerTurnStart" },
+    "duration": {
+      "turns": 3,
+      "tickOn": "ownerTurnStart"
+    },
     "modifiers": [
-      { "stat": "allDmg", "value": { "param": "allDmg" }, "scope": "team" },
-      { "stat": "breakEfficiency", "value": { "param": "breakEff" }, "scope": "team" }
+      {
+        "stat": "allDmg",
+        "value": {
+          "param": "allDmg"
+        },
+        "scope": "team"
+      },
+      {
+        "stat": "breakEfficiency",
+        "value": {
+          "param": "breakEff"
+        },
+        "scope": "team"
+      }
     ]
   },
   {
@@ -343,8 +666,19 @@
     "kind": "neutral",
     "category": "field",
     "dispellable": false,
-    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
-    "modifiers": [{ "stat": "resPen", "value": { "param": "resPen" }, "scope": "team" }],
+    "duration": {
+      "turns": 2,
+      "tickOn": "ownerTurnStart"
+    },
+    "modifiers": [
+      {
+        "stat": "resPen",
+        "value": {
+          "param": "resPen"
+        },
+        "scope": "team"
+      }
+    ],
     "triggers": [
       {
         "on": "afterAllyAttack",
@@ -354,9 +688,15 @@
             "target": "primary",
             "status": "ruan-mei.thanatoplum-rebloom",
             "params": {
-              "delayRatio": { "param": "delayRatio" },
-              "delayBase": { "param": "delayBase" },
-              "breakDmg": { "param": "breakDmg" }
+              "delayRatio": {
+                "param": "delayRatio"
+              },
+              "delayBase": {
+                "param": "delayBase"
+              },
+              "breakDmg": {
+                "param": "breakDmg"
+              }
             }
           }
         ]
@@ -370,13 +710,25 @@
     "kind": "debuff",
     "category": "mark",
     "dispellable": false,
-    "duration": { "turns": 0, "tickOn": "ownerTurnStart" },
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnStart"
+    },
     "triggers": [
       {
         "on": "onToughnessRecover",
         "effects": [
-          { "kind": "breakDamage", "target": "self", "multiplier": { "param": "breakDmg" } },
-          { "kind": "script", "handler": "ruan-mei.rebloom-delay" }
+          {
+            "kind": "breakDamage",
+            "target": "self",
+            "multiplier": {
+              "param": "breakDmg"
+            }
+          },
+          {
+            "kind": "script",
+            "handler": "ruan-mei.rebloom-delay"
+          }
         ]
       }
     ]
@@ -388,8 +740,18 @@
     "kind": "debuff",
     "category": "dot",
     "dispellable": true,
-    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
-    "dot": { "element": "Lightning", "formula": "attackerScaled", "stat": "atk", "multiplier": { "param": "multiplier" } }
+    "duration": {
+      "turns": 2,
+      "tickOn": "ownerTurnStart"
+    },
+    "dot": {
+      "element": "Lightning",
+      "formula": "attackerScaled",
+      "stat": "atk",
+      "multiplier": {
+        "param": "multiplier"
+      }
+    }
   },
   {
     "id": "kafka.da-capo",
@@ -398,12 +760,24 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 2,
+      "tickOn": "ownerTurnEnd"
+    },
     "modifiers": [
       {
         "stat": "vulnerability",
-        "value": { "param": "vuln" },
-        "conditions": [{ "type": "attackType", "params": { "is": "dot" } }]
+        "value": {
+          "param": "vuln"
+        },
+        "conditions": [
+          {
+            "type": "attackType",
+            "params": {
+              "is": "dot"
+            }
+          }
+        ]
       }
     ]
   },
@@ -414,8 +788,19 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 3, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkDown" }, "negate": true }]
+    "duration": {
+      "turns": 3,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "atkPct",
+        "value": {
+          "param": "atkDown"
+        },
+        "negate": true
+      }
+    ]
   },
   {
     "id": "silver-wolf.bug-def",
@@ -424,8 +809,18 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 3, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "defReduction", "value": { "param": "defDown" } }]
+    "duration": {
+      "turns": 3,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "defReduction",
+        "value": {
+          "param": "defDown"
+        }
+      }
+    ]
   },
   {
     "id": "silver-wolf.bug-spd",
@@ -434,8 +829,19 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 3, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdDown" }, "negate": true }]
+    "duration": {
+      "turns": 3,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "spdPct",
+        "value": {
+          "param": "spdDown"
+        },
+        "negate": true
+      }
+    ]
   },
   {
     "id": "pela.exposed",
@@ -444,8 +850,18 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "defReduction", "value": { "param": "defDown" } }]
+    "duration": {
+      "turns": 2,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "defReduction",
+        "value": {
+          "param": "defDown"
+        }
+      }
+    ]
   },
   {
     "id": "welt.imprisonment",
@@ -454,9 +870,26 @@
     "kind": "debuff",
     "category": "cc",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
-    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdDown" }, "negate": true }],
-    "cc": { "type": "imprisonment", "skipsTurn": false, "delayOnApply": { "param": "delay" } }
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnStart"
+    },
+    "modifiers": [
+      {
+        "stat": "spdPct",
+        "value": {
+          "param": "spdDown"
+        },
+        "negate": true
+      }
+    ],
+    "cc": {
+      "type": "imprisonment",
+      "skipsTurn": false,
+      "delayOnApply": {
+        "param": "delay"
+      }
+    }
   },
   {
     "id": "march-7th.freeze",
@@ -465,13 +898,22 @@
     "kind": "debuff",
     "category": "cc",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
-    "cc": { "type": "freeze", "skipsTurn": true, "advanceOnExpire": 0.5 },
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnStart"
+    },
+    "cc": {
+      "type": "freeze",
+      "skipsTurn": true,
+      "advanceOnExpire": 0.5
+    },
     "dot": {
       "element": "Ice",
       "formula": "attackerScaled",
       "stat": "atk",
-      "multiplier": { "param": "multiplier" },
+      "multiplier": {
+        "param": "multiplier"
+      },
       "damageType": "additional",
       "tickOn": "ownerTurnStart"
     }
@@ -483,8 +925,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 3, "tickOn": "casterTurnStart" },
-    "modifiers": [{ "stat": "aggro", "value": { "param": "aggro" } }]
+    "duration": {
+      "turns": 3,
+      "tickOn": "casterTurnStart"
+    },
+    "modifiers": [
+      {
+        "stat": "aggro",
+        "value": {
+          "param": "aggro"
+        }
+      }
+    ]
   },
   {
     "id": "gepard.freeze",
@@ -493,13 +945,22 @@
     "kind": "debuff",
     "category": "cc",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
-    "cc": { "type": "freeze", "skipsTurn": true, "advanceOnExpire": 0.5 },
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnStart"
+    },
+    "cc": {
+      "type": "freeze",
+      "skipsTurn": true,
+      "advanceOnExpire": 0.5
+    },
     "dot": {
       "element": "Ice",
       "formula": "attackerScaled",
       "stat": "atk",
-      "multiplier": { "param": "multiplier" },
+      "multiplier": {
+        "param": "multiplier"
+      },
       "damageType": "additional",
       "tickOn": "ownerTurnStart"
     }
@@ -511,8 +972,19 @@
     "kind": "buff",
     "category": "hot",
     "dispellable": true,
-    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
-    "hot": { "stat": "hp", "multiplier": { "param": "multiplier" }, "flat": { "param": "flat" } }
+    "duration": {
+      "turns": 2,
+      "tickOn": "ownerTurnStart"
+    },
+    "hot": {
+      "stat": "hp",
+      "multiplier": {
+        "param": "multiplier"
+      },
+      "flat": {
+        "param": "flat"
+      }
+    }
   },
   {
     "id": "natasha.weakened",
@@ -521,8 +993,18 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "weaken", "value": { "param": "weaken" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "weaken",
+        "value": {
+          "param": "weaken"
+        }
+      }
+    ]
   },
   {
     "id": "bailu.invigoration",
@@ -531,7 +1013,10 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 2, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 2,
+      "tickOn": "ownerTurnEnd"
+    },
     "modifiers": [],
     "script": "bailu.invigoration"
   },
@@ -542,7 +1027,10 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 3, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 3,
+      "tickOn": "ownerTurnEnd"
+    },
     "modifiers": [],
     "script": "mem.support-true-damage"
   },
@@ -553,8 +1041,18 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "defReduction", "value": { "param": "defDown" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "defReduction",
+        "value": {
+          "param": "defDown"
+        }
+      }
+    ]
   },
   {
     "id": "lc.patience-spd",
@@ -563,8 +1061,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "spdPct", "value": { "param": "spdPct" } }],
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "spdPct",
+        "value": {
+          "param": "spdPct"
+        }
+      }
+    ],
     "maxStacks": 3
   },
   {
@@ -574,8 +1082,18 @@
     "kind": "debuff",
     "category": "dot",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
-    "dot": { "element": "Lightning", "formula": "attackerScaled", "stat": "atk", "multiplier": { "param": "multiplier" } }
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnStart"
+    },
+    "dot": {
+      "element": "Lightning",
+      "formula": "attackerScaled",
+      "stat": "atk",
+      "multiplier": {
+        "param": "multiplier"
+      }
+    }
   },
   {
     "id": "lc.aether-code",
@@ -584,8 +1102,18 @@
     "kind": "debuff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "vulnerability", "value": { "param": "vuln" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "vulnerability",
+        "value": {
+          "param": "vuln"
+        }
+      }
+    ]
   },
   {
     "id": "lc.unfulfilled-yearning",
@@ -594,8 +1122,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }],
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "allDmg",
+        "value": {
+          "param": "allDmg"
+        }
+      }
+    ],
     "script": "lc.remove-after-attack"
   },
   {
@@ -605,8 +1143,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "followUpDmg", "value": { "param": "followUpDmg" } }],
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "followUpDmg",
+        "value": {
+          "param": "followUpDmg"
+        }
+      }
+    ],
     "script": "lc.consume-on-follow-up"
   },
   {
@@ -616,8 +1164,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "atkPct", "value": { "param": "atkPct" } }],
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "atkPct",
+        "value": {
+          "param": "atkPct"
+        }
+      }
+    ],
     "maxStacks": 5
   },
   {
@@ -627,8 +1185,18 @@
     "kind": "debuff",
     "category": "dot",
     "dispellable": true,
-    "duration": { "turns": 2, "tickOn": "ownerTurnStart" },
-    "dot": { "element": "Lightning", "formula": "attackerScaled", "stat": "atk", "multiplier": { "param": "multiplier" } }
+    "duration": {
+      "turns": 2,
+      "tickOn": "ownerTurnStart"
+    },
+    "dot": {
+      "element": "Lightning",
+      "formula": "attackerScaled",
+      "stat": "atk",
+      "multiplier": {
+        "param": "multiplier"
+      }
+    }
   },
   {
     "id": "enemy.wind-shear",
@@ -638,12 +1206,17 @@
     "category": "dot",
     "dispellable": true,
     "maxStacks": 5,
-    "duration": { "turns": 3, "tickOn": "ownerTurnStart" },
+    "duration": {
+      "turns": 3,
+      "tickOn": "ownerTurnStart"
+    },
     "dot": {
       "element": "Wind",
       "formula": "attackerScaled",
       "stat": "atk",
-      "multiplier": { "param": "multiplier" },
+      "multiplier": {
+        "param": "multiplier"
+      },
       "perStack": true
     }
   },
@@ -655,13 +1228,24 @@
     "category": "cc",
     "dispellable": true,
     "maxStacks": 5,
-    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
-    "cc": { "type": "entanglement", "skipsTurn": false, "delayOnApply": { "param": "delay" } },
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnStart"
+    },
+    "cc": {
+      "type": "entanglement",
+      "skipsTurn": false,
+      "delayOnApply": {
+        "param": "delay"
+      }
+    },
     "dot": {
       "element": "Quantum",
       "formula": "attackerScaled",
       "stat": "atk",
-      "multiplier": { "param": "multiplier" },
+      "multiplier": {
+        "param": "multiplier"
+      },
       "perStack": true,
       "damageType": "additional",
       "tickOn": "onExpire"
@@ -674,13 +1258,21 @@
     "kind": "debuff",
     "category": "cc",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
-    "cc": { "type": "freeze", "skipsTurn": true },
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnStart"
+    },
+    "cc": {
+      "type": "freeze",
+      "skipsTurn": true
+    },
     "dot": {
       "element": "Ice",
       "formula": "attackerScaled",
       "stat": "atk",
-      "multiplier": { "param": "multiplier" },
+      "multiplier": {
+        "param": "multiplier"
+      },
       "damageType": "additional",
       "tickOn": "onExpire"
     }
@@ -692,8 +1284,17 @@
     "kind": "debuff",
     "category": "cc",
     "dispellable": true,
-    "duration": { "turns": 1, "tickOn": "ownerTurnStart" },
-    "cc": { "type": "imprisonment", "skipsTurn": false, "delayOnApply": { "param": "delay" } }
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnStart"
+    },
+    "cc": {
+      "type": "imprisonment",
+      "skipsTurn": false,
+      "delayOnApply": {
+        "param": "delay"
+      }
+    }
   },
   {
     "id": "enemy.barrier",
@@ -702,7 +1303,10 @@
     "kind": "buff",
     "category": "shield",
     "dispellable": true,
-    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnEnd"
+    },
     "script": "enemy.barrier"
   },
   {
@@ -712,7 +1316,10 @@
     "kind": "debuff",
     "category": "mark",
     "dispellable": false,
-    "duration": { "turns": 1, "tickOn": "casterTurnEnd" }
+    "duration": {
+      "turns": 1,
+      "tickOn": "casterTurnEnd"
+    }
   },
   {
     "id": "enemy.charging",
@@ -721,8 +1328,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": false,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "allDmg", "value": { "param": "allDmg" } }]
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "allDmg",
+        "value": {
+          "param": "allDmg"
+        }
+      }
+    ]
   },
   {
     "id": "enemy.counter-stance",
@@ -731,7 +1348,10 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": false,
-    "duration": { "turns": 1, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 1,
+      "tickOn": "ownerTurnEnd"
+    },
     "modifiers": [],
     "triggers": [
       {
@@ -754,12 +1374,23 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": true,
-    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnEnd"
+    },
     "modifiers": [],
     "triggers": [
       {
         "on": "beforeKnockedDown",
-        "effects": [{ "kind": "revive", "target": "self", "ratio": { "param": "ratio" } }],
+        "effects": [
+          {
+            "kind": "revive",
+            "target": "self",
+            "ratio": {
+              "param": "ratio"
+            }
+          }
+        ],
         "limitPerBattle": 1
       }
     ]
@@ -771,8 +1402,18 @@
     "kind": "buff",
     "category": "stat",
     "dispellable": false,
-    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
-    "modifiers": [{ "stat": "spd", "value": { "param": "spd" } }]
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnEnd"
+    },
+    "modifiers": [
+      {
+        "stat": "spd",
+        "value": {
+          "param": "spd"
+        }
+      }
+    ]
   },
   {
     "id": "enemy.weakness-protected",
@@ -781,7 +1422,10 @@
     "kind": "buff",
     "category": "other",
     "dispellable": false,
-    "duration": { "turns": 0, "tickOn": "ownerTurnEnd" },
+    "duration": {
+      "turns": 0,
+      "tickOn": "ownerTurnEnd"
+    },
     "toughnessProtection": "whileSummonsOnField"
   }
 ]

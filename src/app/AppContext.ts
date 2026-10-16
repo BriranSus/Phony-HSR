@@ -39,4 +39,6 @@ export const StateIds = {
   mainMenu: 'main-menu',
   archive: 'data-archive',
   testScene: 'test-scene',
+  battle: 'battle',
+  battleSandbox: 'battle-sandbox',
 } as const;

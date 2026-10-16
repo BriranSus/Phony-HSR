@@ -93,6 +93,8 @@ export interface DamageInput {
   readonly vulnerability?: number;
   readonly mitigations?: readonly number[];
   readonly targetBroken: boolean;
+  /** DEF zone computed by the caller (enemy -> character hits use the target's DEF stat, see `characterDefMultiplier`). */
+  readonly defMultiplier?: number;
 }
 
 export interface DamageResult {
@@ -117,7 +119,7 @@ export function computeDamage(i: DamageInput, rules: DmgRules): DamageResult {
     crit: i.isCrit === undefined ? expectedCritMultiplier(i.critRate, i.critDmg) : critMultiplier(i.isCrit, i.critDmg),
     dmgBoost: dmgBoostMultiplier(i.dmgBoost),
     weaken: weakenMultiplier(i.weaken ?? 0),
-    def: enemyDefMultiplier(i.attackerLevel, i.targetLevel, i.defReduction ?? 0, i.defIgnore ?? 0, rules),
+    def: i.defMultiplier ?? enemyDefMultiplier(i.attackerLevel, i.targetLevel, i.defReduction ?? 0, i.defIgnore ?? 0, rules),
     res: resMultiplier(i.targetRes, i.resPen ?? 0, rules),
     vulnerability: vulnerabilityMultiplier(i.vulnerability ?? 0),
     mitigation: mitigationMultiplier(i.mitigations ?? []),

@@ -45,23 +45,10 @@ export interface AnchorRowView {
   readonly current: boolean;
 }
 
-export interface EncounterView {
-  readonly enemies: readonly string[];
-  readonly advantage: 'playerStrike' | 'neutral' | 'ambush';
-  readonly trigger: 'attack' | 'contact';
-}
-
 export interface ExplorationHandlers {
   anchorChosen?: (key: string) => void;
   anchorsClosed?: () => void;
-  encounterReturn?: () => void;
 }
-
-const ADVANTAGE_TEXT: Record<EncounterView['advantage'], { title: string; detail: string }> = {
-  playerStrike: { title: 'Player Strike', detail: 'You attack first.' },
-  neutral: { title: 'Neutral', detail: 'Both sides start evenly.' },
-  ambush: { title: 'Ambush', detail: 'The enemy attacks first.' },
-};
 
 export class ExplorationHud {
   readonly el: HTMLElement;
@@ -82,7 +69,7 @@ export class ExplorationHud {
   private readonly areaSubEl: HTMLElement;
   private readonly bannerEl: HTMLElement;
   private readonly anchorsEl: HTMLElement;
-  private readonly encounterEl: HTMLElement;
+  private readonly tpEl: HTMLElement;
   private bannerTimer: ReturnType<typeof setTimeout> | null = null;
   private handlers: ExplorationHandlers = {};
   private messageTimer: ReturnType<typeof setTimeout> | null = null;
@@ -122,7 +109,7 @@ export class ExplorationHud {
     this.progressEl = h('div', { class: 'hud__progress', attrs: { 'data-id': 'exploration-progress' } }, this.progressLabel, this.progressBar);
     this.bannerEl = h('div', { class: 'area-banner', attrs: { 'aria-live': 'polite' } });
     this.anchorsEl = h('aside', { class: 'anchors interactive', attrs: { 'aria-label': 'Space Anchors' } });
-    this.encounterEl = h('aside', { class: 'encounter interactive', attrs: { 'aria-label': 'Encounter' } });
+    this.tpEl = h('div', { class: 'hud__tp', attrs: { 'aria-label': 'Technique Points', 'data-id': 'technique-points' } });
     this.el = h(
       'section',
       { class: 'screen screen--passthrough hud exploration', attrs: { 'data-screen': 'exploration' } },
@@ -133,6 +120,7 @@ export class ExplorationHud {
         this.areaNameEl,
         this.areaSubEl,
         this.progressEl,
+        this.tpEl,
       ),
       h(
         'div',
@@ -154,7 +142,6 @@ export class ExplorationHud {
       this.galleryEl,
       this.bannerEl,
       this.anchorsEl,
-      this.encounterEl,
       h('div', { class: 'hud__hints' }, ...hints.map(([k, label]) => h('span', {}, h('span', { class: 'keycap', text: k }), label))),
     );
   }
@@ -290,27 +277,10 @@ export class ExplorationHud {
     );
   }
 
-  /** The placeholder "Encounter started" overlay (combat arrives in Phase 5). */
-  showEncounter(info: EncounterView | null, names: (id: string) => string = (id) => id): void {
-    this.encounterEl.classList.toggle('is-open', info !== null);
-    if (!info) {
-      this.encounterEl.replaceChildren();
-      return;
-    }
-    const adv = ADVANTAGE_TEXT[info.advantage];
-    this.encounterEl.dataset.advantage = info.advantage;
-    this.encounterEl.replaceChildren(
-      h('div', { class: 'encounter__eyebrow', text: 'Encounter started' }),
-      h('div', { class: 'encounter__advantage', text: adv.title, dataset: { advantage: info.advantage } }),
-      h('div', { class: 'encounter__detail', text: `${adv.detail} (${info.trigger === 'attack' ? 'overworld attack' : 'enemy contact'})` }),
-      h('ul', { class: 'encounter__enemies' }, ...info.enemies.map((e) => h('li', { text: names(e) }))),
-      h('div', { class: 'encounter__note', text: 'Combat arrives in Phase 5. This placeholder returns you to exploration.' }),
-      h(
-        'button',
-        { class: 'pill-button', attrs: { type: 'button', 'data-id': 'encounter-return' }, on: { click: () => this.handlers.encounterReturn?.() } },
-        h('span', { class: 'pill-button__label', text: 'Return to exploration (Enter)' }),
-      ),
-    );
+  /** Technique Points as pips (cast on the overworld; each arms a battle-start effect). */
+  setTechniquePoints(current: number, max: number): void {
+    this.tpEl.dataset.points = String(current);
+    this.tpEl.replaceChildren(h('span', { class: 'hud__tp-label', text: 'Technique' }), ...Array.from({ length: max }, (_, i) => h('span', { class: `hud__tp-pip${i < current ? ' is-full' : ''}` })));
   }
 
   message(speaker: string, text: string): void {

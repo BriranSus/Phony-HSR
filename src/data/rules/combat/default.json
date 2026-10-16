@@ -1,14 +1,55 @@
 {
   "id": "default",
-  "actionValue": { "numerator": 10000, "firstCycle": 150, "cycle": 100 },
-  "skillPoints": { "max": 5, "start": 3, "basicGain": 1, "skillCost": 1 },
-  "energy": { "basic": 20, "skill": 30, "ultimate": 5, "kill": 10, "initialRatio": 0.5 },
-  "techniquePoints": { "max": 5, "regenPerDay": 0 },
-  "crit": { "baseRate": 0.05, "baseDmg": 0.5 },
-  "defense": { "enemyBase": 200, "enemyPerLevel": 10, "levelOffset": 20, "charBase": 200, "charPerLevel": 10 },
-  "resistance": { "defaultEnemyRes": 0.2, "weakEnemyRes": 0, "multiplierMin": 0.1, "multiplierMax": 2 },
-  "brokenMultiplier": { "unbroken": 0.9, "broken": 1 },
-  "toughness": { "basic": 10, "skill": 20, "ultimate": 30, "multiplierBase": 0.5, "multiplierDivisor": 40 },
+  "actionValue": {
+    "numerator": 10000,
+    "firstCycle": 150,
+    "cycle": 100
+  },
+  "skillPoints": {
+    "max": 5,
+    "start": 3,
+    "basicGain": 1,
+    "skillCost": 1
+  },
+  "energy": {
+    "basic": 20,
+    "skill": 30,
+    "ultimate": 5,
+    "kill": 10,
+    "initialRatio": 0.5
+  },
+  "techniquePoints": {
+    "max": 5,
+    "regenPerDay": 0
+  },
+  "crit": {
+    "baseRate": 0.05,
+    "baseDmg": 0.5
+  },
+  "defense": {
+    "enemyBase": 200,
+    "enemyPerLevel": 10,
+    "levelOffset": 20,
+    "charBase": 200,
+    "charPerLevel": 10
+  },
+  "resistance": {
+    "defaultEnemyRes": 0.2,
+    "weakEnemyRes": 0,
+    "multiplierMin": 0.1,
+    "multiplierMax": 2
+  },
+  "brokenMultiplier": {
+    "unbroken": 0.9,
+    "broken": 1
+  },
+  "toughness": {
+    "basic": 10,
+    "skill": 20,
+    "ultimate": 30,
+    "multiplierBase": 0.5,
+    "multiplierDivisor": 40
+  },
   "weaknessBreak": {
     "baseDelay": 0.25,
     "superBreakDivisor": 10,
@@ -19,7 +60,11 @@
         "status": "break.bleed",
         "summary": "Physical DMG + Bleed: DoT based on the target's Max HP for 2 turns."
       },
-      "Fire": { "breakDmgMultiplier": 2, "status": "break.burn", "summary": "Fire DMG + Burn: Fire DoT for 2 turns." },
+      "Fire": {
+        "breakDmgMultiplier": 2,
+        "status": "break.burn",
+        "summary": "Fire DMG + Burn: Fire DoT for 2 turns."
+      },
       "Ice": {
         "breakDmgMultiplier": 1,
         "status": "break.freeze",
@@ -52,9 +97,19 @@
     },
     "statusBaseChance": 1.5
   },
-  "effectHit": { "minChance": 0, "maxChance": 1 },
-  "lightCone": { "equipRequiresMatchingPath": false, "passiveRequiresMatchingPath": true, "maxSuperimposition": 5 },
-  "party": { "maxActive": 4, "maxEnemiesPerWave": 5 },
+  "effectHit": {
+    "minChance": 0,
+    "maxChance": 1
+  },
+  "lightCone": {
+    "equipRequiresMatchingPath": false,
+    "passiveRequiresMatchingPath": true,
+    "maxSuperimposition": 5
+  },
+  "party": {
+    "maxActive": 4,
+    "maxEnemiesPerWave": 5
+  },
   "levelMultiplier": {
     "1": 54,
     "2": 58,
@@ -151,6 +206,19 @@
     "93": 6872.6823,
     "94": 7177.8806,
     "95": 7494.3713
+  },
+  "advantage": {
+    "playerStrikeAdvance": 0.25,
+    "ambushEnemyAdvance": 1
+  },
+  "rewards": {
+    "fallbackLoot": {
+      "normal": "loot.field-normal",
+      "elite": "loot.field-elite",
+      "boss": "loot.field-boss",
+      "weeklyBoss": "loot.field-boss",
+      "storyBoss": "loot.field-boss"
+    }
   },
   "sources": [
     {

@@ -91,6 +91,11 @@ export class PlaceholderCharacter {
     this.root.add(shadow, this.ring);
   }
 
+  /** Plays the ring pop (a turn starting, a selection). */
+  pulse(): void {
+    this.pop = 1;
+  }
+
   /** Re-tint for the active character (element colour) and play the switch pop. */
   setCharacter(elementColor: string): void {
     const c = new THREE.Color(elementColor);

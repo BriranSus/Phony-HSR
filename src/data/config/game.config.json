@@ -38,6 +38,9 @@
     "sfx": 0.8,
     "voice": 0.8
   },
+  "combat": {
+    "animationSpeed": 1
+  },
   "world": {
     "startWorld": "world.astral-demo"
   },

@@ -6,6 +6,7 @@ import type { DebugSection } from '@modules/ui/screens/DebugOverlay';
 import { NO_INPUT, OverworldController, type ControlInput, type ControllerEvent } from '@modules/player';
 import { CameraDirector, ShotProvider, ExplorationProvider, ExplorationRig, lineOfSightBlocked, v3, type CameraInput, type CameraPose, type UnitResolver } from '@modules/camera';
 import { WorldRuntime, recallWorld, rememberWorld, type AnchorEntry, type EncounterInfo, type PlayerPose, type WorldEvents } from '@modules/world';
+import { armTechnique, combatSession, hashSeed, refillTechniquePoints, takeArmedTechniques, type BattleResult } from '@modules/combat';
 import type { CameraRules, CameraShot } from '@models/camera';
 import type { Level } from '@models/locomotion';
 import * as THREE from 'three';
@@ -14,10 +15,11 @@ import { PlaceholderCharacter } from '../scenes/PlaceholderCharacter';
 import { WorldObjectsView } from '../scenes/WorldObjects';
 import type { AppContext } from '../AppContext';
 import { StateIds } from '../AppContext';
+import type { BattleParams } from './BattleState';
 
 const STEP = 1 / 60;
 
-type Overlay = 'none' | 'anchors' | 'encounter';
+type Overlay = 'none' | 'anchors' | 'battle';
 
 /**
  * Exploration scene ("Explore Test Level" on the Departure Board). Builds the world runtime,
@@ -105,7 +107,6 @@ export class TestSceneState implements GameState {
     this.hud.setHandlers({
       anchorChosen: (key) => void this.chooseAnchor(key),
       anchorsClosed: () => this.closeAnchors(),
-      encounterReturn: () => this.finishEncounter(),
     });
     this.unmount = ui.mount(this.hud.el);
 
@@ -116,13 +117,15 @@ export class TestSceneState implements GameState {
     // Camera: director with the exploration rig at the bottom of the stack. The rig shares the
     // runtime's live collider list, so opened gates and moved crates change what it avoids.
     this.cameraRules = data.get(Collections.cameraRules, 'default');
-    this.shots = data.all(Collections.cameraShots);
+    this.shots = data.all(Collections.cameraShots).filter((s) => s.gallery);
     const settings = () => config.get().camera;
     const rig = new ExplorationRig(this.cameraRules.exploration, this.runtime.colliders, settings, arrive.yaw);
     this.explore = new ExplorationProvider(rig, this.cameraRules.priorities.exploration ?? 0, () => this.cameraInput());
     this.director = new CameraDirector(this.cameraRules, () => config.get().camera.shakeIntensity);
     this.director.push(this.explore);
 
+    const tpMax = data.get(Collections.combatRules, 'default').techniquePoints.max;
+    this.hud.setTechniquePoints(combatSession(tpMax).techniquePoints, tpMax);
     this.buildArea(arrive);
     this.hud.showBanner(level.name, this.runtime.graph.regionOf(level.id).name);
     render.canvas.addEventListener('click', this.onCanvasClick);
@@ -257,7 +260,7 @@ export class TestSceneState implements GameState {
 
     // World: enemies, plates, hidden areas and the prompt list follow the player.
     if (this.runtime && !this.transitioning && this.overlay !== 'anchors') this.runtime.update(frame, this.pose());
-    if (this.runtime && this.runtime.encounter && this.overlay === 'none') this.openEncounter(this.runtime.encounter);
+    if (this.runtime && this.runtime.encounter && this.overlay === 'none') this.startBattle(this.runtime.encounter);
     if (this.runtime?.loaded) {
       c.setInteractables(this.runtime.prompts());
       this.area?.syncColliders(this.runtime.colliders);
@@ -373,10 +376,6 @@ export class TestSceneState implements GameState {
     return this.ctx.data.get(Collections.items, id).name;
   }
 
-  private enemyName(id: string): string {
-    return this.ctx.data.get(Collections.enemies, id).name;
-  }
-
   /** World events go to the bus (quest layer, debug) and the HUD (toasts, progress). */
   private onWorldEvent<K extends keyof WorldEvents>(name: K, payload: WorldEvents[K]): void {
     (this.ctx.bus as unknown as { emit(n: string, p: unknown): void }).emit(name, payload);
@@ -448,10 +447,20 @@ export class TestSceneState implements GameState {
             break;
           case 'locked':
             this.hud?.message('Locked', r.text);
+            this.objectsView?.dim(e.interactable.id, 2.5); // turn the glow down while the message shows
             break;
-          case 'anchorMenu':
+          case 'anchorMenu': {
+            // Resting at a Space Anchor restores Technique Points.
+            const max = data.get(Collections.combatRules, 'default').techniquePoints.max;
+            const session = combatSession(max);
+            if (session.techniquePoints < max) {
+              refillTechniquePoints(session, max);
+              this.hud?.setTechniquePoints(max, max);
+              this.hud?.toast('Technique Points restored');
+            }
             this.openAnchors(r.anchorId);
             break;
+          }
           case 'transition':
             void this.travel(() => rt.enterArea(r.area, r.spawn));
             break;
@@ -462,6 +471,13 @@ export class TestSceneState implements GameState {
       }
       case 'technique': {
         const c = data.get(Collections.characters, e.characterId);
+        const session = combatSession(data.get(Collections.combatRules, 'default').techniquePoints.max);
+        const max = data.get(Collections.combatRules, 'default').techniquePoints.max;
+        if (!session.activeTechniques.includes(e.characterId) && !armTechnique(session, e.characterId)) {
+          this.hud?.toast('No Technique Points left (a Space Anchor restores them)');
+          break;
+        }
+        this.hud?.setTechniquePoints(session.techniquePoints, max);
         this.hud?.toast(`Technique · ${c.abilities.technique.name}`);
         rt?.technique(this.pose());
         bus.emit('player:technique', { characterId: e.characterId, position: e.position });
@@ -506,9 +522,7 @@ export class TestSceneState implements GameState {
 
   private overlayInput(): void {
     const i = this.ctx.input;
-    if (this.overlay === 'encounter') {
-      if (i.wasPressed('confirm') || i.wasPressed('interact') || i.wasPressed('back')) this.finishEncounter();
-    } else if (this.overlay === 'anchors') {
+    if (this.overlay === 'anchors') {
       if (i.wasPressed('back')) this.closeAnchors();
       else if (i.wasPressed('moveForward')) this.moveAnchorSelection(-1);
       else if (i.wasPressed('moveBack')) this.moveAnchorSelection(1);
@@ -519,17 +533,55 @@ export class TestSceneState implements GameState {
     }
   }
 
-  private openEncounter(info: EncounterInfo): void {
-    this.overlay = 'encounter';
-    this.hud?.showEncounter({ enemies: info.enemies, advantage: info.advantage, trigger: info.trigger }, (id) => this.enemyName(id));
+  /**
+   * An encounter becomes a battle: the exploration scene pauses under the battle scene, which gets
+   * the enemy group, the opening advantage (player strike: allies advance 25%; ambush: enemies act
+   * first), the party at its data-defined level and any Techniques cast beforehand.
+   */
+  private startBattle(info: EncounterInfo): void {
+    if (this.ctx.states.busy) return;
+    this.overlay = 'battle';
+    const { data } = this.ctx;
+    const party = data.get(Collections.parties, 'default');
+    const session = combatSession(data.get(Collections.combatRules, 'default').techniquePoints.max);
+    const params: BattleParams = {
+      source: 'world',
+      party: party.members.map((characterId) => ({ characterId, level: party.level, ascension: party.ascension })),
+      waves: [info.enemies],
+      enemyLevel: info.level,
+      seed: hashSeed(`${info.spawnId}:${this.runtime?.state.data.clock.toFixed(2) ?? 0}`),
+      advantage: info.advantage,
+      techniques: takeArmedTechniques(session),
+      leaveLabel: 'Return to exploration',
+      onFinished: (result) => this.finishBattle(info, result),
+    };
+    this.hud?.setTechniquePoints(session.techniquePoints, data.get(Collections.combatRules, 'default').techniquePoints.max);
+    void this.ctx.states.push(StateIds.battle, params, { transition: true });
   }
 
-  private finishEncounter(): void {
-    if (this.overlay !== 'encounter') return;
-    this.runtime?.endEncounter();
+  /** Applies a battle's result to the world: defeated groups leave, rewards are granted, a defeat respawns the party. */
+  private finishBattle(info: EncounterInfo, result: BattleResult): void {
+    const rt = this.runtime;
+    if (!rt) return;
+    rt.endEncounter(result.outcome);
+    if (result.outcome === 'victory') {
+      rt.grantRewards(result.rewards.map((r) => ({ item: r.item, count: r.count })), `battle:${info.spawnId}`);
+    } else if (this.controller && this.explore) {
+      const p = rt.respawnPoint();
+      this.controller.teleport(p.position[0], p.position[1], p.position[2], p.yaw);
+      this.explore.reset(this.controller, p.yaw);
+      this.hud?.toast('The party fell and returned to the area entrance');
+    }
     this.overlay = 'none';
-    this.hud?.showEncounter(null);
-    this.hud?.toast('Returned to exploration');
+  }
+
+  pause(): void {
+    if (this.hud) this.hud.el.style.display = 'none';
+  }
+
+  resume(): void {
+    if (this.hud) this.hud.el.style.display = '';
+    this.overlay = 'none';
   }
 
   private openAnchors(anchorId: string): void {
@@ -604,7 +656,7 @@ export class TestSceneState implements GameState {
           ['Items', items.join(', ') || '-'],
         ],
       },
-      { title: 'WORLD EVENTS', rows: rt.log.slice(-8).map((l) => [`${l.time.toFixed(1)}s ${l.name}`, l.text] as const) },
+      { title: 'WORLD EVENTS', scroll: true, rows: rt.log.map((l) => [`${l.time.toFixed(1)}s ${l.name}`, l.text] as const) },
     ];
   }
 
@@ -617,12 +669,14 @@ export class TestSceneState implements GameState {
       region: rt.regionId,
       transitioning: this.transitioning,
       overlay: this.overlay,
+      techniquePoints: combatSession(this.ctx.data.get(Collections.combatRules, 'default').techniquePoints.max).techniquePoints,
+      armedTechniques: [...combatSession(this.ctx.data.get(Collections.combatRules, 'default').techniquePoints.max).activeTechniques],
       progress: { percent: p.percent, found: p.found, total: p.total, chests: p.chests, collectibles: p.collectibles, puzzles: p.puzzles, anchors: p.anchors },
       worldProgress: rt.worldProgress().percent,
       items: { ...rt.state.data.items },
       visited: [...rt.state.data.visited],
       objects: Object.fromEntries(rt.objects().map((o) => [o.def.id, { state: o.state, visible: o.visible, x: o.x, z: o.z }])),
-      enemies: rt.enemies().map((e) => ({ spawnId: e.spawnId, state: e.state, x: e.x, z: e.z, enemies: e.enemies })),
+      enemies: rt.enemies().map((e) => ({ spawnId: e.spawnId, state: e.state, x: e.x, z: e.z, yaw: e.yaw, enemies: e.enemies })),
       hidden: rt.hiddenAreas().map((h) => ({ id: h.def.id, discovered: h.discovered, reveal: h.reveal })),
       encounter: rt.encounter,
       anchors: rt.anchors().map((a) => ({ key: a.key, area: a.areaId, current: a.current })),

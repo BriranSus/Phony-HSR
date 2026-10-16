@@ -17,8 +17,18 @@ export function awareness(state: EnemyState): Awareness {
   return state === 'alert' || state === 'chase' ? 'aware' : 'unaware';
 }
 
-export function attackAdvantage(rules: WorldRules['encounter'], state: EnemyState): Advantage {
-  return rules.playerAttack[awareness(state)];
+/**
+ * Advantage of an overworld attack that lands. Hitting an enemy from outside its view cone (from
+ * behind) is always a strike, even when it has just noticed the player at close range; otherwise the
+ * enemy's awareness decides.
+ */
+export function attackAdvantage(rules: WorldRules['encounter'], state: EnemyState, fromBehind = false): Advantage {
+  return fromBehind ? rules.playerAttack.unaware : rules.playerAttack[awareness(state)];
+}
+
+/** Is the player outside the enemy's view cone (`fovDeg` wide, centred on its facing)? */
+export function isBehindEnemy(enemyYaw: number, ex: number, ez: number, px: number, pz: number, fovDeg: number): boolean {
+  return (Math.abs(wrapAngle(Math.atan2(px - ex, pz - ez) - enemyYaw)) * 180) / Math.PI > fovDeg / 2;
 }
 
 /** Angle (deg, 0..180) between the player's facing and the direction to the enemy. */

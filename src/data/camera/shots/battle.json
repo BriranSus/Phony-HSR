@@ -1,0 +1,135 @@
+[
+  {
+    "id": "shot.battle-skill",
+    "name": "Battle Skill",
+    "mode": "skill",
+    "description": "Over-the-shoulder push-in on a party member using a Skill.",
+    "duration": 1.3,
+    "gallery": false,
+    "keys": [
+      {
+        "t": 0,
+        "position": {
+          "unit": "actor",
+          "toward": "target",
+          "offset": [1.9, 1.9, -3.4]
+        },
+        "lookAt": {
+          "unit": "target",
+          "offset": [0, 1.1, 0]
+        },
+        "fov": 44
+      },
+      {
+        "t": 1.3,
+        "position": {
+          "unit": "actor",
+          "toward": "target",
+          "offset": [1.4, 1.6, -2.4]
+        },
+        "lookAt": {
+          "unit": "target",
+          "offset": [0, 1.1, 0]
+        },
+        "fov": 38,
+        "ease": "easeOutCubic"
+      }
+    ]
+  },
+  {
+    "id": "shot.battle-ultimate",
+    "name": "Battle Ultimate",
+    "mode": "ultimate",
+    "description": "Hard cut to a low hero shot, FOV punch and shake on release, then a wide follow-through on the enemies.",
+    "duration": 2.4,
+    "gallery": false,
+    "letterbox": true,
+    "shake": {
+      "profile": "ultimate",
+      "at": 1
+    },
+    "fovPunch": {
+      "degrees": 12,
+      "at": 1,
+      "duration": 0.5
+    },
+    "keys": [
+      {
+        "t": 0,
+        "position": {
+          "unit": "actor",
+          "offset": [0.9, 1, 3.3]
+        },
+        "lookAt": {
+          "unit": "actor",
+          "offset": [0, 1.4, 0]
+        },
+        "fov": 34
+      },
+      {
+        "t": 1.1,
+        "position": {
+          "unit": "actor",
+          "offset": [1.2, 1.6, 3]
+        },
+        "lookAt": {
+          "unit": "actor",
+          "offset": [0, 1.4, 0]
+        },
+        "fov": 30,
+        "ease": "easeOutCubic"
+      },
+      {
+        "t": 2.4,
+        "position": {
+          "unit": "actor",
+          "toward": "enemies",
+          "offset": [2.4, 2.6, -4.8]
+        },
+        "lookAt": {
+          "unit": "enemies",
+          "offset": [0, 1.2, 0]
+        },
+        "fov": 54,
+        "ease": "easeInOutSine"
+      }
+    ]
+  },
+  {
+    "id": "shot.battle-enemy",
+    "name": "Battle Enemy Attack",
+    "mode": "skill",
+    "description": "A quick framing on an enemy as it strikes.",
+    "duration": 1,
+    "gallery": false,
+    "keys": [
+      {
+        "t": 0,
+        "position": {
+          "unit": "actor",
+          "toward": "target",
+          "offset": [-2.4, 2.8, -6]
+        },
+        "lookAt": {
+          "unit": "target",
+          "offset": [0, 1.1, 0]
+        },
+        "fov": 50
+      },
+      {
+        "t": 1,
+        "position": {
+          "unit": "actor",
+          "toward": "target",
+          "offset": [-1.9, 2.5, -5]
+        },
+        "lookAt": {
+          "unit": "target",
+          "offset": [0, 1.1, 0]
+        },
+        "fov": 46,
+        "ease": "easeOutCubic"
+      }
+    ]
+  }
+]

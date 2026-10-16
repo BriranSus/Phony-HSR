@@ -52,6 +52,51 @@ export class PropKit {
   }
 }
 
+/** A hostile placeholder figure: dark body and shoulders with an element-coloured core; `scale` sizes bosses and elites. */
+export function createEnemyFigure(kit: PropKit, color: string | THREE.Color, scale = 1): THREE.Group {
+  const figure = new THREE.Group();
+  const body = kit.mesh(new THREE.CylinderGeometry(0.22, 0.4, 1.2, 6), kit.dark);
+  body.position.y = 0.6;
+  const head = kit.mesh(new THREE.OctahedronGeometry(0.28, 0), kit.emissive(color, 1.1));
+  head.position.y = 1.5;
+  const shoulders = kit.mesh(new THREE.BoxGeometry(0.9, 0.16, 0.3), kit.dark);
+  shoulders.position.y = 1.15;
+  figure.add(body, head, shoulders);
+  figure.scale.setScalar(scale);
+  return figure;
+}
+
+/** A billboarded "!" (drawn on a canvas, no image files); tint it with `material.color`. */
+export function createBangSprite(kit: PropKit): THREE.Sprite {
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 96;
+  const g = canvas.getContext('2d');
+  if (g) {
+    g.fillStyle = '#ffffff';
+    g.strokeStyle = '#000000';
+    g.lineWidth = 6;
+    g.beginPath();
+    g.moveTo(20, 8);
+    g.lineTo(44, 8);
+    g.lineTo(38, 56);
+    g.lineTo(26, 56);
+    g.closePath();
+    g.stroke();
+    g.fill();
+    g.beginPath();
+    g.arc(32, 76, 9, 0, Math.PI * 2);
+    g.stroke();
+    g.fill();
+  }
+  const tex = kit.track(new THREE.CanvasTexture(canvas));
+  const mat = kit.track(new THREE.SpriteMaterial({ map: tex, color: '#ffd24a', transparent: true, depthTest: false, toneMapped: false }));
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(0.5, 0.75, 1);
+  sprite.renderOrder = 8;
+  return sprite;
+}
+
 /** The Pom-Pom-style figure shared by NPC objects and the NPC camera dummy (faces +Z). */
 export function createNpcFigure(kit: PropKit): THREE.Group {
   const g = new THREE.Group();
@@ -87,7 +132,7 @@ interface ObjectEntry {
 interface EnemyEntry {
   alpha: number;
   readonly group: THREE.Group;
-  readonly marker: THREE.Mesh;
+  readonly marker: THREE.Sprite;
   readonly ring: THREE.Mesh;
 }
 
@@ -105,8 +150,15 @@ export class WorldObjectsView {
   private readonly enemies = new Map<string, EnemyEntry>();
   private readonly veils = new Map<string, { mesh: THREE.Mesh; mat: THREE.MeshBasicMaterial }>();
   private time = 0;
+  /** Objects whose glow is turned down for a moment (a locked portal while its message shows). */
+  private readonly dimmed = new Map<string, number>();
 
   constructor(private readonly opts: WorldObjectsOptions) {}
+
+  /** Turns an object's glow down for `seconds` (cheap feedback for "locked"). */
+  dim(objectId: string, seconds: number): void {
+    this.dimmed.set(objectId, seconds);
+  }
 
   /** Builds the meshes for a freshly loaded area. */
   build(objects: readonly ObjectView[], enemies: readonly EnemyView[], hidden: readonly HiddenView[], colliders: readonly Collider[]): void {
@@ -274,26 +326,15 @@ export class WorldObjectsView {
     const g = new THREE.Group();
     const members = e.enemies;
     members.forEach((id, i) => {
-      const color = new THREE.Color(this.opts.enemyColor(id));
-      const body = k.mesh(new THREE.CylinderGeometry(0.22, 0.4, 1.2, 6), k.dark);
-      body.position.y = 0.6;
-      const head = k.mesh(new THREE.OctahedronGeometry(0.28, 0), k.emissive(color, 1.1));
-      head.position.y = 1.5;
-      const shoulders = k.mesh(new THREE.BoxGeometry(0.9, 0.16, 0.3), k.dark);
-      shoulders.position.y = 1.15;
-      const figure = new THREE.Group();
-      figure.add(body, head, shoulders);
-      const s = this.opts.enemyScale(id);
-      figure.scale.setScalar(s);
+      const figure = createEnemyFigure(k, this.opts.enemyColor(id), this.opts.enemyScale(id));
       if (members.length > 1) {
         const a = (i / members.length) * Math.PI * 2;
         figure.position.set(Math.sin(a) * 0.95, 0, Math.cos(a) * 0.95);
       }
       g.add(figure);
     });
-    const marker = k.mesh(new THREE.ConeGeometry(0.16, 0.5, 4), k.track(new THREE.MeshBasicMaterial({ color: '#ff4466', toneMapped: false })));
-    marker.rotation.x = Math.PI;
-    marker.position.y = 2.6;
+    const marker = createBangSprite(k);
+    marker.position.y = 2.7;
     const ring = k.mesh(new THREE.TorusGeometry(0.6, 0.04, 6, 20), k.glow('#8fc8ff', 1.4));
     ring.rotation.x = Math.PI / 2;
     ring.position.y = 2.2;
@@ -328,7 +369,9 @@ export class WorldObjectsView {
       e.z += (v.z - e.z) * ease;
       e.group.position.x = e.x;
       e.group.position.z = e.z;
-      e.alpha = this.fade(e.group, e.alpha, camera);
+      const dimLeft = this.dimmed.get(e.def.id) ?? 0;
+      if (dimLeft > 0) this.dimmed.set(e.def.id, Math.max(0, dimLeft - dt));
+      e.alpha = this.fade(e.group, e.alpha, camera, dimLeft > 0 ? 0.22 : 1);
       switch (e.def.kind) {
         case 'chest': {
           const open = v.state === 'opened';
@@ -401,8 +444,8 @@ export class WorldObjectsView {
       e.alpha = this.fade(e.group, e.alpha, camera);
       const aware = en.state === 'alert' || en.state === 'chase';
       e.marker.visible = aware;
-      e.marker.position.y = 2.6 + Math.sin(t * 9) * 0.1;
-      (e.marker.material as THREE.MeshBasicMaterial).color.set(en.state === 'alert' ? '#ffd24a' : '#ff4466');
+      e.marker.position.y = 2.7 + Math.sin(t * 9) * 0.1;
+      e.marker.material.color.set(en.state === 'alert' ? '#ffd24a' : '#ff4466');
       e.ring.visible = en.state === 'stunned';
       e.ring.rotation.z = t * 5;
     }
@@ -427,9 +470,9 @@ export class WorldObjectsView {
   }
 
   /** Fades a prop group by camera distance (materials are remembered with their authored opacity). */
-  private fade(group: THREE.Group, current: number, camera: { x: number; y: number; z: number }): number {
+  private fade(group: THREE.Group, current: number, camera: { x: number; y: number; z: number }, cap = 1): number {
     const d = Math.hypot(camera.x - group.position.x, camera.y - (group.position.y + 1), camera.z - group.position.z);
-    const alpha = Math.min(1, Math.max(FADE_MIN, (d - FADE_NEAR) / (FADE_FAR - FADE_NEAR)));
+    const alpha = Math.min(cap, Math.max(FADE_MIN, (d - FADE_NEAR) / (FADE_FAR - FADE_NEAR)));
     if (Math.abs(alpha - current) < 0.02 && !(alpha === 1 && current !== 1)) return current;
     group.traverse((o) => {
       const mesh = o as THREE.Mesh;

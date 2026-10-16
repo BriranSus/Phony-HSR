@@ -141,6 +141,8 @@ export const EnemySpawnSchema = z
     /** Overrides for the world rules. */
     detectionRadius: z.number().positive().optional(),
     respawn: RespawnSchema.optional(),
+    /** Enemy level in the battle (defaults to `rules/world -> encounter.enemyLevel`). */
+    level: z.number().int().min(1).max(95).optional(),
   })
   .strict();
 export type EnemySpawn = z.infer<typeof EnemySpawnSchema>;
@@ -191,6 +193,8 @@ export const WorldRulesSchema = z
         enemyContact: z.object({ behind: Advantage, front: Advantage }).strict(),
         attackRange: z.number().positive(),
         attackArcDeg: z.number().min(10).max(360),
+        /** Default enemy level of battles started from the overworld. */
+        enemyLevel: z.number().int().min(1).max(95),
       })
       .strict(),
     technique: z.object({ radius: z.number().positive(), effect: z.literal('stun') }).strict(),

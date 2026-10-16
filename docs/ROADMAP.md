@@ -56,9 +56,11 @@ Legend: ✅ done · 🟡 partially present (framework or stub) · ⬜ not starte
 ### Phase 4: World exploration
 - Area loading from data (region → area), spawn points, procedural/authored greybox environments, **interactables** (chests, puzzles, teleport anchors, area transitions, hidden areas), and **enemy patrols** that start encounters.
 - Streaming per area and object pooling for props.
-- **Status: done.** `modules/world` (runtime, state machines, puzzles, enemy AI, encounter advantage, progress, `WorldState`), `worlds/` + `levels/` data with 2 regions and 3 areas, `world:*` events for Phase 13, a placeholder encounter overlay that Phase 5 replaces, and the Space Anchor list that Phase 15 turns into the map.
+- **Status: done.** `modules/world` (runtime, state machines, puzzles, enemy AI, encounter advantage, progress, `WorldState`), `worlds/` + `levels/` data with 2 regions and 3 areas, `world:*` events for Phase 13, encounters that Phase 5 turns into battles, and the Space Anchor list that Phase 15 turns into the map.
 
 ### Phase 5: Combat engine
+- **Stage 5A: done (awaiting validation).** Engine core and a playable battle: AV timeline, shared SP and Energy, Ultimate and inserted-action queues, targeting, the damage and Weakness Break pipeline with element statuses, data-driven enemy AI, waves, loot, the battle scene and HUD, the encounter hookup and the Battle Sandbox. Generic effects run; script handlers are logged stubs.
+- **Stage 5B: next.** Full status effects and DoT edge cases, shields, follow-ups and counters, summons and memosprites, and the script handlers (see PHASE_REPORT 12.5).
 - `BattleState` builder, **AV timeline** (`predictTurnOrder` already exists), turns, **party-shared Skill Points**, **Ultimate resources (Energy or points) and Ultimate insertion** (outside the turn order), the **inserted-action queue** (follow-ups, counters, extra turns, immediate memosprite actions), **targeting** (single / blast / AoE / bounce / ally), the effect interpreter (`skills`), the status engine (`status`), memosprite turns and leave-field rules (the runtime model already exists in `models/combat.ts`), wave handling, victory and defeat.
 - Uses `formulas/damage.ts` for every hit. Emits `combat:*` events. Headless battle simulator for tests.
 

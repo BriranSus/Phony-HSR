@@ -2,7 +2,7 @@ import type { Collider, Interactable, Level } from '@models/locomotion';
 import type { Advantage, EnemySpawn, HiddenArea, Puzzle, Requirement, Reward, World, WorldObject, WorldRules } from '@models/world';
 import { lineOfSightBlocked, v3 } from '@modules/camera';
 import { CollisionWorld, type CapsuleSpec } from '@modules/player';
-import { attackAdvantage, contactAdvantage, inAttackCone } from './encounter';
+import { attackAdvantage, contactAdvantage, inAttackCone, isBehindEnemy } from './encounter';
 import { EnemyAI, type EnemyState } from './enemies';
 import type { WorldEmit, WorldEvents } from './events';
 import { WorldGraph } from './graph';
@@ -53,6 +53,8 @@ export interface EncounterInfo {
   readonly advantage: Advantage;
   readonly trigger: 'attack' | 'contact';
   readonly areaId: string;
+  /** Enemy level for the battle. */
+  readonly level: number;
 }
 
 export interface ObjectView {
@@ -134,7 +136,7 @@ export interface WorldRuntimeOptions {
   readonly itemName?: (id: string) => string;
 }
 
-const LOG_LIMIT = 14;
+const LOG_LIMIT = 80;
 const CRATE_HEIGHT = 1;
 
 export class WorldRuntime {
@@ -657,7 +659,9 @@ export class WorldRuntime {
       }
     }
     if (target) {
-      const advantage = attackAdvantage(er, target.ai.state);
+      // During the alert window the enemy has already turned to face the player, so what counts is where it noticed them from.
+      const behind = target.ai.state === 'alert' ? target.ai.noticedFromBehind : isBehindEnemy(target.ai.yaw, target.ai.x, target.ai.z, p.x, p.z, this.rules.enemy.detectionFovDeg);
+      const advantage = attackAdvantage(er, target.ai.state, behind);
       this.startEncounter(target, advantage, 'attack');
       return { type: 'enemy', spawnId: target.spawn.id, advantage };
     }
@@ -708,12 +712,15 @@ export class WorldRuntime {
   }
 
   private startEncounter(e: EnemyInstance, advantage: Advantage, trigger: 'attack' | 'contact'): void {
-    this.encounterInfo = { spawnId: e.spawn.id, enemies: e.spawn.enemies, advantage, trigger, areaId: this.areaId };
+    this.encounterInfo = { spawnId: e.spawn.id, enemies: e.spawn.enemies, advantage, trigger, areaId: this.areaId, level: e.spawn.level ?? this.rules.encounter.enemyLevel };
     this.emit('world:encounterStarted', { ...this.encounterInfo });
   }
 
-  /** Ends the pending encounter. Combat arrives in Phase 5; until then it counts as a victory. */
-  endEncounter(): void {
+  /**
+   * Ends the pending encounter with the battle's result. A victory removes the group (respawn per
+   * its rule); a defeat leaves it standing, back at its post and calm, so the player can retry.
+   */
+  endEncounter(result: 'victory' | 'defeat' = 'victory'): void {
     const info = this.encounterInfo;
     if (!info) return;
     const area = this.mustArea();
@@ -721,11 +728,26 @@ export class WorldRuntime {
     const i = area.enemies.findIndex((e) => e.spawn.id === info.spawnId);
     if (i >= 0) {
       const e = area.enemies[i]!;
-      area.enemies.splice(i, 1);
-      this.state.data.defeated[e.key] = this.state.data.clock;
-      for (const enemyId of e.spawn.enemies) this.emit('world:enemyDefeated', { spawnId: e.spawn.id, enemyId, areaId: area.id });
+      if (result === 'victory') {
+        area.enemies.splice(i, 1);
+        this.state.data.defeated[e.key] = this.state.data.clock;
+        for (const enemyId of e.spawn.enemies) this.emit('world:enemyDefeated', { spawnId: e.spawn.id, enemyId, areaId: area.id });
+      } else {
+        area.enemies[i] = this.spawnEnemy(e.spawn, e.key);
+      }
     }
-    this.emit('world:encounterEnded', { spawnId: info.spawnId, areaId: info.areaId, result: 'placeholder-victory' });
+    this.emit('world:encounterEnded', { spawnId: info.spawnId, areaId: info.areaId, result });
+  }
+
+  /** Items won in a battle: added to the world's item ledger with the usual `itemCollected` events. */
+  grantRewards(rewards: readonly Reward[], source: string): void {
+    this.grant(rewards, source);
+  }
+
+  /** Returns the party to the area's default arrival point (after a defeat). */
+  respawnPoint(): { position: readonly [number, number, number]; yaw: number } {
+    const l = this.mustArea().level;
+    return { position: l.spawn.position, yaw: l.spawn.yaw };
   }
 
   // ---- Travel -----------------------------------------------------------------------------------

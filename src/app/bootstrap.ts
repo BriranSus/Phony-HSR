@@ -22,6 +22,8 @@ import { TitleState } from './states/TitleState';
 import { MainMenuState } from './states/MainMenuState';
 import { DataArchiveState } from './states/DataArchiveState';
 import { TestSceneState } from './states/TestSceneState';
+import { BattleState } from './states/BattleState';
+import { BattleSandboxState } from './states/BattleSandboxState';
 
 /** Handle exposed on `window.__ASTRAL__` (debug builds) for tooling such as Playwright. */
 export interface DebugHandle {
@@ -126,7 +128,9 @@ export function bootstrap(host: HTMLElement): AppContext | null {
     .register(StateIds.title, () => new TitleState(ctx))
     .register(StateIds.mainMenu, () => new MainMenuState(ctx))
     .register(StateIds.archive, () => new DataArchiveState(ctx))
-    .register(StateIds.testScene, () => new TestSceneState(ctx));
+    .register(StateIds.testScene, () => new TestSceneState(ctx))
+    .register(StateIds.battle, () => new BattleState(ctx))
+    .register(StateIds.battleSandbox, () => new BattleSandboxState(ctx));
 
   // 6. Debug overlay content (throttled).
   const refreshDebug = (): void => {

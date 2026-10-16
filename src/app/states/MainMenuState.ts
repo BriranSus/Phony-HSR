@@ -9,6 +9,7 @@ import { StateIds } from '../AppContext';
  */
 const ITEMS: readonly MenuItemView[] = [
   { id: 'test-scene', title: 'Explore Test Level', description: 'Phase 2: movement, party switching and interaction' },
+  { id: 'battle-sandbox', title: 'Battle Sandbox', description: 'Phase 5: build a party and an enemy group, pick a seed, fight' },
   { id: 'archive', title: 'Data Archive', description: 'Browse validated characters, light cones, enemies and rules' },
   { id: 'continue', title: 'Continue Voyage', description: 'Resume from your latest save', disabled: true, badge: 'Phase 21' },
   { id: 'warp', title: 'Warp', description: 'Character and Light Cone banners', disabled: true, badge: 'Phase 17' },
@@ -68,6 +69,9 @@ export class MainMenuState implements GameState {
         break;
       case 'archive':
         void this.ctx.states.push(StateIds.archive);
+        break;
+      case 'battle-sandbox':
+        void this.ctx.states.push(StateIds.battleSandbox, undefined, { transition: true });
         break;
       case 'title':
         this.back();

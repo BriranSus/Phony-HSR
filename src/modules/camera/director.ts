@@ -182,3 +182,26 @@ export class ShotProvider implements CameraProvider {
     return evaluateShot(this.shot, Math.min(this.time, this.shot.duration), this.units);
   }
 }
+
+/**
+ * A provider whose pose comes from a callback: the base framing of a mode that is not a keyframed
+ * shot (the battle overview, a dialogue hold). It never ends; the owner removes it.
+ */
+export class PoseProvider implements CameraProvider {
+  readonly done = false;
+
+  constructor(
+    readonly id: string,
+    readonly mode: CameraModeId,
+    readonly priority: number,
+    private readonly pose: (dt: number) => CameraPose,
+    readonly gatesInput = true,
+    readonly letterbox = false,
+    readonly blendIn?: Blend,
+    readonly blendOut?: Blend,
+  ) {}
+
+  update(dt: number): CameraPose {
+    return this.pose(dt);
+  }
+}
